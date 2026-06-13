@@ -135,8 +135,23 @@ by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 
 ## Deploy (GitHub Pages)
 
-Served by GitHub Pages from `main` / root (`.nojekyll` skips Jekyll). Pushing to `main`
-redeploys automatically — **live at https://fmadore.github.io/slides/**.
+Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
+on every push to `main` it builds a copy of the site with **speaker notes stripped**
+(`tools/strip-notes.py` removes `<aside class="notes">` and Markdown `Note:` blocks) and
+publishes that — so the live site never exposes notes via the `S` speaker view or
+view-source. Your repo keeps the notes; only the deployed copy is stripped. Live at
+**https://fmadore.github.io/slides/**.
+
+> **One-time setup:** repo *Settings → Pages → Build and deployment → Source* must be set to
+> **GitHub Actions** (not "Deploy from a branch"), or the workflow won't publish.
+
+Preview the stripped build locally before pushing (any static server works for a finished
+build; `serve-deck.py`'s no-cache server is only for live editing of the repo root):
+
+```bash
+python3 tools/strip-notes.py _site && (cd _site && python -m http.server 8000)
+# then open http://localhost:8000/  — speaker notes (S) should be gone
+```
 
 A custom subdomain (`slides.frederickmadore.com`) is planned but not set up yet; the steps
 are in [ROADMAP.md](ROADMAP.md).

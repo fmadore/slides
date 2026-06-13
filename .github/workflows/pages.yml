@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+# Publishes a copy of the deck with speaker notes stripped (see
+# tools/strip-notes.py), so the live site never exposes the S speaker view
+# notes. The repo keeps the notes; only the deployed artifact is stripped.
+#
+# One-time setup: repo Settings → Pages → Build and deployment →
+# Source = "GitHub Actions" (instead of "Deploy from a branch").
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; let an in-progress run finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Strip speaker notes into ./_site
+        run: python3 tools/strip-notes.py _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
