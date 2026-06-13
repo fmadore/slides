@@ -107,6 +107,14 @@ curl -fsS "https://raw.githubusercontent.com/fmadore/iwac-mcp-server/main/.claud
   -o talks/2026-06-15-luxembourg-beyond-keywords/assets/iwac-skill.md
 ```
 
+**Framed live site** (e.g. a live website overview): a `<div class="site-frame">` gives a
+browser-style chrome bar over a fitted viewport holding an `<iframe>`. Note two caveats — a
+live frame needs a network connection (it isn't offline like the rest of the deck), and many
+sites refuse to be framed (`X-Frame-Options` / CSP `frame-ancestors`); verify in a browser.
+If a site blocks framing, drop a screenshot into the talk's `assets/` and swap the `<iframe>`
+for an `<img>` (the same `.site-frame-view` styling fits both). See the "A live look" slide in
+the Luxembourg deck for the markup.
+
 **Export to PDF:** open a talk with `?print-pdf` appended, then print → Save as PDF
 (Landscape, margins None, background graphics on).
 

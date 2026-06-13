@@ -24,7 +24,7 @@
     presenter: "Frédérick Madore",
     talkTitle: "Beyond Keywords",
     talkShort: "Beyond Keywords",
-    venue:     "Luxembourg · 15 June 2026",
+    venue:     "C²DH · Luxembourg · 15 June 2026",
     tocEyebrow:"Outline",
     transition:"fade",
     links: {
@@ -42,7 +42,7 @@
     <!-- ════════ 1 · COVER (Markdown) ═══════════════════════════════════════ -->
     <section class="cover" data-footer="light" data-markdown>
       <textarea data-template>
-        Eighth Conference on Digital Humanities and Digital History
+        Eighth Conference on Digital Humanities and Digital History · C²DH, University of Luxembourg
         <!-- .element: class="eyebrow" -->
 
         # Beyond Keywords
@@ -83,6 +83,29 @@
         </div>
       </div>
       <aside class="notes">For fifteen years I've worked on Islam in Francophone West Africa — mostly Benin, Burkina Faso, Côte d'Ivoire, Togo. Lots of interviews, but also extensive work with West African newspapers and Islamic publications. I'm a digital hoarder: 30,000+ items in Zotero, ~15,000 unread. I wanted them in an open-access database, reached agreements with copyright holders, and launched the IWAC in 2023. It now holds 14,700+ documents on Muslim public life across six countries, ~96% in French. I built and maintain it alone — which is exactly why AI matters here: LLMs already do the work a team would (OCR on degraded scans, entity recognition, sentiment). So far I've used AI to build the collection; today is about opening it.</aside>
+    </section>
+
+    <!-- ════════ 2b · THE COLLECTION, LIVE (framed website overview) ═══════ -->
+    <section data-toc="A live look">
+      <p class="kicker">The Islam West Africa Collection</p>
+      <h2 class="slide-title no-rule">An overview — the collection itself</h2>
+      <div class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de/s/westafrica</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">Open live ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <!-- Live embed of the public Omeka S site. If it refuses framing
+               (X-Frame-Options / CSP frame-ancestors), drop a screenshot into
+               assets/ and replace the <iframe> below with:
+               <img src="assets/iwac-home.png" alt="The IWAC homepage"> -->
+          <iframe src="https://islam.zmo.de/s/westafrica/page/home"
+                  title="Islam West Africa Collection — live site"
+                  loading="lazy" referrerpolicy="no-referrer"></iframe>
+        </div>
+      </div>
+      <aside class="notes">A quick live look at the collection itself — the public site at islam.zmo.de, built on Omeka S. Browse a few records to give a feel for the material before we get into why keyword search falls short. (If the venue network is flaky, this slide falls back to a screenshot.)</aside>
     </section>
 
     <!-- ════════ 3 · THE "EL HADJ" PROBLEM (two-column) ═══════════════════ -->
