@@ -681,6 +681,37 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E");
 }
 
+/* Framed live embed — a browser-style chrome bar over a fitted viewport, for
+   showing a website (an <iframe>) on stage. Fills the leftover height of a
+   flex-column slide, like .scroll-panel. If the embedded site refuses framing
+   (X-Frame-Options / CSP frame-ancestors), swap the <iframe> for an <img>
+   screenshot — the same .site-frame-view styling fits both. */
+.reveal .site-frame {
+  flex: 1 1 auto; min-height: 0; width: 100%;
+  display: flex; flex-direction: column;
+  background: var(--paper); border: var(--hair); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-2);
+}
+.reveal .site-frame-bar {
+  flex: none; display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: var(--hair);
+}
+.reveal .site-frame-bar .dot {
+  width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
+  background: color-mix(in oklch, var(--ink-faint), var(--paper) 25%);
+}
+.reveal .site-frame-url {
+  margin-left: 0.5rem; font-family: var(--font-mono); font-size: var(--fs-footer);
+  color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.reveal .site-frame-open { margin-left: auto; flex: none; font-size: var(--fs-footer); font-weight: 600; }
+.reveal .site-frame-view { position: relative; flex: 1 1 auto; min-height: 0; background: var(--paper); }
+.reveal .site-frame-view > iframe,
+.reveal .site-frame-view > img {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
+  object-fit: cover; object-position: top center;
+}
+
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */
