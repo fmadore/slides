@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talk title — Frédérick Madore</title>
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+</head>
+<body>
+
+<!-- ============================================================================
+     NEW TALK CHECKLIST
+     1. Copy this folder:  talks/_template  →  talks/YYYY-MM-DD-place-short-title
+     2. Edit DECK_CONFIG below, then the slides.
+     3. Add an entry to the TALKS array in /index.html (the landing page).
+     Full layout catalogue + shortcuts: see /README.md.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Frédérick Madore",
+    talkTitle: "Talk title",
+    talkShort: "Talk title",                 // footer label — keep it short
+    venue:     "Venue · DD Month YYYY",
+    tocEyebrow:"Outline",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- COVER -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Event · Place, DD Month YYYY</p>
+      <h1>Talk title</h1>
+      <p class="subtitle">A one-line italic description of the talk.</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="affil">Leibniz-Zentrum Moderner Orient (ZMO) · Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+      </div>
+      <div data-contact></div>
+    </section>
+
+    <!-- SECTION DIVIDER (add `green` class for the green variant) -->
+    <section class="section" data-toc="First section">
+      <p class="sec-no">01</p>
+      <h2>The first section</h2>
+      <p class="sec-sub">An optional italic subtitle.</p>
+    </section>
+
+    <!-- STANDARD CONTENT -->
+    <section data-toc="A key point">
+      <p class="kicker">Optional eyebrow</p>
+      <h2 class="slide-title">A slide title</h2>
+      <p class="lead">A larger opening line that sets up the slide.</p>
+      <ul>
+        <li>First point</li>
+        <li>Second point, with an <strong>emphasis</strong> and a <span class="hl">highlight</span></li>
+        <li>Third point</li>
+      </ul>
+    </section>
+
+    <!-- TWO COLUMNS -->
+    <section>
+      <h2 class="slide-title no-rule">A comparison</h2>
+      <div class="cols">
+        <div class="col"><div class="col-head">Left</div><ul><li>…</li></ul></div>
+        <div class="col"><div class="col-head alt">Right</div><ul><li>…</li></ul></div>
+      </div>
+    </section>
+
+    <!-- BIG STATEMENT -->
+    <section class="statement" data-footer="light">
+      <p class="statement-body">A claim worth pausing on, with one <span class="accent">emphasised phrase.</span></p>
+      <p class="attribution">A supporting line beneath it.</p>
+    </section>
+
+    <!-- CLOSING / CONTACT -->
+    <section class="closing" data-footer="dark">
+      <p class="kicker">Thank you · Merci</p>
+      <h2>A closing line.</h2>
+      <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">ZMO · Africa Multiple, University of Bayreuth</span></div>
+      <div data-contact></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>

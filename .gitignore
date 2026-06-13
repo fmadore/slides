@@ -1,0 +1,13 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# Python (the dev server / font helper)
+__pycache__/
+*.pyc
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond Keywords — Frédérick Madore</title>
+  <meta name="author" content="Frédérick Madore">
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+
+  <!-- reveal.js core (vendored locally → works fully offline) -->
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <!-- Africa Multiple / Bayreuth editorial theme (imports the self-hosted fonts) -->
+  <link rel="stylesheet" href="../../shared/theme.css">
+</head>
+<body>
+
+<!-- ============================================================================
+     PER-DECK CONFIG — edit this block (and the slides) for each new talk.
+     Everything else (theme.css, deck.js, reveal/, fonts/) is the reusable engine.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Frédérick Madore",
+    talkTitle: "Beyond Keywords",
+    talkShort: "Beyond Keywords",
+    venue:     "Luxembourg · 15 June 2026",
+    tocEyebrow:"Outline",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ════════ 1 · COVER ════════════════════════════════════════════════ -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Eighth Conference on Digital Humanities and Digital History</p>
+      <h1>Beyond Keywords</h1>
+      <p class="subtitle">Opening the Islam West Africa Collection to AI — on its own terms.</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="affil">Leibniz-Zentrum Moderner Orient (ZMO) · Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+      </div>
+      <div data-contact></div>
+      <aside class="notes">Working title was very jargony — "AI-Mediated Access to the IWAC through an MCP Server and Agent Skill." This is the plain-language version: opening the collection to AI on its own terms.</aside>
+    </section>
+
+    <!-- ════════ 2 · THE COLLECTION (content + stat panel) ════════════════ -->
+    <section data-toc="The collection">
+      <p class="kicker">The Islam West Africa Collection</p>
+      <h2 class="slide-title">An open archive, built by one historian</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="lead">Fifteen years of fieldwork and library work — Benin, Burkina Faso, Côte d'Ivoire, Togo — turned into an open-access collection.</p>
+          <ul>
+            <li>Mostly newspaper clippings and Islamic publications: magazines, brochures, tracts</li>
+            <li>Behind it, a personal library of <strong>30,000+ Zotero items</strong> — about 15,000 still unread</li>
+            <li>Online at <a href="https://islam.zmo.de/s/westafrica/">islam.zmo.de</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">In numbers</div>
+            <div class="stat"><span class="stat-num">14,700+</span><span class="stat-label">documents · six countries · ~96% French · since 2023</span></div>
+            <hr class="rule">
+            <p class="small muted">One historian, no team — manual cataloguing is impossible. AI already <em>builds</em> it (OCR, entity recognition). Today is about using AI to <em>access</em> it.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">For fifteen years I've worked on Islam in Francophone West Africa — mostly Benin, Burkina Faso, Côte d'Ivoire, Togo. Lots of interviews, but also extensive work with West African newspapers and Islamic publications. I'm a digital hoarder: 30,000+ items in Zotero, ~15,000 unread. I wanted them in an open-access database, reached agreements with copyright holders, and launched the IWAC in 2023. It now holds 14,700+ documents on Muslim public life across six countries, ~96% in French. I built and maintain it alone — which is exactly why AI matters here: LLMs already do the work a team would (OCR on degraded scans, entity recognition, sentiment). So far I've used AI to build the collection; today is about opening it.</aside>
+    </section>
+
+    <!-- ════════ 3 · THE "EL HADJ" PROBLEM (two-column) ═══════════════════ -->
+    <section data-toc="Why search fails">
+      <p class="kicker warm">The "El Hadj" problem</p>
+      <h2 class="slide-title">Why keyword search fails</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <p class="lead">Search <strong>"hadj"</strong> and you get two unrelated things at once:</p>
+          <ul>
+            <li>the <em>pilgrimage</em> to Mecca</li>
+            <li>the hundreds of men who carry <strong>"El Hadj"</strong> as an honorific</li>
+          </ul>
+        </div>
+        <div class="col">
+          <ul>
+            <li>One imam — <strong>20+ spellings</strong> across newspapers and decades</li>
+            <li>Search "hajj" and you'll never find <em>pèlerinage à La Mecque</em></li>
+            <li>The engine works exactly as designed; the multilingual lexicon defeats it</li>
+          </ul>
+          <div class="callout warm">
+            <span class="callout-label">The gap</span>
+            I've known this corpus since 2015 — its tags, its quirks. The search box assumes you do too.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">I want the collection accessible to researchers and the general public alike. But in the IWAC, "hadj" returns two completely different things: articles about the pilgrimage, and the hundreds of men who carry "El Hadj" as an honorific after making it. A single imam can appear under 20+ spellings. The search engine is doing exactly what it was built to do — what defeats it is the vocabulary: synonymy, polysemy and transliteration all at once, on top of degraded OCR. Keyword boxes assume you type one query and judge a ranked list produced by an algorithm you can't see. I've known this corpus since 2015 — its organisation, its tags. The users don't.</aside>
+    </section>
+
+    <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement) ══════════════════════ -->
+    <section class="statement" data-footer="light">
+      <p class="statement-body">A chatbot frozen at training time will answer anything about Islam in West Africa — and quietly <span class="accent">invent the citations.</span></p>
+      <p class="attribution">Ask it about Islam in Kpalimé in the 1990s: confident, fluent, and empty.</p>
+      <aside class="notes">More and more people ask AI directly instead of searching. A bare chatbot is frozen at training time, cut off from the database that holds the primary sources — and it invents plausible citations. Ironically, my collection is swamped by AI bots scraping its content, yet ask a model a specific question about Islam in Kpalimé in the 1990s and it has essentially no knowledge.</aside>
+    </section>
+
+    <!-- ════════ 5 · TWO LAYERS (two-column) ══════════════════════════════ -->
+    <section data-toc="The approach">
+      <p class="kicker navy">An approach</p>
+      <h2 class="slide-title no-rule">Two layers: plumbing and intelligence</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">The MCP server — plumbing</div>
+          <p>Structured, <strong>read-only</strong> access to the collection that any AI assistant can call.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">The agent skill — intelligence</div>
+          <p>The methodology for using it <em>well</em> — a historian's method, written down.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">The claim to hold onto</span>
+        The skill — a plain-text file — is where the real contribution lives. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a>
+      </div>
+      <aside class="notes">I built two things. An MCP server that gives any AI chatbot structured, read-only access to the IWAC — the plumbing. And an agent skill that encodes how to do research with it properly — the intelligence. I'll demo the server in the middle, then close with what this arrangement means for African collections in an age of AI scraping. The claim to hold onto: the skill, a plain-text file, is where the real contribution lives.</aside>
+    </section>
+
+    <!-- ════════ 6 · WHAT IS MCP (comparison + callout) ═══════════════════ -->
+    <section>
+      <p class="kicker navy">Model Context Protocol · open standard, Nov 2024</p>
+      <h2 class="slide-title">Why a server, not just a chatbot?</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">RAG</div>
+          <p>Copies the collection into an external store — chunked, embedded, retrieved by a similarity the user never sees.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">MCP</div>
+          <p>Ingests <strong>nothing</strong>. The data stays put; the server holds the logic; the model just asks and answers.</p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">The analogy</span>
+        Like IIIF for images: a shared interface, without handing over the originals. Build the server once — Claude, ChatGPT, or open-source models all connect.
+      </div>
+      <aside class="notes">MCP is an open standard, released November 2024, for connecting AI assistants to external data through a defined set of tools. A server publishes the queries it will answer; any compliant assistant can call them. MCP is to collection data what IIIF is to images — IIIF succeeded by solving a coordination problem: institutions exposed high-resolution images through a shared interface without handing over the originals. Why not RAG? RAG copies the collection into a vector store, chunks it, retrieves by similarity the user never sees. Fine for many uses — but for an institution that cares about data sovereignty (and African collections have a long history of extractive knowledge practices), moving the data into someone else's pipeline isn't neutral. MCP draws the line differently: nothing is ingested, chunked, or used for training. Build once, and any model — commercial or open-source — can be the interface.</aside>
+    </section>
+
+    <!-- ════════ 7 · AGENT SKILLS (content + code) ════════════════════════ -->
+    <section>
+      <p class="kicker">Agent skills</p>
+      <h2 class="slide-title">The curator's knowledge, written down</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <p>A skill is a <strong>methods handbook for a machine reader</strong> — loaded only when a request matches its purpose.</p>
+          <ul>
+            <li>Competence by <strong>reading, not retraining</strong></li>
+            <li>Versioned and reviewable — a prompt is typed once and lost</li>
+            <li>An open standard across agents — the same no-lock-in logic as MCP</li>
+          </ul>
+        </div>
+        <div class="col">
+          <pre><code class="language-yaml" data-trim data-line-numbers>---
+name: iwac-research
+description: How to research the Islam West
+  Africa Collection — search, read, triangulate.
+---
+## Always search in French
+Expand transliterations: Tabaski = Aïd el-Kébir.
+"Cote d'Ivoire" without the circumflex → 0 hits.</code></pre>
+        </div>
+      </div>
+      <aside class="notes">A skill is a methods handbook, in plain language, that the agent reads into context when a request matches its purpose. The model gains a specific competence by reading, not retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost; a skill file is versioned, reviewed, published, refined — tacit expertise turned into an explicit, inspectable artefact. Like MCP, skills are an open standard across agents, so nothing locks you to one vendor. They're mostly used for coding, but work just as well for the social sciences: how to behave like a historian, what to know about a corpus.</aside>
+    </section>
+
+    <!-- ════════ 7b · THE SKILL FILE — scrollable live embed ══════════════ -->
+    <section data-toc-skip>
+      <p class="kicker">The curator's method, in full</p>
+      <h2 class="slide-title">iwac-mcp · SKILL.md</h2>
+      <!-- Loaded at runtime from the vendored copy in assets/ (works offline).
+           Re-run the fetch in the README to refresh it from GitHub. -->
+      <div class="scroll-panel" data-skill-src="assets/iwac-skill.md">
+        <pre><code class="language-markdown">Loading the skill file…</code></pre>
+      </div>
+      <p class="scroll-hint">Scroll to read the whole file — 190 lines, open source at github.com/fmadore/iwac-mcp-server</p>
+      <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the French-only search rule and transliteration variants, the bias-disclosure and confidence-grading requirements. Scroll through it to make the point that the method is explicit and reviewable, not a black box.</aside>
+    </section>
+
+    <!-- ════════ 8 · THE IWAC MCP SERVER (code + capabilities) ════════════ -->
+    <section data-toc="The server">
+      <h2 class="slide-title">The IWAC MCP server</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <pre><code class="language-python" data-trim data-line-numbers="1-2|3-4|5-6">@mcp.tool()
+def search_articles(query, country=None,
+        newspaper=None, year=None):
+    """Search the IWAC by keyword and facets.
+    Every hit links to its canonical record."""
+    return iwac.search(query, country, newspaper, year)</code></pre>
+          <p class="small"><span class="chip green">read-only</span> <span class="chip">verifiable</span> <span class="chip">one-click install</span></p>
+        </div>
+        <div class="col">
+          <div class="col-head">~20 tools</div>
+          <ul>
+            <li>Search · full text · authority records · sentiment · stats</li>
+            <li>Answers from a local copy of the open IWAC dataset</li>
+            <li><strong>No AI at query time</strong> — every call is a structured lookup</li>
+            <li>Every result links to the canonical record</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">What I actually built: some twenty tools — article search by keyword, country, newspaper, subject and date; full-text retrieval; authority records for persons, places, organisations and events; precomputed sentiment; collection statistics. The design principle is verifiability. The server does no generation at query time: every AI enrichment was computed offline and stored as ordinary data, so a tool call is only ever a lookup against the openly published dataset — and every result carries a URL straight back to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the AI can cite normally only what the collection actually contains. One-click install for Claude Desktop, nothing to administer — which matters if the point is access for non-specialists. Now let me show you.</aside>
+    </section>
+
+    <!-- ════════ 9 · FIVE-PHASE METHOD (numbered) ════════════════════════ -->
+    <section data-toc="The method">
+      <p class="kicker">The IWAC skill in motion</p>
+      <h2 class="slide-title">A five-phase research method</h2>
+      <div class="cols">
+        <div class="col">
+          <ol>
+            <li><strong>Scoping</strong> — what does the collection even hold for this question, before any keyword?</li>
+            <li><strong>Systematic searching</strong> — French + transliteration variants (Tabaski = Eid al-Adha); log every search, including null results</li>
+            <li><strong>Deep reading</strong> — full text and sentiment, article by article</li>
+          </ol>
+        </div>
+        <div class="col">
+          <ol start="4">
+            <li><strong>Triangulation</strong> — cross-check articles, publications, references, index entries</li>
+            <li><strong>Synthesis</strong> — findings with source attribution and confidence grades</li>
+          </ol>
+          <div class="callout">
+            <span class="callout-label">The point</span>
+            Twenty tools give reach, not judgement. The judgement lives in the skill.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Beyond the server, I wanted the model to know how to behave — to transmit my own knowledge of the collection as a historian working with primary sources. The server alone knows none of it: not that every search must be in French, not that "Côte d'Ivoire" without its circumflex returns zero, not that Niger's coverage is thin and there's almost no Nigerian press. Twenty tools give reach, not judgement. That knowledge lives in the skill: a five-phase workflow drawn from how archival research actually works. Scoping first — what's even here. Then systematic searching in French with transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), every search logged including the null ones. Deep reading. Triangulation across source types. Synthesis with explicit sources and confidence grades — strong, moderate, weak.</aside>
+    </section>
+
+    <!-- ════════ 10 · WHAT THE SKILL ENCODES (content + callout) ══════════ -->
+    <section>
+      <p class="kicker">What a server never could</p>
+      <h2 class="slide-title">Discipline, disclosure — and a new role</h2>
+      <ul>
+        <li><strong>Linguistic discipline</strong> — French only; the missing accent that breaks the filter silently</li>
+        <li><strong>Bias disclosure</strong> — every synthesis states the skew: the francophone tilt, thin Niger, absent Nigeria</li>
+        <li><strong>Evidential discipline</strong> — claims tagged primary / secondary / AI-derived; <em>absence of evidence ≠ evidence of absence</em></li>
+      </ul>
+      <div class="callout navy">
+        <span class="callout-label">The role shift</span>
+        The curator stops being only a cataloguer and becomes an <strong>author of AI-readable methods.</strong> The server took a weekend; the skill is where the expertise lives.
+      </div>
+      <aside class="notes">The skill encodes three things no server could. Linguistic discipline: search in French, and mind the accent that fails silently — an unguided model handed an English question searches in English and silently fails. Bias disclosure: every synthesis must state the skew you saw at the start — the francophone tilt, the missing Arabisants, thin Niger, absent Nigeria. In effect the skill makes the model read the collection the way Stoler taught historians to read colonial archives: as a made thing with a history, not a window onto the region. Evidential discipline: every claim tagged primary, secondary, or AI-derived; absence of evidence is never evidence of absence. Guldi's warning applies — left alone, these systems compress disagreement into the most statistically central story; null results and confidence grades are the hedge. Then the role shift: cataloguer → API designer → author of research methods machines can follow. Invest at least as much in the instructional layer as in the server. The server took a weekend; the skill is where the expertise lives.</aside>
+    </section>
+
+    <!-- ════════ 11 · WHOSE INFRASTRUCTURE? (the stakes) ══════════════════ -->
+    <section data-toc="The stakes">
+      <p class="kicker warm">The stakes</p>
+      <h2 class="slide-title">Whose infrastructure? African collections and AI extraction</h2>
+      <ul>
+        <li>GLAM institutions are buckling under AI-bot traffic — <strong>Wikimedia: 65%</strong> of its costliest traffic is bots, not people</li>
+        <li><strong>Yékú's paradox</strong> — un-digitised, an archive is invisible to AI; digitised, it's exposed to scraping</li>
+        <li>MCP offers a third path: the collection stays put, and the institution decides what is exposed, on what terms</li>
+      </ul>
+      <div class="callout">
+        <span class="callout-label">Beyond the protocol</span>
+        CARE asks what FAIR doesn't — not just <em>who controls the data</em>, but <em>who benefits.</em> A West African collection hosted in Germany: for whom are we doing this?
+      </div>
+      <aside class="notes">Step back: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 cultural-heritage institutions hit by traffic spikes, mostly AI training bots that ignore robots.txt; Wikimedia reports 65% of its most expensive traffic is bots. I've seen a massive spike from the US and China — thousands of daily visitors to a database on Islam in West Africa seems a bit overkill. Underfunded public institutions are subsidising commercial AI — digital colonialism in its newest form. Yékú names the trap for African archives: leave them un-digitised and they're invisible (the colonial library rebuilt inside the training set); digitise them and you expose them to scraping. MCP offers a third path: the collection stays put, the institution decides what the AI sees. But say honestly what the protocol settles and what it doesn't. CARE asks what FAIR doesn't: who has authority over data about a community, and who benefits? Authority to control — MCP answers. Collective benefit — it doesn't. A West African collection hosted at a German institute: for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part.</aside>
+    </section>
+
+    <!-- ════════ 12 · CLOSING / CONTACT ═══════════════════════════════════ -->
+    <section class="closing" data-footer="dark">
+      <p class="kicker">Thank you · Merci</p>
+      <h2>The server was the easy part.</h2>
+      <p class="lead">A system that can tell <em>hadj</em> the pilgrimage from <em>El&nbsp;Hadj</em> the honorific can do it because a curator wrote the difference down.</p>
+      <p class="small"><strong>Next:</strong> an IWAC website assistant — open-source model, same tools, no account needed. A student in Ouagadougou installs nothing. Server &amp; skill are open: <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
+      <div data-contact></div>
+      <aside class="notes">Two limits before closing. First, grounding reshapes hallucination rather than removing it — Jancovic shows retrieval systems confidently fusing things that merely look similar; my own semantic search could flatten intégrisme, fondamentalisme and salafisme into one cluster, distinctions that carry real political weight. That's why the skill insists on reading the sources, never just the summary. Second, the floor: answers are only ever as good as the metadata underneath. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. What's next: a conversational assistant on the IWAC website, running an open-source model against these same tools, so a student in Ouagadougou gets this access without installing anything or opening an account with any AI firm. The point to take home: the server was the easy part. A system that can tell "hadj" the pilgrimage from "El Hadj" the honorific can do it because a curator wrote the difference down. Thank you — I'd welcome the hard questions, especially about where this breaks.</aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js + plugins (vendored), then the deck engine. Order matters. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>
