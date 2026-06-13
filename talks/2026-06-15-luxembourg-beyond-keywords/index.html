@@ -39,17 +39,25 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- ════════ 1 · COVER ════════════════════════════════════════════════ -->
-    <section class="cover" data-footer="light">
-      <p class="eyebrow">Eighth Conference on Digital Humanities and Digital History</p>
-      <h1>Beyond Keywords</h1>
-      <p class="subtitle">Opening the Islam West Africa Collection to AI — on its own terms.</p>
-      <div class="byline">
-        <span class="name">Frédérick Madore</span>
-        <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
-      </div>
-      <div data-contact></div>
-      <aside class="notes">Working title was very jargony — "AI-Mediated Access to the IWAC through an MCP Server and Agent Skill." This is the plain-language version: opening the collection to AI on its own terms.</aside>
+    <!-- ════════ 1 · COVER (Markdown) ═══════════════════════════════════════ -->
+    <section class="cover" data-footer="light" data-markdown>
+      <textarea data-template>
+        Eighth Conference on Digital Humanities and Digital History
+        <!-- .element: class="eyebrow" -->
+
+        # Beyond Keywords
+
+        Opening the Islam West Africa Collection to AI — on its own terms.
+        <!-- .element: class="subtitle" -->
+
+        <div class="byline">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+        </div>
+        <div data-contact></div>
+
+        Note: Working title was very jargony — "AI-Mediated Access to the IWAC through an MCP Server and Agent Skill." This is the plain-language version: opening the collection to AI on its own terms.
+      </textarea>
     </section>
 
     <!-- ════════ 2 · THE COLLECTION (content + stat panel) ════════════════ -->
@@ -104,11 +112,17 @@
       <aside class="notes">I want the collection accessible to researchers and the general public alike. But in the IWAC, "hadj" returns two completely different things: articles about the pilgrimage, and the hundreds of men who carry "El Hadj" as an honorific after making it. A single imam can appear under 20+ spellings. The search engine is doing exactly what it was built to do — what defeats it is the vocabulary: synonymy, polysemy and transliteration all at once, on top of degraded OCR. Keyword boxes assume you type one query and judge a ranked list produced by an algorithm you can't see. I've known this corpus since 2015 — its organisation, its tags. The users don't.</aside>
     </section>
 
-    <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement) ══════════════════════ -->
-    <section class="statement" data-footer="light">
-      <p class="statement-body">A chatbot frozen at training time will answer anything about Islam in West Africa — and quietly <span class="accent">invent the citations.</span></p>
-      <p class="attribution">Ask it about Islam in Kpalimé in the 1990s: confident, fluent, and empty.</p>
-      <aside class="notes">More and more people ask AI directly instead of searching. A bare chatbot is frozen at training time, cut off from the database that holds the primary sources — and it invents plausible citations. Ironically, my collection is swamped by AI bots scraping its content, yet ask a model a specific question about Islam in Kpalimé in the 1990s and it has essentially no knowledge.</aside>
+    <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement · Markdown) ════════════ -->
+    <section class="statement" data-footer="light" data-markdown>
+      <textarea data-template>
+        A chatbot frozen at training time will answer anything about Islam in West Africa — and quietly <span class="accent">invent the citations.</span>
+        <!-- .element: class="statement-body" -->
+
+        Ask it about Islam in Kpalimé in the 1990s: confident, fluent, and empty.
+        <!-- .element: class="attribution" -->
+
+        Note: More and more people ask AI directly instead of searching. A bare chatbot is frozen at training time, cut off from the database that holds the primary sources — and it invents plausible citations. Ironically, my collection is swamped by AI bots scraping its content, yet ask a model a specific question about Islam in Kpalimé in the 1990s and it has essentially no knowledge.
+      </textarea>
     </section>
 
     <!-- ════════ 5 · TWO LAYERS (two-column) ══════════════════════════════ -->
@@ -245,53 +259,77 @@ def search_articles(query, country=None,
       <aside class="notes">Beyond the server, I wanted the model to know how to behave — to transmit my own knowledge of the collection as a historian working with primary sources. The server alone knows none of it: not that every search must be in French, not that "Côte d'Ivoire" without its circumflex returns zero, not that Niger's coverage is thin and there's almost no Nigerian press. Twenty tools give reach, not judgement. That knowledge lives in the skill: a five-phase workflow drawn from how archival research actually works. Scoping first — what's even here. Then systematic searching in French with transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), every search logged including the null ones. Deep reading. Triangulation across source types. Synthesis with explicit sources and confidence grades — strong, moderate, weak.</aside>
     </section>
 
-    <!-- ════════ 10 · WHAT THE SKILL ENCODES (content + callout) ══════════ -->
-    <section>
-      <p class="kicker">What a server never could</p>
-      <h2 class="slide-title">Discipline, disclosure — and a new role</h2>
-      <ul>
-        <li><strong>Linguistic discipline</strong> — French only; the missing accent that breaks the filter silently</li>
-        <li><strong>Bias disclosure</strong> — every synthesis states the skew: the francophone tilt, thin Niger, absent Nigeria</li>
-        <li><strong>Evidential discipline</strong> — claims tagged primary / secondary / AI-derived; <em>absence of evidence ≠ evidence of absence</em></li>
-      </ul>
-      <div class="callout navy">
-        <span class="callout-label">The role shift</span>
-        The curator stops being only a cataloguer and becomes an <strong>author of AI-readable methods.</strong> The server took a weekend; the skill is where the expertise lives.
-      </div>
-      <aside class="notes">The skill encodes three things no server could. Linguistic discipline: search in French, and mind the accent that fails silently — an unguided model handed an English question searches in English and silently fails. Bias disclosure: every synthesis must state the skew you saw at the start — the francophone tilt, the missing Arabisants, thin Niger, absent Nigeria. In effect the skill makes the model read the collection the way Stoler taught historians to read colonial archives: as a made thing with a history, not a window onto the region. Evidential discipline: every claim tagged primary, secondary, or AI-derived; absence of evidence is never evidence of absence. Guldi's warning applies — left alone, these systems compress disagreement into the most statistically central story; null results and confidence grades are the hedge. Then the role shift: cataloguer → API designer → author of research methods machines can follow. Invest at least as much in the instructional layer as in the server. The server took a weekend; the skill is where the expertise lives.</aside>
+    <!-- ════════ 10 · WHAT THE SKILL ENCODES (Markdown list + HTML callout) ═ -->
+    <section data-markdown>
+      <textarea data-template>
+        What a server never could
+        <!-- .element: class="kicker" -->
+
+        ## Discipline, disclosure — and a new role
+        <!-- .element: class="slide-title" -->
+
+        - **Linguistic discipline** — French only; the missing accent that breaks the filter silently
+        - **Bias disclosure** — every synthesis states the skew: the francophone tilt, thin Niger, absent Nigeria
+        - **Evidential discipline** — claims tagged primary / secondary / AI-derived; *absence of evidence ≠ evidence of absence*
+
+        <div class="callout navy">
+          <span class="callout-label">The role shift</span>
+          The curator stops being only a cataloguer and becomes an <strong>author of AI-readable methods.</strong> The server took a weekend; the skill is where the expertise lives.
+        </div>
+
+        Note: The skill encodes three things no server could. Linguistic discipline: search in French, and mind the accent that fails silently — an unguided model handed an English question searches in English and silently fails. Bias disclosure: every synthesis must state the skew you saw at the start — the francophone tilt, the missing Arabisants, thin Niger, absent Nigeria. In effect the skill makes the model read the collection the way Stoler taught historians to read colonial archives: as a made thing with a history, not a window onto the region. Evidential discipline: every claim tagged primary, secondary, or AI-derived; absence of evidence is never evidence of absence. Guldi's warning applies — left alone, these systems compress disagreement into the most statistically central story; null results and confidence grades are the hedge. Then the role shift: cataloguer → API designer → author of research methods machines can follow. Invest at least as much in the instructional layer as in the server. The server took a weekend; the skill is where the expertise lives.
+      </textarea>
     </section>
 
-    <!-- ════════ 11 · WHOSE INFRASTRUCTURE? (the stakes) ══════════════════ -->
-    <section data-toc="The stakes">
-      <p class="kicker warm">The stakes</p>
-      <h2 class="slide-title">Whose infrastructure? African collections and AI extraction</h2>
-      <ul>
-        <li>GLAM institutions are buckling under AI-bot traffic — <strong>Wikimedia: 65%</strong> of its costliest traffic is bots, not people</li>
-        <li><strong>Yékú's paradox</strong> — un-digitised, an archive is invisible to AI; digitised, it's exposed to scraping</li>
-        <li>MCP offers a third path: the collection stays put, and the institution decides what is exposed, on what terms</li>
-      </ul>
-      <div class="callout">
-        <span class="callout-label">Beyond the protocol</span>
-        CARE asks what FAIR doesn't — not just <em>who controls the data</em>, but <em>who benefits.</em> A West African collection hosted in Germany: for whom are we doing this?
-      </div>
-      <aside class="notes">Step back: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 cultural-heritage institutions hit by traffic spikes, mostly AI training bots that ignore robots.txt; Wikimedia reports 65% of its most expensive traffic is bots. I've seen a massive spike from the US and China — thousands of daily visitors to a database on Islam in West Africa seems a bit overkill. Underfunded public institutions are subsidising commercial AI — digital colonialism in its newest form. Yékú names the trap for African archives: leave them un-digitised and they're invisible (the colonial library rebuilt inside the training set); digitise them and you expose them to scraping. MCP offers a third path: the collection stays put, the institution decides what the AI sees. But say honestly what the protocol settles and what it doesn't. CARE asks what FAIR doesn't: who has authority over data about a community, and who benefits? Authority to control — MCP answers. Collective benefit — it doesn't. A West African collection hosted at a German institute: for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part.</aside>
+    <!-- ════════ 11 · WHOSE INFRASTRUCTURE? (Markdown list + HTML callout) ══ -->
+    <section data-toc="The stakes" data-markdown>
+      <textarea data-template>
+        The stakes
+        <!-- .element: class="kicker warm" -->
+
+        ## Whose infrastructure? African collections and AI extraction
+        <!-- .element: class="slide-title" -->
+
+        - GLAM institutions are buckling under AI-bot traffic — **Wikimedia: 65%** of its costliest traffic is bots, not people
+        - **Yékú's paradox** — un-digitised, an archive is invisible to AI; digitised, it's exposed to scraping
+        - MCP offers a third path: the collection stays put, and the institution decides what is exposed, on what terms
+
+        <div class="callout">
+          <span class="callout-label">Beyond the protocol</span>
+          CARE asks what FAIR doesn't — not just <em>who controls the data</em>, but <em>who benefits.</em> A West African collection hosted in Germany: for whom are we doing this?
+        </div>
+
+        Note: Step back: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 cultural-heritage institutions hit by traffic spikes, mostly AI training bots that ignore robots.txt; Wikimedia reports 65% of its most expensive traffic is bots. I've seen a massive spike from the US and China — thousands of daily visitors to a database on Islam in West Africa seems a bit overkill. Underfunded public institutions are subsidising commercial AI — digital colonialism in its newest form. Yékú names the trap for African archives: leave them un-digitised and they're invisible (the colonial library rebuilt inside the training set); digitise them and you expose them to scraping. MCP offers a third path: the collection stays put, the institution decides what the AI sees. But say honestly what the protocol settles and what it doesn't. CARE asks what FAIR doesn't: who has authority over data about a community, and who benefits? Authority to control — MCP answers. Collective benefit — it doesn't. A West African collection hosted at a German institute: for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part.
+      </textarea>
     </section>
 
-    <!-- ════════ 12 · CLOSING / CONTACT ═══════════════════════════════════ -->
-    <section class="closing" data-footer="dark">
-      <p class="kicker">Thank you · Merci</p>
-      <h2>The server was the easy part.</h2>
-      <p class="lead">A system that can tell <em>hadj</em> the pilgrimage from <em>El&nbsp;Hadj</em> the honorific can do it because a curator wrote the difference down.</p>
-      <p class="small"><strong>Next:</strong> an IWAC website assistant — open-source model, same tools, no account needed. A student in Ouagadougou installs nothing. Server &amp; skill are open: <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
-      <div data-contact></div>
-      <aside class="notes">Two limits before closing. First, grounding reshapes hallucination rather than removing it — Jancovic shows retrieval systems confidently fusing things that merely look similar; my own semantic search could flatten intégrisme, fondamentalisme and salafisme into one cluster, distinctions that carry real political weight. That's why the skill insists on reading the sources, never just the summary. Second, the floor: answers are only ever as good as the metadata underneath. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. What's next: a conversational assistant on the IWAC website, running an open-source model against these same tools, so a student in Ouagadougou gets this access without installing anything or opening an account with any AI firm. The point to take home: the server was the easy part. A system that can tell "hadj" the pilgrimage from "El Hadj" the honorific can do it because a curator wrote the difference down. Thank you — I'd welcome the hard questions, especially about where this breaks.</aside>
+    <!-- ════════ 12 · CLOSING / CONTACT (Markdown) ═════════════════════════ -->
+    <section class="closing" data-footer="dark" data-markdown>
+      <textarea data-template>
+        Thank you · Merci
+        <!-- .element: class="kicker" -->
+
+        ## The server was the easy part.
+
+        A system that can tell *hadj* the pilgrimage from *El&nbsp;Hadj* the honorific can do it because a curator wrote the difference down.
+        <!-- .element: class="lead" -->
+
+        **Next:** an IWAC website assistant — open-source model, same tools, no account needed. A student in Ouagadougou installs nothing. Server & skill are open: [github.com/fmadore/iwac-mcp-server](https://github.com/fmadore/iwac-mcp-server)
+        <!-- .element: class="small" -->
+
+        <div data-contact></div>
+
+        Note: Two limits before closing. First, grounding reshapes hallucination rather than removing it — Jancovic shows retrieval systems confidently fusing things that merely look similar; my own semantic search could flatten intégrisme, fondamentalisme and salafisme into one cluster, distinctions that carry real political weight. That's why the skill insists on reading the sources, never just the summary. Second, the floor: answers are only ever as good as the metadata underneath. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. What's next: a conversational assistant on the IWAC website, running an open-source model against these same tools, so a student in Ouagadougou gets this access without installing anything or opening an account with any AI firm. The point to take home: the server was the easy part. A system that can tell "hadj" the pilgrimage from "El Hadj" the honorific can do it because a curator wrote the difference down. Thank you — I'd welcome the hard questions, especially about where this breaks.
+      </textarea>
     </section>
 
   </div>
 </div>
 
-<!-- reveal.js + plugins (vendored), then the deck engine. Order matters. -->
+<!-- reveal.js + plugins (vendored), then the deck engine. Order matters:
+     markdown converts [data-markdown] sections before the rest run. -->
 <script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/markdown.js"></script>
 <script src="../../shared/reveal/plugin/highlight.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>

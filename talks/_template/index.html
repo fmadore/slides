@@ -17,6 +17,23 @@
      2. Edit DECK_CONFIG below, then the slides.
      3. Add an entry to the TALKS array in /index.html (the landing page).
      Full layout catalogue + shortcuts: see /README.md.
+
+     AUTHORING IN MARKDOWN
+     • Most slides are written in Markdown: a <section data-markdown> wrapping a
+       <textarea data-template>. Write the body in plain Markdown.
+     • Slide-level attributes (layout class, data-toc, data-footer) go on the
+       <section> tag, exactly like an HTML slide.
+     • To put a theme class on a Markdown element, put a comment on the line
+       directly below it (own line — this binds reliably even when the line
+       contains inline links/emphasis/spans):
+           A lead line with a [link](…).
+           <!-- .element: class="lead" -->
+     • Speaker notes: a line starting with `Note:` — everything after it becomes
+       the note (press S for the speaker view).
+     • Keep the body indented consistently; the first content line sets the
+       baseline indent that the plugin strips. Leave blank lines truly empty.
+     • Need a richer layout (two columns, panels, code, media)? Just write a
+       plain HTML <section> instead — Markdown and HTML slides mix freely.
      ============================================================================ -->
 <script>
   window.DECK_CONFIG = {
@@ -38,38 +55,62 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- COVER -->
-    <section class="cover" data-footer="light">
-      <p class="eyebrow">Event · Place, DD Month YYYY</p>
-      <h1>Talk title</h1>
-      <p class="subtitle">A one-line italic description of the talk.</p>
-      <div class="byline">
-        <span class="name">Frédérick Madore</span>
-        <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
-      </div>
-      <div data-contact></div>
+    <!-- COVER (Markdown) -->
+    <section class="cover" data-footer="light" data-markdown>
+      <textarea data-template>
+        Event · Place, DD Month YYYY
+        <!-- .element: class="eyebrow" -->
+
+        # Talk title
+
+        A one-line description of the talk.
+        <!-- .element: class="subtitle" -->
+
+        <div class="byline">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+        </div>
+        <div data-contact></div>
+
+        Note: Speaker notes for the cover — press **S** for the speaker view.
+      </textarea>
     </section>
 
-    <!-- SECTION DIVIDER (add `green` class for the green variant) -->
-    <section class="section" data-toc="First section">
-      <p class="sec-no">01</p>
-      <h2>The first section</h2>
-      <p class="sec-sub">An optional italic subtitle.</p>
+    <!-- SECTION DIVIDER (Markdown · add `green` to the class for the green variant) -->
+    <section class="section" data-toc="First section" data-markdown>
+      <textarea data-template>
+        01
+        <!-- .element: class="sec-no" -->
+
+        ## The first section
+
+        An optional italic subtitle.
+        <!-- .element: class="sec-sub" -->
+      </textarea>
     </section>
 
-    <!-- STANDARD CONTENT -->
-    <section data-toc="A key point">
-      <p class="kicker">Optional eyebrow</p>
-      <h2 class="slide-title">A slide title</h2>
-      <p class="lead">A larger opening line that sets up the slide.</p>
-      <ul>
-        <li>First point</li>
-        <li>Second point, with an <strong>emphasis</strong> and a <span class="hl">highlight</span></li>
-        <li>Third point</li>
-      </ul>
+    <!-- STANDARD CONTENT (Markdown · the everyday slide) -->
+    <section data-toc="A key point" data-markdown>
+      <textarea data-template>
+        Optional eyebrow
+        <!-- .element: class="kicker" -->
+
+        ## A slide title
+        <!-- .element: class="slide-title" -->
+
+        A larger opening line that sets up the slide.
+        <!-- .element: class="lead" -->
+
+        - First point
+        - Second point, with an **emphasis** and a <span class="hl">highlight</span>
+        - Third point
+
+        Note: Everything after `Note:` becomes speaker notes.
+      </textarea>
     </section>
 
-    <!-- TWO COLUMNS -->
+    <!-- TWO COLUMNS (HTML) — for richer layouts, write a plain HTML section.
+         Markdown and HTML slides can be mixed freely in the same deck. -->
     <section>
       <h2 class="slide-title no-rule">A comparison</h2>
       <div class="cols">
@@ -78,24 +119,37 @@
       </div>
     </section>
 
-    <!-- BIG STATEMENT -->
-    <section class="statement" data-footer="light">
-      <p class="statement-body">A claim worth pausing on, with one <span class="accent">emphasised phrase.</span></p>
-      <p class="attribution">A supporting line beneath it.</p>
+    <!-- BIG STATEMENT (Markdown · add `quote` to the class for the quote variant) -->
+    <section class="statement" data-footer="light" data-markdown>
+      <textarea data-template>
+        A claim worth pausing on, with one <span class="accent">emphasised phrase.</span>
+        <!-- .element: class="statement-body" -->
+
+        A supporting line beneath it.
+        <!-- .element: class="attribution" -->
+      </textarea>
     </section>
 
-    <!-- CLOSING / CONTACT -->
-    <section class="closing" data-footer="dark">
-      <p class="kicker">Thank you · Merci</p>
-      <h2>A closing line.</h2>
-      <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple Cluster of Excellence · University of Bayreuth</span></div>
-      <div data-contact></div>
+    <!-- CLOSING / CONTACT (Markdown) -->
+    <section class="closing" data-footer="dark" data-markdown>
+      <textarea data-template>
+        Thank you · Merci
+        <!-- .element: class="kicker" -->
+
+        ## A closing line.
+
+        <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple Cluster of Excellence · University of Bayreuth</span></div>
+        <div data-contact></div>
+      </textarea>
     </section>
 
   </div>
 </div>
 
+<!-- reveal.js + plugins (vendored), then the deck engine. Order matters:
+     markdown converts [data-markdown] sections before the rest run. -->
 <script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/markdown.js"></script>
 <script src="../../shared/reveal/plugin/highlight.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>

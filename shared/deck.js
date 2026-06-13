@@ -213,20 +213,29 @@
   }
 
   /* ---- boot --------------------------------------------------------------- */
-  function decorate() {
+  /* Chrome that doesn't depend on slide content — safe to run before init. */
+  function decorateChrome() {
     document.body.appendChild(elem('<div class="deck-spectrum" aria-hidden="true"></div>'));
+    if (CFG.talkTitle && !document.title.trim()) document.title = CFG.talkTitle;
+  }
+
+  /* Per-slide decoration — MUST run after the Markdown plugin has converted
+     [data-markdown] sections, since it replaces section.innerHTML (which would
+     wipe a pre-injected compass) and only then exist the [data-contact] slots
+     and the cover/section/closing classes authored inside the Markdown. */
+  function decorateSlides() {
     var heroes = document.querySelectorAll(
       ".reveal .slides > section.cover, .reveal .slides > section.section, .reveal .slides > section.closing"
     );
     heroes.forEach(function (sec) {
       if (sec.getAttribute("data-compass") === "off") return;
+      if (sec.querySelector(":scope > .deck-compass")) return; // idempotent
       sec.insertBefore(elem(buildCompass()), sec.firstChild);
     });
     document.querySelectorAll("[data-contact]").forEach(function (slot) {
       slot.classList.add("contact");
       slot.innerHTML = contactHTML();
     });
-    if (CFG.talkTitle && !document.title.trim()) document.title = CFG.talkTitle;
   }
 
   /* Load any [data-skill-src] panel from its vendored file and syntax-highlight it. */
@@ -254,7 +263,7 @@
 
   function init() {
     var reveal = document.querySelector(".reveal");
-    decorate();
+    decorateChrome();
 
     Reveal.initialize({
       width: 1280, height: 720, margin: 0,
@@ -268,6 +277,7 @@
       pdfSeparateFragments: false,
       plugins: revealPlugins()
     }).then(function () {
+      decorateSlides();   // after Markdown conversion (see decorateSlides)
       buildFooter(reveal);
       buildTOC(reveal);
       loadSkillEmbeds();
@@ -294,6 +304,7 @@
 
   function revealPlugins() {
     var p = [];
+    if (window.RevealMarkdown) p.push(RevealMarkdown); // convert [data-markdown] first
     if (window.RevealHighlight) p.push(RevealHighlight);
     if (window.RevealNotes) p.push(RevealNotes);
     if (window.RevealZoom) p.push(RevealZoom);
