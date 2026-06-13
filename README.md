@@ -72,7 +72,30 @@ sit in the footer.
 big statement (`.statement`, `.statement.quote`), code (`<pre><code class="language-…">`),
 full-bleed media (`.media`), closing (`.closing`). Helpers: `.kicker`, `.callout`
 (`.warm`/`.navy`), `.stat`, `.chip`, `.panel`, `data-toc="…"` to add a slide to the
-table of contents, `<aside class="notes">` for speaker notes.
+table of contents, `<aside class="notes">` (or a Markdown `Note:` line) for speaker notes.
+
+**Write slides in Markdown.** Most slides can be authored as Markdown instead of HTML —
+wrap the body in `<section data-markdown><textarea data-template> … </textarea></section>`.
+The template uses this for the cover, section divider, standard content, statement and
+closing; richer layouts (two-column, panels, code, media, the scroll-panel) stay as plain
+HTML, and the two mix freely in one deck. Conventions:
+
+- **Slide-level attributes** (layout `class`, `data-toc`, `data-footer`) go on the
+  `<section>` tag, exactly like an HTML slide.
+- **Element classes** use a comment on the line *directly below* the element — put it on
+  its own line so it binds even when the line contains links/emphasis/spans:
+
+  ```markdown
+  A lead line with a [link](…).
+  <!-- .element: class="lead" -->
+  ```
+- **Speaker notes**: a line starting with `Note:` — everything after it becomes the note
+  (handled by the speaker-notes plugin; press `S`).
+- Keep the body indented consistently; the first content line sets the baseline indent the
+  plugin strips, so leave blank lines truly empty.
+
+The Markdown engine is the vendored reveal.js Markdown plugin
+(`shared/reveal/plugin/markdown.js`, loaded before the others), so decks stay fully offline.
 
 **Scrollable file embed** (e.g. a GitHub skill): a `<div class="scroll-panel"
 data-skill-src="assets/file.md">` loads and syntax-highlights a vendored file you can
@@ -90,6 +113,15 @@ curl -fsS "https://raw.githubusercontent.com/fmadore/iwac-mcp-server/main/.claud
 **Customise the look:** all design tokens are at the top of `shared/theme.css` (`:root`) —
 the six Bayreuth colours, the Literata/Hanken type, spacing. Change a font there, then
 re-run `shared/fonts/fetch-fonts.py` to re-vendor it for offline use.
+
+**Responsive design.** The deck is responsive by reveal.js's design: a fixed 1280×720
+canvas is uniformly scaled to fit any screen (`width/height/minScale/maxScale` in
+`shared/deck.js`), so slides shrink to fit rather than reflow. That scaling *is* the
+responsive mechanism — the type scale is therefore intentionally fixed `rem`, not fluid
+`clamp(…vw…)`: viewport units would resolve against the real viewport and then be scaled
+again by the canvas transform, fighting each other. The chrome that sits *outside* the
+scaled canvas (footer, TOC overlay) is the only part that needs small-screen care, handled
+by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 
 ---
 
