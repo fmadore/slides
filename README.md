@@ -5,7 +5,7 @@ Collection (IWAC)**. Built as offline-capable [reveal.js](https://revealjs.com) 
 shared, editorial theme using the Africa Multiple Cluster of Excellence logo and the
 University of Bayreuth colour palette.
 
-**Live:** https://slides.frederickmadore.com
+**Live:** https://fmadore.github.io/slides/ — a custom subdomain is planned ([ROADMAP](ROADMAP.md)).
 
 ---
 
@@ -93,21 +93,13 @@ re-run `shared/fonts/fetch-fonts.py` to re-vendor it for offline use.
 
 ---
 
-## Deploy (GitHub Pages + subdomain)
+## Deploy (GitHub Pages)
 
-This repo is served by GitHub Pages from `main` / root. The `CNAME` file points it at
-`slides.frederickmadore.com` and `.nojekyll` skips Jekyll processing.
+Served by GitHub Pages from `main` / root (`.nojekyll` skips Jekyll). Pushing to `main`
+redeploys automatically — **live at https://fmadore.github.io/slides/**.
 
-**One-time DNS step** at your domain registrar — add a record:
-
-```
-Type   Name     Value
-CNAME  slides   fmadore.github.io
-```
-
-Then in the repo **Settings → Pages**, confirm the custom domain and tick **Enforce HTTPS**
-once the certificate is issued (a few minutes after DNS propagates). Pushing to `main`
-redeploys automatically.
+A custom subdomain (`slides.frederickmadore.com`) is planned but not set up yet; the steps
+are in [ROADMAP.md](ROADMAP.md).
 
 ---
 
