@@ -733,6 +733,9 @@
 .reveal .site-qr img { width: 116px; height: 116px; display: block; }
 .reveal .site-qr span { font-size: var(--fs-footer); font-weight: 700; color: var(--ink); }
 
+/* Framed screenshot inside a content column */
+.reveal .shot { display: block; width: 100%; height: auto; border: var(--hair); border-radius: 10px; box-shadow: var(--shadow-2); }
+
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */

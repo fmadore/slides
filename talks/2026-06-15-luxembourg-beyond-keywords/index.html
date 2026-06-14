@@ -109,8 +109,7 @@
                assets/ and replace the <iframe> below with:
                <img src="assets/iwac-home.png" alt="The IWAC homepage"> -->
           <iframe src="https://islam.zmo.de/s/westafrica/page/home"
-                  title="Islam West Africa Collection — live site"
-                  loading="lazy" referrerpolicy="no-referrer"></iframe>
+                  title="Islam West Africa Collection — live site"></iframe>
           <div class="site-qr">
             <img src="assets/iwac-qr.png" alt="QR code to the IWAC website">
             <span>Scan to explore</span>
@@ -123,28 +122,26 @@
     <!-- ════════ 3 · THE "EL HADJ" PROBLEM (two-column) ═══════════════════ -->
     <section data-toc="Why search fails">
       <p class="kicker warm">The "El Hadj" problem</p>
-      <h2 class="slide-title">Why keyword search fails</h2>
-      <div class="cols ratio-2-3">
+      <h2 class="slide-title">Why keyword search falls short</h2>
+      <div class="cols ratio-3-2">
         <div class="col">
-          <p class="lead">Search <strong>"hadj"</strong> and you get two unrelated things at once:</p>
-          <ul>
-            <li>the <em>pilgrimage</em> to Mecca</li>
-            <li>the hundreds of men who carry <strong>"El Hadj"</strong> as an honorific</li>
-          </ul>
+          <img class="shot" src="assets/iwac-search.jpg" alt="The IWAC faceted search interface — year slider, type, newspaper and language filters">
+          <p class="small muted">The faceted search of the IWAC.</p>
         </div>
         <div class="col">
+          <p class="lead">Keyword search has built-in problems. I mitigated what I could:</p>
           <ul>
-            <li>One imam — <strong>20+ spellings</strong> across newspapers and decades</li>
-            <li>Search "hajj" and you'll never find <em>pèlerinage à La Mecque</em></li>
-            <li>The engine works exactly as designed; the multilingual lexicon defeats it</li>
+            <li><strong>Spelling variants</strong> → authority files merge 20+ forms</li>
+            <li><strong>Forming a query</strong> → autocomplete and facets guide you</li>
+            <li><strong>Polysemy</strong> → "hadj" = pilgrimage <em>and</em> the "El Hadj" honorific</li>
           </ul>
           <div class="callout warm">
-            <span class="callout-label">The gap</span>
-            I've known this corpus since 2015 — its tags, its quirks. The search box assumes you do too.
+            <span class="callout-label">The real gap</span>
+            The search box assumes you already know it.
           </div>
         </div>
       </div>
-      <aside class="notes">I want the collection accessible to researchers and the general public alike. But in the IWAC, "hadj" returns two completely different things: articles about the pilgrimage, and the hundreds of men who carry "El Hadj" as an honorific after making it. A single imam can appear under 20+ spellings. The search engine is doing exactly what it was built to do — what defeats it is the vocabulary: synonymy, polysemy and transliteration all at once, on top of degraded OCR. Keyword boxes assume you type one query and judge a ranked list produced by an algorithm you can't see. I've known this corpus since 2015 — its organisation, its tags. The users don't.</aside>
+      <aside class="notes">I want the collection open to researchers, but also to the general public — especially Muslims from these West African countries tracing their own communities' history. Public dissemination matters to me as much as scholarship. So I built the best search engine I could: facets, autocomplete, and authority files that pull the many spellings of a name back together. Those mitigate a lot. But some problems with keyword search run deeper than any of those tools can reach. Take "hadj": it returns two unrelated things at once — articles about the pilgrimage, and the hundreds of men who carry "El Hadj" as an honorific. Synonymy, polysemy and transliteration, all at once, and no facet untangles them. The interaction model is a barrier too: a keyword box assumes you type one query and judge a ranked list produced by an algorithm you never see, so the search box becomes part of the collection's machinery of selection. Most users have no reason to know that. I've worked with this corpus since 2015; I know how it's organised and tagged, and new users don't — several have told me they find it intimidating. So I went looking for another way in, and a chatbot became an obvious candidate: more and more people ask their questions in plain language, not in keywords, Booleans and facets.</aside>
     </section>
 
     <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement · Markdown) ════════════ -->
