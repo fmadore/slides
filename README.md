@@ -71,8 +71,9 @@ sit in the footer.
 (`.section`, `.section.green`), standard content, two-column (`.cols`, `.cols.ratio-3-2`),
 big statement (`.statement`, `.statement.quote`), code (`<pre><code class="language-…">`),
 full-bleed media (`.media`), closing (`.closing`). Helpers: `.kicker`, `.callout`
-(`.warm`/`.navy`), `.stat`, `.chip`, `.panel`, `data-toc="…"` to add a slide to the
-table of contents, `<aside class="notes">` (or a Markdown `Note:` line) for speaker notes.
+(`.warm`/`.navy`), `.stat`, `.chip`, `.panel`, `.balance` (vertically centre a sparse
+slide), `data-toc="…"` to add a slide to the table of contents, `<aside class="notes">`
+(or a Markdown `Note:` line) for speaker notes.
 
 **Write slides in Markdown.** Most slides can be authored as Markdown instead of HTML —
 wrap the body in `<section data-markdown><textarea data-template> … </textarea></section>`.

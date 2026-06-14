@@ -215,6 +215,11 @@
 .reveal small, .reveal .small { font-size: var(--fs-small); }
 
 .reveal strong, .reveal b { font-weight: 680; color: var(--ink); }
+/* On the dark layouts the default ink <strong> is illegible on the gradient —
+   lift emphasised words to paper so they stay readable. */
+.reveal section.section strong, .reveal section.section b,
+.reveal section.closing strong, .reveal section.closing b,
+.reveal section.media strong, .reveal section.media b { color: var(--paper); }
 .reveal em, .reveal i { font-style: italic; }
 /* Inline highlight — a warm wash behind a phrase, not a stripe */
 .reveal mark, .reveal .hl {
@@ -245,10 +250,13 @@
   width: 0.62em; height: 3px; border-radius: 2px;
   background: var(--green);
 }
-.reveal ol { list-style: none; counter-reset: li; }
-.reveal ol > li { position: relative; padding-left: 1.9em; margin: 0 0 0.52em; counter-increment: li; }
+/* Use the native `list-item` counter (not a custom one) so the HTML start=""
+   attribute is honoured — a 5-item list split across two columns can set the
+   second <ol start="4"> and continue 04, 05 instead of restarting at 01. */
+.reveal ol { list-style: none; }
+.reveal ol > li { position: relative; padding-left: 1.9em; margin: 0 0 0.52em; }
 .reveal ol > li::before {
-  content: counter(li, decimal-leading-zero);
+  content: counter(list-item, decimal-leading-zero);
   position: absolute; left: 0; top: 0.04em;
   font-family: var(--font-mono); font-size: 0.7em; font-weight: 600;
   color: var(--green-deep); letter-spacing: 0.02em;
@@ -396,6 +404,13 @@
 .reveal section.cover, .reveal section.section,
 .reveal section.statement, .reveal section.closing,
 .reveal section.center { justify-content: center; }
+
+/* `.balance` — opt-in helper to vertically centre a sparse content slide.
+   reveal forces display:block inline on the present slide, which defeats the
+   section's flex layout, so re-assert it with !important here. The .cols reset
+   stops a column row from stretching the centred group back open. */
+.reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
+.reveal section.balance .cols { flex: 0 0 auto; }
 
 /* --- COVER ------------------------------------------------------------------ */
 .reveal section.cover { padding-right: 6rem; }
@@ -825,6 +840,13 @@
   .deck-spectrum { position: absolute; }
   .reveal section.section, .reveal section.closing,
   .reveal section.media .media-scrim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* Dark hero layouts paint their gradient via a CSS background on the <section>.
+     In ?print-pdf export reveal makes each section position:absolute with auto
+     height, so the gradient stopped at the content and left a white band below it
+     on the page. Force the dark layouts to fill the printed .pdf-page. */
+  .reveal .slides section.section,
+  .reveal .slides section.closing,
+  .reveal .slides section.media { height: 100% !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

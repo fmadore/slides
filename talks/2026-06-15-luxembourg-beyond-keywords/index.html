@@ -198,7 +198,7 @@
     </section>
 
     <!-- ════════ 5 · TWO LAYERS (two-column) ══════════════════════════════ -->
-    <section data-toc="The approach">
+    <section class="balance" data-toc="The approach">
       <p class="kicker navy">An approach</p>
       <h2 class="slide-title no-rule">Two layers: plumbing and intelligence</h2>
       <div class="cols">
@@ -219,7 +219,7 @@
     </section>
 
     <!-- ════════ 6 · WHAT IS MCP (comparison + callout) ═══════════════════ -->
-    <section>
+    <section class="balance">
       <p class="kicker navy">Model Context Protocol · open standard, Nov 2024</p>
       <h2 class="slide-title">Why a server, not just a chatbot?</h2>
       <div class="cols">
@@ -240,7 +240,7 @@
     </section>
 
     <!-- ════════ 7 · AGENT SKILLS (content + code) ════════════════════════ -->
-    <section>
+    <section class="balance">
       <p class="kicker">Agent skills</p>
       <h2 class="slide-title">What is a skill.md?</h2>
       <div class="cols ratio-2-3">
@@ -290,7 +290,7 @@ Expand transliterations: Tabaski = Aïd el-Kébir.</code></pre>
           <p class="small muted">One plain-language request; the model picks the tools and combines the filters.</p>
         </div>
         <div class="col">
-          <div class="col-head">~20 tools · 6 subsets</div>
+          <div class="col-head">22 tools · 6 subsets</div>
           <ul>
             <li><strong>Read-only</strong>: search, full text, authority records, sentiment, stats</li>
             <li><strong>Verifiable</strong>: every call a lookup, no AI at query time</li>
@@ -301,7 +301,7 @@ Expand transliterations: Tabaski = Aïd el-Kébir.</code></pre>
       </div>
       <aside class="notes">Start with what the server lets you ask. You put the question in plain language. Newspaper articles on Islam in Abidjan in the nineties; Islamic publications on secularism in Togo and Benin; academic references on Muslim women in Burkina Faso. Each one mixes a different part of the collection with a different set of filters — place, period, subject, country — and the model works out which tools to call and how to combine them. You say what you want; the server handles how to get it.
 
-Underneath there are around twenty tools across six subsets: article search, full text, authority records for people, places and organisations, precomputed sentiment, collection statistics. The principle behind all of them is verifiability. The server generates nothing at query time. Every AI enrichment was computed in advance and stored as ordinary data, so a call is only ever a lookup against the openly published dataset, and every result returns a URL straight to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the model can cite only what the collection actually holds.
+Underneath there are twenty-two tools across six subsets: article search, full text, authority records for people, places and organisations, precomputed sentiment, collection statistics. The principle behind all of them is verifiability. The server generates nothing at query time. Every AI enrichment was computed in advance and stored as ordinary data, so a call is only ever a lookup against the openly published dataset, and every result returns a URL straight to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the model can cite only what the collection actually holds.
 
 It installs in one click for Claude Desktop, nothing to administer, which matters if the point is access for non-specialists. I'm working on easier ways in too. Let me show you.</aside>
     </section>
@@ -369,11 +369,11 @@ It installs in one click for Claude Desktop, nothing to administer, which matter
           </ol>
           <div class="callout">
             <span class="callout-label">The point</span>
-            Twenty tools give reach, not judgement. The judgement lives in the skill.
+            Twenty-two tools give reach, not judgement. The judgement lives in the skill.
           </div>
         </div>
       </div>
-      <aside class="notes">Beyond the server, I wanted the model to know how to behave, to carry my own knowledge of the collection as a historian working with primary sources. The server has the data, but none of the judgement. It can't scope a question, can't cross-check one source type against another, can't tell you how far to trust an answer. Twenty tools give you reach, not judgement, and that judgement has to live somewhere. It lives in the skill. Before any research, the skill asks how deep to go: a quick Brief pass for a fast overview, or a full Extended analysis — and it defaults to Brief, saving the heavy lifting for when a question earns it. The Extended path is a five-phase workflow drawn from how archival research actually works. Scoping first: what is even here for this question, before a single keyword. Then systematic searching, in French, with the transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), and every search logged, including the ones that come back empty. Deep reading of the strongest articles. Triangulation across articles, publications, references and index entries. And synthesis: findings with explicit sources and a confidence grade, strong, moderate, or weak.</aside>
+      <aside class="notes">Beyond the server, I wanted the model to know how to behave, to carry my own knowledge of the collection as a historian working with primary sources. The server has the data, but none of the judgement. It can't scope a question, can't cross-check one source type against another, can't tell you how far to trust an answer. Twenty-two tools give you reach, not judgement, and that judgement has to live somewhere. It lives in the skill. Before any research, the skill asks how deep to go: a quick Brief pass for a fast overview, or a full Extended analysis — and it defaults to Brief, saving the heavy lifting for when a question earns it. The Extended path is a five-phase workflow drawn from how archival research actually works. Scoping first: what is even here for this question, before a single keyword. Then systematic searching, in French, with the transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), and every search logged, including the ones that come back empty. Deep reading of the strongest articles. Triangulation across articles, publications, references and index entries. And synthesis: findings with explicit sources and a confidence grade, strong, moderate, or weak.</aside>
     </section>
 
     <!-- ════════ 10 · WHAT THE SKILL ENCODES (Markdown list + HTML callout) ═ -->
@@ -417,7 +417,7 @@ It installs in one click for Claude Desktop, nothing to administer, which matter
       <h2 class="slide-title">From a plain question to cited sources</h2>
       <div class="cols ratio-2-3">
         <div class="col">
-          <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, around 20 tools, no API key for the core tools">
+          <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
           <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
         </div>
         <div class="col">

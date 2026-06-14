@@ -23,11 +23,10 @@
        <textarea data-template>. Write the body in plain Markdown.
      • Slide-level attributes (layout class, data-toc, data-footer) go on the
        <section> tag, exactly like an HTML slide.
-     • To put a theme class on a Markdown element, put a comment on the line
-       directly below it (own line — this binds reliably even when the line
-       contains inline links/emphasis/spans):
-           A lead line with a [link](…).
-           <!-- .element: class="lead" -->
+     • To put a theme class on a Markdown element, put an element-comment on its
+       own line directly below it (binds reliably even when the line has inline
+       links/emphasis/spans). The standard-content slide below shows the exact
+       ".element: class=..." comment syntax.
      • Speaker notes: a line starting with `Note:` — everything after it becomes
        the note (press S for the speaker view).
      • Keep the body indented consistently; the first content line sets the
@@ -112,7 +111,9 @@
     </section>
 
     <!-- TWO COLUMNS (HTML) — for richer layouts, write a plain HTML section.
-         Markdown and HTML slides can be mixed freely in the same deck. -->
+         Markdown and HTML slides can be mixed freely in the same deck.
+         Tip: add class="balance" to a sparse <section> to vertically centre its
+         content (by default content sits at the top of the slide). -->
     <section>
       <h2 class="slide-title no-rule">A comparison</h2>
       <div class="cols">
