@@ -789,6 +789,27 @@
 .reveal .site-qr img { width: 116px; height: 116px; display: block; }
 .reveal .site-qr span { font-size: var(--fs-footer); font-weight: 700; color: var(--ink); }
 
+/* "Scan for these slides" QR — a small labelled code for the cover/closing
+   (distinct from .site-qr above, which sits on a framed live site). Inline by
+   default; add .corner to float it into the top-right (e.g. on a dense closing
+   where it shouldn't lengthen the content stack). Drop the talk's QR PNG in the
+   talk's assets/ and point the <img> at it. */
+.reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 9px; box-shadow: var(--shadow-1); }
+.reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
+.reveal .slides-qr .qr-label b { font-weight: 720; font-size: var(--fs-small); color: var(--ink); }
+.reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
+/* !important overrides the compass-layering rule (§6) that sets position:relative
+   on direct children of cover/section/closing — otherwise a .corner QR placed as a
+   direct child (e.g. a Markdown closing) stays in flow instead of floating. */
+.reveal .slides-qr.corner { position: absolute !important; top: var(--space-xl); right: var(--slide-pad-x); margin: 0; z-index: 3;
+  flex-direction: column; align-items: center; gap: 0.4rem; }
+.reveal .slides-qr.corner .qr-label { text-align: center; align-items: center; }
+/* dark layouts (section divider / closing): lift the label to paper */
+.reveal section.section .slides-qr .qr-label b, .reveal section.closing .slides-qr .qr-label b { color: var(--paper); }
+.reveal section.section .slides-qr .qr-label .qr-url,
+.reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), var(--navy) 30%); }
+
 /* Framed screenshot inside a content column */
 .reveal .shot { display: block; width: 100%; height: auto; border: var(--hair); border-radius: 10px; box-shadow: var(--shadow-2); }
 .reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }

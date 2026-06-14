@@ -47,25 +47,6 @@
       border-radius: var(--radius-sm); padding: .2em .5em; align-self: flex-start; }
     .reveal .semarrow { display: flex; align-items: center; justify-content: center;
       color: var(--green); font-weight: 700; font-size: 1.7rem; }
-
-    /* "Scan for these slides" QR — cover + closing (distinct from the slide-3
-       "Scan to explore" QR, which goes to the collection itself). */
-    .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center;
-      gap: 0.85rem; margin-top: var(--space-xl); }
-    .reveal .slides-qr > img { width: 92px; height: 92px; display: block;
-      background: #fff; padding: 6px; border-radius: 9px; box-shadow: var(--shadow-1); }
-    .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
-    .reveal .slides-qr .qr-label b { font-weight: 720; font-size: var(--fs-small); color: var(--ink); }
-    .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono);
-      font-size: var(--fs-footer); color: var(--ink-faint); }
-    .reveal section.closing .slides-qr .qr-label b { color: var(--paper); }
-    .reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), var(--navy) 30%); }
-    /* The closing is content-dense, so float its QR to the bottom-right corner
-       (over the faint compass) rather than stacking it under the contact row. */
-    .reveal section.closing .slides-qr { position: absolute; right: var(--slide-pad-x);
-      bottom: calc(var(--footer-h) + var(--space-md)); margin: 0; z-index: 2;
-      flex-direction: column; align-items: center; gap: 0.4rem; }
-    .reveal section.closing .slides-qr .qr-label { text-align: center; }
   </style>
 </head>
 <body>
@@ -108,7 +89,7 @@
 
         <div class="byline">
           <span class="name">Frédérick Madore</span>
-          <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+          <span class="affil">Africa Multiple Cluster of Excellence</span>
         </div>
         <div data-contact></div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
@@ -485,7 +466,7 @@ It installs in one click for Claude Desktop, nothing to administer, which matter
         <p class="lead">A real opening for <strong>public access</strong> — not a panacea: it finds what you ask for, not the serendipity of the stacks. And still: <em>for whom?</em></p>
         <p><strong>Next:</strong> a small open-source model on the IWAC server, answering on the website itself — no install, no account. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
         <div data-contact></div>
-        <div class="slides-qr">
+        <div class="slides-qr corner">
           <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
           <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
         </div>
