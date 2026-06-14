@@ -33,8 +33,11 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 
-class Server(socketserver.TCPServer):
+class Server(socketserver.ThreadingTCPServer):
+    # Threaded so the browser's parallel asset + keep-alive requests don't
+    # deadlock a single worker (reveal.js opens many connections at once).
     allow_reuse_address = True
+    daemon_threads = True
 
 
 print(f"Serving slides/ (no-cache) at http://localhost:{PORT}")

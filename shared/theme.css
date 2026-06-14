@@ -435,7 +435,11 @@
 /* --- Institution wordmark on hero slides (cover + closing) ------------------ */
 .reveal section.cover .org-logo,
 .reveal section.closing .org-logo {
-  display: block; height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
+  /* align-self:flex-start stops the flex column (align-items:stretch) from
+     stretching this <img> to full width — which made the SVG wordmark centre
+     itself mid-slide instead of sitting at the left. */
+  display: block; align-self: flex-start;
+  height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
 }
 /* closing is dark → render the black wordmark in white */
 .reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
