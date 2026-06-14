@@ -735,6 +735,7 @@
 
 /* Framed screenshot inside a content column */
 .reveal .shot { display: block; width: 100%; height: auto; border: var(--hair); border-radius: 10px; box-shadow: var(--shadow-2); }
+.reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
 
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS

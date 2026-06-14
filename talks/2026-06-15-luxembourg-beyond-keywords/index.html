@@ -144,17 +144,25 @@
       <aside class="notes">I want the collection open to researchers, but also to the general public — especially Muslims from these West African countries tracing their own communities' history. Public dissemination matters to me as much as scholarship. So I built the best search engine I could: facets, autocomplete, and authority files that pull the many spellings of a name back together. Those mitigate a lot. But some problems with keyword search run deeper than any of those tools can reach. Take "hadj": it returns two unrelated things at once — articles about the pilgrimage, and the hundreds of men who carry "El Hadj" as an honorific. Synonymy, polysemy and transliteration, all at once, and no facet untangles them. The interaction model is a barrier too: a keyword box assumes you type one query and judge a ranked list produced by an algorithm you never see, so the search box becomes part of the collection's machinery of selection. Most users have no reason to know that. I've worked with this corpus since 2015; I know how it's organised and tagged, and new users don't — several have told me they find it intimidating. So I went looking for another way in, and a chatbot became an obvious candidate: more and more people ask their questions in plain language, not in keywords, Booleans and facets.</aside>
     </section>
 
-    <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement · Markdown) ════════════ -->
-    <section class="statement" data-footer="light" data-markdown>
-      <textarea data-template>
-        A chatbot frozen at training time will answer anything about Islam in West Africa — and <span class="accent">invent the citations.</span>
-        <!-- .element: class="statement-body" -->
-
-        Ask it about Islam in Kpalimé in the 1990s: confident, fluent, and empty.
-        <!-- .element: class="attribution" -->
-
-        Note: More and more people ask AI directly instead of searching. A bare chatbot is frozen at training time, cut off from the database that holds the primary sources — and it invents plausible citations. Ironically, my collection is swamped by AI bots scraping its content, yet ask a model a specific question about Islam in Kpalimé in the 1990s and it has essentially no knowledge.
-      </textarea>
+    <!-- ════════ 4 · WHY NOT JUST ASK AI? (Gemini evidence + nuanced critique) ═ -->
+    <section>
+      <p class="kicker warm">Why not just ask AI?</p>
+      <h2 class="slide-title">Fluent (and generic) answers, dubious sources</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot tall" src="assets/gemini-kpalime.jpg" alt="A Gemini chat answering a question about Islam in Kpalimé, Togo in the 1990s — a long, fluent reply citing obscure sources">
+          <p class="small muted">Gemini on Islam in Kpalimé — fluent, but generic and dubiously sourced. <a href="https://gemini.google.com/share/45316f371e89" target="_blank" rel="noopener">See the chat ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li><strong>People now ask AI directly</strong>, not a search box</li>
+            <li><strong>Bare models invent citations</strong> — worse for Africa, with far less training data</li>
+            <li><strong>Web search helps</strong>, but the sources are random — mostly Wikipedia</li>
+            <li><strong>The IWAC?</strong> Crawled by their bots, yet barely used and badly cited</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">More and more people skip the search box entirely and just ask an AI, so it's worth asking what they actually get. A bare chatbot is frozen at its training data and cut off from the primary sources, so it invents plausible-looking citations — and that's worse for Africa, which is thinly represented in the training data to begin with. The big commercial chatbots now search the web as they answer, which does cut the hallucinations. But the sourcing is haphazard: they lean heavily on Wikipedia, which has very little on something as specific as Islam in West Africa. Now and then one even pulls a record from the IWAC, but never systematically and never comprehensively. What you get is fluent, confident and broad. Here's Gemini on Islam in Kpalimé in the 1990s: a long, polished answer, sourced to things like "The Christian Chronicle" and a Turkish foundation. And here's the irony — my collection is crawled constantly by these companies' bots, yet ask a model a precise question about Kpalimé and it has no real grounding in what is actually in the archive. It can scrape the collection; it cannot use it well.</aside>
     </section>
 
     <!-- ════════ 5 · TWO LAYERS (two-column) ══════════════════════════════ -->
@@ -175,7 +183,7 @@
         <span class="callout-label">The claim to hold onto</span>
         The skill — a plain-text file — is where the real contribution lives. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a>
       </div>
-      <aside class="notes">I built two things. An MCP server that gives any AI chatbot structured, read-only access to the IWAC — the plumbing. And an agent skill that encodes how to do research with it properly — the intelligence. I'll demo the server in the middle, then close with what this arrangement means for African collections in an age of AI scraping. The claim to hold onto: the skill, a plain-text file, is where the real contribution lives.</aside>
+      <aside class="notes">I built two things, and I'll introduce both before showing either. An MCP server that gives any AI chatbot structured, read-only access to the IWAC: the plumbing. And an agent skill that encodes how to do research with it properly: the intelligence. Then we'll live-demo the MCP server with Claude. After that I'll close with what this arrangement means for African collections in the age of AI scraping, and the fear of digital colonialism. The claim to hold onto: the skill, a plain-text file, is where the real contribution lives.</aside>
     </section>
 
     <!-- ════════ 6 · WHAT IS MCP (comparison + callout) ═══════════════════ -->
