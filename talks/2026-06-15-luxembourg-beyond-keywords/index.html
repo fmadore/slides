@@ -193,31 +193,32 @@
       <div class="cols">
         <div class="col">
           <div class="col-head alt">RAG</div>
-          <p>Copies the collection into an external store — chunked, embedded, retrieved by a similarity the user never sees.</p>
+          <p><strong>Proven for heritage.</strong> But it copies the collection out, chunks records, and retrieves by a similarity the user never sees.</p>
         </div>
         <div class="col">
-          <div class="col-head">MCP</div>
-          <p>Ingests <strong>nothing</strong>. The data stays put; the server holds the logic; the model just asks and answers.</p>
+          <div class="col-head"><img class="mcp-mark" src="assets/logo-mcp.png" alt="Model Context Protocol logo">MCP</div>
+          <p>Ingests <strong>nothing</strong>. The data stays put; the server holds the logic; the model just asks and answers. <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">modelcontextprotocol.io</a></p>
         </div>
       </div>
       <div class="callout navy">
         <span class="callout-label">The analogy</span>
         Like IIIF for images: a shared interface, without handing over the originals. Build the server once — Claude, ChatGPT, or open-source models all connect.
       </div>
-      <aside class="notes">MCP is an open standard, released November 2024, for connecting AI assistants to external data through a defined set of tools. A server publishes the queries it will answer; any compliant assistant can call them. MCP is to collection data what IIIF is to images — IIIF succeeded by solving a coordination problem: institutions exposed high-resolution images through a shared interface without handing over the originals. Why not RAG? RAG copies the collection into a vector store, chunks it, retrieves by similarity the user never sees. Fine for many uses — but for an institution that cares about data sovereignty (and African collections have a long history of extractive knowledge practices), moving the data into someone else's pipeline isn't neutral. MCP draws the line differently: nothing is ingested, chunked, or used for training. Build once, and any model — commercial or open-source — can be the interface.</aside>
+      <aside class="notes">The Model Context Protocol is an open standard, released in November 2024, for connecting AI assistants to external data through a defined set of tools. A server publishes the queries it is willing to answer, and any compliant assistant can call them. MCP is to AI what IIIF is to images: just as IIIF let institutions expose high-resolution images through a common interface without surrendering the originals, MCP lets them expose search and metadata to AI assistants without ceding the underlying data. The common approach today is retrieval-augmented generation, or RAG: the model fetches passages from a prepared index at query time and composes an answer from them. RAG has proved its worth for cultural heritage. But it usually means copying collection data into an external store, fragmenting records into chunks that lose their context, and retrieving through similarity calculations the user never sees. A different route, the "Small Models for GLAM" work, fine-tunes a specialised model on the collection itself. MCP offers a complementary path: a standardised interface that lets any model, commercial or open-source, query a collection without retraining. MCP draws the line differently: nothing is ingested, chunked, or used for training. The server holds the logic; the model only handles the two ends, understanding the question and composing the answer. Build the server once, and any model can be the interface.</aside>
     </section>
 
     <!-- ════════ 7 · AGENT SKILLS (content + code) ════════════════════════ -->
     <section>
       <p class="kicker">Agent skills</p>
-      <h2 class="slide-title">The curator's knowledge, written down</h2>
+      <h2 class="slide-title">What is a skill.md?</h2>
       <div class="cols ratio-2-3">
         <div class="col">
           <p>A skill is a <strong>methods handbook for a machine reader</strong> — loaded only when a request matches its purpose.</p>
           <ul>
             <li>Competence by <strong>reading, not retraining</strong></li>
-            <li>Versioned and reviewable — a prompt is typed once and lost</li>
-            <li>An open standard across agents — the same no-lock-in logic as MCP</li>
+            <li>Versioned, reviewed, refined — a prompt is typed once and lost</li>
+            <li>An open standard across agents — no vendor lock-in, like MCP</li>
+            <li><strong>Born in coding agents</strong> — the format fits any domain</li>
           </ul>
         </div>
         <div class="col">
@@ -231,7 +232,7 @@ Expand transliterations: Tabaski = Aïd el-Kébir.
 "Cote d'Ivoire" without the circumflex → 0 hits.</code></pre>
         </div>
       </div>
-      <aside class="notes">A skill is a methods handbook, in plain language, that the agent reads into context when a request matches its purpose. The model gains a specific competence by reading, not retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost; a skill file is versioned, reviewed, published, refined — tacit expertise turned into an explicit, inspectable artefact. Like MCP, skills are an open standard across agents, so nothing locks you to one vendor. They're mostly used for coding, but work just as well for the social sciences: how to behave like a historian, what to know about a corpus.</aside>
+      <aside class="notes">So what is a skill? A methods handbook, written in plain language, that the agent reads into context when a request matches its purpose — structured instructions that walk it through the steps. The model gains a specific competence by reading, not by retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost, whereas a skill file is versioned, reviewed by collaborators, published, and refined over time. It turns tacit expertise into an explicit, inspectable artefact — how I search this collection, which biases I have to disclose. And like MCP, skills are an open standard across agents, so none of this locks you to one vendor. They're mostly used for coding: telling an agent how to run a routine, format an output, or follow a snippet to get a result. But the format works just as well for the social sciences — how to behave like a historian, how to read a corpus critically, what to know about a particular collection.</aside>
     </section>
 
     <!-- ════════ 7b · THE SKILL FILE — scrollable live embed ══════════════ -->
