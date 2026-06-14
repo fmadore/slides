@@ -311,7 +311,11 @@
       transitionSpeed: "default",
       backgroundTransition: "fade",
       overview: true, touch: true, keyboard: true,
-      pdfSeparateFragments: false,
+      // PDF export (?print-pdf): one printed page per slide. Reveal's default
+      // is Infinity, so any slide even 1px over the page height spilled onto
+      // extra pages — the "one slide, several pages" bug. The house style is a
+      // fixed 1280×720 screen per slide, so a hard cap of 1 is always right.
+      pdfSeparateFragments: false, pdfMaxPagesPerSlide: 1,
       plugins: revealPlugins()
     }).then(function () {
       decorateSlides();   // after Markdown conversion (see decorateSlides)
