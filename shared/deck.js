@@ -96,9 +96,9 @@
     function row(href, icon, label) {
       return '<a href="' + href + '" target="_blank" rel="noopener"><span class="ico">' + icon + "</span><span>" + label + "</span></a>";
     }
-    if (L.github)  out.push(row(L.github, ICON.github, tidyUrl(L.github)));
+    if (L.github)  out.push(row(L.github, ICON.github, tidyUrl(L.github).replace(/^github\.com\//, "")));
     if (L.website) out.push(row(L.website, ICON.globe, tidyUrl(L.website)));
-    if (L.orcid)   out.push(row(L.orcid, ICON.orcid, tidyUrl(L.orcid)));
+    if (L.orcid)   out.push(row(L.orcid, ICON.orcid, tidyUrl(L.orcid).replace(/^orcid\.org\//, "")));
     if (L.email)   out.push(row("mailto:" + L.email, ICON.mail, L.email));
     return out.join("");
   }
@@ -110,7 +110,7 @@
     footer = elem(
       '<div class="deck-footer">' +
         '<div class="foot-left">' +
-          (CFG.logoMark === false ? "" : '<img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence">') +
+          (CFG.logoMark === false ? "" : '<a class="foot-logo" href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener" style="display:flex"><img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence"></a>') +
           '<span class="foot-title"><b>' + (CFG.talkShort || CFG.talkTitle || "") + "</b>" +
             (CFG.venue ? " · " + CFG.venue : "") + "</span>" +
         "</div>" +

@@ -330,6 +330,11 @@
 }
 .reveal .stat .stat-label { font-size: var(--fs-caption); color: var(--ink-soft); max-width: 22ch; }
 
+/* Compact figure grid for an "In numbers" panel */
+.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md) var(--space-lg); margin-top: var(--space-md); }
+.reveal .stat-grid .stat-num { font-size: var(--fs-h3); }
+.reveal .stat-grid .stat-label { max-width: none; }
+
 /* Citation line / source */
 .reveal .cite, .reveal .source {
   font-size: var(--fs-caption); color: var(--ink-faint); font-style: italic;
@@ -389,6 +394,14 @@
 .reveal .contact a:hover { color: var(--green-deep); }
 .reveal .contact a svg, .reveal .contact a img { width: 1.15em; height: 1.15em; flex: none; }
 .reveal .contact a .ico { color: var(--green-deep); display: inline-flex; }
+
+/* --- Institution wordmark on hero slides (cover + closing) ------------------ */
+.reveal section.cover .org-logo,
+.reveal section.closing .org-logo {
+  display: block; height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
+}
+/* closing is dark → render the black wordmark in white */
+.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
 
 /* --- SECTION DIVIDER -------------------------------------------------------- */
 .reveal section.section {
@@ -711,6 +724,14 @@
   position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
   object-fit: cover; object-position: top center;
 }
+/* "Scan to explore" QR overlay on the live-site frame */
+.reveal .site-qr {
+  position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: var(--shadow-2);
+}
+.reveal .site-qr img { width: 116px; height: 116px; display: block; }
+.reveal .site-qr span { font-size: var(--fs-footer); font-weight: 700; color: var(--ink); }
 
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS

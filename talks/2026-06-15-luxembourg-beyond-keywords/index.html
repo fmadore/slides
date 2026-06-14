@@ -47,7 +47,7 @@
 
         # Beyond Keywords
 
-        Opening the Islam West Africa Collection to AI — on its own terms.
+        AI-Mediated Access to the Islam West Africa Collection through an MCP Server and Agent Skill
         <!-- .element: class="subtitle" -->
 
         <div class="byline">
@@ -55,8 +55,9 @@
           <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
         </div>
         <div data-contact></div>
+        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
 
-        Note: Working title was very jargony — "AI-Mediated Access to the IWAC through an MCP Server and Agent Skill." This is the plain-language version: opening the collection to AI on its own terms.
+        Note: My title is very jargony. I could also have chosen something plainer — "Beyond Keywords: Opening the Islam West Africa Collection to AI on its own terms," or something like that. I kept the explicit version so the room knows exactly what's coming. (Don't read the title aloud — open with the hook, then go straight to the problem.)
       </textarea>
     </section>
 
@@ -76,13 +77,20 @@
         <div class="col">
           <div class="panel">
             <div class="kicker">In numbers</div>
-            <div class="stat"><span class="stat-num">14,700+</span><span class="stat-label">documents · six countries · ~96% French · since 2023</span></div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">14,700+</span><span class="stat-label">documents</span></div>
+              <div class="stat"><span class="stat-num">28.1M</span><span class="stat-label">words</span></div>
+              <div class="stat"><span class="stat-num">68,122</span><span class="stat-label">pages</span></div>
+              <div class="stat"><span class="stat-num">13</span><span class="stat-label">document types</span></div>
+              <div class="stat"><span class="stat-num">9,315</span><span class="stat-label">audiovisual minutes</span></div>
+              <div class="stat"><span class="stat-num">864</span><span class="stat-label">references</span></div>
+            </div>
             <hr class="rule">
-            <p class="small muted">One historian, no team — manual cataloguing is impossible. AI already <em>builds</em> it (OCR, entity recognition). Today is about using AI to <em>access</em> it.</p>
+            <p class="small muted">Six countries · ~96% in French · open access since 2023</p>
           </div>
         </div>
       </div>
-      <aside class="notes">For fifteen years I've worked on Islam in Francophone West Africa — mostly Benin, Burkina Faso, Côte d'Ivoire, Togo. Lots of interviews, but also extensive work with West African newspapers and Islamic publications. I'm a digital hoarder: 30,000+ items in Zotero, ~15,000 unread. I wanted them in an open-access database, reached agreements with copyright holders, and launched the IWAC in 2023. It now holds 14,700+ documents on Muslim public life across six countries, ~96% in French. I built and maintain it alone — which is exactly why AI matters here: LLMs already do the work a team would (OCR on degraded scans, entity recognition, sentiment). So far I've used AI to build the collection; today is about opening it.</aside>
+      <aside class="notes">For the last fifteen years I've worked on Islam in Francophone West Africa, mostly Benin, Burkina Faso, Côte d'Ivoire and Togo. I do a lot of interviews, but I also work extensively with West African newspapers and Islamic publications in every format. I'm a bit of a digital hoarder: besides scanning, I collect a lot online, and I've ended up with more than 30,000 items in my Zotero library, roughly 15,000 of them still unread. I wanted those documents in an open-access database, so I reached agreements with the copyright holders, and in 2023 I launched the Islam West Africa Collection. It now holds more than 14,700 documents on Muslim public life across six West African countries — mostly newspaper clippings and Islamic publications of every kind, magazines, brochures, tracts — and about 96% of it is in French. I built it, and I maintain it alone, which is why AI matters here at all: language models already do the work a team would, OCR on degraded scans, entity recognition, sentiment analysis. So far I've used AI to enrich the collection and its metadata; today is about opening it up to a wider audience.</aside>
     </section>
 
     <!-- ════════ 2b · THE COLLECTION, LIVE (framed website overview) ═══════ -->
@@ -103,6 +111,10 @@
           <iframe src="https://islam.zmo.de/s/westafrica/page/home"
                   title="Islam West Africa Collection — live site"
                   loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <div class="site-qr">
+            <img src="assets/iwac-qr.png" alt="QR code to the IWAC website">
+            <span>Scan to explore</span>
+          </div>
         </div>
       </div>
       <aside class="notes">A quick live look at the collection itself — the public site at islam.zmo.de, built on Omeka S. Browse a few records to give a feel for the material before we get into why keyword search falls short. (If the venue network is flaky, this slide falls back to a screenshot.)</aside>
@@ -138,7 +150,7 @@
     <!-- ════════ 4 · LLMs LACK KNOWLEDGE (statement · Markdown) ════════════ -->
     <section class="statement" data-footer="light" data-markdown>
       <textarea data-template>
-        A chatbot frozen at training time will answer anything about Islam in West Africa — and quietly <span class="accent">invent the citations.</span>
+        A chatbot frozen at training time will answer anything about Islam in West Africa — and <span class="accent">invent the citations.</span>
         <!-- .element: class="statement-body" -->
 
         Ask it about Islam in Kpalimé in the 1990s: confident, fluent, and empty.
@@ -253,7 +265,7 @@ def search_articles(query, country=None,
           </ul>
         </div>
       </div>
-      <aside class="notes">What I actually built: some twenty tools — article search by keyword, country, newspaper, subject and date; full-text retrieval; authority records for persons, places, organisations and events; precomputed sentiment; collection statistics. The design principle is verifiability. The server does no generation at query time: every AI enrichment was computed offline and stored as ordinary data, so a tool call is only ever a lookup against the openly published dataset — and every result carries a URL straight back to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the AI can cite normally only what the collection actually contains. One-click install for Claude Desktop, nothing to administer — which matters if the point is access for non-specialists. Now let me show you.</aside>
+      <aside class="notes">What I actually built: some twenty tools — article search by keyword, country, newspaper, subject and date; full-text retrieval; authority records for persons, places, organisations and events; precomputed sentiment; collection statistics. The design principle is verifiability. The server does no generation at query time: every AI enrichment was computed offline and stored as ordinary data, so a tool call is only ever a lookup against the openly published dataset — and every result carries a URL straight back to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the AI can cite only what the collection actually contains. One-click install for Claude Desktop, nothing to administer — which matters if the point is access for non-specialists. Now let me show you.</aside>
     </section>
 
     <!-- ════════ 9 · FIVE-PHASE METHOD (numbered) ════════════════════════ -->
@@ -341,6 +353,7 @@ def search_articles(query, country=None,
         <!-- .element: class="small" -->
 
         <div data-contact></div>
+        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
 
         Note: Two limits before closing. First, grounding reshapes hallucination rather than removing it — Jancovic shows retrieval systems confidently fusing things that merely look similar; my own semantic search could flatten intégrisme, fondamentalisme and salafisme into one cluster, distinctions that carry real political weight. That's why the skill insists on reading the sources, never just the summary. Second, the floor: answers are only ever as good as the metadata underneath. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. What's next: a conversational assistant on the IWAC website, running an open-source model against these same tools, so a student in Ouagadougou gets this access without installing anything or opening an account with any AI firm. The point to take home: the server was the easy part. A system that can tell "hadj" the pilgrimage from "El Hadj" the honorific can do it because a curator wrote the difference down. Thank you — I'd welcome the hard questions, especially about where this breaks.
       </textarea>
