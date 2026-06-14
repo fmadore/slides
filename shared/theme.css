@@ -349,6 +349,43 @@
 }
 .reveal .chip.green { background: var(--green-wash); border-color: color-mix(in oklch,var(--green),var(--paper) 60%); color: var(--green-deep); }
 
+/* Query-mix list — plain-language asks, each mapped to a subset + its facets.
+   Used on the MCP-server slide to show the combinatorial reach. */
+.reveal .query-list { list-style: none; margin: 0 0 var(--space-md); padding: 0; max-width: none; display: grid; gap: var(--space-sm); }
+.reveal .query-list > li {
+  margin: 0; padding: var(--space-sm) var(--space-md);
+  display: grid; gap: 0.34em;
+  background: var(--panel); border: var(--hair); border-radius: var(--radius-md); box-shadow: var(--shadow-1);
+}
+.reveal .query-list > li::before { content: none; }
+.reveal .query-list .q {
+  font-family: var(--font-display); font-style: italic; font-weight: 440;
+  font-size: var(--fs-body); line-height: 1.22; color: var(--ink);
+}
+.reveal .query-list .q strong { font-style: normal; font-weight: 720; }
+.reveal .query-list .q-map {
+  display: flex; align-items: center; gap: 0.6em;
+  font-family: var(--font-body); font-size: var(--fs-caption); color: var(--ink-faint); letter-spacing: 0.01em;
+}
+
+/* Two-depth chooser — the skill's Brief / Extended modes, as a pair of compact
+   cards (used on the five-phase slide). .is-full marks the path shown below. */
+.reveal .depths { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); max-width: none; margin: 0 0 var(--space-md); }
+.reveal .depth {
+  display: flex; flex-direction: column; gap: 0.08em;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--panel); border: var(--hair); border-left: 3px solid var(--line-strong);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-1);
+}
+.reveal .depth.is-full { border-left-color: var(--green); }
+.reveal .depth .depth-name { font-family: var(--font-body); font-weight: 720; font-size: var(--fs-small); color: var(--ink); letter-spacing: 0.01em; }
+.reveal .depth.is-full .depth-name { color: var(--green-deep); }
+.reveal .depth .depth-tag {
+  font-size: var(--fs-footer); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-faint); border: var(--hair); border-radius: 999px; padding: 0.02em 0.5em; margin-left: 0.45em; vertical-align: 0.12em;
+}
+.reveal .depth .depth-desc { font-size: var(--fs-caption); color: var(--ink-soft); }
+
 /* A thin full-width hairline divider */
 .reveal hr, .reveal .rule { border: none; height: 1px; background: var(--line); margin: var(--space-lg) 0; }
 
@@ -737,6 +774,36 @@
 .reveal .shot { display: block; width: 100%; height: auto; border: var(--hair); border-radius: 10px; box-shadow: var(--shadow-2); }
 .reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
 .reveal .col-head .mcp-mark { height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
+
+/* Image lightbox — click a figure/screenshot to view it full-screen.
+   deck.js tags eligible images (.shot + the framed site screenshot) with
+   .is-zoomable and appends .deck-lightbox to <body> (outside reveal's transform). */
+.reveal .slides .shot.is-zoomable,
+.reveal .slides .site-frame-view > img.is-zoomable { cursor: zoom-in; }
+.deck-lightbox {
+  position: fixed; inset: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  background: color-mix(in oklch, var(--navy-deep), #02060f 40%);
+  opacity: 0; visibility: hidden; cursor: zoom-out;
+  transition: opacity 260ms var(--ease), visibility 260ms;
+}
+.deck-lightbox.open { opacity: 1; visibility: visible; }
+.deck-lightbox img {
+  max-width: 94vw; max-height: 90vh; width: auto; height: auto;
+  border-radius: var(--radius-md); box-shadow: var(--shadow-pop); background: var(--paper);
+  transform: scale(0.985); transition: transform 300ms var(--ease);
+}
+.deck-lightbox.open img { transform: none; }
+.deck-lightbox .lightbox-close {
+  position: absolute; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem);
+  width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: color-mix(in oklch, var(--paper), transparent 86%);
+  border: 1px solid color-mix(in oklch, var(--paper), transparent 74%);
+  color: var(--paper); transition: all var(--dur) var(--ease);
+}
+.deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); transform: rotate(90deg); }
+.deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
 
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS

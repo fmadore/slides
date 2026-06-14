@@ -261,6 +261,41 @@
     });
   }
 
+  /* ---- image lightbox: click a figure/screenshot to view it full-screen --- */
+  var lightbox, lbImg;
+  function buildLightbox() {
+    var imgs = document.querySelectorAll(
+      ".reveal .slides .shot, .reveal .slides .site-frame-view > img"
+    );
+    if (!imgs.length) return;
+    lightbox = elem(
+      '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">' +
+        '<button class="lightbox-close" aria-label="Close image">' + ICON.close + "</button>" +
+        '<img alt="">' +
+      "</div>"
+    );
+    document.body.appendChild(lightbox);
+    lbImg = lightbox.querySelector("img");
+    function closeLightbox() { lightbox.classList.remove("open"); lbImg.removeAttribute("src"); }
+    imgs.forEach(function (img) {
+      img.classList.add("is-zoomable");
+      img.addEventListener("click", function (e) {
+        e.preventDefault(); e.stopPropagation();
+        lbImg.setAttribute("src", img.currentSrc || img.src);
+        lbImg.setAttribute("alt", img.getAttribute("alt") || "");
+        lightbox.classList.add("open");
+      });
+    });
+    lightbox.addEventListener("click", closeLightbox); // backdrop, image, or close button
+    document.addEventListener("keydown", function (e) {
+      if (!lightbox.classList.contains("open")) return;
+      if (e.key === "Escape") { e.stopPropagation(); e.preventDefault(); closeLightbox(); }
+      else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Spacebar"].indexOf(e.key) !== -1) {
+        e.stopPropagation(); e.preventDefault(); // don't drive the deck behind the lightbox
+      }
+    }, true);
+  }
+
   function init() {
     var reveal = document.querySelector(".reveal");
     decorateChrome();
@@ -281,6 +316,7 @@
       buildFooter(reveal);
       buildTOC(reveal);
       loadSkillEmbeds();
+      buildLightbox();
       update();
 
       // Defensive relayout: recompute the scale once the window and webfonts

@@ -104,19 +104,17 @@
           <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">Open live ↗</a>
         </div>
         <div class="site-frame-view">
-          <!-- Live embed of the public Omeka S site. If it refuses framing
-               (X-Frame-Options / CSP frame-ancestors), drop a screenshot into
-               assets/ and replace the <iframe> below with:
-               <img src="assets/iwac-home.png" alt="The IWAC homepage"> -->
-          <iframe src="https://islam.zmo.de/s/westafrica/page/home"
-                  title="Islam West Africa Collection — live site"></iframe>
+          <!-- The live Omeka S site refuses framing (CSP frame-ancestors), so we show
+               a screenshot. The .site-frame-view styling fits <img> and <iframe> alike;
+               the QR and "Open live" link still send people to the real site. -->
+          <img src="assets/iwac-home.jpg" alt="The Islam West Africa Collection homepage at islam.zmo.de — featured items, search, and browse by country">
           <div class="site-qr">
             <img src="assets/iwac-qr.png" alt="QR code to the IWAC website">
             <span>Scan to explore</span>
           </div>
         </div>
       </div>
-      <aside class="notes">A quick live look at the collection itself — the public site at islam.zmo.de, built on Omeka S. Browse a few records to give a feel for the material before we get into why keyword search falls short. (If the venue network is flaky, this slide falls back to a screenshot.)</aside>
+      <aside class="notes">A look at the collection's public site, islam.zmo.de, built on Omeka S. It's a screenshot here — the live site blocks embedding — but the QR code and the "Open live" link both go straight to it, and I'm glad to browse it live if you want. Just a feel for the material before we get to why keyword search falls short.</aside>
     </section>
 
     <!-- ════════ 3 · THE "EL HADJ" PROBLEM (two-column) ═══════════════════ -->
@@ -223,61 +221,72 @@
         </div>
         <div class="col">
           <pre><code class="language-yaml" data-trim data-line-numbers>---
-name: iwac-research
-description: How to research the Islam West
-  Africa Collection — search, read, triangulate.
+name: iwac-mcp
+description: Structured research workflow for the
+  Islam West Africa Collection MCP server.
 ---
 ## Always search in French
-Expand transliterations: Tabaski = Aïd el-Kébir.
-"Cote d'Ivoire" without the circumflex → 0 hits.</code></pre>
+The question may be in any language; the corpus is French.
+Expand transliterations: Tabaski = Aïd el-Kébir.</code></pre>
         </div>
       </div>
       <aside class="notes">So what is a skill? A methods handbook, written in plain language, that the agent reads into context when a request matches its purpose — structured instructions that walk it through the steps. The model gains a specific competence by reading, not by retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost, whereas a skill file is versioned, reviewed by collaborators, published, and refined over time. It turns tacit expertise into an explicit, inspectable artefact — how I search this collection, which biases I have to disclose. And like MCP, skills are an open standard across agents, so none of this locks you to one vendor. They're mostly used for coding: telling an agent how to run a routine, format an output, or follow a snippet to get a result. But the format works just as well for the social sciences — how to behave like a historian, how to read a corpus critically, what to know about a particular collection.</aside>
     </section>
 
-    <!-- ════════ 7b · THE SKILL FILE — scrollable live embed ══════════════ -->
-    <section data-toc-skip>
-      <p class="kicker">The curator's method, in full</p>
-      <h2 class="slide-title">iwac-mcp · SKILL.md</h2>
-      <!-- Loaded at runtime from the vendored copy in assets/ (works offline).
-           Re-run the fetch in the README to refresh it from GitHub. -->
-      <div class="scroll-panel" data-skill-src="assets/iwac-skill.md">
-        <pre><code class="language-markdown">Loading the skill file…</code></pre>
-      </div>
-      <p class="scroll-hint">Scroll to read the whole file — 190 lines, open source at github.com/fmadore/iwac-mcp-server</p>
-      <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the French-only search rule and transliteration variants, the bias-disclosure and confidence-grading requirements. Scroll through it to make the point that the method is explicit and reviewable, not a black box.</aside>
-    </section>
-
-    <!-- ════════ 8 · THE IWAC MCP SERVER (code + capabilities) ════════════ -->
+    <!-- ════════ 8 · THE IWAC MCP SERVER (query mix + design) ═════════════ -->
     <section data-toc="The server">
+      <p class="kicker navy">What you can ask it</p>
       <h2 class="slide-title">The IWAC MCP server</h2>
       <div class="cols ratio-3-2">
         <div class="col">
-          <pre><code class="language-python" data-trim data-line-numbers="1-2|3-4|5-6">@mcp.tool()
-def search_articles(query, country=None,
-        newspaper=None, year=None):
-    """Search the IWAC by keyword and facets.
-    Every hit links to its canonical record."""
-    return iwac.search(query, country, newspaper, year)</code></pre>
-          <p class="small"><span class="chip green">read-only</span> <span class="chip">verifiable</span> <span class="chip">one-click install</span></p>
+          <ul class="query-list">
+            <li>
+              <span class="q">"Newspaper articles on Islam in <strong>Abidjan</strong>, in the 1990s"</span>
+              <span class="q-map"><span class="chip green">articles</span>place · period</span>
+            </li>
+            <li>
+              <span class="q">"Islamic publications on <strong>secularism</strong> in Togo and Benin"</span>
+              <span class="q-map"><span class="chip green">publications</span>subject · country</span>
+            </li>
+            <li>
+              <span class="q">"Academic references on <strong>Muslim women</strong> in Burkina Faso"</span>
+              <span class="q-map"><span class="chip green">references</span>subject · country</span>
+            </li>
+          </ul>
+          <p class="small muted">One plain-language request; the model picks the tools and combines the filters.</p>
         </div>
         <div class="col">
-          <div class="col-head">~20 tools</div>
+          <div class="col-head">~20 tools · 6 subsets</div>
           <ul>
-            <li>Search · full text · authority records · sentiment · stats</li>
-            <li>Answers from a local copy of the open IWAC dataset</li>
-            <li><strong>No AI at query time</strong> — every call is a structured lookup</li>
-            <li>Every result links to the canonical record</li>
+            <li><strong>Read-only</strong>: search, full text, authority records, sentiment, stats</li>
+            <li><strong>Verifiable</strong>: every call a lookup, no AI at query time</li>
+            <li><strong>Traceable</strong>: every result links to its canonical record</li>
+            <li><strong>One click</strong>: installs in Claude Desktop, nothing to administer</li>
           </ul>
         </div>
       </div>
-      <aside class="notes">What I actually built: some twenty tools — article search by keyword, country, newspaper, subject and date; full-text retrieval; authority records for persons, places, organisations and events; precomputed sentiment; collection statistics. The design principle is verifiability. The server does no generation at query time: every AI enrichment was computed offline and stored as ordinary data, so a tool call is only ever a lookup against the openly published dataset — and every result carries a URL straight back to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the AI can cite only what the collection actually contains. One-click install for Claude Desktop, nothing to administer — which matters if the point is access for non-specialists. Now let me show you.</aside>
+      <aside class="notes">Start with what the server lets you ask. You put the question in plain language. Newspaper articles on Islam in Abidjan in the nineties; Islamic publications on secularism in Togo and Benin; academic references on Muslim women in Burkina Faso. Each one mixes a different part of the collection with a different set of filters — place, period, subject, country — and the model works out which tools to call and how to combine them. You say what you want; the server handles how to get it.
+
+Underneath there are around twenty tools across six subsets: article search, full text, authority records for people, places and organisations, precomputed sentiment, collection statistics. The principle behind all of them is verifiability. The server generates nothing at query time. Every AI enrichment was computed in advance and stored as ordinary data, so a call is only ever a lookup against the openly published dataset, and every result returns a URL straight to the canonical IWAC record. In Sternfeld's phrase, a walled garden: the model can cite only what the collection actually holds.
+
+It installs in one click for Claude Desktop, nothing to administer, which matters if the point is access for non-specialists. I'm working on easier ways in too. Let me show you.</aside>
     </section>
 
     <!-- ════════ 9 · FIVE-PHASE METHOD (numbered) ════════════════════════ -->
     <section data-toc="The method">
       <p class="kicker">The IWAC skill in motion</p>
       <h2 class="slide-title">A five-phase research method</h2>
+      <p class="small muted" style="margin-bottom:var(--space-sm)">Two depths, chosen up front:</p>
+      <div class="depths">
+        <div class="depth">
+          <span class="depth-name">Brief<span class="depth-tag">default</span></span>
+          <span class="depth-desc">a quick scan and a few close reads</span>
+        </div>
+        <div class="depth is-full">
+          <span class="depth-name">Extended</span>
+          <span class="depth-desc">the full five-phase analysis below</span>
+        </div>
+      </div>
       <div class="cols">
         <div class="col">
           <ol>
@@ -297,7 +306,7 @@ def search_articles(query, country=None,
           </div>
         </div>
       </div>
-      <aside class="notes">Beyond the server, I wanted the model to know how to behave — to transmit my own knowledge of the collection as a historian working with primary sources. The server alone knows none of it: not that every search must be in French, not that "Côte d'Ivoire" without its circumflex returns zero, not that Niger's coverage is thin and there's almost no Nigerian press. Twenty tools give reach, not judgement. That knowledge lives in the skill: a five-phase workflow drawn from how archival research actually works. Scoping first — what's even here. Then systematic searching in French with transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), every search logged including the null ones. Deep reading. Triangulation across source types. Synthesis with explicit sources and confidence grades — strong, moderate, weak.</aside>
+      <aside class="notes">Beyond the server, I wanted the model to know how to behave, to carry my own knowledge of the collection as a historian working with primary sources. The server has the data, but none of the judgement. It can't scope a question, can't cross-check one source type against another, can't tell you how far to trust an answer. Twenty tools give you reach, not judgement, and that judgement has to live somewhere. It lives in the skill. Before any research, the skill asks how deep to go: a quick Brief pass for a fast overview, or a full Extended analysis — and it defaults to Brief, saving the heavy lifting for when a question earns it. The Extended path is a five-phase workflow drawn from how archival research actually works. Scoping first: what is even here for this question, before a single keyword. Then systematic searching, in French, with the transliteration variants built in (Tabaski and Aïd el-Kébir both mean Eid al-Adha), and every search logged, including the ones that come back empty. Deep reading of the strongest articles. Triangulation across articles, publications, references and index entries. And synthesis: findings with explicit sources and a confidence grade, strong, moderate, or weak.</aside>
     </section>
 
     <!-- ════════ 10 · WHAT THE SKILL ENCODES (Markdown list + HTML callout) ═ -->
@@ -309,60 +318,87 @@ def search_articles(query, country=None,
         ## Discipline, disclosure — and a new role
         <!-- .element: class="slide-title" -->
 
-        - **Linguistic discipline** — French only; the missing accent that breaks the filter silently
-        - **Bias disclosure** — every synthesis states the skew: the francophone tilt, thin Niger, absent Nigeria
+        - **Linguistic discipline** — search the French corpus in French, whatever language the question is in
+        - **Bias disclosure** — every synthesis states the skew: francophone tilt, missing *Arabisants*, thin Niger, absent Nigeria
         - **Evidential discipline** — claims tagged primary / secondary / AI-derived; *absence of evidence ≠ evidence of absence*
 
         <div class="callout navy">
           <span class="callout-label">The role shift</span>
-          The curator stops being only a cataloguer and becomes an <strong>author of AI-readable methods.</strong> The server took a weekend; the skill is where the expertise lives.
+          Cataloguer, then API designer — now <strong>author of research methods a machine can follow.</strong> The server took a weekend; the skill is where the expertise lives.
         </div>
 
-        Note: The skill encodes three things no server could. Linguistic discipline: search in French, and mind the accent that fails silently — an unguided model handed an English question searches in English and silently fails. Bias disclosure: every synthesis must state the skew you saw at the start — the francophone tilt, the missing Arabisants, thin Niger, absent Nigeria. In effect the skill makes the model read the collection the way Stoler taught historians to read colonial archives: as a made thing with a history, not a window onto the region. Evidential discipline: every claim tagged primary, secondary, or AI-derived; absence of evidence is never evidence of absence. Guldi's warning applies — left alone, these systems compress disagreement into the most statistically central story; null results and confidence grades are the hedge. Then the role shift: cataloguer → API designer → author of research methods machines can follow. Invest at least as much in the instructional layer as in the server. The server took a weekend; the skill is where the expertise lives.
+        Note: The skill encodes three things no server ever could. First, linguistic discipline. The user can ask in any language — English, German, Arabic — but the collection is French, so the search has to go out in French; an unguided model takes an English question, searches in English, and finds almost nothing. Second, bias disclosure: every synthesis has to state the skew that scoping turns up: the francophone tilt, the under-represented Arabisants, thin Niger, no Nigerian press. Third, evidential discipline: every claim tagged primary, secondary, or AI-derived, and absence of evidence is never evidence of absence. Guldi's warning applies: left to themselves, these systems compress disagreement into the single most statistically central story, so the confidence grades and the logged null results are the hedge. Then the role shift. The curator was a cataloguer, then an API designer; the skill makes the curator an author of research methods a machine can follow. The five phases, the transliteration tables, the bias documentation are years of accumulated knowledge, not boilerplate. The institutional takeaway is blunt: invest at least as much in the instructional layer as in the server. The server took a weekend; the skill is where the expertise lives.
       </textarea>
     </section>
 
-    <!-- ════════ 11 · WHOSE INFRASTRUCTURE? (Markdown list + HTML callout) ══ -->
-    <section data-toc="The stakes" data-markdown>
-      <textarea data-template>
-        The stakes
-        <!-- .element: class="kicker warm" -->
-
-        ## Whose infrastructure? African collections and AI extraction
-        <!-- .element: class="slide-title" -->
-
-        - GLAM institutions are buckling under AI-bot traffic — **Wikimedia: 65%** of its costliest traffic is bots, not people
-        - **Yékú's paradox** — un-digitised, an archive is invisible to AI; digitised, it's exposed to scraping
-        - MCP offers a third path: the collection stays put, and the institution decides what is exposed, on what terms
-
-        <div class="callout">
-          <span class="callout-label">Beyond the protocol</span>
-          CARE asks what FAIR doesn't — not just <em>who controls the data</em>, but <em>who benefits.</em> A West African collection hosted in Germany: for whom are we doing this?
-        </div>
-
-        Note: Step back: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 cultural-heritage institutions hit by traffic spikes, mostly AI training bots that ignore robots.txt; Wikimedia reports 65% of its most expensive traffic is bots. I've seen a massive spike from the US and China — thousands of daily visitors to a database on Islam in West Africa seems a bit overkill. Underfunded public institutions are subsidising commercial AI — digital colonialism in its newest form. Yékú names the trap for African archives: leave them un-digitised and they're invisible (the colonial library rebuilt inside the training set); digitise them and you expose them to scraping. MCP offers a third path: the collection stays put, the institution decides what the AI sees. But say honestly what the protocol settles and what it doesn't. CARE asks what FAIR doesn't: who has authority over data about a community, and who benefits? Authority to control — MCP answers. Collective benefit — it doesn't. A West African collection hosted at a German institute: for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part.
-      </textarea>
+    <!-- ════════ 11 · THE SKILL FILE — scrollable live embed ══════════════ -->
+    <section data-toc-skip>
+      <p class="kicker">The curator's method, in full</p>
+      <h2 class="slide-title">iwac-mcp · SKILL.md</h2>
+      <!-- Loaded at runtime from the vendored copy in assets/ (works offline).
+           Re-run the fetch in the README to refresh it from GitHub. -->
+      <div class="scroll-panel" data-skill-src="assets/iwac-skill.md">
+        <pre><code class="language-markdown">Loading the skill file…</code></pre>
+      </div>
+      <p class="scroll-hint">Scroll to read the whole file — 190 lines, open source at github.com/fmadore/iwac-mcp-server</p>
+      <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the search-in-French rule and transliteration variants, the bias-disclosure and confidence-grading requirements. Scroll through it to make the point that the method is explicit and reviewable, not a black box.</aside>
     </section>
 
-    <!-- ════════ 12 · CLOSING / CONTACT (Markdown) ═════════════════════════ -->
-    <section class="closing" data-footer="dark" data-markdown>
-      <textarea data-template>
-        Thank you · Merci
-        <!-- .element: class="kicker" -->
+    <!-- ════════ 12 · LIVE DEMO (intro + Claude Desktop screenshot) ════════ -->
+    <section data-toc="Live demo">
+      <p class="kicker navy">Live demo</p>
+      <h2 class="slide-title">From a plain question to cited sources</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, around 20 tools, no API key for the core tools">
+          <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
+        </div>
+        <div class="col">
+          <p class="lead">One real question, and the skill runs the method live.</p>
+          <ul>
+            <li>Scopes the collection, then searches it in French</li>
+            <li>Reads the strongest hits in full</li>
+            <li>Answers with every claim linked to its IWAC record</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">Enough description — here it is, installed in Claude Desktop as a one-click extension, read-only, no API key for the core tools. Let me put one real question to it. The skill opens by asking how deep to go; I'll choose Extended so you see the full method. Then we watch it work: scope the collection, search it in French, read the strongest articles in full, then come back with an answer where every claim links to its record in the archive. [Live demo cue: open Claude Desktop, run the query, show the citations and the IWAC links.] If the network misbehaves, I'll walk through a saved run.</aside>
+    </section>
 
-        ## The server was the easy part.
+    <!-- ════════ 13 · WHOSE INFRASTRUCTURE? (evidence · Yékú · CARE) ═══════ -->
+    <section data-toc="The stakes">
+      <p class="kicker warm">The stakes</p>
+      <h2 class="slide-title">Whose infrastructure? African collections and AI extraction</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot" src="assets/glam-e-lab.jpg" alt="GLAM-E Lab report by Michael Weinberg, June 2025 — 'Are AI Bots Knocking Cultural Heritage Offline?'">
+          <p class="small muted"><strong>39 of 43</strong> heritage institutions hit by AI-bot traffic spikes (Weinberg, GLAM-E Lab, 2025); Wikimedia: <strong>65%</strong> of its costliest traffic is bots. <a href="https://www.glamelab.org/products/are-ai-bots-knocking-cultural-heritage-offline/" target="_blank" rel="noopener">Read it ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>The default is <strong>extraction</strong> — public institutions and open-access labour subsidising commercial AI</li>
+            <li><strong>MCP, a third path</strong> — the collection stays put; the institution decides what the AI sees</li>
+          </ul>
+          <div class="callout warm">
+            <span class="callout-label">Yékú's paradox · 2026</span>
+            Un-digitised, an African archive is invisible to AI; digitised, it's exposed to scraping — the incomplete corpus becomes the <em>single story</em>, the colonial library rebuilt in the training set.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Step back from the tooling: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 cultural-heritage institutions hit by traffic spikes, mostly AI-training bots that ignore robots.txt; Wikimedia reports 65% of its most expensive traffic is bots, not people. I've seen a big spike on the IWAC myself, out of the US and China. I'm proud of the collection, but thousands of visitors a day seems a bit much for a database on Islam in West Africa. Underfunded public institutions, and the labour that produced these open-access collections, are subsidising commercial AI — digital colonialism in its newest form. The stakes are sharper for African collections. Yékú names the paradox at the heart of AI-mediated access: un-digitised, African archives are invisible to the models, absent from the training data and so from what AI can say about the continent; digitise them, and you expose the same materials to extractive scraping. An incomplete corpus then risks becoming the definitive representation, delivered with one uniform authority: Adichie's "single story" at machine scale, or what Yékú, after Mudimbe, calls the colonial library rebuilt inside the training set. MCP offers a third path: the collection stays put, and the institution decides what the AI can see.</aside>
+    </section>
 
-        A system that can tell *hadj* the pilgrimage from *El&nbsp;Hadj* the honorific can do it because a curator wrote the difference down.
-        <!-- .element: class="lead" -->
-
-        **Next:** an IWAC website assistant — open-source model, same tools, no account needed. A student in Ouagadougou installs nothing. Server & skill are open: [github.com/fmadore/iwac-mcp-server](https://github.com/fmadore/iwac-mcp-server)
-        <!-- .element: class="small" -->
-
+    <!-- ════════ 14 · CONCLUSION / CONTACT (HTML; flex-centred — reveal sets the
+         present section to display:block, which would top-align this sparse slide) ═ -->
+    <section class="closing" data-footer="dark">
+      <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
+        <h2>Conclusion</h2>
+        <p class="lead">A real opening for <strong>public access</strong> — not a panacea: it finds what you ask for, not the serendipity of the stacks. And still: <em>for whom?</em></p>
+        <p><strong>Next:</strong> a small open-source model on the IWAC server, answering on the website itself — no install, no account. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
         <div data-contact></div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
-
-        Note: Two limits before closing. First, grounding reshapes hallucination rather than removing it — Jancovic shows retrieval systems confidently fusing things that merely look similar; my own semantic search could flatten intégrisme, fondamentalisme and salafisme into one cluster, distinctions that carry real political weight. That's why the skill insists on reading the sources, never just the summary. Second, the floor: answers are only ever as good as the metadata underneath. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. What's next: a conversational assistant on the IWAC website, running an open-source model against these same tools, so a student in Ouagadougou gets this access without installing anything or opening an account with any AI firm. The point to take home: the server was the easy part. A system that can tell "hadj" the pilgrimage from "El Hadj" the honorific can do it because a curator wrote the difference down. Thank you — I'd welcome the hard questions, especially about where this breaks.
-      </textarea>
+      </div>
+      <aside class="notes">A few honest caveats to close on. I'm not claiming the MCP server solves the problems I've raised today; it raises others of its own. And it's convincing — genuinely convincing. Knowing this collection, I'm amazed by the quality of the answers, which is exactly the risk: that we start to take them for granted. There's a subtler loss too. Working in an archive the old way, you get serendipity: you find the thing you weren't looking for. I worry this method gives you precisely what you ask for, and nothing you didn't think to ask for. So it's a very promising avenue for public dissemination, but not a replacement for the archive. Then the floor: answers are only ever as good as the metadata underneath. The server surfaces what's catalogued; it creates nothing. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. And the question the protocol can't settle: CARE asks what FAIR doesn't, not just who controls the data, but who benefits. A West African collection hosted at a German institute, for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part. What's next: I want to put a small, open-source model on the IWAC server itself, answering directly on the website against these same tools, so anyone, a student in Ouagadougou included, can use it without installing a thing or opening an account with an AI company. Thank you, and I'd welcome the hard questions, especially about where this breaks.</aside>
     </section>
 
   </div>
