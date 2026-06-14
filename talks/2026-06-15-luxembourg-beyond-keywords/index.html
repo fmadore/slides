@@ -47,6 +47,25 @@
       border-radius: var(--radius-sm); padding: .2em .5em; align-self: flex-start; }
     .reveal .semarrow { display: flex; align-items: center; justify-content: center;
       color: var(--green); font-weight: 700; font-size: 1.7rem; }
+
+    /* "Scan for these slides" QR — cover + closing (distinct from the slide-3
+       "Scan to explore" QR, which goes to the collection itself). */
+    .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center;
+      gap: 0.85rem; margin-top: var(--space-xl); }
+    .reveal .slides-qr > img { width: 92px; height: 92px; display: block;
+      background: #fff; padding: 6px; border-radius: 9px; box-shadow: var(--shadow-1); }
+    .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
+    .reveal .slides-qr .qr-label b { font-weight: 720; font-size: var(--fs-small); color: var(--ink); }
+    .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono);
+      font-size: var(--fs-footer); color: var(--ink-faint); }
+    .reveal section.closing .slides-qr .qr-label b { color: var(--paper); }
+    .reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), var(--navy) 30%); }
+    /* The closing is content-dense, so float its QR to the bottom-right corner
+       (over the faint compass) rather than stacking it under the contact row. */
+    .reveal section.closing .slides-qr { position: absolute; right: var(--slide-pad-x);
+      bottom: calc(var(--footer-h) + var(--space-md)); margin: 0; z-index: 2;
+      flex-direction: column; align-items: center; gap: 0.4rem; }
+    .reveal section.closing .slides-qr .qr-label { text-align: center; }
   </style>
 </head>
 <body>
@@ -93,6 +112,10 @@
         </div>
         <div data-contact></div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+        <div class="slides-qr">
+          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+          <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
+        </div>
 
         Note: My title is very jargony. I could also have chosen something plainer — "Beyond Keywords: Opening the Islam West Africa Collection to AI on its own terms," or something like that. I kept the explicit version so the room knows exactly what's coming. (Don't read the title aloud — open with the hook, then go straight to the problem.)
       </textarea>
@@ -254,14 +277,13 @@
           </ul>
         </div>
         <div class="col">
-          <pre><code class="language-yaml" data-trim data-line-numbers>---
-name: iwac-mcp
-description: Structured research workflow for the
-  Islam West Africa Collection MCP server.
----
-## Always search in French
-The question may be in any language; the corpus is French.
-Expand transliterations: Tabaski = Aïd el-Kébir.</code></pre>
+          <pre><code class="language-bash" data-trim>my-skill/
+├── SKILL.md          # Required: metadata + instructions
+├── scripts/          # Optional: executable code
+├── references/       # Optional: documentation
+├── assets/           # Optional: templates, resources
+└── ...               # Any additional files or directories</code></pre>
+          <p class="small muted">The standard layout of an agent skill — SKILL.md is the only required file.</p>
         </div>
       </div>
       <aside class="notes">So what is a skill? A methods handbook, written in plain language, that the agent reads into context when a request matches its purpose — structured instructions that walk it through the steps. The model gains a specific competence by reading, not by retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost, whereas a skill file is versioned, reviewed by collaborators, published, and refined over time. It turns tacit expertise into an explicit, inspectable artefact — how I search this collection, which biases I have to disclose. And like MCP, skills are an open standard across agents, so none of this locks you to one vendor. They're mostly used for coding: telling an agent how to run a routine, format an output, or follow a snippet to get a result. But the format works just as well for the social sciences — how to behave like a historian, how to read a corpus critically, what to know about a particular collection.</aside>
@@ -463,6 +485,10 @@ It installs in one click for Claude Desktop, nothing to administer, which matter
         <p class="lead">A real opening for <strong>public access</strong> — not a panacea: it finds what you ask for, not the serendipity of the stacks. And still: <em>for whom?</em></p>
         <p><strong>Next:</strong> a small open-source model on the IWAC server, answering on the website itself — no install, no account. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
         <div data-contact></div>
+        <div class="slides-qr">
+          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+          <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
+        </div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       </div>
       <aside class="notes">A few honest caveats to close on. I'm not claiming the MCP server solves the problems I've raised today; it raises others of its own. And it's convincing — genuinely convincing. Knowing this collection, I'm amazed by the quality of the answers, which is exactly the risk: that we start to take them for granted. There's a subtler loss too. Working in an archive the old way, you get serendipity: you find the thing you weren't looking for. I worry this method gives you precisely what you ask for, and nothing you didn't think to ask for. So it's a very promising avenue for public dissemination, but not a replacement for the archive. Then the floor: answers are only ever as good as the metadata underneath. The server surfaces what's catalogued; it creates nothing. The unglamorous curatorial work — cleaning, standardising, reconciling spellings — is the foundation, not a step to automate away. And the question the protocol can't settle: CARE asks what FAIR doesn't, not just who controls the data, but who benefits. A West African collection hosted at a German institute, for whom are we doing this? Co-creating these access layers with West African institutions is the unfinished part. What's next: I want to put a small, open-source model on the IWAC server itself, answering directly on the website against these same tools, so anyone, a student in Ouagadougou included, can use it without installing a thing or opening an account with an AI company. Thank you, and I'd welcome the hard questions, especially about where this breaks.</aside>
