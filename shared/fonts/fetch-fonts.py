@@ -13,10 +13,13 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-# Variable-font requests (full weight ranges, both optical sizes for Literata).
+# Variable-font requests (full weight ranges + italics).
+#   EB Garamond  — scholarly French humanist book serif (display + body).
+#   Libre Franklin — the free Franklin Gothic: the newspaper-gothic "label"
+#                    voice for kickers, running heads, folios and footer chrome.
 FAMILIES = {
-    "Literata": "https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=swap",
-    "Hanken Grotesk": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&display=swap",
+    "EB Garamond": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap",
+    "Libre Franklin": "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap",
 }
 KEEP = {"latin", "latin-ext"}  # covers French/German diacritics; skip the rest
 

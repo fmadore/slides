@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "slides",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["serve-deck.py"],
+      "port": 8742,
+      "autoPort": false
+    }
+  ]
+}

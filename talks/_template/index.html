@@ -18,21 +18,16 @@
      3. Add an entry to the TALKS array in /index.html (the landing page).
      Full layout catalogue + shortcuts: see /README.md.
 
-     AUTHORING IN MARKDOWN
-     • Most slides are written in Markdown: a <section data-markdown> wrapping a
-       <textarea data-template>. Write the body in plain Markdown.
-     • Slide-level attributes (layout class, data-toc, data-footer) go on the
-       <section> tag, exactly like an HTML slide.
-     • To put a theme class on a Markdown element, put an element-comment on its
-       own line directly below it (binds reliably even when the line has inline
-       links/emphasis/spans). The standard-content slide below shows the exact
-       ".element: class=..." comment syntax.
-     • Speaker notes: a line starting with `Note:` — everything after it becomes
-       the note (press S for the speaker view).
-     • Keep the body indented consistently; the first content line sets the
-       baseline indent that the plugin strips. Leave blank lines truly empty.
-     • Need a richer layout (two columns, panels, code, media)? Just write a
-       plain HTML <section> instead — Markdown and HTML slides mix freely.
+     AUTHORING — PURE HTML (no Markdown plugin)
+     • Every slide is a plain <section>. Slide options go on the tag: a layout
+       class (cover / section / statement / closing / media), data-toc="Label"
+       to add a contents entry, data-footer="light|dark" to force footer colour.
+     • Use the house classes from theme.css (:root is the source of truth):
+       .kicker, .slide-title, .lead, .cols/.col/.col-head, .callout,
+       .stat/.stat-grid, .panel, .chip …
+     • Add class="balance" to a sparse <section> to vertically centre it.
+     • Speaker notes go in <aside class="notes">…</aside> (press S). They are
+       stripped on deploy, so candid cues are safe — but keep them professional.
      ============================================================================ -->
 <script>
   window.DECK_CONFIG = {
@@ -55,116 +50,79 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- COVER (Markdown) -->
-    <section class="cover" data-footer="light" data-markdown>
-      <textarea data-template>
-        Event · Place, DD Month YYYY
-        <!-- .element: class="eyebrow" -->
-
-        # Talk title
-
-        A one-line description of the talk.
-        <!-- .element: class="subtitle" -->
-
-        <div class="byline">
-          <span class="name">Frédérick Madore</span>
-          <span class="affil">Africa Multiple Cluster of Excellence</span>
-        </div>
-        <div data-contact></div>
-        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
-        <!-- QR to these slides. Replace assets/qr-slides.png with a code for THIS
-             talk's live URL and update the label; delete this block to omit it. -->
-        <div class="slides-qr">
-          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
-          <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
-        </div>
-
-        Note: Speaker notes for the cover — press **S** for the speaker view.
-      </textarea>
+    <!-- COVER -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Event · Place, DD Month YYYY</p>
+      <h1>Talk title</h1>
+      <p class="subtitle">A one-line description of the talk.</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      <div data-contact></div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <!-- QR to these slides. Replace assets/qr-slides.png + the label; delete to omit. -->
+      <div class="slides-qr">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
+      </div>
+      <aside class="notes">Speaker notes for the cover — press S for the speaker view.</aside>
     </section>
 
-    <!-- SECTION DIVIDER (Markdown · add `green` to the class for the green variant) -->
-    <section class="section" data-toc="First section" data-markdown>
-      <textarea data-template>
-        01
-        <!-- .element: class="sec-no" -->
-
-        ## The first section
-
-        An optional italic subtitle.
-        <!-- .element: class="sec-sub" -->
-      </textarea>
+    <!-- SECTION DIVIDER (add class="section green" for the green variant) -->
+    <section class="section balance" data-toc="First section">
+      <p class="sec-no">01</p>
+      <h2>The first section</h2>
+      <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
-    <!-- STANDARD CONTENT (Markdown · the everyday slide) -->
-    <section data-toc="A key point" data-markdown>
-      <textarea data-template>
-        Optional eyebrow
-        <!-- .element: class="kicker" -->
-
-        ## A slide title
-        <!-- .element: class="slide-title" -->
-
-        A larger opening line that sets up the slide.
-        <!-- .element: class="lead" -->
-
-        - First point
-        - Second point, with an **emphasis** and a <span class="hl">highlight</span>
-        - Third point
-
-        Note: Everything after `Note:` becomes speaker notes.
-      </textarea>
+    <!-- STANDARD CONTENT — the everyday slide -->
+    <section data-toc="A key point">
+      <p class="kicker">Optional eyebrow</p>
+      <h2 class="slide-title">A slide title</h2>
+      <p class="lead">A larger opening line that sets up the slide.</p>
+      <ul>
+        <li>First point</li>
+        <li>Second point, with an <strong>emphasis</strong> and a <span class="hl">highlight</span></li>
+        <li>Third point</li>
+      </ul>
+      <aside class="notes">Everything in here is the speaker note for this slide.</aside>
     </section>
 
-    <!-- TWO COLUMNS (HTML) — for richer layouts, write a plain HTML section.
-         Markdown and HTML slides can be mixed freely in the same deck.
-         Tip: add class="balance" to a sparse <section> to vertically centre its
-         content (by default content sits at the top of the slide). -->
+    <!-- TWO COLUMNS -->
     <section>
-      <h2 class="slide-title no-rule">A comparison</h2>
+      <h2 class="slide-title">A comparison</h2>
       <div class="cols">
         <div class="col"><div class="col-head">Left</div><ul><li>…</li></ul></div>
         <div class="col"><div class="col-head alt">Right</div><ul><li>…</li></ul></div>
       </div>
     </section>
 
-    <!-- BIG STATEMENT (Markdown · add `quote` to the class for the quote variant) -->
-    <section class="statement" data-footer="light" data-markdown>
-      <textarea data-template>
-        A claim worth pausing on, with one <span class="accent">emphasised phrase.</span>
-        <!-- .element: class="statement-body" -->
-
-        A supporting line beneath it.
-        <!-- .element: class="attribution" -->
-      </textarea>
+    <!-- BIG STATEMENT (add class="statement quote" for the quote variant) -->
+    <section class="statement balance" data-footer="light">
+      <p class="statement-body">A claim worth pausing on, with one <span class="accent">emphasised phrase.</span></p>
+      <p class="attribution">A supporting line beneath it.</p>
     </section>
 
-    <!-- CLOSING / CONTACT (Markdown) -->
-    <section class="closing" data-footer="dark" data-markdown>
-      <textarea data-template>
-        Thank you · Merci
-        <!-- .element: class="kicker" -->
-
-        ## A closing line.
-
-        <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
-        <div data-contact></div>
-        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
-        <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
-        <div class="slides-qr corner">
-          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
-          <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
-        </div>
-      </textarea>
+    <!-- CLOSING / CONTACT -->
+    <section class="closing balance" data-footer="dark">
+      <p class="kicker">Thank you · Merci</p>
+      <h2>A closing line.</h2>
+      <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
+      <div data-contact></div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
+      <div class="slides-qr corner">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
+      </div>
     </section>
 
   </div>
 </div>
 
-<!-- reveal.js + plugins (vendored), then the deck engine. Order matters:
-     markdown converts [data-markdown] sections before the rest run. -->
+<!-- reveal.js + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
-<script src="../../shared/reveal/plugin/markdown.js"></script>
 <script src="../../shared/reveal/plugin/highlight.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>

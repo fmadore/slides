@@ -73,30 +73,14 @@ big statement (`.statement`, `.statement.quote`), code (`<pre><code class="langu
 full-bleed media (`.media`), closing (`.closing`). Helpers: `.kicker`, `.callout`
 (`.warm`/`.navy`), `.stat`, `.chip`, `.panel`, `.balance` (vertically centre a sparse
 slide), `data-toc="…"` to add a slide to the table of contents, `<aside class="notes">`
-(or a Markdown `Note:` line) for speaker notes.
+for speaker notes.
 
-**Write slides in Markdown.** Most slides can be authored as Markdown instead of HTML —
-wrap the body in `<section data-markdown><textarea data-template> … </textarea></section>`.
-The template uses this for the cover, section divider, standard content, statement and
-closing; richer layouts (two-column, panels, code, media, the scroll-panel) stay as plain
-HTML, and the two mix freely in one deck. Conventions:
-
-- **Slide-level attributes** (layout `class`, `data-toc`, `data-footer`) go on the
-  `<section>` tag, exactly like an HTML slide.
-- **Element classes** use a comment on the line *directly below* the element — put it on
-  its own line so it binds even when the line contains links/emphasis/spans:
-
-  ```markdown
-  A lead line with a [link](…).
-  <!-- .element: class="lead" -->
-  ```
-- **Speaker notes**: a line starting with `Note:` — everything after it becomes the note
-  (handled by the speaker-notes plugin; press `S`).
-- Keep the body indented consistently; the first content line sets the baseline indent the
-  plugin strips, so leave blank lines truly empty.
-
-The Markdown engine is the vendored reveal.js Markdown plugin
-(`shared/reveal/plugin/markdown.js`, loaded before the others), so decks stay fully offline.
+**Write slides in plain HTML.** Every slide is a `<section>`; slide-level attributes
+(layout `class`, `data-toc`, `data-footer`) go on the tag, and the house classes above
+style the content. Speaker notes go in `<aside class="notes">…</aside>` (press `S`). There
+is no Markdown plugin — authoring is HTML only, so every slide stays fully under your
+control and the markup carries no stray form elements. See `talks/_template/index.html`
+for a worked example of each layout.
 
 **Scrollable file embed** (e.g. a GitHub skill): a `<div class="scroll-panel"
 data-skill-src="assets/file.md">` loads and syntax-highlights a vendored file you can
@@ -120,7 +104,7 @@ the Luxembourg deck for the markup.
 (Landscape, margins None, background graphics on).
 
 **Customise the look:** all design tokens are at the top of `shared/theme.css` (`:root`) —
-the six Bayreuth colours, the Literata/Hanken type, spacing. Change a font there, then
+the six Bayreuth colours, the EB Garamond / Libre Franklin type, spacing. Change a font there, then
 re-run `shared/fonts/fetch-fonts.py` to re-vendor it for offline use.
 
 **Responsive design.** The deck is responsive by reveal.js's design: a fixed 1280×720
@@ -138,7 +122,7 @@ by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 
 Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
 on every push to `main` it builds a copy of the site with **speaker notes stripped**
-(`tools/strip-notes.py` removes `<aside class="notes">` and Markdown `Note:` blocks) and
+(`tools/strip-notes.py` removes `<aside class="notes">` blocks) and
 publishes that — so the live site never exposes notes via the `S` speaker view or
 view-source. Your repo keeps the notes; only the deployed copy is stripped. Live at
 **https://fmadore.github.io/slides/**.

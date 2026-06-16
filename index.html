@@ -13,13 +13,14 @@
       --green:#009260; --navy:#00268a; --gold:#cca352; --sky:#44b8f2; --brown:#d57912; --amber:#f59c08;
       --green-deep: color-mix(in oklch, var(--green), #0a1812 28%);
       --navy-deep:  color-mix(in oklch, var(--navy), #05060f 22%);
-      --paper: oklch(0.984 0.007 92);
-      --panel: oklch(0.996 0.003 92);
+      --paper: oklch(0.974 0.013 88);
+      --panel: oklch(0.988 0.007 88);
       --ink:   oklch(0.252 0.021 258);
-      --ink-soft: oklch(0.448 0.024 258);
-      --line:  oklch(0.90 0.011 90);
-      --serif: "Literata","Iowan Old Style",Georgia,"Times New Roman",serif;
-      --sans:  "Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      --ink-soft: oklch(0.440 0.024 258);
+      --ink-faint: oklch(0.582 0.020 256);
+      --line:  oklch(0.884 0.014 86);
+      --serif: "EB Garamond","Iowan Old Style",Georgia,"Times New Roman",serif;
+      --sans:  "Libre Franklin",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
       --maxw: 60rem;
       --ease: cubic-bezier(0.22,1,0.36,1);
     }
@@ -31,14 +32,7 @@
       font-feature-settings: "kern","liga"; -webkit-font-smoothing: antialiased;
     }
     a { color: var(--green-deep); text-decoration: none; }
-
-    /* Signature spectrum bar */
-    .spectrum {
-      position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 10;
-      background: linear-gradient(90deg,
-        var(--green) 0 16.66%, var(--sky) 16.66% 33.33%, var(--navy) 33.33% 50%,
-        var(--gold) 50% 66.66%, var(--brown) 66.66% 83.33%, var(--amber) 83.33% 100%);
-    }
+    body { font-weight: 400; }
 
     .wrap { max-width: var(--maxw); margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) clamp(1.4rem, 5vw, 3rem) 4rem; }
 
@@ -46,11 +40,9 @@
     .masthead { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
     .masthead .logo { height: 2.6rem; width: auto; margin-bottom: clamp(1.6rem, 4vw, 2.4rem); display: block; }
     .eyebrow {
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em;
-      font-size: 0.82rem; color: var(--green-deep); margin: 0 0 0.7rem;
-      display: inline-flex; align-items: center; gap: 0.6em;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em;
+      font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.7rem;
     }
-    .eyebrow::before { content:""; width: 1.7em; height: 2px; background: var(--green); border-radius: 2px; }
     h1 {
       font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em;
       font-size: clamp(2.6rem, 7vw, 4.2rem); line-height: 1.04; margin: 0 0 1rem; max-width: 16ch;
@@ -71,12 +63,12 @@
     }
     .talk:hover { background: color-mix(in oklch, var(--green), var(--paper) 92%); padding-left: 1rem; }
     .talk-date { font-family: var(--serif); font-variant-numeric: tabular-nums; color: var(--ink-soft); font-size: 0.98rem; padding-top: 0.35rem; }
-    .talk-event { font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.74rem; color: var(--green-deep); display: block; margin-bottom: 0.3rem; }
-    .talk-title { font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 600; line-height: 1.15; color: var(--ink); display: block; }
+    .talk-event { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.74rem; color: var(--ink-soft); display: block; margin-bottom: 0.3rem; }
+    .talk-title { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 600; line-height: 1.15; color: var(--ink); display: block; }
     .talk:hover .talk-title { color: var(--green-deep); }
     .talk-desc { color: var(--ink-soft); font-size: 0.98rem; margin-top: 0.35rem; max-width: 52ch; }
-    .talk-arrow { color: var(--green); font-size: 1.4rem; align-self: center; transition: transform 0.2s var(--ease); }
-    .talk:hover .talk-arrow { transform: translateX(4px); }
+    .talk-arrow { color: var(--ink-faint); font-size: 1.4rem; align-self: center; transition: transform 0.2s var(--ease), color 0.2s var(--ease); }
+    .talk:hover .talk-arrow { transform: translateX(4px); color: var(--green-deep); }
 
     .foot { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: space-between; }
     .foot a { color: var(--ink-soft); } .foot a:hover { color: var(--green-deep); }
@@ -88,7 +80,6 @@
   </style>
 </head>
 <body>
-  <div class="spectrum"></div>
   <div class="wrap">
 
     <header class="masthead">

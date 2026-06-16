@@ -6,11 +6,9 @@
    the top of that file (presenter, talk metadata, contact links).
 
    What it does, in order:
-     • injects the top 6-colour spectrum bar
-     • draws the compass motif into cover / section / closing slides
      • fills every [data-contact] slot with icon links from DECK_CONFIG
      • initialises reveal.js (custom nav, no stock chrome) with plugins
-     • builds the persistent footer (logos · talk title · counter · buttons)
+     • builds the running head (current section) and persistent footer
      • builds the auto table-of-contents overlay from [data-toc] sections
      • keeps everything in sync on each slide change
 
@@ -22,7 +20,6 @@
 
   var CFG = window.DECK_CONFIG || {};
   CFG.links = CFG.links || {};
-  var SVGNS = "http://www.w3.org/2000/svg";
 
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
@@ -55,40 +52,6 @@
   }
   function tidyUrl(u) {
     return String(u || "").replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
-  }
-
-  /* -------------------------------------------------------------------------
-     Compass motif — a refined reading of the logo's sail/compass, drawn as
-     thin rays + concentric rings (currentColor) with four palette "sails".
-     ------------------------------------------------------------------------- */
-  function buildCompass() {
-    var cx = 200, cy = 200, parts = [];
-    // concentric rings, slightly offset like the mark
-    parts.push('<circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55"/>');
-    parts.push('<circle cx="206" cy="196" r="134" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".40"/>');
-    parts.push('<circle cx="195" cy="205" r="120" fill="none" stroke="currentColor" stroke-width="1"   opacity=".28"/>');
-    // radiating hairlines (some extend beyond the rings)
-    var rays = [[-58,182],[-30,168],[-9,205],[14,160],[40,150],[63,172],[120,158],[150,200],[182,150],[214,168],[250,150],[300,176]];
-    rays.forEach(function (r) {
-      var a = r[0] * Math.PI / 180, len = r[1];
-      parts.push('<line x1="200" y1="200" x2="' + (cx + len * Math.cos(a)).toFixed(1) + '" y2="' + (cy + len * Math.sin(a)).toFixed(1) + '" stroke="currentColor" stroke-width="1" opacity=".30"/>');
-    });
-    // four sails (thin triangles) in the brand colours — visible on light + dark
-    var sails = [
-      { a: -32, len: 196, w: 18, fill: "#009260", op: .9 },   // green, up-right (the signature sail)
-      { a: 58,  len: 150, w: 14, fill: "#cca352", op: .85 },  // gold, down-right
-      { a: 168, len: 138, w: 12, fill: "#44b8f2", op: .8 },   // sky, left
-      { a: 250, len: 120, w: 11, fill: "#f59c08", op: .82 }   // amber, down-left
-    ];
-    sails.forEach(function (s) {
-      var a = s.a * Math.PI / 180, p = a + Math.PI / 2;
-      var tx = cx + s.len * Math.cos(a), ty = cy + s.len * Math.sin(a);
-      var b1x = cx + s.w * Math.cos(p), b1y = cy + s.w * Math.sin(p);
-      var b2x = cx - s.w * Math.cos(p), b2y = cy - s.w * Math.sin(p);
-      parts.push('<path d="M' + tx.toFixed(1) + ' ' + ty.toFixed(1) + 'L' + b1x.toFixed(1) + ' ' + b1y.toFixed(1) + 'L' + b2x.toFixed(1) + ' ' + b2y.toFixed(1) + 'Z" fill="' + s.fill + '" opacity="' + s.op + '"/>');
-    });
-    parts.push('<circle cx="200" cy="200" r="4.5" fill="currentColor" opacity=".7"/>');
-    return '<div class="deck-compass" aria-hidden="true"><svg viewBox="0 0 400 400" xmlns="' + SVGNS + '">' + parts.join("") + "</svg></div>";
   }
 
   /* ---- contact links from DECK_CONFIG.links, into every [data-contact] slot */
@@ -134,6 +97,30 @@
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
   }
 
+  /* ---- running head (current section, like a book) ------------------------ */
+  var runhead, runSec;
+  var HERO = ["cover", "section", "closing", "statement", "media"];
+  function buildRunhead(reveal) {
+    runhead = elem('<div class="deck-runhead" aria-hidden="true"><span class="rh-sec"></span></div>');
+    reveal.appendChild(runhead);
+    runSec = runhead.querySelector(".rh-sec");
+  }
+  /* The running section is the latest section title / [data-toc] at or before the
+     current slide — resolved by scanning forward so TOC jumps stay correct. */
+  function sectionLabelFor(h) {
+    var hSlides = Reveal.getHorizontalSlides(), label = "";
+    for (var i = 0; i <= h && i < hSlides.length; i++) {
+      var sec = hSlides[i];
+      if (sec.classList.contains("section")) {
+        var t = sec.querySelector("h2");
+        label = (t ? t.textContent : sec.getAttribute("data-toc") || label).trim();
+      } else if (sec.getAttribute("data-toc")) {
+        label = sec.getAttribute("data-toc");
+      }
+    }
+    return label;
+  }
+
   /* ---- table-of-contents overlay ------------------------------------------ */
   var overlay, tocItems = [];
   function buildTOC(reveal) {
@@ -147,10 +134,12 @@
 
     var rows = entries.map(function (e, i) {
       var n = String(i + 1).padStart(2, "0");
+      var folio = String(e.h + 1).padStart(2, "0");
       return '<button class="toc-item" data-h="' + e.h + '">' +
                '<span class="toc-num">' + n + "</span>" +
                '<span class="toc-label">' + e.label + "</span>" +
-               (e.part ? '<span class="toc-dur">' + e.part + "</span>" : "<span></span>") +
+               '<span class="toc-dots" aria-hidden="true"></span>' +
+               '<span class="toc-folio">' + folio + "</span>" +
              "</button>";
     }).join("");
 
@@ -211,29 +200,24 @@
     if (footer) footer.classList.toggle("on-dark", isDark);
     var vp = document.querySelector(".reveal-viewport");
     if (vp) vp.classList.toggle("deck-dark", isDark);
+
+    // Running head: the current section on content slides; hidden on title pages.
+    if (runhead) {
+      var isHero = !!(cur && HERO.some(function (c) { return cur.classList.contains(c); }));
+      runhead.hidden = isHero;
+      if (!isHero && runSec) runSec.textContent = sectionLabelFor(h);
+    }
     markCurrentTOC();
   }
 
   /* ---- boot --------------------------------------------------------------- */
   /* Chrome that doesn't depend on slide content — safe to run before init. */
   function decorateChrome() {
-    document.body.appendChild(elem('<div class="deck-spectrum" aria-hidden="true"></div>'));
     if (CFG.talkTitle && !document.title.trim()) document.title = CFG.talkTitle;
   }
 
-  /* Per-slide decoration — MUST run after the Markdown plugin has converted
-     [data-markdown] sections, since it replaces section.innerHTML (which would
-     wipe a pre-injected compass) and only then exist the [data-contact] slots
-     and the cover/section/closing classes authored inside the Markdown. */
+  /* Per-slide decoration: fill every [data-contact] slot from DECK_CONFIG. */
   function decorateSlides() {
-    var heroes = document.querySelectorAll(
-      ".reveal .slides > section.cover, .reveal .slides > section.section, .reveal .slides > section.closing"
-    );
-    heroes.forEach(function (sec) {
-      if (sec.getAttribute("data-compass") === "off") return;
-      if (sec.querySelector(":scope > .deck-compass")) return; // idempotent
-      sec.insertBefore(elem(buildCompass()), sec.firstChild);
-    });
     document.querySelectorAll("[data-contact]").forEach(function (slot) {
       slot.classList.add("contact");
       slot.innerHTML = contactHTML();
@@ -273,18 +257,22 @@
     lightbox = elem(
       '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">' +
         '<button class="lightbox-close" aria-label="Close image">' + ICON.close + "</button>" +
-        '<img alt="">' +
+        '<figure class="lightbox-figure"><img alt=""><figcaption></figcaption></figure>' +
       "</div>"
     );
     document.body.appendChild(lightbox);
     lbImg = lightbox.querySelector("img");
+    var lbCap = lightbox.querySelector("figcaption");
     function closeLightbox() { lightbox.classList.remove("open"); lbImg.removeAttribute("src"); }
     imgs.forEach(function (img) {
       img.classList.add("is-zoomable");
       img.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();
+        var alt = img.getAttribute("alt") || "";
         lbImg.setAttribute("src", img.currentSrc || img.src);
-        lbImg.setAttribute("alt", img.getAttribute("alt") || "");
+        lbImg.setAttribute("alt", alt);
+        lbCap.textContent = alt;
+        lbCap.style.display = alt ? "" : "none";
         lightbox.classList.add("open");
       });
     });
@@ -318,8 +306,9 @@
       pdfSeparateFragments: false, pdfMaxPagesPerSlide: 1,
       plugins: revealPlugins()
     }).then(function () {
-      decorateSlides();   // after Markdown conversion (see decorateSlides)
+      decorateSlides();   // fill [data-contact] slots
       buildFooter(reveal);
+      buildRunhead(reveal);
       buildTOC(reveal);
       loadSkillEmbeds();
       buildLightbox();
@@ -346,7 +335,6 @@
 
   function revealPlugins() {
     var p = [];
-    if (window.RevealMarkdown) p.push(RevealMarkdown); // convert [data-markdown] first
     if (window.RevealHighlight) p.push(RevealHighlight);
     if (window.RevealNotes) p.push(RevealNotes);
     if (window.RevealZoom) p.push(RevealZoom);

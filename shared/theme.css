@@ -1,14 +1,16 @@
 /* =============================================================================
    AFRICA MULTIPLE · UNIVERSITÄT BAYREUTH — reveal.js deck theme
-   Light, editorial, refined-scholarly. Built on the official Bayreuth palette.
+   Editorial-archive: a scholarly print page, not a slide template.
+   Ink on warm paper, the Bayreuth palette spent sparingly, a newspaper-gothic
+   label voice (Libre Franklin) against a humanist book serif (EB Garamond).
 
    Contents
      1.  Design tokens (palette, neutrals, type scale, space, motion)
      2.  reveal.js variable contract + viewport frame
      3.  Slide canvas, typography & prose primitives
-     4.  Editorial components (kicker, rule, callout, stat, figure, cite)
+     4.  Editorial components (overline, note, ledger, figure, cite)
      5.  Layout classes (.cover .section .statement .cols .media .closing)
-     6.  Brand chrome injected by deck.js (footer, nav, progress, compass)
+     6.  Brand chrome injected by deck.js (running head, footer, progress)
      7.  Table-of-contents overlay
      8.  Code (light highlight.js token theme)
      9.  Fragments, transitions, motion
@@ -19,8 +21,9 @@
 
 /* ----------------------------------------------------------------------------
    1. DESIGN TOKENS
-   The six Bayreuth corporate colours, then a paper/ink neutral ramp tinted
-   toward the brand (warm paper, cool navy ink — a classic print pairing).
+   The six Bayreuth corporate colours, then a warm-paper / cool-ink neutral
+   ramp tinted toward the brand. Colour is the rare accent here, not the wash:
+   green is reserved for links, a single emphasis, and the folio/section marks.
    ---------------------------------------------------------------------------- */
 :root {
   /* — Bayreuth corporate palette (exact, as supplied) — */
@@ -32,25 +35,24 @@
   --navy:   #00268a;   /* Dunkelblau · structural deep colour  */
 
   /* derived, perceptually in OKLCH so the steps look even */
-  --green-deep:  color-mix(in oklch, var(--green), #0a1812 28%); /* AA green for small text/links */
+  --green-deep:  color-mix(in oklch, var(--green), #0a1812 30%); /* AA green for small text/links */
   --green-bright:color-mix(in oklch, var(--green), white 6%);
-  --navy-deep:   color-mix(in oklch, var(--navy), #05060f 22%);
-  --brown-deep:  color-mix(in oklch, var(--brown), #140a02 44%); /* AA brown for small text on paper/code */
+  --navy-deep:   color-mix(in oklch, var(--navy), #05060f 24%);
+  --brown-deep:  color-mix(in oklch, var(--brown), #140a02 44%); /* AA brown for small text on paper */
   --gold-bright: color-mix(in oklch, var(--gold), white 22%);    /* AA gold on dark slides */
-  --green-wash:  color-mix(in oklch, var(--green), var(--paper) 90%);
-  --navy-wash:   color-mix(in oklch, var(--navy),  var(--paper) 92%);
-  --amber-wash:  color-mix(in oklch, var(--amber), var(--paper) 88%);
-  --gold-wash:   color-mix(in oklch, var(--gold),  var(--paper) 84%);
+  --green-wash:  color-mix(in oklch, var(--green), var(--paper) 92%);
+  --navy-wash:   color-mix(in oklch, var(--navy),  var(--paper) 93%);
+  --amber-wash:  color-mix(in oklch, var(--amber), var(--paper) 90%);
 
-  /* — Neutrals: warm paper, cool ink — */
-  --paper:       oklch(0.984 0.007 92);   /* page / slide background      */
-  --panel:       oklch(0.996 0.003 92);   /* raised surfaces, near-white  */
-  --sunken:      oklch(0.958 0.011 88);   /* insets, code, table stripes  */
-  --line:        oklch(0.906 0.011 90);   /* hairlines                    */
-  --line-strong: oklch(0.836 0.016 86);   /* stronger dividers            */
+  /* — Neutrals: warm ivory paper, cool navy ink (a classic print pairing) — */
+  --paper:       oklch(0.974 0.013 88);   /* page / slide background      */
+  --panel:       oklch(0.988 0.007 88);   /* faintly raised surfaces      */
+  --sunken:      oklch(0.948 0.016 84);   /* insets, code, table stripes  */
+  --line:        oklch(0.884 0.014 86);   /* hairlines                    */
+  --line-strong: oklch(0.788 0.020 84);   /* stronger rules               */
   --ink:         oklch(0.252 0.021 258);  /* primary text                 */
-  --ink-soft:    oklch(0.448 0.024 258);  /* secondary text               */
-  --ink-faint:   oklch(0.602 0.020 256);  /* tertiary, captions, footer   */
+  --ink-soft:    oklch(0.440 0.024 258);  /* secondary text               */
+  --ink-faint:   oklch(0.582 0.020 256);  /* tertiary, captions, chrome   */
 
   /* — Semantic roles — */
   --accent:        var(--green);
@@ -59,27 +61,30 @@
   --accent-warm:   var(--brown);
   --highlight:     var(--amber);
 
-  /* — Type — */
-  --font-display: "Literata", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --font-body:    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* — Type — book serif for prose & display, news gothic for the label voice — */
+  --font-serif:   "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-label:   "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, "Cascadia Code", "SF Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+  --font-display: var(--font-serif);   /* compatibility aliases */
+  --font-body:    var(--font-serif);
 
-  /* Modular scale (rem @ 16px root; reveal's transform scales the canvas to fit) */
-  --fs-footer:  0.78rem;   /*  ~12px  footer / fine print     */
-  --fs-kicker:  0.82rem;   /*  ~13px  eyebrow labels          */
-  --fs-caption: 0.94rem;   /*  ~15px  captions, citations     */
-  --fs-small:   1.08rem;   /*  ~17px  asides                  */
-  --fs-body:    1.36rem;   /*  ~22px  body                    */
-  --fs-lead:    1.78rem;   /*  ~28px  lead paragraph          */
-  --fs-h3:      2.0rem;    /*  ~32px  sub-heading             */
-  --fs-h2:      3.0rem;    /*  ~48px  slide title             */
-  --fs-h1:      4.4rem;    /*  ~70px  cover title             */
-  --fs-section: 5.0rem;    /*  ~80px  section title           */
-  --fs-display: 4.8rem;    /*  ~77px  statement / big number  */
+  /* Modular scale (rem @ 16px root; reveal's transform scales the canvas to fit).
+     EB Garamond sets small, so the ramp runs a little larger than a grotesk. */
+  --fs-footer:  0.82rem;   /*  ~13px  footer / fine print     */
+  --fs-kicker:  0.80rem;   /*  ~13px  overline labels         */
+  --fs-caption: 1.00rem;   /*  ~16px  captions, citations     */
+  --fs-small:   1.18rem;   /*  ~19px  asides                  */
+  --fs-body:    1.50rem;   /*  ~24px  body                    */
+  --fs-lead:    1.95rem;   /*  ~31px  lead paragraph          */
+  --fs-h3:      2.15rem;   /*  ~34px  sub-heading             */
+  --fs-h2:      3.10rem;   /*  ~50px  slide title             */
+  --fs-h1:      4.60rem;   /*  ~74px  cover title             */
+  --fs-section: 5.20rem;   /*  ~83px  section title           */
+  --fs-display: 5.00rem;   /*  ~80px  statement / big number  */
 
-  --lh-tight: 1.06;
-  --lh-snug:  1.2;
-  --lh-body:  1.5;
+  --lh-tight: 1.04;
+  --lh-snug:  1.18;
+  --lh-body:  1.46;
   --track-label: 0.16em;   /* letter-spacing for uppercase labels */
 
   /* — Space (4pt scale, semantic) — */
@@ -87,11 +92,11 @@
   --space-md: 1rem;      --space-lg: 1.5rem;  --space-xl: 2rem;
   --space-2xl: 3rem;     --space-3xl: 4rem;
 
-  /* — Geometry — */
-  --radius-sm: 5px;  --radius-md: 9px;  --radius-lg: 16px;
+  /* — Geometry — small radii only; editorial surfaces lean on rules, not cards — */
+  --radius-sm: 4px;  --radius-md: 7px;  --radius-lg: 12px;
   --hair: 1px solid var(--line);
 
-  /* — Shadows: soft, navy-tinted, never pure black — */
+  /* — Shadows: soft, navy-tinted; used only for true overlays (lightbox, QR) — */
   --shadow-1: 0 1px 2px oklch(0.3 0.04 258 / 0.06), 0 2px 6px oklch(0.3 0.04 258 / 0.05);
   --shadow-2: 0 4px 12px oklch(0.3 0.04 258 / 0.08), 0 12px 34px oklch(0.3 0.04 258 / 0.10);
   --shadow-pop: 0 18px 50px oklch(0.25 0.04 258 / 0.22);
@@ -102,22 +107,22 @@
   --dur: 220ms;
 
   /* — Slide geometry — */
-  --slide-pad-x: 4.4rem;
-  --slide-pad-y: 3.2rem;
+  --slide-pad-x: 4.6rem;
+  --slide-pad-y: 3.7rem;
   --footer-h: 3rem;
 
   /* ----- reveal.js variable contract (replaces stock theme) ----- */
-  --r-background: oklch(0.27 0.022 258);                 /* frame around the slide */
+  --r-background: oklch(0.22 0.020 258);                 /* frame around the slide */
   --r-background-color: var(--paper);
-  --r-main-font: var(--font-body);
+  --r-main-font: var(--font-serif);
   --r-main-font-size: var(--fs-body);
   --r-main-color: var(--ink);
-  --r-block-margin: 0.85em;
+  --r-block-margin: 0.8em;
   --r-heading-margin: 0 0 0.5em 0;
-  --r-heading-font: var(--font-display);
+  --r-heading-font: var(--font-serif);
   --r-heading-color: var(--ink);
   --r-heading-line-height: var(--lh-tight);
-  --r-heading-letter-spacing: -0.012em;
+  --r-heading-letter-spacing: -0.006em;
   --r-heading-text-transform: none;
   --r-heading-text-shadow: none;
   --r-heading-font-weight: 600;
@@ -153,14 +158,14 @@
    3. CANVAS, TYPOGRAPHY & PROSE
    ---------------------------------------------------------------------------- */
 .reveal {
-  font-family: var(--font-body);
+  font-family: var(--font-serif);
   font-size: var(--r-main-font-size);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink);
   line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "kern", "liga", "calt";
-  letter-spacing: 0.002em;
+  letter-spacing: 0;
 }
 .reveal .slides { text-align: left; }
 
@@ -179,9 +184,9 @@
   overflow: visible;
 }
 
-/* Headings */
+/* Headings — book serif, real weight, optical letterfit */
 .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   color: var(--ink);
   line-height: var(--lh-tight);
   letter-spacing: var(--r-heading-letter-spacing);
@@ -190,207 +195,207 @@
   text-transform: none;
   text-wrap: balance;
 }
-.reveal h1 { font-size: var(--fs-h1); font-weight: 620; }
+.reveal h1 { font-size: var(--fs-h1); font-weight: 600; }
 .reveal h2 { font-size: var(--fs-h2); font-weight: 600; }
 .reveal h3 { font-size: var(--fs-h3); font-weight: 600; }
 .reveal h4 { font-size: var(--fs-lead); font-weight: 600; }
 
-/* The standard slide title: a green kicker can sit above it; a short rule below. */
-.reveal .slide-title { margin-bottom: var(--space-md); max-width: 22ch; }
-.reveal .slide-title::after {
-  content: "";
-  display: block;
-  width: 3.1rem;
-  height: 3px;
-  margin-top: var(--space-md);
-  background: var(--green);
-  border-radius: 3px;
-}
-.reveal .slide-title.no-rule::after { display: none; }
+/* The standard slide title. No decorative rule beneath it — the type carries it.
+   (.no-rule kept as a harmless no-op so existing decks stay valid.) */
+.reveal .slide-title { margin-bottom: var(--space-lg); max-width: 24ch; }
+.reveal .slide-title.no-rule { }
 
 /* Prose */
-.reveal p { margin: 0 0 var(--r-block-margin); max-width: 60ch; text-wrap: pretty; }
-.reveal .lead { font-size: var(--fs-lead); line-height: 1.34; color: var(--ink); max-width: 28ch; font-weight: 360; }
+.reveal p { margin: 0 0 var(--r-block-margin); max-width: 62ch; text-wrap: pretty; }
+.reveal .lead {
+  font-size: var(--fs-lead); line-height: 1.3; color: var(--ink);
+  max-width: 30ch; font-weight: 480; letter-spacing: -0.004em;
+}
 .reveal .muted { color: var(--ink-soft); }
 .reveal small, .reveal .small { font-size: var(--fs-small); }
 
-.reveal strong, .reveal b { font-weight: 680; color: var(--ink); }
-/* On the dark layouts the default ink <strong> is illegible on the gradient —
-   lift emphasised words to paper so they stay readable. */
+.reveal strong, .reveal b { font-weight: 700; color: var(--ink); }
+/* On the dark layouts the default ink <strong> is illegible — lift it to paper. */
 .reveal section.section strong, .reveal section.section b,
 .reveal section.closing strong, .reveal section.closing b,
 .reveal section.media strong, .reveal section.media b { color: var(--paper); }
 .reveal em, .reveal i { font-style: italic; }
 /* Inline highlight — a warm wash behind a phrase, not a stripe */
 .reveal mark, .reveal .hl {
-  background: linear-gradient(transparent 62%, color-mix(in oklch, var(--amber), white 38%) 62%);
+  background: linear-gradient(transparent 60%, color-mix(in oklch, var(--gold), white 30%) 60%);
   color: inherit; padding: 0 0.06em; border-radius: 1px;
 }
 .reveal .accent { color: var(--green-deep); }
 .reveal .accent-navy { color: var(--navy); }
 
-/* Links */
+/* Links — green is functional wayfinding, so it earns its keep here */
 .reveal a {
   color: var(--green-deep);
   text-decoration: none;
-  text-underline-offset: 0.18em;
-  text-decoration-color: color-mix(in oklch, var(--green), transparent 55%);
-  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.16em;
+  text-decoration-color: color-mix(in oklch, var(--green), transparent 58%);
+  text-decoration-thickness: 1px;
   transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
 .reveal a:hover { color: var(--green); text-decoration-line: underline; text-decoration-color: var(--green); }
 
-/* Lists — custom green markers, generous rhythm */
-.reveal ul, .reveal ol { display: block; margin: 0 0 var(--r-block-margin); padding: 0; max-width: 54ch; }
+/* Lists — hanging em-dash markers in faint ink (no colour sprinkle) */
+.reveal ul, .reveal ol { display: block; margin: 0 0 var(--r-block-margin); padding: 0; max-width: 56ch; }
 .reveal ul { list-style: none; }
-.reveal ul > li { position: relative; padding-left: 1.5em; margin: 0 0 0.52em; }
+.reveal ul > li { position: relative; padding-left: 1.5em; margin: 0 0 0.5em; }
 .reveal ul > li::before {
-  content: "";
-  position: absolute; left: 0; top: 0.62em;
-  width: 0.62em; height: 3px; border-radius: 2px;
-  background: var(--green);
+  content: "\2014";          /* em dash */
+  position: absolute; left: 0; top: 0;
+  color: var(--ink-faint); font-weight: 500;
 }
-/* Use the native `list-item` counter (not a custom one) so the HTML start=""
-   attribute is honoured — a 5-item list split across two columns can set the
-   second <ol start="4"> and continue 04, 05 instead of restarting at 01. */
+/* Use the native `list-item` counter so the HTML start="" attribute is honoured
+   (a 5-item list split across two columns can continue 04, 05, not restart). */
 .reveal ol { list-style: none; }
-.reveal ol > li { position: relative; padding-left: 1.9em; margin: 0 0 0.52em; }
+.reveal ol > li { position: relative; padding-left: 2em; margin: 0 0 0.5em; }
 .reveal ol > li::before {
   content: counter(list-item, decimal-leading-zero);
-  position: absolute; left: 0; top: 0.04em;
-  font-family: var(--font-mono); font-size: 0.7em; font-weight: 600;
-  color: var(--green-deep); letter-spacing: 0.02em;
+  position: absolute; left: 0; top: 0.34em;
+  font-family: var(--font-label); font-size: 0.62em; font-weight: 600;
+  color: var(--ink-soft); letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
 }
 .reveal li::marker { content: none; }
-.reveal li ul, .reveal li ol { margin: 0.5em 0 0; }
-.reveal li ul > li::before { background: var(--gold); }
+.reveal li ul, .reveal li ol { margin: 0.45em 0 0; }
+.reveal li ul > li::before { content: "\2013"; color: var(--brown-deep); }  /* en dash, warm */
 
-/* Blockquote / pull quote */
+/* Blockquote / pull quote — the serif's italic is the whole effect */
 .reveal blockquote {
   border: none; box-shadow: none; background: none;
-  font-family: var(--font-display); font-style: italic;
-  font-size: var(--fs-lead); line-height: 1.34; color: var(--ink);
-  margin: var(--space-md) 0; padding: 0; max-width: 30ch; font-weight: 420;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: var(--fs-lead); line-height: 1.3; color: var(--ink);
+  margin: var(--space-md) 0; padding: 0; max-width: 32ch; font-weight: 480;
 }
 .reveal blockquote p { max-width: none; margin: 0; }
 
-/* Tables */
+/* Tables — gothic small-caps headers, hairline ruling, neutral zebra */
 .reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-caption); width: 100%; }
 .reveal table th, .reveal table td { text-align: left; padding: 0.5em 0.9em; border: none; border-bottom: var(--hair); }
 .reveal table th {
-  font-family: var(--font-body); font-weight: 680; color: var(--navy);
-  text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.82em;
-  border-bottom: 2px solid var(--line-strong);
+  font-family: var(--font-label); font-weight: 600; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74em;
+  border-bottom: 1.5px solid var(--line-strong);
 }
-.reveal table tbody tr:nth-child(even) { background: var(--green-wash); }
+.reveal table tbody tr:nth-child(even) { background: color-mix(in oklch, var(--sunken), transparent 35%); }
 .reveal table td.num, .reveal table th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* Images / figures */
+/* Images / figures — a thin plate border, not a soft drop shadow */
 .reveal img { max-width: 100%; height: auto; display: block; }
 .reveal figure { margin: 0; }
-.reveal figure img { border-radius: var(--radius-md); box-shadow: var(--shadow-2); }
+.reveal figure img { border-radius: var(--radius-sm); border: 1px solid var(--line-strong); }
 .reveal figcaption {
   font-size: var(--fs-caption); color: var(--ink-soft); margin-top: var(--space-sm);
-  line-height: 1.4; max-width: 50ch;
+  line-height: 1.4; max-width: 52ch; font-style: italic;
 }
 
 /* ----------------------------------------------------------------------------
    4. EDITORIAL COMPONENTS
    ---------------------------------------------------------------------------- */
-/* Kicker / eyebrow — the small green uppercase label above a title */
+/* Overline / eyebrow — a quiet gothic small-caps label. Neutral by default;
+   the warm/navy variants tint only when a slide genuinely needs categorising. */
 .reveal .kicker {
-  display: inline-flex; align-items: center; gap: 0.6em;
-  font-family: var(--font-body); font-weight: 680;
+  display: block;
+  font-family: var(--font-label); font-weight: 600;
   font-size: var(--fs-kicker); text-transform: uppercase;
-  letter-spacing: var(--track-label); color: var(--green-deep);
-  margin: 0 0 var(--space-md);
+  letter-spacing: var(--track-label); color: var(--ink-faint);
+  margin: 0 0 var(--space-sm);
 }
-.reveal .kicker::before {
-  content: ""; width: 1.6em; height: 2px; background: var(--green); border-radius: 2px;
-}
-.reveal .kicker.warm { color: var(--brown-deep); } .reveal .kicker.warm::before { background: var(--brown); }
-.reveal .kicker.navy { color: var(--navy); }  .reveal .kicker.navy::before  { background: var(--navy); }
+.reveal .kicker.warm { color: var(--brown-deep); }
+.reveal .kicker.navy { color: var(--navy); }
+.reveal .kicker.green { color: var(--green-deep); }
 
-/* Callout — full panel, tinted, hairline border. NO side-stripe. */
+/* Editorial note — a ruled aside, not a tinted takeaway box. A hairline above,
+   a gothic label, serif body. No card, no shadow, no side-stripe. */
 .reveal .callout {
-  background: var(--green-wash);
-  border: var(--hair); border-color: color-mix(in oklch, var(--green), var(--paper) 64%);
-  border-radius: var(--radius-md);
-  padding: var(--space-md) var(--space-lg);
-  margin: var(--space-md) 0; font-size: var(--fs-small);
-  box-shadow: var(--shadow-1);
+  border-top: 1.5px solid var(--line-strong);
+  padding: var(--space-sm) 0 0;
+  margin: var(--space-lg) 0 var(--space-md);
+  font-size: var(--fs-small); max-width: 60ch;
 }
 .reveal .callout .callout-label {
-  display: block; font-family: var(--font-body); font-weight: 700;
+  display: block; font-family: var(--font-label); font-weight: 600;
   font-size: var(--fs-footer); text-transform: uppercase; letter-spacing: var(--track-label);
-  color: var(--green-deep); margin-bottom: 0.3em;
+  color: var(--ink-soft); margin-bottom: 0.3em;
 }
-.reveal .callout.warm { background: var(--amber-wash); border-color: color-mix(in oklch, var(--brown), var(--paper) 62%); }
+.reveal .callout.warm { border-top-color: color-mix(in oklch, var(--brown), var(--line-strong) 40%); }
 .reveal .callout.warm .callout-label { color: var(--brown-deep); }
-.reveal .callout.navy { background: var(--navy-wash); border-color: color-mix(in oklch, var(--navy), var(--paper) 80%); }
+.reveal .callout.navy { border-top-color: color-mix(in oklch, var(--navy), var(--line-strong) 55%); }
 .reveal .callout.navy .callout-label { color: var(--navy); }
 
-/* Stat — editorial figure, not the hero-metric cliché */
-.reveal .stat { display: flex; flex-direction: column; gap: 0.1em; }
+/* Stat — an editorial figure. Big serif numeral, gothic label. */
+.reveal .stat { display: flex; flex-direction: column; gap: 0.05em; }
 .reveal .stat .stat-num {
-  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-h2);
-  line-height: 0.95; color: var(--green-deep); font-variant-numeric: lining-nums tabular-nums;
+  font-family: var(--font-serif); font-weight: 600; font-size: var(--fs-h2);
+  line-height: 0.96; color: var(--ink); font-variant-numeric: lining-nums tabular-nums;
 }
-.reveal .stat .stat-label { font-size: var(--fs-caption); color: var(--ink-soft); max-width: 22ch; }
+.reveal .stat .stat-label {
+  font-family: var(--font-label); font-size: var(--fs-footer); color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.1em; max-width: 22ch;
+}
 
-/* Compact figure grid for an "In numbers" panel */
-.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md) var(--space-lg); margin-top: var(--space-md); }
-.reveal .stat-grid .stat-num { font-size: var(--fs-h3); }
-.reveal .stat-grid .stat-label { max-width: none; }
+/* Figure ledger — the "in figures" panel as a ruled index: label left, figure
+   right, hairline between rows. Reads like a colophon, not a stat-card grid. */
+.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-2xl); margin-top: var(--space-sm); }
+.reveal .stat-grid .stat {
+  flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--space-md);
+  padding: 0.5em 0; border-bottom: var(--hair);
+}
+.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; }
+.reveal .stat-grid .stat .stat-label { order: 1; max-width: none; align-self: center; }
 
 /* Citation line / source */
 .reveal .cite, .reveal .source {
   font-size: var(--fs-caption); color: var(--ink-faint); font-style: italic;
 }
 
-/* Chips / tags */
+/* Chips / tags — gothic small-caps, hairline outline */
 .reveal .chip {
-  display: inline-block; font-family: var(--font-body); font-size: var(--fs-footer);
-  font-weight: 600; letter-spacing: 0.02em;
-  padding: 0.22em 0.7em; border-radius: 999px;
-  background: var(--panel); border: var(--hair); color: var(--ink-soft);
+  display: inline-block; font-family: var(--font-label); font-size: var(--fs-footer);
+  font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.2em 0.6em; border-radius: var(--radius-sm);
+  background: transparent; border: var(--hair); color: var(--ink-soft);
 }
-.reveal .chip.green { background: var(--green-wash); border-color: color-mix(in oklch,var(--green),var(--paper) 60%); color: var(--green-deep); }
+.reveal .chip.green { border-color: color-mix(in oklch, var(--green), var(--paper) 50%); color: var(--green-deep); }
 
-/* Query-mix list — plain-language asks, each mapped to a subset + its facets.
-   Used on the MCP-server slide to show the combinatorial reach. */
-.reveal .query-list { list-style: none; margin: 0 0 var(--space-md); padding: 0; max-width: none; display: grid; gap: var(--space-sm); }
+/* Query-mix list — plain-language asks, divided by hairlines (no per-item card). */
+.reveal .query-list { list-style: none; margin: 0 0 var(--space-md); padding: 0; max-width: none; display: grid; gap: 0; }
 .reveal .query-list > li {
-  margin: 0; padding: var(--space-sm) var(--space-md);
-  display: grid; gap: 0.34em;
-  background: var(--panel); border: var(--hair); border-radius: var(--radius-md); box-shadow: var(--shadow-1);
+  margin: 0; padding: var(--space-sm) 0;
+  display: grid; gap: 0.28em;
+  border-bottom: var(--hair);
 }
+.reveal .query-list > li:first-child { border-top: var(--hair); }
 .reveal .query-list > li::before { content: none; }
 .reveal .query-list .q {
-  font-family: var(--font-display); font-style: italic; font-weight: 440;
-  font-size: var(--fs-body); line-height: 1.22; color: var(--ink);
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-body); line-height: 1.24; color: var(--ink);
 }
-.reveal .query-list .q strong { font-style: normal; font-weight: 720; }
+.reveal .query-list .q strong { font-style: normal; font-weight: 700; }
 .reveal .query-list .q-map {
   display: flex; align-items: center; gap: 0.6em;
-  font-family: var(--font-body); font-size: var(--fs-caption); color: var(--ink-faint); letter-spacing: 0.01em;
+  font-family: var(--font-label); font-size: var(--fs-footer); text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-faint);
 }
 
-/* Two-depth chooser — the skill's Brief / Extended modes, as a pair of compact
-   cards (used on the five-phase slide). .is-full marks the path shown below. */
+/* Two-depth chooser — Brief / Extended, as a pair of hairline-bordered blocks.
+   No side-stripe: the active path is marked by a full green hairline + label. */
 .reveal .depths { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); max-width: none; margin: 0 0 var(--space-md); }
 .reveal .depth {
-  display: flex; flex-direction: column; gap: 0.08em;
-  padding: var(--space-xs) var(--space-md);
-  background: var(--panel); border: var(--hair); border-left: 3px solid var(--line-strong);
-  border-radius: var(--radius-md); box-shadow: var(--shadow-1);
+  display: flex; flex-direction: column; gap: 0.1em;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent; border: 1px solid var(--line);
+  border-radius: var(--radius-md);
 }
-.reveal .depth.is-full { border-left-color: var(--green); }
-.reveal .depth .depth-name { font-family: var(--font-body); font-weight: 720; font-size: var(--fs-small); color: var(--ink); letter-spacing: 0.01em; }
+.reveal .depth.is-full { border-color: color-mix(in oklch, var(--green), var(--paper) 38%); background: var(--green-wash); }
+.reveal .depth .depth-name { font-family: var(--font-serif); font-weight: 700; font-size: var(--fs-small); color: var(--ink); }
 .reveal .depth.is-full .depth-name { color: var(--green-deep); }
 .reveal .depth .depth-tag {
-  font-size: var(--fs-footer); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--ink-faint); border: var(--hair); border-radius: 999px; padding: 0.02em 0.5em; margin-left: 0.45em; vertical-align: 0.12em;
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-faint); margin-left: 0.5em; vertical-align: 0.08em;
 }
 .reveal .depth .depth-desc { font-size: var(--fs-caption); color: var(--ink-soft); }
 
@@ -407,98 +412,93 @@
 
 /* `.balance` — opt-in helper to vertically centre a sparse content slide.
    reveal forces display:block inline on the present slide, which defeats the
-   section's flex layout, so re-assert it with !important here. The .cols reset
-   stops a column row from stretching the centred group back open. */
+   section's flex layout, so re-assert it with !important here. */
 .reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
 .reveal section.balance .cols { flex: 0 0 auto; }
 
-/* --- COVER ------------------------------------------------------------------ */
+/* --- COVER --- a journal masthead: gothic event line, big serif title -------- */
 .reveal section.cover { padding-right: 6rem; }
 .reveal section.cover .eyebrow {
-  font-family: var(--font-body); font-weight: 700; text-transform: none;
-  letter-spacing: 0.01em; font-size: var(--fs-caption); color: var(--green-deep);
-  max-width: 42ch; margin-bottom: var(--space-lg);
-}
-/* a short green tick anchors the longer event line */
-.reveal section.cover .eyebrow::before {
-  content: ""; display: inline-block; width: 1.6em; height: 2px; vertical-align: 0.28em;
-  margin-right: 0.7em; background: var(--green); border-radius: 2px;
+  font-family: var(--font-label); font-weight: 600; text-transform: uppercase;
+  letter-spacing: var(--track-label); font-size: var(--fs-kicker); color: var(--ink-soft);
+  max-width: 52ch; margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md); border-bottom: 1px solid var(--line-strong);
 }
 .reveal section.cover h1 {
-  font-size: var(--fs-h1); font-weight: 640; letter-spacing: -0.018em;
-  max-width: 18ch; margin-bottom: var(--space-md);
+  font-size: var(--fs-h1); font-weight: 600; letter-spacing: -0.012em;
+  max-width: 19ch; margin-bottom: var(--space-md);
 }
 .reveal section.cover .subtitle {
-  font-family: var(--font-display); font-style: italic; font-weight: 380;
-  font-size: var(--fs-lead); color: var(--ink-soft); max-width: 34ch; margin-bottom: var(--space-xl);
+  font-family: var(--font-serif); font-style: italic; font-weight: 480;
+  font-size: var(--fs-lead); color: var(--ink-soft); max-width: 38ch; margin-bottom: var(--space-xl);
 }
-.reveal .byline { display: flex; flex-direction: column; gap: 0.15em; }
-.reveal .byline .name { font-weight: 720; font-size: var(--fs-small); color: var(--ink); letter-spacing: 0.01em; }
-.reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); max-width: 46ch; }
+.reveal .byline { display: flex; flex-direction: column; gap: 0.12em; }
+.reveal .byline .name { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small); color: var(--ink); letter-spacing: 0.01em; }
+.reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); font-style: italic; max-width: 46ch; }
 
 /* Contact row (built by deck.js from DECK_CONFIG.links) */
-.reveal .contact { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-lg); margin-top: var(--space-lg); }
+.reveal .contact { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); }
 .reveal .contact a {
   display: inline-flex; align-items: center; gap: 0.5em;
-  font-size: var(--fs-caption); color: var(--ink-soft); font-weight: 500;
+  font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft); font-weight: 500;
   text-decoration: none;
 }
 .reveal .contact a:hover { color: var(--green-deep); }
-.reveal .contact a svg, .reveal .contact a img { width: 1.15em; height: 1.15em; flex: none; }
-.reveal .contact a .ico { color: var(--green-deep); display: inline-flex; }
+.reveal .contact a svg, .reveal .contact a img { width: 1.1em; height: 1.1em; flex: none; }
+.reveal .contact a .ico { color: var(--ink-faint); display: inline-flex; }
+.reveal .contact a:hover .ico { color: var(--green-deep); }
 
 /* --- Institution wordmark on hero slides (cover + closing) ------------------ */
 .reveal section.cover .org-logo,
 .reveal section.closing .org-logo {
-  /* align-self:flex-start stops the flex column (align-items:stretch) from
-     stretching this <img> to full width — which made the SVG wordmark centre
-     itself mid-slide instead of sitting at the left. */
   display: block; align-self: flex-start;
   height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
 }
-/* closing is dark → render the black wordmark in white */
-.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
+.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.82; }
 
-/* --- SECTION DIVIDER -------------------------------------------------------- */
+/* --- SECTION DIVIDER --- a printed half-title page: deep field, gold plate rule */
 .reveal section.section {
   --r-main-color: var(--paper);
   color: var(--paper);
-  background:
-    radial-gradient(130% 120% at 100% 0%, var(--navy) 0%, var(--navy-deep) 70%);
+  background: linear-gradient(178deg, color-mix(in oklch, var(--navy), var(--navy-deep) 30%) 0%, var(--navy-deep) 100%);
+}
+.reveal section.section::before {
+  content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  top: var(--slide-pad-y); height: 2px; background: var(--gold); opacity: 0.85;
 }
 .reveal section.section .sec-no {
-  font-family: var(--font-mono); font-weight: 500; font-size: var(--fs-lead);
-  letter-spacing: 0.1em; color: var(--gold); margin-bottom: var(--space-md);
+  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--space-md);
 }
 .reveal section.section h2 {
   color: var(--paper); font-size: var(--fs-section); font-weight: 600;
-  letter-spacing: -0.02em; max-width: 18ch; margin: 0;
+  letter-spacing: -0.014em; max-width: 18ch; margin: 0;
 }
 .reveal section.section .sec-sub {
-  color: color-mix(in oklch, var(--paper), var(--navy) 22%);
-  font-family: var(--font-display); font-style: italic; font-size: var(--fs-lead);
-  margin-top: var(--space-md); max-width: 36ch; font-weight: 360;
+  color: color-mix(in oklch, var(--paper), var(--navy) 26%);
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
+  margin-top: var(--space-md); max-width: 38ch; font-weight: 480;
 }
-.reveal section.section .slide-title::after { background: var(--gold); }
 
 /* Green variant of the divider */
 .reveal section.section.green {
-  background: radial-gradient(130% 120% at 100% 0%, var(--green-deep) 0%, color-mix(in oklch, var(--green-deep), #03110b 32%) 78%);
+  background: linear-gradient(178deg, var(--green-deep) 0%, color-mix(in oklch, var(--green-deep), #03110b 36%) 100%);
 }
-.reveal section.section.green .sec-no { color: var(--paper); opacity: 0.82; }
+.reveal section.section.green::before { background: var(--gold-bright); }
+.reveal section.section.green .sec-no { color: var(--gold-bright); }
 
 /* --- STATEMENT (big quote / claim) ----------------------------------------- */
 .reveal section.statement .statement-body {
-  font-family: var(--font-display); font-weight: 480; font-style: normal;
-  font-size: var(--fs-display); line-height: 1.04; letter-spacing: -0.018em;
-  color: var(--ink); max-width: 19ch; text-wrap: balance;
+  font-family: var(--font-serif); font-weight: 500; font-style: normal;
+  font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.012em;
+  color: var(--ink); max-width: 20ch; text-wrap: balance;
 }
 .reveal section.statement .statement-body .accent { color: var(--green-deep); }
 .reveal section.statement .attribution {
-  margin-top: var(--space-xl); font-family: var(--font-body); font-style: normal;
+  margin-top: var(--space-xl); font-family: var(--font-label); font-style: normal;
   font-size: var(--fs-small); color: var(--ink-soft); font-weight: 500;
 }
-.reveal section.statement.quote .statement-body { font-style: italic; font-weight: 420; }
+.reveal section.statement.quote .statement-body { font-style: italic; font-weight: 480; }
 .reveal section.statement.quote .statement-body::before {
   content: "\201C"; font-size: 1.1em; color: var(--gold); line-height: 0;
   margin-right: 0.06em; vertical-align: -0.18em;
@@ -512,68 +512,88 @@
 .reveal .col { min-width: 0; }
 .reveal .col > h3 { margin-bottom: var(--space-sm); }
 .reveal .col-head {
-  font-family: var(--font-body); font-weight: 700; font-size: var(--fs-kicker);
-  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--green-deep);
+  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-kicker);
+  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-soft);
   padding-bottom: var(--space-xs); margin-bottom: var(--space-md);
-  border-bottom: 2px solid color-mix(in oklch, var(--green), var(--paper) 55%);
+  border-bottom: 1.5px solid var(--line-strong);
 }
-.reveal .col-head.alt { color: var(--brown-deep); border-bottom-color: color-mix(in oklch, var(--brown), var(--paper) 50%); }
+.reveal .col-head.alt { color: var(--brown-deep); border-bottom-color: color-mix(in oklch, var(--brown), var(--line-strong) 45%); }
 
-/* Panel — a soft surface for grouping (no nested cards) */
+/* Panel — a ruled sidebar for grouping (a top rule, not a card) */
 .reveal .panel {
-  background: var(--panel); border: var(--hair); border-radius: var(--radius-lg);
-  padding: var(--space-md) var(--space-lg); box-shadow: var(--shadow-1);
+  background: transparent; border: none; border-top: 2px solid var(--ink);
+  border-radius: 0; padding: var(--space-md) 0 0;
 }
-.reveal .panel.sunken { background: var(--sunken); box-shadow: none; }
+.reveal .panel.sunken { background: var(--sunken); border-top: none; border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
 
 /* --- MEDIA / FULL-BLEED IMAGE ---------------------------------------------- */
 .reveal section.media { padding: 0; }
 .reveal section.media .media-fill { position: absolute; inset: 0; overflow: hidden; }
-.reveal section.media .media-fill img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: none; }
+.reveal section.media .media-fill img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: none; }
 .reveal section.media .media-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, oklch(0.18 0.03 258 / 0.86) 0%, oklch(0.18 0.03 258 / 0.5) 38%, transparent 70%);
+  background: linear-gradient(90deg, oklch(0.16 0.03 258 / 0.88) 0%, oklch(0.16 0.03 258 / 0.5) 40%, transparent 72%);
 }
 .reveal section.media .media-caption {
   position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 30ch;
+  bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 32ch;
 }
 .reveal section.media .media-caption h2 { color: var(--paper); }
 .reveal section.media .media-caption .kicker { color: var(--gold); }
-.reveal section.media .media-caption .kicker::before { background: var(--gold); }
 
 /* Image + caption side layout */
 .reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-2xl); align-items: center; flex: 1; min-height: 0; }
 .reveal .figrow.flip { grid-template-columns: 1fr 1.1fr; }
-.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: cover; }
+.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: cover; border: 1px solid var(--line-strong); }
 
 /* --- CLOSING / CONTACT ------------------------------------------------------ */
 .reveal section.closing {
   --r-main-color: var(--paper); color: var(--paper);
-  background: radial-gradient(130% 130% at 0% 100%, color-mix(in oklch, var(--green-deep), #03120c 34%) 0%, var(--navy-deep) 82%);
+  background: linear-gradient(160deg, color-mix(in oklch, var(--green-deep), #03120c 30%) 0%, var(--navy-deep) 84%);
 }
-.reveal section.closing h2 { color: var(--paper); font-size: var(--fs-h1); max-width: 16ch; }
-.reveal section.closing h2::after { background: var(--gold); }
-.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), var(--navy) 16%); }
-.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), var(--navy) 14%); }
+.reveal section.closing::before {
+  content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  top: var(--slide-pad-y); height: 2px; background: var(--gold); opacity: 0.7;
+}
+.reveal section.closing h2 { color: var(--paper); font-size: var(--fs-h1); max-width: 17ch; }
+.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), var(--navy) 18%); }
+.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), var(--navy) 16%); }
 .reveal section.closing .contact a:hover { color: var(--paper); }
 .reveal section.closing .contact a .ico { color: var(--gold); }
 .reveal section.closing .kicker { color: var(--gold-bright); }
-.reveal section.closing .kicker::before { background: var(--gold); }
 .reveal section.closing p a { color: var(--gold-bright); text-decoration-color: color-mix(in oklch, var(--gold), transparent 50%); }
 .reveal section.closing p a:hover { color: var(--paper); text-decoration-color: var(--paper); }
 .reveal section.closing .byline .name { color: var(--paper); }
-.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), var(--navy) 24%); }
+.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), var(--navy) 26%); }
 
 /* ----------------------------------------------------------------------------
    6. BRAND CHROME (injected by deck.js)
+   A running head at the top (the section, like a book), the imprint + nav at
+   the foot. No spectrum bar, no compass — the frame is typographic.
    ---------------------------------------------------------------------------- */
-/* Persistent footer */
+/* Running head — current section, small-caps, with a hairline beneath. Sits in
+   the top padding of content slides; deck.js hides it on the hero/title pages. */
+.deck-runhead {
+  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  top: 1.25rem; height: 1.3rem; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  pointer-events: none; font-family: var(--font-label); font-size: 0.74rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-faint);
+}
+.deck-runhead::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 1.25rem;
+  height: 1px; background: var(--line);
+}
+.deck-runhead .rh-sec { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; }
+.deck-runhead .rh-mark { color: var(--green-deep); flex: none; }
+.deck-runhead[hidden] { display: none; }
+
+/* Persistent footer (imprint + navigation) */
 .deck-footer {
   position: absolute; left: 0; right: 0; bottom: 0; height: var(--footer-h); z-index: 30;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--slide-pad-x); pointer-events: none;
-  font-family: var(--font-body); color: var(--ink-soft); font-size: var(--fs-footer);
+  font-family: var(--font-label); color: var(--ink-soft); font-size: var(--fs-footer);
 }
 .deck-footer::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x); top: 0;
@@ -581,20 +601,23 @@
 }
 .deck-footer .foot-left { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
 .deck-footer .foot-left img { height: 1.15rem; width: auto; opacity: 0.9; }
-.deck-footer .foot-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46ch; letter-spacing: 0.01em; }
+.deck-footer .foot-title {
+  min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.92em; color: var(--ink-faint);
+}
 .deck-footer .foot-title b { color: var(--ink-soft); font-weight: 600; }
 
 /* footer chrome inverts on dark slides */
-.reveal section.section ~ .deck-footer, /* (fallback) */
 .deck-footer.on-dark { color: color-mix(in oklch, var(--paper), transparent 35%); }
-.deck-footer.on-dark::before { background: color-mix(in oklch, var(--paper), transparent 78%); }
-.deck-footer.on-dark .foot-title b { color: color-mix(in oklch, var(--paper), transparent 12%); }
+.deck-footer.on-dark::before { background: color-mix(in oklch, var(--paper), transparent 80%); }
+.deck-footer.on-dark .foot-title { color: color-mix(in oklch, var(--paper), transparent 40%); }
+.deck-footer.on-dark .foot-title b { color: color-mix(in oklch, var(--paper), transparent 14%); }
 .deck-footer.on-dark .foot-left img { filter: brightness(0) invert(1); opacity: 0.85; }
 
 /* Navigation cluster (right side of footer) */
-.deck-nav { display: flex; align-items: center; gap: 0.4rem; pointer-events: auto; }
+.deck-nav { display: flex; align-items: center; gap: 0.4rem; pointer-events: auto; flex: none; }
 .deck-nav .counter {
-  font-family: var(--font-mono); font-size: var(--fs-footer); letter-spacing: 0.04em;
+  font-family: var(--font-label); font-size: var(--fs-footer); letter-spacing: 0.1em;
   color: inherit; margin-right: 0.4rem; font-variant-numeric: tabular-nums;
 }
 .deck-nav .counter .cur { color: var(--green-deep); font-weight: 600; }
@@ -602,112 +625,98 @@
 .deck-btn {
   -webkit-appearance: none; appearance: none; cursor: pointer;
   display: inline-grid; place-items: center; width: 2rem; height: 2rem;
-  border-radius: var(--radius-sm); border: var(--hair); background: var(--panel);
+  border-radius: var(--radius-sm); border: var(--hair); background: transparent;
   color: var(--ink-soft); padding: 0; transition: all var(--dur) var(--ease);
 }
 .deck-btn svg { width: 1.05rem; height: 1.05rem; }
 .deck-btn:hover { color: var(--green-deep); border-color: color-mix(in oklch, var(--green), var(--paper) 45%); background: var(--green-wash); transform: translateY(-1px); }
 .deck-btn:active { transform: translateY(0); }
-.deck-btn:disabled { opacity: 0.32; cursor: default; transform: none; background: var(--panel); border-color: var(--line); color: var(--ink-faint); }
+.deck-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: var(--line); color: var(--ink-faint); }
 .deck-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-.deck-btn.toc-btn { display: inline-flex; align-items: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-body); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.04em; }
+.deck-btn.toc-btn { display: inline-flex; align-items: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.08em; text-transform: uppercase; }
 .deck-btn.toc-btn svg { width: 0.95rem; height: 0.95rem; flex: none; }
 .deck-footer.on-dark .deck-btn {
-  background: color-mix(in oklch, var(--paper), transparent 88%);
-  border-color: color-mix(in oklch, var(--paper), transparent 72%);
+  background: color-mix(in oklch, var(--paper), transparent 90%);
+  border-color: color-mix(in oklch, var(--paper), transparent 74%);
   color: color-mix(in oklch, var(--paper), transparent 18%);
 }
-.deck-footer.on-dark .deck-btn:hover { background: color-mix(in oklch, var(--paper), transparent 78%); color: var(--paper); border-color: var(--gold); }
+.deck-footer.on-dark .deck-btn:hover { background: color-mix(in oklch, var(--paper), transparent 80%); color: var(--paper); border-color: var(--gold); }
 
-/* Progress bar (reveal built-in, restyled) */
-.reveal .progress { height: 3px; color: var(--green); background: color-mix(in oklch, var(--ink), transparent 90%); }
+/* Progress bar (reveal built-in, restyled to a quiet 2px hairline) */
+.reveal .progress { height: 2px; color: var(--green); background: color-mix(in oklch, var(--ink), transparent 92%); }
 .reveal .progress span { background: var(--green); transition: width 320ms var(--ease); }
 
 /* Hide reveal's default controls + slide number (we provide our own) */
 .reveal .controls { display: none; }
 .reveal .slide-number { display: none; }
 
-/* Top brand bar — a thin 6-colour spectrum from the palette, the signature line */
-.deck-spectrum {
-  position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 40; pointer-events: none;
-  background: linear-gradient(90deg,
-    var(--green) 0 16.66%, var(--sky) 16.66% 33.33%, var(--navy) 33.33% 50%,
-    var(--gold) 50% 66.66%, var(--brown) 66.66% 83.33%, var(--amber) 83.33% 100%);
-  opacity: 0.95;
-}
-
-/* Compass motif (SVG injected by deck.js into cover/section/closing) */
-.deck-compass { position: absolute; pointer-events: none; z-index: 0; }
-.deck-compass svg { display: block; width: 100%; height: 100%; }
-.reveal section.cover .deck-compass { width: 30rem; height: 30rem; right: -7rem; top: 50%; transform: translateY(-50%); opacity: 0.9; }
-.reveal section.section .deck-compass,
-.reveal section.closing .deck-compass { width: 34rem; height: 34rem; right: -8rem; bottom: -9rem; opacity: 0.5; }
-.reveal section.cover > *:not(.deck-compass),
-.reveal section.section > *:not(.deck-compass),
-.reveal section.closing > *:not(.deck-compass) { position: relative; z-index: 1; }
-
 /* ----------------------------------------------------------------------------
    7. TABLE OF CONTENTS OVERLAY
    ---------------------------------------------------------------------------- */
 .toc-overlay {
-  position: fixed; inset: 0; z-index: 60; display: grid; grid-template-columns: 1fr;
-  background: color-mix(in oklch, var(--navy-deep), #02060f 32%);
+  position: fixed; inset: 0; z-index: 60; display: grid;
+  background: color-mix(in oklch, var(--navy-deep), transparent 14%);
   opacity: 0; visibility: hidden; transition: opacity 320ms var(--ease), visibility 320ms;
 }
 .toc-overlay.open { opacity: 1; visibility: visible; }
 .toc-panel {
-  position: relative; max-width: 64rem; width: min(92vw, 64rem); margin: auto;
-  max-height: 88vh; overflow: auto; padding: clamp(2rem, 4vw, 3.5rem);
-  color: var(--paper);
+  position: relative; max-width: 60rem; width: min(92vw, 60rem); margin: auto;
+  max-height: 90vh; overflow: auto;
+  padding: clamp(1.6rem, 3vw, 2.6rem) clamp(2rem, 4vw, 3.4rem);
+  background: var(--paper); color: var(--ink); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-pop);
   transform: translateY(14px) scale(0.99); opacity: 0; transition: transform 380ms var(--ease), opacity 380ms var(--ease);
 }
 .toc-overlay.open .toc-panel { transform: none; opacity: 1; }
-.toc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: clamp(1.2rem, 3vw, 2.2rem); border-bottom: 1px solid color-mix(in oklch, var(--paper), transparent 80%); padding-bottom: 1.1rem; }
-.toc-head .toc-eyebrow { font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--gold); }
-.toc-head .toc-title { font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 600; color: var(--paper); margin: 0.15rem 0 0; }
-.toc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; counter-reset: toc; }
+.toc-head { margin-bottom: clamp(1.1rem, 3vw, 1.8rem); border-bottom: 2px solid var(--ink); padding-bottom: 0.9rem; }
+.toc-head .toc-eyebrow { font-family: var(--font-label); font-weight: 600; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--ink-faint); }
+.toc-head .toc-title { font-family: var(--font-serif); font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 600; color: var(--ink); margin: 0.2rem 0 0; letter-spacing: -0.01em; }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-list > li { margin: 0; }
 .toc-item {
-  display: grid; grid-template-columns: 3.2rem 1fr auto; align-items: baseline; gap: 1rem;
-  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
-  padding: 0.7rem 0.8rem; border-radius: var(--radius-md); color: color-mix(in oklch, var(--paper), transparent 22%);
-  font-family: var(--font-display); font-size: clamp(1.15rem, 2.4vw, 1.7rem); font-weight: 500;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+  display: flex; align-items: baseline; gap: 0.9rem; width: 100%; text-align: left;
+  background: none; border: none; border-bottom: 1px solid var(--line); cursor: pointer;
+  padding: 0.5rem 0.4rem; color: var(--ink-soft);
+  font-family: var(--font-serif); font-size: clamp(1.05rem, 2.1vw, 1.42rem); font-weight: 500;
+  transition: color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
 }
-.toc-item .toc-num { font-family: var(--font-mono); font-size: 0.62em; font-weight: 500; color: var(--gold-bright); letter-spacing: 0.06em; }
-.toc-item .toc-dur { font-family: var(--font-body); font-size: 0.5em; color: color-mix(in oklch, var(--paper), transparent 55%); letter-spacing: 0.04em; text-transform: uppercase; }
-.toc-item:hover { background: color-mix(in oklch, var(--paper), transparent 90%); color: var(--paper); padding-left: 1.3rem; }
-.toc-item.current { color: var(--paper); }
-.toc-item.current .toc-num { color: var(--green-bright); }
-.toc-item.current::after { /* marker dot */ }
-.toc-item.current .toc-label { background: linear-gradient(transparent 70%, color-mix(in oklch, var(--green), transparent 30%) 70%); }
-.toc-foot { margin-top: clamp(1.4rem,3vw,2.4rem); padding-top: 1.1rem; border-top: 1px solid color-mix(in oklch, var(--paper), transparent 80%); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: color-mix(in oklch, var(--paper), transparent 45%); font-size: 0.82rem; }
+.toc-list > li:last-child .toc-item { border-bottom: none; }
+.toc-item .toc-num { flex: none; width: 2.1rem; font-family: var(--font-label); font-size: 0.6em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+.toc-item .toc-label { flex: 0 1 auto; color: var(--ink); }
+.toc-item .toc-dots { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted var(--line-strong); position: relative; bottom: 0.32em; }
+.toc-item .toc-folio { flex: none; font-family: var(--font-label); font-size: 0.6em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+.toc-item:hover { padding-left: 1rem; }
+.toc-item:hover .toc-label { color: var(--green-deep); }
+.toc-item:hover .toc-dots { border-bottom-color: color-mix(in oklch, var(--green), var(--paper) 40%); }
+.toc-item.current .toc-num, .toc-item.current .toc-label, .toc-item.current .toc-folio { color: var(--green-deep); }
+.toc-item.current .toc-label { font-weight: 600; }
+.toc-foot { margin-top: clamp(1.1rem,3vw,1.8rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--ink-faint); font-family: var(--font-label); font-size: 0.8rem; }
 .toc-foot kbd {
-  font-family: var(--font-mono); font-size: 0.82em; padding: 0.12em 0.5em; border-radius: 5px;
-  background: color-mix(in oklch, var(--paper), transparent 86%); color: var(--paper);
-  border: 1px solid color-mix(in oklch, var(--paper), transparent 76%);
+  font-family: var(--font-mono); font-size: 0.82em; padding: 0.12em 0.5em; border-radius: 4px;
+  background: var(--sunken); color: var(--ink-soft); border: 1px solid var(--line);
 }
 .toc-close {
-  position: absolute; top: clamp(1.4rem,3vw,2.2rem); right: clamp(1.4rem,3vw,2.2rem);
-  width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
-  background: color-mix(in oklch, var(--paper), transparent 88%); border: 1px solid color-mix(in oklch, var(--paper), transparent 76%);
-  color: var(--paper); transition: all var(--dur) var(--ease);
+  position: absolute; top: clamp(1.2rem,3vw,2rem); right: clamp(1.2rem,3vw,2rem);
+  width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line-strong);
+  color: var(--ink-soft); transition: all var(--dur) var(--ease);
 }
-.toc-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); transform: rotate(90deg); }
-.toc-close svg { width: 1.1rem; height: 1.1rem; }
+.toc-close:hover { background: var(--green-deep); color: var(--paper); border-color: var(--green-deep); }
+.toc-close svg { width: 1rem; height: 1rem; }
 
 /* ----------------------------------------------------------------------------
    8. CODE — light highlight.js token theme
    ---------------------------------------------------------------------------- */
 .reveal pre {
-  width: 100%; margin: var(--space-md) 0; font-size: 0.62em; line-height: 1.5;
-  box-shadow: var(--shadow-1); border-radius: var(--radius-md); background: var(--sunken); border: var(--hair);
+  width: 100%; margin: var(--space-md) 0; font-size: 0.6em; line-height: 1.5;
+  box-shadow: none; border-radius: var(--radius-md); background: var(--sunken); border: var(--hair);
 }
 .reveal pre code {
   font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: var(--radius-md);
   background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
   font-feature-settings: "liga" 0;
 }
-.reveal code { font-family: var(--font-mono); font-size: 0.88em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 4px; color: var(--green-deep); }
+.reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 4px; color: var(--green-deep); }
 .reveal pre code.hljs { padding: 1.1em 1.3em; }
 .hljs-comment, .hljs-quote { color: var(--ink-soft); font-style: italic; }
 .hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name, .hljs-tag { color: var(--navy); font-weight: 600; }
@@ -739,7 +748,7 @@
 .reveal .scroll-panel pre { margin: 0; border: none; border-radius: 0; box-shadow: none; background: transparent; width: 100%; }
 .reveal .scroll-panel pre code { display: block; padding: 1.2em 1.5em; font-size: 0.72em; line-height: 1.62; max-height: none; white-space: pre-wrap; word-break: break-word; color: var(--ink); }
 .reveal .scroll-hint {
-  margin: var(--space-sm) 0 0; font-size: var(--fs-caption); color: var(--ink-soft);
+  margin: var(--space-sm) 0 0; font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft);
   display: inline-flex; align-items: center; gap: 0.55em;
 }
 .reveal .scroll-hint::before {
@@ -751,10 +760,8 @@
 }
 
 /* Framed live embed — a browser-style chrome bar over a fitted viewport, for
-   showing a website (an <iframe>) on stage. Fills the leftover height of a
-   flex-column slide, like .scroll-panel. If the embedded site refuses framing
-   (X-Frame-Options / CSP frame-ancestors), swap the <iframe> for an <img>
-   screenshot — the same .site-frame-view styling fits both. */
+   showing a website (an <iframe>) on stage. If the embedded site refuses framing
+   (X-Frame-Options / CSP frame-ancestors), swap the <iframe> for an <img>. */
 .reveal .site-frame {
   flex: 1 1 auto; min-height: 0; width: 100%;
   display: flex; flex-direction: column;
@@ -773,7 +780,7 @@
   margin-left: 0.5rem; font-family: var(--font-mono); font-size: var(--fs-footer);
   color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.reveal .site-frame-open { margin-left: auto; flex: none; font-size: var(--fs-footer); font-weight: 600; }
+.reveal .site-frame-open { margin-left: auto; flex: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600; }
 .reveal .site-frame-view { position: relative; flex: 1 1 auto; min-height: 0; background: var(--paper); }
 .reveal .site-frame-view > iframe,
 .reveal .site-frame-view > img {
@@ -784,25 +791,21 @@
 .reveal .site-qr {
   position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
   display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  background: #fff; padding: 0.6rem; border-radius: 12px; box-shadow: var(--shadow-2);
+  background: #fff; padding: 0.6rem; border-radius: 10px; box-shadow: var(--shadow-2);
 }
 .reveal .site-qr img { width: 116px; height: 116px; display: block; }
-.reveal .site-qr span { font-size: var(--fs-footer); font-weight: 700; color: var(--ink); }
+.reveal .site-qr span { font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
 
-/* "Scan for these slides" QR — a small labelled code for the cover/closing
-   (distinct from .site-qr above, which sits on a framed live site). Inline by
-   default; add .corner to float it into the top-right (e.g. on a dense closing
-   where it shouldn't lengthen the content stack). Drop the talk's QR PNG in the
-   talk's assets/ and point the <img> at it. */
+/* "Scan for these slides" QR — a small labelled code for the cover/closing.
+   Inline by default; add .corner to float it into the top-right. */
 .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
-.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 9px; box-shadow: var(--shadow-1); }
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 8px; border: 1px solid var(--line-strong); }
 .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
-.reveal .slides-qr .qr-label b { font-weight: 720; font-size: var(--fs-small); color: var(--ink); }
+.reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small); color: var(--ink); }
 .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
-/* !important overrides the compass-layering rule (§6) that sets position:relative
-   on direct children of cover/section/closing — otherwise a .corner QR placed as a
-   direct child (e.g. a Markdown closing) stays in flow instead of floating. */
-.reveal .slides-qr.corner { position: absolute !important; top: var(--space-xl); right: var(--slide-pad-x); margin: 0; z-index: 3;
+/* !important overrides the z-layering rule below for a .corner QR placed as a
+   direct child of a hero slide (e.g. a Markdown closing). */
+.reveal .slides-qr.corner { position: absolute !important; top: calc(var(--slide-pad-y) + var(--space-md)); right: var(--slide-pad-x); margin: 0; z-index: 3;
   flex-direction: column; align-items: center; gap: 0.4rem; }
 .reveal .slides-qr.corner .qr-label { text-align: center; align-items: center; }
 /* dark layouts (section divider / closing): lift the label to paper */
@@ -811,13 +814,11 @@
 .reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), var(--navy) 30%); }
 
 /* Framed screenshot inside a content column */
-.reveal .shot { display: block; width: 100%; height: auto; border: var(--hair); border-radius: 10px; box-shadow: var(--shadow-2); }
+.reveal .shot { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); box-shadow: none; }
 .reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
 .reveal .col-head .mcp-mark { height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
 
-/* Image lightbox — click a figure/screenshot to view it full-screen.
-   deck.js tags eligible images (.shot + the framed site screenshot) with
-   .is-zoomable and appends .deck-lightbox to <body> (outside reveal's transform). */
+/* Image lightbox — click a figure/screenshot to view it full-screen. */
 .reveal .slides .shot.is-zoomable,
 .reveal .slides .site-frame-view > img.is-zoomable { cursor: zoom-in; }
 .deck-lightbox {
@@ -829,12 +830,20 @@
   transition: opacity 260ms var(--ease), visibility 260ms;
 }
 .deck-lightbox.open { opacity: 1; visibility: visible; }
-.deck-lightbox img {
-  max-width: 94vw; max-height: 90vh; width: auto; height: auto;
-  border-radius: var(--radius-md); box-shadow: var(--shadow-pop); background: var(--paper);
+.deck-lightbox .lightbox-figure {
+  margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--space-md);
+  max-width: 92vw; max-height: 88vh;
   transform: scale(0.985); transition: transform 300ms var(--ease);
 }
-.deck-lightbox.open img { transform: none; }
+.deck-lightbox.open .lightbox-figure { transform: none; }
+.deck-lightbox img {
+  max-width: 92vw; max-height: 80vh; width: auto; height: auto;
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-pop); background: var(--paper);
+}
+.deck-lightbox figcaption {
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption);
+  color: color-mix(in oklch, var(--paper), transparent 26%); max-width: 60ch; text-align: center; line-height: 1.4;
+}
 .deck-lightbox .lightbox-close {
   position: absolute; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem);
   width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
@@ -842,7 +851,7 @@
   border: 1px solid color-mix(in oklch, var(--paper), transparent 74%);
   color: var(--paper); transition: all var(--dur) var(--ease);
 }
-.deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); transform: rotate(90deg); }
+.deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
 .deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
 
 /* ----------------------------------------------------------------------------
@@ -856,15 +865,14 @@
    10. PRINT TO PDF · REDUCED MOTION · SMALL SCREENS
    ---------------------------------------------------------------------------- */
 @media print {
-  .deck-footer, .deck-nav { color: var(--ink-faint) !important; }
+  .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
   .toc-overlay, .deck-btn { display: none !important; }
-  .deck-spectrum { position: absolute; }
   .reveal section.section, .reveal section.closing,
   .reveal section.media .media-scrim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  /* Dark hero layouts paint their gradient via a CSS background on the <section>.
+  /* Dark hero layouts paint their field via a CSS background on the <section>.
      In ?print-pdf export reveal makes each section position:absolute with auto
-     height, so the gradient stopped at the content and left a white band below it
-     on the page. Force the dark layouts to fill the printed .pdf-page. */
+     height, so the field stopped at the content and left a white band below it.
+     Force the dark layouts to fill the printed .pdf-page. */
   .reveal .slides section.section,
   .reveal .slides section.closing,
   .reveal .slides section.media { height: 100% !important; }
@@ -875,11 +883,12 @@
   .toc-close:hover { transform: none; }
 }
 
-/* The reveal canvas is scaled to fit, so chrome (footer/toc) is what needs
-   small-screen care when viewed on a phone. */
+/* The reveal canvas is scaled to fit, so chrome (runhead/footer/toc) is what
+   needs small-screen care when viewed on a phone. */
 @media (max-width: 640px) {
   :root { --slide-pad-x: 1.6rem; --footer-h: 2.6rem; }
   .deck-footer .foot-title { display: none; }
+  .deck-runhead { display: none !important; }
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 2rem; padding: 0; }
 }
