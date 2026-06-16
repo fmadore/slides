@@ -47,6 +47,31 @@
       border-radius: var(--radius-sm); padding: .2em .5em; align-self: flex-start; }
     .reveal .semarrow { display: flex; align-items: center; justify-content: center;
       color: var(--green); font-weight: 700; font-size: 1.7rem; }
+
+    /* Slide 14 — live-demo "saved runs". The two examples are vertical sub-slides
+       (press ↓). Each shows a Claude share framed in browser chrome, displayed
+       whole (no crop) and height-capped so the slide never overflows 720px. The
+       frame hugs the image width and centres in the leftover height. */
+    .reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: var(--space-md); }
+    .reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
+      display: flex; flex-direction: column; min-height: 0;
+      border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-2); background: var(--paper); }
+    .reveal .demo-shot .site-frame-bar { flex: none; }
+    .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
+    .reveal .demo-shot-view img { display: block; width: auto; height: auto;
+      max-height: 360px; max-width: 100%; }
+    .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+
+    /* Slide 7 — keep the MCP wordmark inline, just before "MCP" on the col-head.
+       The shared .mcp-mark rule sets inline-only props (vertical-align, margin-right),
+       but a blanket img{display:block} stacks it onto its own line. Restore inline. */
+    .reveal .col-head .mcp-mark { display: inline-block; }
+
+    /* Slide 13 — keep the repo URL in the scroll-hint as one unbroken, clickable link
+       (don't let it break mid-string across two lines). */
+    .reveal .scroll-hint a { white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -85,8 +110,9 @@
         <span class="name">Frédérick Madore</span>
         <span class="affil">Africa Multiple Cluster of Excellence</span>
       </div>
-      <div data-contact></div>
+      <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <div data-contact></div>
       <div class="slides-qr">
         <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
@@ -128,7 +154,7 @@
 
     <!-- ════════ 2b · THE COLLECTION, LIVE (framed website overview) ═══════ -->
     <section>
-      <p class="kicker">The Islam West Africa Collection</p>
+      <p class="kicker">The Islam West Africa Collection (IWAC)</p>
       <h2 class="slide-title no-rule">An overview of the collection</h2>
       <!-- Plain framed screenshot (click to zoom — deck.js lightbox picks up .shot).
            The live Omeka S site refuses framing; the QR + link still go to it. -->
@@ -185,8 +211,8 @@
           <ul>
             <li><strong>People now ask AI directly</strong>, not a search box</li>
             <li><strong>Chatbots often invent citations</strong> — worse for Africa, with far less training data</li>
-            <li><strong>Web search helps</strong>, but the sources are random — mostly Wikipedia</li>
-            <li><strong>The IWAC?</strong> Crawled by their bots, yet barely used and badly cited</li>
+            <li><strong>Web search helps</strong>, but the sources are often random</li>
+            <li><strong>The IWAC?</strong> Crawled by AI bots, yet barely used and badly cited</li>
           </ul>
         </div>
       </div>
@@ -221,7 +247,7 @@
       <div class="cols">
         <div class="col">
           <div class="col-head alt">RAG</div>
-          <p><strong>Proven for GLAM.</strong> But it copies the collection out, chunks records, and retrieves by a similarity the user never sees.</p>
+          <p><strong>Proven for GLAM.</strong> But it chunks records, and retrieves by a similarity the user never sees.</p>
         </div>
         <div class="col">
           <div class="col-head"><img class="mcp-mark" src="assets/logo-mcp.png" alt="Model Context Protocol logo">MCP</div>
@@ -290,7 +316,7 @@
             <li><strong>Read-only</strong>: search, full text, authority records, sentiment, stats</li>
             <li><strong>Verifiable</strong>: every call a lookup, no AI at query time</li>
             <li><strong>Traceable</strong>: every result links to its canonical record</li>
-            <li><strong>One click</strong>: installs in Claude Desktop, nothing to administer</li>
+            <li><strong>One click</strong>: installs in Claude Desktop</li>
           </ul>
         </div>
       </div>
@@ -360,7 +386,7 @@
           </ol>
           <div class="callout">
             <span class="callout-label">The point</span>
-            Twenty-two tools give reach, not judgement. The judgement lives in the skill.
+            Twenty-two tools give reach. The "judgement" lives in the skill.
           </div>
         </div>
       </div>
@@ -373,7 +399,7 @@
       <h2 class="slide-title">Discipline, disclosure — and a new role</h2>
       <ul>
         <li><strong>Linguistic discipline</strong> — search the French corpus in French, whatever language the question is in</li>
-        <li><strong>Bias disclosure</strong> — every synthesis states the skew: francophone tilt, missing <em>Arabisants</em>, thin Niger, absent Nigeria</li>
+        <li><strong>Bias disclosure</strong> — every synthesis states the skew: francophone tilt, missing <em>Arabisants</em>, thin Niger and Nigeria</li>
         <li><strong>Evidential discipline</strong> — claims tagged primary / secondary / AI-derived; <em>absence of evidence ≠ evidence of absence</em></li>
       </ul>
       <div class="callout navy">
@@ -392,29 +418,79 @@
       <div class="scroll-panel" data-skill-src="assets/iwac-skill.md">
         <pre><code class="language-markdown">Loading the skill file…</code></pre>
       </div>
-      <p class="scroll-hint">Scroll to read the whole file — 190 lines, open source at github.com/fmadore/iwac-mcp-server</p>
+      <p class="scroll-hint"><span>Scroll to read the whole file — 190 lines, open source at <a href="https://github.com/fmadore/iwac-mcp-server" target="_blank" rel="noopener">github.com/fmadore/iwac-mcp-server</a></span></p>
       <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the search-in-French rule, the bias-disclosure and confidence-grading requirements. We won't read it line by line, but it's open online. The point is that the method is explicit and reviewable, not a black box.</aside>
     </section>
 
-    <!-- ════════ 12 · LIVE DEMO (intro + Claude Desktop screenshot) ════════ -->
+    <!-- ════════ 14 · LIVE DEMO — vertical stack: intro → Brief run → Extended run.
+         data-toc lives on the STACK, so the TOC, running head and "14 / 16" counter
+         all read "Live demo" while the audience presses ↓ through the two saved runs
+         (offline backups for the live demo; claude.ai refuses framing, so static
+         screenshots + a link to each share page). ═══════════════════════════════ -->
     <section data-toc="Live demo">
-      <p class="kicker navy">Live demo</p>
-      <h2 class="slide-title">From a plain question to cited sources</h2>
-      <div class="cols ratio-2-3">
-        <div class="col">
-          <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
-          <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
+
+      <!-- 14.0 — intro + Claude Desktop screenshot -->
+      <section>
+        <p class="kicker navy">Live demo</p>
+        <h2 class="slide-title">From a plain question to cited sources</h2>
+        <div class="cols ratio-2-3">
+          <div class="col">
+            <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
+            <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
+          </div>
+          <div class="col">
+            <p class="lead">One real question, and the skill runs the method live.</p>
+            <ul>
+              <li>Scopes the collection, then searches it in French</li>
+              <li>Reads the strongest hits in full</li>
+              <li>Answers with every claim linked to its IWAC record</li>
+            </ul>
+            <p class="scroll-hint">Two saved runs below — press ↓</p>
+          </div>
         </div>
-        <div class="col">
-          <p class="lead">One real question, and the skill runs the method live.</p>
-          <ul>
-            <li>Scopes the collection, then searches it in French</li>
-            <li>Reads the strongest hits in full</li>
-            <li>Answers with every claim linked to its IWAC record</li>
-          </ul>
+        <aside class="notes">Enough description — let's run it live in Claude Desktop. I'll put one real question to it and choose Extended, so you see the whole method: it scopes the collection, searches in French, reads the strongest articles in full, then answers with every claim linked to its IWAC record. [Live demo cue: open Claude Desktop, run the query, show the citations and the links.] If the network misbehaves, I have two saved runs on the next slides — just press down.</aside>
+      </section>
+
+      <!-- 14.1 — saved run: BRIEF (secularism in Côte d'Ivoire) -->
+      <section>
+        <p class="kicker navy">Saved run · secularism in Côte d'Ivoire</p>
+        <h2 class="slide-title">Brief — the default depth</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">claude.ai/share/d37cbcb6…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/d37cbcb6-7257-4ffd-82b5-595bc80aabfc" target="_blank" rel="noopener">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <img src="assets/demo-brief.jpg" alt="A Claude conversation: asked in English what the Islam West Africa Collection says about secularism in Côte d'Ivoire, the iwac-mcp skill reads its method files and then offers a Brief-or-Extended depth choice, defaulting to Brief">
+            </div>
+          </figure>
+          <p class="small muted">Claude Sonnet 4.6 · high effort</p>
         </div>
-      </div>
-      <aside class="notes">Enough description — let's run it live in Claude Desktop. I'll put one real question to it and choose Extended, so you see the whole method: it scopes the collection, searches in French, reads the strongest articles in full, then answers with every claim linked to its IWAC record. [Live demo cue: open Claude Desktop, run the query, show the citations and the links.] If the network misbehaves, I'll walk through a saved run.</aside>
+        <aside class="notes">Here's one I prepared earlier, in case we need it. I asked, in English, what the collection says about secularism in Côte d'Ivoire. Watch what happens before any searching: the skill reads its own method file, then stops to ask how deep I want to go — a quick Brief or the full Extended pass, with Brief the default. That pause is the skill doing its job — it sets the terms before it answers, rather than dumping a reply. The full report, with every source cited, is one tap away at the top of the frame.</aside>
+      </section>
+
+      <!-- 14.2 — saved run: EXTENDED (Islam in Kpalimé — the question Gemini fumbled on slide 5) -->
+      <section>
+        <p class="kicker navy">Saved run · Islam in Kpalimé, Togo</p>
+        <h2 class="slide-title">Extended — the full method</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">claude.ai/share/2bdf2009…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/2bdf2009-d54a-4f93-9ef9-a7eb7dc21b8c" target="_blank" rel="noopener">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <img src="assets/demo-extended.jpg" alt="A Claude conversation: asked about Islam in Kpalimé, Togo, the user answers 'extended', and the iwac-mcp skill begins its five-phase analysis with Phase 1 scoping">
+            </div>
+          </figure>
+          <p class="small muted">The same question we put to Gemini earlier, now answered from the IWAC.</p>
+        </div>
+        <aside class="notes">The second saved run is the very question I showed Gemini fumbling at the start — Islam in Kpalimé, in Togo — but put to the collection itself. Here I answer "extended", and the five-phase method kicks off: Phase one is scoping, before a single keyword. Set this beside the Gemini answer from earlier and you can see what grounding buys you — same question, but every claim here traces back to a record in the archive, not to a guess.</aside>
+      </section>
+
     </section>
 
     <!-- ════════ 13 · WHOSE INFRASTRUCTURE? (evidence · Yékú · CARE) ═══════ -->
@@ -433,7 +509,7 @@
           </ul>
           <div class="callout warm">
             <span class="callout-label">Yékú's paradox · 2026</span>
-            Un-digitised, an African archive is invisible to AI; digitised, it's exposed to scraping — the incomplete corpus becomes the <em>single story</em>, the colonial library rebuilt in the training set.
+            Un-digitised, an African archive is invisible to AI; digitised, it's exposed to scraping — the incomplete corpus becomes the <em>single story</em>, the colonial library rebuilt in the training set. <a href="https://jamesyeku.com/2026/04/16/my-unpackable-library-ai-erasures-and-the-african-archive/" target="_blank" rel="noopener">Read the essay ↗</a>
           </div>
         </div>
       </div>
