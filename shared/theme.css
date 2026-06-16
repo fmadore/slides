@@ -816,7 +816,7 @@
 /* Framed screenshot inside a content column */
 .reveal .shot { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); box-shadow: none; }
 .reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
-.reveal .col-head .mcp-mark { height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
+.reveal .col-head .mcp-mark { display: inline-block; height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
 
 /* Image lightbox — click a figure/screenshot to view it full-screen. */
 .reveal .slides .shot.is-zoomable,
