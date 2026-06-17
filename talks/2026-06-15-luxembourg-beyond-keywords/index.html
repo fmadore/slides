@@ -67,6 +67,14 @@
     /* Slide 13 — keep the repo URL in the scroll-hint as one unbroken, clickable link
        (don't let it break mid-string across two lines). */
     .reveal .scroll-hint a { white-space: nowrap; }
+
+    /* Slide 6 — "Why a server": ground MCP in everyday connectors before the
+       RAG/MCP contrast. A one-line definition + a row of recognisable servers,
+       ending in the IWAC green chip — the same idea, pointed at an archive. */
+    .reveal .mcp-intro { max-width: none; margin: 0 0 var(--space-sm); }
+    .reveal .mcp-uses { display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0.5em; margin: 0 0 var(--space-md); max-width: none; }
+    .reveal .mcp-uses-sep { color: var(--green); font-weight: 700; padding: 0 0.1em; }
   </style>
 </head>
 <body>
@@ -239,10 +247,20 @@
     <section class="balance">
       <p class="kicker navy">Model Context Protocol · open standard, Nov 2024</p>
       <h2 class="slide-title">Why a server, not just a chatbot?</h2>
+      <p class="mcp-intro">An MCP server connects an AI assistant to one outside system. Like an app to your accounts:</p>
+      <div class="mcp-uses">
+        <span class="chip">Gmail</span>
+        <span class="chip">Google Calendar</span>
+        <span class="chip">Google Drive</span>
+        <span class="chip">Slack</span>
+        <span class="chip">GitHub</span>
+        <span class="mcp-uses-sep" aria-hidden="true">→</span>
+        <span class="chip green">IWAC</span>
+      </div>
       <div class="cols">
         <div class="col">
           <div class="col-head alt">RAG</div>
-          <p><strong>Proven for GLAM.</strong> But it chunks records, and retrieves by a similarity the user never sees.</p>
+          <p><strong>Retrieval-augmented generation.</strong> Proven for GLAM, but it chunks records, and retrieves by a similarity the user never sees.</p>
         </div>
         <div class="col">
           <div class="col-head"><img class="mcp-mark" src="assets/logo-mcp.png" alt="Model Context Protocol logo">MCP</div>
@@ -253,7 +271,7 @@
         <span class="callout-label">The analogy</span>
         Like IIIF for images: a shared interface, without handing over the originals. Build the server once — Claude, ChatGPT, or open-source models all connect.
       </div>
-      <aside class="notes">The Model Context Protocol is an open standard for connecting AI assistants to external data through defined tools. A server publishes the queries it's willing to answer, and any compliant assistant can call them. MCP is to AI what IIIF is to images: just as IIIF exposes high-resolution images through a shared interface without handing over the originals, MCP exposes search and metadata to AI without giving up the underlying data. The common alternative is retrieval-augmented generation, RAG — proven for heritage, but it copies the collection into an external store, chunks records so they lose their context, and retrieves through a similarity the user never sees. MCP draws the line differently: nothing is ingested, chunked, or trained on. The server holds the logic; the model only handles the two ends — understanding the question, composing the answer. Build the server once, and any model can connect.</aside>
+      <aside class="notes">The Model Context Protocol is an open standard for connecting AI assistants to outside systems through defined tools. The easiest way to picture it: if you've ever let Claude or ChatGPT into your Gmail, your calendar, or your Google Drive, you've already used an MCP server — and there are ready-made ones for Slack, GitHub, Notion, hundreds of everyday services. A server simply publishes the queries it's willing to answer, and any compliant assistant can call them. What I've built is the same kind of server, only pointed at a scholarly archive instead of an inbox. The analogy I'd reach for is IIIF: just as IIIF exposes high-resolution images through a shared interface without handing over the originals, MCP exposes search and metadata to an AI without giving up the underlying data. The common alternative is retrieval-augmented generation, RAG — proven for heritage, but it copies the collection into an external store, chunks records so they lose their context, and retrieves through a similarity the user never sees. MCP draws the line differently: nothing is ingested, chunked, or trained on. The server holds the logic; the model only handles the two ends — understanding the question and composing the answer. Build the server once, and Claude, ChatGPT, or an open-source model can all connect.</aside>
     </section>
 
     <!-- ════════ 7 · AGENT SKILLS (content + code) ════════════════════════ -->
