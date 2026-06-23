@@ -167,10 +167,36 @@
     });
     overlay.querySelector(".toc-close").addEventListener("click", closeTOC);
     overlay.addEventListener("click", function (e) { if (e.target === overlay) closeTOC(); });
+    overlay.addEventListener("keydown", trapTOCFocus);
   }
-  function openTOC()  { if (overlay) { overlay.classList.add("open"); markCurrentTOC(); } }
-  function closeTOC() { if (overlay) overlay.classList.remove("open"); }
+  var tocLastFocus = null;
+  function openTOC()  {
+    if (!overlay) return;
+    tocLastFocus = document.activeElement;
+    overlay.classList.add("open");
+    markCurrentTOC();
+    // Move focus into the dialog (current entry if any, else the first).
+    var target = overlay.querySelector(".toc-item.current") || overlay.querySelector(".toc-item");
+    if (target) target.focus();
+  }
+  function closeTOC() {
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    if (tocLastFocus && tocLastFocus.focus) tocLastFocus.focus(); // restore focus to the trigger
+    tocLastFocus = null;
+  }
   function toggleTOC(){ if (overlay) (overlay.classList.contains("open") ? closeTOC() : openTOC()); }
+  /* Keep Tab inside the open dialog (simple focus trap). */
+  function trapTOCFocus(e) {
+    if (e.key !== "Tab" || !overlay || !overlay.classList.contains("open")) return;
+    var f = Array.prototype.slice.call(
+      overlay.querySelectorAll(".toc-close, .toc-item")
+    ).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1], a = document.activeElement;
+    if (e.shiftKey && (a === first || !overlay.contains(a))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+  }
   function markCurrentTOC() {
     if (!overlay) return;
     var h = Reveal.getIndices().h;
@@ -263,27 +289,68 @@
     document.body.appendChild(lightbox);
     lbImg = lightbox.querySelector("img");
     var lbCap = lightbox.querySelector("figcaption");
-    function closeLightbox() { lightbox.classList.remove("open"); lbImg.removeAttribute("src"); }
-    imgs.forEach(function (img) {
+    var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
+    var curIdx = -1;
+    function showAt(i) {
+      curIdx = (i + list.length) % list.length;
+      var img = list[curIdx];
+      var alt = img.getAttribute("alt") || "";
+      lbImg.setAttribute("src", img.currentSrc || img.src);
+      lbImg.setAttribute("alt", alt);
+      lbCap.textContent = alt;
+      lbCap.style.display = alt ? "" : "none";
+      lightbox.classList.add("open");
+    }
+    function closeLightbox() { lightbox.classList.remove("open"); lbImg.removeAttribute("src"); curIdx = -1; }
+    list.forEach(function (img, i) {
       img.classList.add("is-zoomable");
       img.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();
-        var alt = img.getAttribute("alt") || "";
-        lbImg.setAttribute("src", img.currentSrc || img.src);
-        lbImg.setAttribute("alt", alt);
-        lbCap.textContent = alt;
-        lbCap.style.display = alt ? "" : "none";
-        lightbox.classList.add("open");
+        showAt(i);
       });
     });
     lightbox.addEventListener("click", closeLightbox); // backdrop, image, or close button
     document.addEventListener("keydown", function (e) {
       if (!lightbox.classList.contains("open")) return;
-      if (e.key === "Escape") { e.stopPropagation(); e.preventDefault(); closeLightbox(); }
-      else if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " ", "Spacebar"].indexOf(e.key) !== -1) {
-        e.stopPropagation(); e.preventDefault(); // don't drive the deck behind the lightbox
-      }
+      e.stopPropagation(); e.preventDefault(); // never drive the deck behind the lightbox
+      if (e.key === "Escape") closeLightbox();
+      else if (e.key === "ArrowRight" || e.key === "ArrowDown") showAt(curIdx + 1);
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") showAt(curIdx - 1);
     }, true);
+  }
+
+  /* ---- syntax highlighting (plugin-independent) --------------------------- */
+  /* Highlight every <pre><code> with whichever hljs is present: the slim global
+     from shared/highlight.min.js, or the copy inside reveal's highlight plugin.
+     A deck can therefore drop the 921 KB bundled plugin and load the slim build
+     instead — this fills the gap. A no-op when the reveal plugin already ran
+     (it sets data-highlighted), so it's safe to keep in either configuration. */
+  function highlightAll() {
+    var hp = (typeof Reveal !== "undefined" && Reveal.getPlugin) ? Reveal.getPlugin("highlight") : null;
+    var hl = window.hljs || (hp && hp.hljs);
+    if (!hl) return;
+    document.querySelectorAll(".reveal .slides pre code").forEach(function (code) {
+      if (code.dataset.highlighted) return;
+      try { hl.highlightElement(code); } catch (e) {}
+    });
+  }
+
+  /* ---- dev-only overflow guard (?check): outline any slide whose content
+     spills past the fixed 1280×720 canvas, so you catch it while authoring. */
+  function enableOverflowCheck() {
+    var banner = elem('<div class="deck-overflow-banner" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:90;font:600 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:4px;background:#c0392b;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35);pointer-events:none">Slide overflows 1280×720</div>');
+    banner.hidden = true;
+    document.body.appendChild(banner);
+    function check() {
+      var s = Reveal.getCurrentSlide();
+      if (!s) return;
+      var over = s.scrollHeight > s.clientHeight + 1 || s.scrollWidth > s.clientWidth + 1;
+      s.style.outline = over ? "3px solid #c0392b" : "";
+      s.style.outlineOffset = over ? "-3px" : "";
+      banner.hidden = !over;
+    }
+    Reveal.on("slidechanged", check);
+    check();
   }
 
   function init() {
@@ -293,7 +360,7 @@
     Reveal.initialize({
       width: 1280, height: 720, margin: 0,
       minScale: 0.2, maxScale: 2.0,
-      center: false, hash: true, history: true,
+      center: false, hash: true,
       controls: false, progress: true, slideNumber: false,
       transition: CFG.transition || "fade",
       transitionSpeed: "default",
@@ -312,7 +379,9 @@
       buildTOC(reveal);
       loadSkillEmbeds();
       buildLightbox();
+      highlightAll();   // highlight code via global hljs (works without the bundled plugin)
       update();
+      if (/[?&]check\b/.test(location.search)) enableOverflowCheck();
 
       // Defensive relayout: recompute the scale once the window and webfonts
       // have settled, in case the deck initialised before it had real size.

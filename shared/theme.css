@@ -1,15 +1,21 @@
 /* =============================================================================
    AFRICA MULTIPLE · UNIVERSITÄT BAYREUTH — reveal.js deck theme
-   Editorial-archive: a scholarly print page, not a slide template.
-   Ink on warm paper, the Bayreuth palette spent sparingly, a newspaper-gothic
-   label voice (Libre Franklin) against a humanist book serif (EB Garamond).
+   "BROADSHEET" — a bold scholarly broadsheet, not a slide template.
+
+   The type hierarchy is INVERTED from a conventional academic deck: the
+   newspaper-gothic (Libre Franklin, pushed to its black weights) is the loud
+   display voice — set big, tight, confident — and the humanist book serif
+   (EB Garamond) is the quiet counter-voice for prose, leads and quotations.
+   Colour is spent as flat structural FIELDS and heavy rules, not as a timid
+   accent: the Bayreuth green leads, navy is the deep pole, gold the spark.
+   Near-black ink on a cool, crisp near-white. High contrast, real punch.
 
    Contents
      1.  Design tokens (palette, neutrals, type scale, space, motion)
      2.  reveal.js variable contract + viewport frame
      3.  Slide canvas, typography & prose primitives
-     4.  Editorial components (overline, note, ledger, figure, cite)
-     5.  Layout classes (.cover .section .statement .cols .media .closing)
+     4.  Editorial components (overline, note, ledger, figure, cite, index)
+     5.  Layout classes (.cover .section .statement .cols .media .closing …)
      6.  Brand chrome injected by deck.js (running head, footer, progress)
      7.  Table-of-contents overlay
      8.  Code (light highlight.js token theme)
@@ -21,9 +27,9 @@
 
 /* ----------------------------------------------------------------------------
    1. DESIGN TOKENS
-   The six Bayreuth corporate colours, then a warm-paper / cool-ink neutral
-   ramp tinted toward the brand. Colour is the rare accent here, not the wash:
-   green is reserved for links, a single emphasis, and the folio/section marks.
+   The six Bayreuth corporate colours, then a cool near-white / near-black
+   neutral ramp. Colour here is a confident plane and a heavy rule — the
+   green leads, navy is the structural deep, gold the single spark.
    ---------------------------------------------------------------------------- */
 :root {
   /* — Bayreuth corporate palette (exact, as supplied) — */
@@ -35,24 +41,28 @@
   --navy:   #00268a;   /* Dunkelblau · structural deep colour  */
 
   /* derived, perceptually in OKLCH so the steps look even */
-  --green-deep:  color-mix(in oklch, var(--green), #0a1812 30%); /* AA green for small text/links */
-  --green-bright:color-mix(in oklch, var(--green), white 6%);
-  --navy-deep:   color-mix(in oklch, var(--navy), #05060f 24%);
-  --brown-deep:  color-mix(in oklch, var(--brown), #140a02 44%); /* AA brown for small text on paper */
-  --gold-bright: color-mix(in oklch, var(--gold), white 22%);    /* AA gold on dark slides */
-  --green-wash:  color-mix(in oklch, var(--green), var(--paper) 92%);
-  --navy-wash:   color-mix(in oklch, var(--navy),  var(--paper) 93%);
-  --amber-wash:  color-mix(in oklch, var(--amber), var(--paper) 90%);
+  --green-deep:   color-mix(in oklch, var(--green), #06140d 26%); /* AA green for text/links on light */
+  --green-field:  color-mix(in oklch, var(--green), #04140d 14%); /* the saturated green plane         */
+  --green-bright: color-mix(in oklch, var(--green), white 8%);
+  --navy-field:   color-mix(in oklch, var(--navy),  #03081c 8%);  /* the saturated navy plane          */
+  --navy-deep:    color-mix(in oklch, var(--navy),  #04060f 30%);
+  --brown-deep:   color-mix(in oklch, var(--brown), #140a02 44%); /* AA brown for small text on light  */
+  --gold-bright:  color-mix(in oklch, var(--gold),  white 24%);   /* AA gold on dark fields            */
+  --green-wash:   color-mix(in oklch, var(--green), var(--paper) 90%);
+  --navy-wash:    color-mix(in oklch, var(--navy),  var(--paper) 92%);
+  --amber-wash:   color-mix(in oklch, var(--amber), var(--paper) 88%);
 
-  /* — Neutrals: warm ivory paper, cool navy ink (a classic print pairing) — */
-  --paper:       oklch(0.974 0.013 88);   /* page / slide background      */
-  --panel:       oklch(0.988 0.007 88);   /* faintly raised surfaces      */
-  --sunken:      oklch(0.948 0.016 84);   /* insets, code, table stripes  */
-  --line:        oklch(0.884 0.014 86);   /* hairlines                    */
-  --line-strong: oklch(0.788 0.020 84);   /* stronger rules               */
-  --ink:         oklch(0.252 0.021 258);  /* primary text                 */
-  --ink-soft:    oklch(0.440 0.024 258);  /* secondary text               */
-  --ink-faint:   oklch(0.582 0.020 256);  /* tertiary, captions, chrome   */
+  /* — Neutrals: a cool, crisp near-white; a cool near-black ink. High contrast. — */
+  --paper:       oklch(0.991 0.001 250);   /* page / slide background       */
+  --panel:       oklch(0.972 0.002 250);   /* faintly raised surfaces       */
+  --sunken:      oklch(0.945 0.004 250);   /* insets, code, table stripes   */
+  --line:        oklch(0.872 0.005 250);   /* hairlines                     */
+  --line-strong: oklch(0.700 0.010 256);   /* stronger rules                */
+  --rule:        oklch(0.165 0.014 258);   /* heavy editorial rule (near-black) */
+  --ink:         oklch(0.205 0.016 258);   /* primary text                  */
+  --ink-bold:    oklch(0.150 0.016 262);   /* big display headlines         */
+  --ink-soft:    oklch(0.405 0.018 258);   /* secondary text                */
+  --ink-faint:   oklch(0.560 0.016 256);   /* tertiary, captions, chrome    */
 
   /* — Semantic roles — */
   --accent:        var(--green);
@@ -61,45 +71,49 @@
   --accent-warm:   var(--brown);
   --highlight:     var(--amber);
 
-  /* — Type — book serif for prose & display, news gothic for the label voice — */
-  --font-serif:   "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  /* — Type — news gothic LEADS (display), book serif is the counter-voice — */
+  --font-display: "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-label:   "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif:   "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-mono:    "JetBrains Mono", ui-monospace, "Cascadia Code", "SF Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
-  --font-display: var(--font-serif);   /* compatibility aliases */
-  --font-body:    var(--font-serif);
+  --font-body:    var(--font-serif);   /* compatibility alias */
 
   /* Modular scale (rem @ 16px root; reveal's transform scales the canvas to fit).
-     EB Garamond sets small, so the ramp runs a little larger than a grotesk. */
-  --fs-footer:  0.82rem;   /*  ~13px  footer / fine print     */
-  --fs-kicker:  0.80rem;   /*  ~13px  overline labels         */
+     The gothic display runs large and tight; the serif body sits a touch big
+     because EB Garamond's small x-height reads small in a hall. */
+  --fs-footer:  0.80rem;   /*  ~13px  footer / fine print     */
+  --fs-kicker:  0.82rem;   /*  ~13px  overline labels         */
   --fs-caption: 1.00rem;   /*  ~16px  captions, citations     */
   --fs-small:   1.18rem;   /*  ~19px  asides                  */
-  --fs-body:    1.50rem;   /*  ~24px  body                    */
-  --fs-lead:    1.95rem;   /*  ~31px  lead paragraph          */
-  --fs-h3:      2.15rem;   /*  ~34px  sub-heading             */
-  --fs-h2:      3.10rem;   /*  ~50px  slide title             */
-  --fs-h1:      4.60rem;   /*  ~74px  cover title             */
-  --fs-section: 5.20rem;   /*  ~83px  section title           */
-  --fs-display: 5.00rem;   /*  ~80px  statement / big number  */
+  --fs-body:    1.52rem;   /*  ~24px  body (serif)            */
+  --fs-lead:    2.00rem;   /*  ~32px  lead paragraph (serif)  */
+  --fs-h3:      2.20rem;   /*  ~35px  sub-heading (gothic)    */
+  --fs-h2:      3.50rem;   /*  ~56px  slide title (gothic)    */
+  --fs-h1:      5.30rem;   /*  ~85px  cover title (gothic)    */
+  --fs-section: 6.10rem;   /*  ~98px  section title (gothic)  */
+  --fs-display: 5.60rem;   /*  ~90px  statement / big number  */
+  --fs-mega:    9.50rem;   /* ~152px  oversized folio / metric */
 
-  --lh-tight: 1.04;
-  --lh-snug:  1.18;
+  --lh-tight: 0.98;
+  --lh-snug:  1.12;
   --lh-body:  1.46;
-  --track-label: 0.16em;   /* letter-spacing for uppercase labels */
+  --track-label: 0.18em;   /* letter-spacing for uppercase labels */
+  --track-tight: -0.022em; /* negative tracking for big gothic display */
 
   /* — Space (4pt scale, semantic) — */
   --space-2xs: 0.25rem;  --space-xs: 0.5rem;  --space-sm: 0.75rem;
   --space-md: 1rem;      --space-lg: 1.5rem;  --space-xl: 2rem;
   --space-2xl: 3rem;     --space-3xl: 4rem;
 
-  /* — Geometry — small radii only; editorial surfaces lean on rules, not cards — */
-  --radius-sm: 4px;  --radius-md: 7px;  --radius-lg: 12px;
+  /* — Geometry — sharp by default; the broadsheet leans on rules, not cards — */
+  --radius-sm: 3px;  --radius-md: 5px;  --radius-lg: 8px;
   --hair: 1px solid var(--line);
+  --bar:  4px;   /* the green title-marker thickness */
 
-  /* — Shadows: soft, navy-tinted; used only for true overlays (lightbox, QR) — */
-  --shadow-1: 0 1px 2px oklch(0.3 0.04 258 / 0.06), 0 2px 6px oklch(0.3 0.04 258 / 0.05);
-  --shadow-2: 0 4px 12px oklch(0.3 0.04 258 / 0.08), 0 12px 34px oklch(0.3 0.04 258 / 0.10);
-  --shadow-pop: 0 18px 50px oklch(0.25 0.04 258 / 0.22);
+  /* — Shadows: tight, neutral; used only for true overlays (lightbox, QR) — */
+  --shadow-1: 0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05);
+  --shadow-2: 0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12);
+  --shadow-pop: 0 22px 60px oklch(0.16 0.03 258 / 0.30);
 
   /* — Motion — */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
@@ -107,25 +121,25 @@
   --dur: 220ms;
 
   /* — Slide geometry — */
-  --slide-pad-x: 4.6rem;
-  --slide-pad-y: 3.7rem;
+  --slide-pad-x: 4.8rem;
+  --slide-pad-y: 3.8rem;
   --footer-h: 3rem;
 
   /* ----- reveal.js variable contract (replaces stock theme) ----- */
-  --r-background: oklch(0.22 0.020 258);                 /* frame around the slide */
+  --r-background: oklch(0.165 0.012 258);                 /* graphite frame around the slide */
   --r-background-color: var(--paper);
   --r-main-font: var(--font-serif);
   --r-main-font-size: var(--fs-body);
   --r-main-color: var(--ink);
   --r-block-margin: 0.8em;
   --r-heading-margin: 0 0 0.5em 0;
-  --r-heading-font: var(--font-serif);
-  --r-heading-color: var(--ink);
+  --r-heading-font: var(--font-display);
+  --r-heading-color: var(--ink-bold);
   --r-heading-line-height: var(--lh-tight);
-  --r-heading-letter-spacing: -0.006em;
+  --r-heading-letter-spacing: var(--track-tight);
   --r-heading-text-transform: none;
   --r-heading-text-shadow: none;
-  --r-heading-font-weight: 600;
+  --r-heading-font-weight: 800;
   --r-heading1-text-shadow: none;
   --r-heading1-size: var(--fs-h1);
   --r-heading2-size: var(--fs-h2);
@@ -135,7 +149,7 @@
   --r-link-color: var(--green-deep);
   --r-link-color-dark: var(--navy);
   --r-link-color-hover: var(--green);
-  --r-selection-background-color: color-mix(in oklch, var(--green), transparent 70%);
+  --r-selection-background-color: color-mix(in oklch, var(--green), transparent 68%);
   --r-selection-color: var(--ink);
   --r-overlay-element-bg-color: 18 26 22;
   --r-overlay-element-fg-color: 244 243 238;
@@ -145,13 +159,13 @@
    2. VIEWPORT FRAME
    ---------------------------------------------------------------------------- */
 /* Light slides are transparent, so the VIEWPORT colour is the slide colour.
-   Keep it paper by default; deck.js flips it to a dark frame on dark slides
-   (section / closing / media) so the framing stays consistent either way. */
+   Keep it paper by default; deck.js flips it to a deep graphite frame on dark
+   slides (section / closing / media) so the framing stays consistent either way. */
 .reveal-viewport {
   background-color: var(--paper);
   transition: background-color 360ms var(--ease);
 }
-.reveal-viewport.deck-dark { background-color: var(--navy-deep); }
+.reveal-viewport.deck-dark { background-color: oklch(0.165 0.012 258); }
 ::selection { background: var(--r-selection-background-color); color: var(--r-selection-color); }
 
 /* ----------------------------------------------------------------------------
@@ -184,181 +198,208 @@
   overflow: visible;
 }
 
-/* Headings — book serif, real weight, optical letterfit */
-.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-  font-family: var(--font-serif);
-  color: var(--ink);
+/* Headings — GOTHIC display, heavy weight, tight optical letterfit */
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: var(--font-display);
+  color: var(--ink-bold);
   line-height: var(--lh-tight);
-  letter-spacing: var(--r-heading-letter-spacing);
-  font-weight: 600;
+  letter-spacing: var(--track-tight);
+  font-weight: 800;
   margin: 0 0 0.5em;
   text-transform: none;
   text-wrap: balance;
 }
-.reveal h1 { font-size: var(--fs-h1); font-weight: 600; }
-.reveal h2 { font-size: var(--fs-h2); font-weight: 600; }
-.reveal h3 { font-size: var(--fs-h3); font-weight: 600; }
-.reveal h4 { font-size: var(--fs-lead); font-weight: 600; }
+/* h4 stays in the serif register — it reads as an emphatic lead, not a label */
+.reveal h4 {
+  font-family: var(--font-serif); font-weight: 600; font-style: normal;
+  color: var(--ink); line-height: var(--lh-snug); letter-spacing: 0;
+  margin: 0 0 0.5em; text-wrap: balance;
+}
+.reveal h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.028em; }
+.reveal h2 { font-size: var(--fs-h2); font-weight: 800; }
+.reveal h3 { font-size: var(--fs-h3); font-weight: 700; letter-spacing: -0.014em; }
+.reveal h4 { font-size: var(--fs-lead); }
 
-/* The standard slide title. No decorative rule beneath it — the type carries it.
-   (.no-rule kept as a harmless no-op so existing decks stay valid.) */
-.reveal .slide-title { margin-bottom: var(--space-lg); max-width: 24ch; }
-.reveal .slide-title.no-rule { }
+/* The standard slide title — gothic, with the signature heavy green marker
+   above it. (.no-rule kept as a harmless no-op so existing decks stay valid.) */
+.reveal .slide-title {
+  position: relative;
+  margin-bottom: var(--space-lg); max-width: 22ch;
+  padding-top: calc(var(--bar) + var(--space-md));
+}
+.reveal .slide-title::before {
+  content: ""; position: absolute; top: 0; left: 0;
+  width: 2.6rem; height: var(--bar); border-radius: 1px;
+  background: var(--green);
+}
+.reveal .slide-title.no-rule::before { display: none; }
+.reveal .slide-title.no-rule { padding-top: 0; }
 
-/* Prose */
+/* Prose — the serif counter-voice */
 .reveal p { margin: 0 0 var(--r-block-margin); max-width: 62ch; text-wrap: pretty; }
 .reveal .lead {
-  font-size: var(--fs-lead); line-height: 1.3; color: var(--ink);
-  max-width: 30ch; font-weight: 480; letter-spacing: -0.004em;
+  font-family: var(--font-serif); font-size: var(--fs-lead); line-height: 1.26; color: var(--ink);
+  max-width: 30ch; font-weight: 500; letter-spacing: -0.002em;
 }
 .reveal .muted { color: var(--ink-soft); }
 .reveal small, .reveal .small { font-size: var(--fs-small); }
 
-.reveal strong, .reveal b { font-weight: 700; color: var(--ink); }
+.reveal strong, .reveal b { font-weight: 700; color: var(--ink-bold); }
 /* On the dark layouts the default ink <strong> is illegible — lift it to paper. */
 .reveal section.section strong, .reveal section.section b,
 .reveal section.closing strong, .reveal section.closing b,
 .reveal section.media strong, .reveal section.media b { color: var(--paper); }
 .reveal em, .reveal i { font-style: italic; }
-/* Inline highlight — a warm wash behind a phrase, not a stripe */
+/* Inline highlight — a solid gold underline-block behind a phrase */
 .reveal mark, .reveal .hl {
-  background: linear-gradient(transparent 60%, color-mix(in oklch, var(--gold), white 30%) 60%);
-  color: inherit; padding: 0 0.06em; border-radius: 1px;
+  background: linear-gradient(transparent 58%, color-mix(in oklch, var(--gold), white 18%) 58%);
+  color: inherit; padding: 0 0.06em; border-radius: 0;
 }
 .reveal .accent { color: var(--green-deep); }
 .reveal .accent-navy { color: var(--navy); }
 
-/* Links — green is functional wayfinding, so it earns its keep here */
+/* Links — green is functional wayfinding, bolder underline */
 .reveal a {
   color: var(--green-deep);
   text-decoration: none;
   text-underline-offset: 0.16em;
-  text-decoration-color: color-mix(in oklch, var(--green), transparent 58%);
-  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklch, var(--green), transparent 50%);
+  text-decoration-thickness: 1.5px;
   transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
 .reveal a:hover { color: var(--green); text-decoration-line: underline; text-decoration-color: var(--green); }
 
-/* Lists — hanging em-dash markers in faint ink (no colour sprinkle) */
+/* Lists — hanging green tick markers (the colour earns a small structural role) */
 .reveal ul, .reveal ol { display: block; margin: 0 0 var(--r-block-margin); padding: 0; max-width: 56ch; }
 .reveal ul { list-style: none; }
 .reveal ul > li { position: relative; padding-left: 1.5em; margin: 0 0 0.5em; }
 .reveal ul > li::before {
-  content: "\2014";          /* em dash */
-  position: absolute; left: 0; top: 0;
-  color: var(--ink-faint); font-weight: 500;
+  content: ""; position: absolute; left: 0; top: 0.58em;
+  width: 0.7em; height: 3px; border-radius: 1px; background: var(--green);
 }
-/* Use the native `list-item` counter so the HTML start="" attribute is honoured
-   (a 5-item list split across two columns can continue 04, 05, not restart). */
+/* Use the native `list-item` counter so the HTML start="" attribute is honoured. */
 .reveal ol { list-style: none; }
-.reveal ol > li { position: relative; padding-left: 2em; margin: 0 0 0.5em; }
+.reveal ol > li { position: relative; padding-left: 2.1em; margin: 0 0 0.5em; }
 .reveal ol > li::before {
   content: counter(list-item, decimal-leading-zero);
-  position: absolute; left: 0; top: 0.34em;
-  font-family: var(--font-label); font-size: 0.62em; font-weight: 600;
-  color: var(--ink-soft); letter-spacing: 0.04em; font-variant-numeric: tabular-nums;
+  position: absolute; left: 0; top: 0.30em;
+  font-family: var(--font-label); font-size: 0.6em; font-weight: 800;
+  color: var(--green-deep); letter-spacing: 0.02em; font-variant-numeric: tabular-nums;
 }
 .reveal li::marker { content: none; }
 .reveal li ul, .reveal li ol { margin: 0.45em 0 0; }
-.reveal li ul > li::before { content: "\2013"; color: var(--brown-deep); }  /* en dash, warm */
+.reveal li ul > li::before { background: var(--ink-faint); }   /* nested: neutral tick */
+
+/* dark fields: ticks lift to gold for legibility */
+.reveal section.section ul > li::before,
+.reveal section.closing ul > li::before { background: var(--gold); }
 
 /* Blockquote / pull quote — the serif's italic is the whole effect */
 .reveal blockquote {
   border: none; box-shadow: none; background: none;
   font-family: var(--font-serif); font-style: italic;
-  font-size: var(--fs-lead); line-height: 1.3; color: var(--ink);
-  margin: var(--space-md) 0; padding: 0; max-width: 32ch; font-weight: 480;
+  font-size: var(--fs-lead); line-height: 1.28; color: var(--ink);
+  margin: var(--space-md) 0; padding: 0; max-width: 32ch; font-weight: 500;
 }
 .reveal blockquote p { max-width: none; margin: 0; }
 
-/* Tables — gothic small-caps headers, hairline ruling, neutral zebra */
+/* Tables — heavy gothic small-caps headers, ruled, neutral zebra */
 .reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-caption); width: 100%; }
-.reveal table th, .reveal table td { text-align: left; padding: 0.5em 0.9em; border: none; border-bottom: var(--hair); }
+.reveal table th, .reveal table td { text-align: left; padding: 0.55em 0.9em; border: none; border-bottom: var(--hair); }
 .reveal table th {
-  font-family: var(--font-label); font-weight: 600; color: var(--ink-soft);
-  text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.74em;
-  border-bottom: 1.5px solid var(--line-strong);
+  font-family: var(--font-label); font-weight: 700; color: var(--ink-bold);
+  text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72em;
+  border-bottom: 3px solid var(--rule);
 }
-.reveal table tbody tr:nth-child(even) { background: color-mix(in oklch, var(--sunken), transparent 35%); }
+.reveal table tbody tr:nth-child(even) { background: color-mix(in oklch, var(--sunken), transparent 30%); }
 .reveal table td.num, .reveal table th.num { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* Images / figures — a thin plate border, not a soft drop shadow */
+/* Images / figures — a defined plate border, sharp */
 .reveal img { max-width: 100%; height: auto; display: block; }
 .reveal figure { margin: 0; }
 .reveal figure img { border-radius: var(--radius-sm); border: 1px solid var(--line-strong); }
 .reveal figcaption {
   font-size: var(--fs-caption); color: var(--ink-soft); margin-top: var(--space-sm);
-  line-height: 1.4; max-width: 52ch; font-style: italic;
+  line-height: 1.4; max-width: 52ch; font-style: italic; font-family: var(--font-serif);
 }
 
 /* ----------------------------------------------------------------------------
    4. EDITORIAL COMPONENTS
    ---------------------------------------------------------------------------- */
-/* Overline / eyebrow — a quiet gothic small-caps label. Neutral by default;
-   the warm/navy variants tint only when a slide genuinely needs categorising. */
+/* Overline / eyebrow — a heavy gothic small-caps label, green by spirit.
+   Neutral by default; warm/navy/green variants tint when categorising. */
 .reveal .kicker {
-  display: block;
-  font-family: var(--font-label); font-weight: 600;
+  display: inline-flex; align-items: center; gap: 0.55em;
+  font-family: var(--font-label); font-weight: 700;
   font-size: var(--fs-kicker); text-transform: uppercase;
-  letter-spacing: var(--track-label); color: var(--ink-faint);
+  letter-spacing: var(--track-label); color: var(--ink-soft);
   margin: 0 0 var(--space-sm);
 }
+.reveal .kicker::before {
+  content: ""; width: 1.4em; height: 3px; border-radius: 1px; background: var(--green); flex: none;
+}
 .reveal .kicker.warm { color: var(--brown-deep); }
+.reveal .kicker.warm::before { background: var(--brown); }
 .reveal .kicker.navy { color: var(--navy); }
+.reveal .kicker.navy::before { background: var(--navy); }
 .reveal .kicker.green { color: var(--green-deep); }
 
-/* Editorial note — a ruled aside, not a tinted takeaway box. A hairline above,
-   a gothic label, serif body. No card, no shadow, no side-stripe. */
+/* Editorial note — a ruled aside marked by a heavy top rule + gothic label. */
 .reveal .callout {
-  border-top: 1.5px solid var(--line-strong);
+  border-top: 3px solid var(--rule);
   padding: var(--space-sm) 0 0;
   margin: var(--space-lg) 0 var(--space-md);
   font-size: var(--fs-small); max-width: 60ch;
 }
 .reveal .callout .callout-label {
-  display: block; font-family: var(--font-label); font-weight: 600;
+  display: block; font-family: var(--font-label); font-weight: 700;
   font-size: var(--fs-footer); text-transform: uppercase; letter-spacing: var(--track-label);
-  color: var(--ink-soft); margin-bottom: 0.3em;
+  color: var(--ink-bold); margin-bottom: 0.3em;
 }
-.reveal .callout.warm { border-top-color: color-mix(in oklch, var(--brown), var(--line-strong) 40%); }
+.reveal .callout.warm { border-top-color: var(--brown); }
 .reveal .callout.warm .callout-label { color: var(--brown-deep); }
-.reveal .callout.navy { border-top-color: color-mix(in oklch, var(--navy), var(--line-strong) 55%); }
+.reveal .callout.navy { border-top-color: var(--navy); }
 .reveal .callout.navy .callout-label { color: var(--navy); }
+.reveal .callout.green { border-top-color: var(--green); }
+.reveal .callout.green .callout-label { color: var(--green-deep); }
 
-/* Stat — an editorial figure. Big serif numeral, gothic label. */
+/* Stat — an editorial figure. Big gothic numeral, gothic label. */
 .reveal .stat { display: flex; flex-direction: column; gap: 0.05em; }
 .reveal .stat .stat-num {
-  font-family: var(--font-serif); font-weight: 600; font-size: var(--fs-h2);
-  line-height: 0.96; color: var(--ink); font-variant-numeric: lining-nums tabular-nums;
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h2);
+  line-height: 0.92; color: var(--ink-bold); letter-spacing: var(--track-tight);
+  font-variant-numeric: lining-nums tabular-nums;
 }
 .reveal .stat .stat-label {
   font-family: var(--font-label); font-size: var(--fs-footer); color: var(--ink-soft);
-  text-transform: uppercase; letter-spacing: 0.1em; max-width: 22ch;
+  text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; max-width: 22ch;
 }
 
-/* Figure ledger — the "in figures" panel as a ruled index: label left, figure
-   right, hairline between rows. Reads like a colophon, not a stat-card grid. */
-.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-2xl); margin-top: var(--space-sm); }
+/* Figure ledger — "in figures" as a ruled index: label left, figure right,
+   a heavy top rule, hairlines between. Reads like a colophon, not a card grid. */
+.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-3xl); margin-top: var(--space-md); }
 .reveal .stat-grid .stat {
   flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--space-md);
-  padding: 0.5em 0; border-bottom: var(--hair);
+  padding: 0.55em 0; border-bottom: var(--hair);
 }
-.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; }
+.reveal .stat-grid .stat:nth-child(1), .reveal .stat-grid .stat:nth-child(2) { border-top: 3px solid var(--rule); }
+.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); }
 .reveal .stat-grid .stat .stat-label { order: 1; max-width: none; align-self: center; }
 
 /* Citation line / source */
 .reveal .cite, .reveal .source {
-  font-size: var(--fs-caption); color: var(--ink-faint); font-style: italic;
+  font-size: var(--fs-caption); color: var(--ink-faint); font-style: italic; font-family: var(--font-serif);
 }
 
-/* Chips / tags — gothic small-caps, hairline outline */
+/* Chips / tags — heavy gothic small-caps, solid hairline outline */
 .reveal .chip {
   display: inline-block; font-family: var(--font-label); font-size: var(--fs-footer);
-  font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 0.2em 0.6em; border-radius: var(--radius-sm);
-  background: transparent; border: var(--hair); color: var(--ink-soft);
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.22em 0.6em; border-radius: var(--radius-sm);
+  background: transparent; border: 1.5px solid var(--line-strong); color: var(--ink-soft);
 }
-.reveal .chip.green { border-color: color-mix(in oklch, var(--green), var(--paper) 50%); color: var(--green-deep); }
+.reveal .chip.green { border-color: var(--green); color: var(--green-deep); }
+.reveal .chip.solid { background: var(--green); border-color: var(--green); color: var(--paper); }
 
 /* Query-mix list — plain-language asks, divided by hairlines (no per-item card). */
 .reveal .query-list { list-style: none; margin: 0 0 var(--space-md); padding: 0; max-width: none; display: grid; gap: 0; }
@@ -367,7 +408,7 @@
   display: grid; gap: 0.28em;
   border-bottom: var(--hair);
 }
-.reveal .query-list > li:first-child { border-top: var(--hair); }
+.reveal .query-list > li:first-child { border-top: 3px solid var(--rule); }
 .reveal .query-list > li::before { content: none; }
 .reveal .query-list .q {
   font-family: var(--font-serif); font-style: italic; font-weight: 500;
@@ -377,30 +418,53 @@
 .reveal .query-list .q-map {
   display: flex; align-items: center; gap: 0.6em;
   font-family: var(--font-label); font-size: var(--fs-footer); text-transform: uppercase;
-  letter-spacing: 0.06em; color: var(--ink-faint);
+  letter-spacing: 0.08em; font-weight: 600; color: var(--ink-faint);
 }
 
-/* Two-depth chooser — Brief / Extended, as a pair of hairline-bordered blocks.
-   No side-stripe: the active path is marked by a full green hairline + label. */
+/* Two-depth chooser — Brief / Extended as a pair of hairline-bordered blocks.
+   The active path is marked by a heavy green left bar + green label. */
 .reveal .depths { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); max-width: none; margin: 0 0 var(--space-md); }
 .reveal .depth {
   display: flex; flex-direction: column; gap: 0.1em;
   padding: var(--space-sm) var(--space-md);
   background: transparent; border: 1px solid var(--line);
-  border-radius: var(--radius-md);
+  border-left: var(--bar) solid var(--line-strong);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-.reveal .depth.is-full { border-color: color-mix(in oklch, var(--green), var(--paper) 38%); background: var(--green-wash); }
-.reveal .depth .depth-name { font-family: var(--font-serif); font-weight: 700; font-size: var(--fs-small); color: var(--ink); }
+.reveal .depth.is-full { border-color: var(--line); border-left-color: var(--green); background: var(--green-wash); }
+.reveal .depth .depth-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
 .reveal .depth.is-full .depth-name { color: var(--green-deep); }
 .reveal .depth .depth-tag {
-  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600;
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--ink-faint); margin-left: 0.5em; vertical-align: 0.08em;
 }
-.reveal .depth .depth-desc { font-size: var(--fs-caption); color: var(--ink-soft); }
+.reveal .depth .depth-desc { font-size: var(--fs-caption); color: var(--ink-soft); font-family: var(--font-serif); }
 
-/* A thin full-width hairline divider */
-.reveal hr, .reveal .rule { border: none; height: 1px; background: var(--line); margin: var(--space-lg) 0; }
+/* Numbered index — a bold contents/agenda grid (new layout helper).
+   Big gothic folio, serif label, heavy rule between rows. */
+.reveal .index-list { list-style: none; margin: var(--space-md) 0 0; padding: 0; max-width: none; display: grid; gap: 0; counter-reset: idx; }
+.reveal .index-list > li {
+  counter-increment: idx; margin: 0; padding: var(--space-md) 0 var(--space-md);
+  padding-left: 0;   /* override the generic .reveal ol > li padding */
+  display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline; gap: 0.2em var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.reveal .index-list > li:first-child { border-top: 3px solid var(--rule); }
+.reveal .index-list > li:last-child { border-bottom: 3px solid var(--rule); }
+.reveal .index-list > li::before {
+  content: counter(idx, decimal-leading-zero);
+  position: static;   /* stay an in-flow grid item (the generic ol rule absolutes it) */
+  grid-column: 1; grid-row: 1; top: auto; left: auto;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.9rem;
+  color: var(--green-deep); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.reveal .index-list .idx-title { grid-column: 2; grid-row: 1; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); color: var(--ink-bold); letter-spacing: -0.012em; line-height: 1.04; }
+.reveal .index-list .idx-desc { grid-column: 2; grid-row: 2; font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink-soft); margin-top: 0.2em; }
+
+/* A heavy full-width rule / divider */
+.reveal hr, .reveal .rule { border: none; height: 3px; background: var(--rule); margin: var(--space-lg) 0; }
 
 /* ----------------------------------------------------------------------------
    5. LAYOUT CLASSES
@@ -410,31 +474,30 @@
 .reveal section.statement, .reveal section.closing,
 .reveal section.center { justify-content: center; }
 
-/* `.balance` — opt-in helper to vertically centre a sparse content slide.
-   reveal forces display:block inline on the present slide, which defeats the
-   section's flex layout, so re-assert it with !important here. */
+/* `.balance` — opt-in helper to vertically centre a sparse content slide. */
 .reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
 .reveal section.balance .cols { flex: 0 0 auto; }
 
-/* --- COVER --- a journal masthead: gothic event line, big serif title -------- */
+/* --- COVER --- a broadsheet masthead: heavy rule, gothic event line, giant
+   gothic title, serif italic subtitle ---------------------------------------- */
 .reveal section.cover { padding-right: 6rem; }
 .reveal section.cover .eyebrow {
-  font-family: var(--font-label); font-weight: 600; text-transform: uppercase;
-  letter-spacing: var(--track-label); font-size: var(--fs-kicker); color: var(--ink-soft);
-  max-width: 52ch; margin-bottom: var(--space-md);
-  padding-bottom: var(--space-md); border-bottom: 1px solid var(--line-strong);
+  font-family: var(--font-label); font-weight: 700; text-transform: uppercase;
+  letter-spacing: var(--track-label); font-size: var(--fs-kicker); color: var(--ink-bold);
+  max-width: 60ch; margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md); border-bottom: 3px solid var(--rule);
 }
 .reveal section.cover h1 {
-  font-size: var(--fs-h1); font-weight: 600; letter-spacing: -0.012em;
-  max-width: 19ch; margin-bottom: var(--space-md);
+  font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em;
+  color: var(--ink-bold); max-width: 17ch; margin-bottom: var(--space-md); line-height: 0.96;
 }
 .reveal section.cover .subtitle {
-  font-family: var(--font-serif); font-style: italic; font-weight: 480;
-  font-size: var(--fs-lead); color: var(--ink-soft); max-width: 38ch; margin-bottom: var(--space-xl);
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-lead); color: var(--ink-soft); max-width: 40ch; margin-bottom: var(--space-xl);
 }
 .reveal .byline { display: flex; flex-direction: column; gap: 0.12em; }
-.reveal .byline .name { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small); color: var(--ink); letter-spacing: 0.01em; }
-.reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); font-style: italic; max-width: 46ch; }
+.reveal .byline .name { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); letter-spacing: 0.01em; }
+.reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); font-style: italic; font-family: var(--font-serif); max-width: 46ch; }
 
 /* Contact row (built by deck.js from DECK_CONFIG.links) */
 .reveal .contact { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); }
@@ -454,77 +517,97 @@
   display: block; align-self: flex-start;
   height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
 }
-.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.82; }
+.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
 
-/* --- SECTION DIVIDER --- a printed half-title page: deep field, gold plate rule */
+/* --- SECTION DIVIDER --- a full-bleed saturated GREEN field, gold folio,
+   giant gothic title. Navy variant for the structural deep. ------------------ */
 .reveal section.section {
   --r-main-color: var(--paper);
   color: var(--paper);
-  background: linear-gradient(178deg, color-mix(in oklch, var(--navy), var(--navy-deep) 30%) 0%, var(--navy-deep) 100%);
+  background: var(--green-field);
 }
+/* a thick gold plate rule across the top of the field */
 .reveal section.section::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  top: var(--slide-pad-y); height: 2px; background: var(--gold); opacity: 0.85;
+  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
 }
 .reveal section.section .sec-no {
-  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small);
-  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: var(--space-md);
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
+  letter-spacing: -0.03em; line-height: 0.82; color: color-mix(in oklch, var(--paper), transparent 76%);
+  margin-bottom: var(--space-sm); font-variant-numeric: tabular-nums;
 }
 .reveal section.section h2 {
-  color: var(--paper); font-size: var(--fs-section); font-weight: 600;
-  letter-spacing: -0.014em; max-width: 18ch; margin: 0;
+  color: var(--paper); font-family: var(--font-display); font-size: var(--fs-section); font-weight: 800;
+  letter-spacing: -0.03em; max-width: 16ch; margin: 0; line-height: 0.94;
 }
 .reveal section.section .sec-sub {
-  color: color-mix(in oklch, var(--paper), var(--navy) 26%);
+  color: color-mix(in oklch, var(--paper), transparent 22%);
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
-  margin-top: var(--space-md); max-width: 38ch; font-weight: 480;
+  margin-top: var(--space-lg); max-width: 38ch; font-weight: 500;
 }
 
-/* Green variant of the divider */
-.reveal section.section.green {
-  background: linear-gradient(178deg, var(--green-deep) 0%, color-mix(in oklch, var(--green-deep), #03110b 36%) 100%);
-}
-.reveal section.section.green::before { background: var(--gold-bright); }
-.reveal section.section.green .sec-no { color: var(--gold-bright); }
+/* Navy variant of the divider (the structural deep). `.green` kept as an alias
+   so existing `.section.green` decks render as the lead green field. */
+.reveal section.section.navy { background: var(--navy-field); }
+.reveal section.section.navy::before { background: var(--gold-bright); }
+.reveal section.section.green { background: var(--green-field); }
 
-/* --- STATEMENT (big quote / claim) ----------------------------------------- */
+/* --- STATEMENT (big claim / quote) ----------------------------------------- */
+/* Default: a GOTHIC claim — heavy, huge, tight. One green accent phrase. */
 .reveal section.statement .statement-body {
-  font-family: var(--font-serif); font-weight: 500; font-style: normal;
-  font-size: var(--fs-display); line-height: 1.06; letter-spacing: -0.012em;
-  color: var(--ink); max-width: 20ch; text-wrap: balance;
+  font-family: var(--font-display); font-weight: 800; font-style: normal;
+  font-size: var(--fs-display); line-height: 0.98; letter-spacing: -0.03em;
+  color: var(--ink-bold); max-width: 18ch; text-wrap: balance;
 }
 .reveal section.statement .statement-body .accent { color: var(--green-deep); }
 .reveal section.statement .attribution {
   margin-top: var(--space-xl); font-family: var(--font-label); font-style: normal;
-  font-size: var(--fs-small); color: var(--ink-soft); font-weight: 500;
+  font-size: var(--fs-small); color: var(--ink-soft); font-weight: 600;
 }
-.reveal section.statement.quote .statement-body { font-style: italic; font-weight: 480; }
+/* Quote variant: the human voice returns to the serif italic, with a gold mark. */
+.reveal section.statement.quote .statement-body {
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-display); line-height: 1.08; letter-spacing: -0.01em; color: var(--ink); max-width: 22ch;
+}
 .reveal section.statement.quote .statement-body::before {
-  content: "\201C"; font-size: 1.1em; color: var(--gold); line-height: 0;
+  content: "\201C"; font-family: var(--font-serif); font-size: 1.1em; color: var(--gold); line-height: 0;
   margin-right: 0.06em; vertical-align: -0.18em;
 }
 
+/* --- BIG METRIC --- an oversized single figure (new layout helper) ---------- */
+.reveal section.metric { justify-content: center; }
+.reveal section.metric .metric-num {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
+  line-height: 0.86; letter-spacing: -0.035em; color: var(--green-deep);
+  font-variant-numeric: lining-nums tabular-nums; margin: 0;
+}
+.reveal section.metric .metric-label {
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
+  color: var(--ink-soft); max-width: 32ch; margin-top: var(--space-md);
+}
+
 /* --- COLUMNS / COMPARISON --------------------------------------------------- */
-.reveal .cols { display: grid; grid-template-columns: repeat(var(--cols, 2), 1fr); gap: var(--space-2xl); align-items: start; flex: 1; min-height: 0; }
+.reveal .cols { display: grid; grid-template-columns: repeat(var(--cols, 2), 1fr); gap: var(--space-3xl); align-items: start; flex: 1; min-height: 0; }
 .reveal .cols.ratio-3-2 { grid-template-columns: 3fr 2fr; }
 .reveal .cols.ratio-2-3 { grid-template-columns: 2fr 3fr; }
 .reveal .cols.ratio-1-2 { grid-template-columns: 1fr 2fr; }
 .reveal .col { min-width: 0; }
 .reveal .col > h3 { margin-bottom: var(--space-sm); }
 .reveal .col-head {
-  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-kicker);
-  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-soft);
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker);
+  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-bold);
   padding-bottom: var(--space-xs); margin-bottom: var(--space-md);
-  border-bottom: 1.5px solid var(--line-strong);
+  border-bottom: 3px solid var(--rule);
 }
-.reveal .col-head.alt { color: var(--brown-deep); border-bottom-color: color-mix(in oklch, var(--brown), var(--line-strong) 45%); }
+.reveal .col-head.alt { color: var(--brown-deep); border-bottom-color: var(--brown); }
 
-/* Panel — a ruled sidebar for grouping (a top rule, not a card) */
+/* Panel — a ruled sidebar for grouping (a heavy top rule, not a card) */
 .reveal .panel {
-  background: transparent; border: none; border-top: 2px solid var(--ink);
+  background: transparent; border: none; border-top: var(--bar) solid var(--rule);
   border-radius: 0; padding: var(--space-md) 0 0;
 }
 .reveal .panel.sunken { background: var(--sunken); border-top: none; border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
+.reveal .panel.green { border-top-color: var(--green); }
 
 /* --- MEDIA / FULL-BLEED IMAGE ---------------------------------------------- */
 .reveal section.media { padding: 0; }
@@ -532,59 +615,61 @@
 .reveal section.media .media-fill img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: none; }
 .reveal section.media .media-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, oklch(0.16 0.03 258 / 0.88) 0%, oklch(0.16 0.03 258 / 0.5) 40%, transparent 72%);
+  background: linear-gradient(90deg, oklch(0.14 0.02 258 / 0.92) 0%, oklch(0.14 0.02 258 / 0.55) 42%, transparent 74%);
 }
 .reveal section.media .media-caption {
   position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 32ch;
+  bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 34ch;
 }
 .reveal section.media .media-caption h2 { color: var(--paper); }
-.reveal section.media .media-caption .kicker { color: var(--gold); }
+.reveal section.media .media-caption .kicker { color: var(--gold-bright); }
+.reveal section.media .media-caption .kicker::before { background: var(--gold); }
 
 /* Image + caption side layout */
-.reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-2xl); align-items: center; flex: 1; min-height: 0; }
+.reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
 .reveal .figrow.flip { grid-template-columns: 1fr 1.1fr; }
-.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: cover; border: 1px solid var(--line-strong); }
+/* Documentary figures show whole by default; .crop bleeds true photos. */
+.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: contain; border: 1px solid var(--line-strong); }
+.reveal .figrow.crop .fig-frame img { object-fit: cover; }
 
-/* --- CLOSING / CONTACT ------------------------------------------------------ */
+/* --- CLOSING / CONTACT --- a deep navy field, gold spark ---------------------- */
 .reveal section.closing {
   --r-main-color: var(--paper); color: var(--paper);
-  background: linear-gradient(160deg, color-mix(in oklch, var(--green-deep), #03120c 30%) 0%, var(--navy-deep) 84%);
+  background: var(--navy-field);
 }
 .reveal section.closing::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  top: var(--slide-pad-y); height: 2px; background: var(--gold); opacity: 0.7;
+  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
 }
-.reveal section.closing h2 { color: var(--paper); font-size: var(--fs-h1); max-width: 17ch; }
-.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), var(--navy) 18%); }
-.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), var(--navy) 16%); }
+.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 16ch; letter-spacing: -0.028em; line-height: 0.96; }
+.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), transparent 18%); }
+.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), transparent 18%); }
 .reveal section.closing .contact a:hover { color: var(--paper); }
 .reveal section.closing .contact a .ico { color: var(--gold); }
 .reveal section.closing .kicker { color: var(--gold-bright); }
+.reveal section.closing .kicker::before { background: var(--gold); }
 .reveal section.closing p a { color: var(--gold-bright); text-decoration-color: color-mix(in oklch, var(--gold), transparent 50%); }
 .reveal section.closing p a:hover { color: var(--paper); text-decoration-color: var(--paper); }
 .reveal section.closing .byline .name { color: var(--paper); }
-.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), var(--navy) 26%); }
+.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), transparent 30%); }
 
 /* ----------------------------------------------------------------------------
    6. BRAND CHROME (injected by deck.js)
-   A running head at the top (the section, like a book), the imprint + nav at
-   the foot. No spectrum bar, no compass — the frame is typographic.
+   A running head at the top, the imprint + nav at the foot. Typographic, heavy.
    ---------------------------------------------------------------------------- */
-/* Running head — current section, small-caps, with a hairline beneath. Sits in
-   the top padding of content slides; deck.js hides it on the hero/title pages. */
+/* Running head — current section, gothic small-caps, with a heavy rule beneath. */
 .deck-runhead {
   position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  top: 1.25rem; height: 1.3rem; z-index: 30;
+  top: 1.3rem; height: 1.3rem; z-index: 30;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  pointer-events: none; font-family: var(--font-label); font-size: 0.74rem; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-faint);
+  pointer-events: none; font-family: var(--font-label); font-size: 0.74rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-faint);
 }
 .deck-runhead::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 1.25rem;
-  height: 1px; background: var(--line);
+  content: ""; position: absolute; left: 0; right: 0; top: 1.3rem;
+  height: 2px; background: var(--rule);
 }
-.deck-runhead .rh-sec { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; }
+.deck-runhead .rh-sec { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; color: var(--ink-bold); }
 .deck-runhead .rh-mark { color: var(--green-deep); flex: none; }
 .deck-runhead[hidden] { display: none; }
 
@@ -597,53 +682,53 @@
 }
 .deck-footer::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x); top: 0;
-  height: 1px; background: var(--line);
+  height: 2px; background: var(--rule);
 }
 .deck-footer .foot-left { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
 .deck-footer .foot-left img { height: 1.15rem; width: auto; opacity: 0.9; }
 .deck-footer .foot-title {
   min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.92em; color: var(--ink-faint);
+  text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.92em; color: var(--ink-faint); font-weight: 600;
 }
-.deck-footer .foot-title b { color: var(--ink-soft); font-weight: 600; }
+.deck-footer .foot-title b { color: var(--ink-bold); font-weight: 700; }
 
-/* footer chrome inverts on dark slides */
+/* footer chrome inverts on dark fields */
 .deck-footer.on-dark { color: color-mix(in oklch, var(--paper), transparent 35%); }
-.deck-footer.on-dark::before { background: color-mix(in oklch, var(--paper), transparent 80%); }
-.deck-footer.on-dark .foot-title { color: color-mix(in oklch, var(--paper), transparent 40%); }
-.deck-footer.on-dark .foot-title b { color: color-mix(in oklch, var(--paper), transparent 14%); }
+.deck-footer.on-dark::before { background: color-mix(in oklch, var(--paper), transparent 70%); }
+.deck-footer.on-dark .foot-title { color: color-mix(in oklch, var(--paper), transparent 42%); }
+.deck-footer.on-dark .foot-title b { color: color-mix(in oklch, var(--paper), transparent 12%); }
 .deck-footer.on-dark .foot-left img { filter: brightness(0) invert(1); opacity: 0.85; }
 
 /* Navigation cluster (right side of footer) */
 .deck-nav { display: flex; align-items: center; gap: 0.4rem; pointer-events: auto; flex: none; }
 .deck-nav .counter {
-  font-family: var(--font-label); font-size: var(--fs-footer); letter-spacing: 0.1em;
-  color: inherit; margin-right: 0.4rem; font-variant-numeric: tabular-nums;
+  font-family: var(--font-label); font-size: var(--fs-footer); letter-spacing: 0.12em;
+  color: inherit; margin-right: 0.4rem; font-variant-numeric: tabular-nums; font-weight: 600;
 }
-.deck-nav .counter .cur { color: var(--green-deep); font-weight: 600; }
+.deck-nav .counter .cur { color: var(--green-deep); font-weight: 800; }
 .deck-footer.on-dark .deck-nav .counter .cur { color: var(--gold-bright); }
 .deck-btn {
   -webkit-appearance: none; appearance: none; cursor: pointer;
   display: inline-grid; place-items: center; width: 2rem; height: 2rem;
-  border-radius: var(--radius-sm); border: var(--hair); background: transparent;
+  border-radius: var(--radius-sm); border: 1.5px solid var(--line-strong); background: transparent;
   color: var(--ink-soft); padding: 0; transition: all var(--dur) var(--ease);
 }
 .deck-btn svg { width: 1.05rem; height: 1.05rem; }
-.deck-btn:hover { color: var(--green-deep); border-color: color-mix(in oklch, var(--green), var(--paper) 45%); background: var(--green-wash); transform: translateY(-1px); }
+.deck-btn:hover { color: var(--paper); border-color: var(--green); background: var(--green); transform: translateY(-1px); }
 .deck-btn:active { transform: translateY(0); }
 .deck-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: var(--line); color: var(--ink-faint); }
 .deck-btn:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-.deck-btn.toc-btn { display: inline-flex; align-items: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.08em; text-transform: uppercase; }
+.deck-btn.toc-btn { display: inline-flex; align-items: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; }
 .deck-btn.toc-btn svg { width: 0.95rem; height: 0.95rem; flex: none; }
 .deck-footer.on-dark .deck-btn {
   background: color-mix(in oklch, var(--paper), transparent 90%);
-  border-color: color-mix(in oklch, var(--paper), transparent 74%);
-  color: color-mix(in oklch, var(--paper), transparent 18%);
+  border-color: color-mix(in oklch, var(--paper), transparent 70%);
+  color: color-mix(in oklch, var(--paper), transparent 16%);
 }
-.deck-footer.on-dark .deck-btn:hover { background: color-mix(in oklch, var(--paper), transparent 80%); color: var(--paper); border-color: var(--gold); }
+.deck-footer.on-dark .deck-btn:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
 
-/* Progress bar (reveal built-in, restyled to a quiet 2px hairline) */
-.reveal .progress { height: 2px; color: var(--green); background: color-mix(in oklch, var(--ink), transparent 92%); }
+/* Progress bar (reveal built-in, a confident 3px green rule) */
+.reveal .progress { height: 3px; color: var(--green); background: color-mix(in oklch, var(--ink), transparent 90%); }
 .reveal .progress span { background: var(--green); transition: width 320ms var(--ease); }
 
 /* Hide reveal's default controls + slide number (we provide our own) */
@@ -655,7 +740,7 @@
    ---------------------------------------------------------------------------- */
 .toc-overlay {
   position: fixed; inset: 0; z-index: 60; display: grid;
-  background: color-mix(in oklch, var(--navy-deep), transparent 14%);
+  background: color-mix(in oklch, oklch(0.16 0.012 258), transparent 12%);
   opacity: 0; visibility: hidden; transition: opacity 320ms var(--ease), visibility 320ms;
 }
 .toc-overlay.open { opacity: 1; visibility: visible; }
@@ -668,29 +753,32 @@
   transform: translateY(14px) scale(0.99); opacity: 0; transition: transform 380ms var(--ease), opacity 380ms var(--ease);
 }
 .toc-overlay.open .toc-panel { transform: none; opacity: 1; }
-.toc-head { margin-bottom: clamp(1.1rem, 3vw, 1.8rem); border-bottom: 2px solid var(--ink); padding-bottom: 0.9rem; }
-.toc-head .toc-eyebrow { font-family: var(--font-label); font-weight: 600; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--ink-faint); }
-.toc-head .toc-title { font-family: var(--font-serif); font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 600; color: var(--ink); margin: 0.2rem 0 0; letter-spacing: -0.01em; }
+.toc-head { margin-bottom: clamp(1.1rem, 3vw, 1.8rem); border-bottom: 3px solid var(--rule); padding-bottom: 0.9rem; }
+.toc-head .toc-eyebrow { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--green-deep); }
+.toc-head .toc-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 800; color: var(--ink-bold); margin: 0.2rem 0 0; letter-spacing: -0.02em; }
 .toc-list { list-style: none; margin: 0; padding: 0; }
 .toc-list > li { margin: 0; }
 .toc-item {
   display: flex; align-items: baseline; gap: 0.9rem; width: 100%; text-align: left;
   background: none; border: none; border-bottom: 1px solid var(--line); cursor: pointer;
-  padding: 0.5rem 0.4rem; color: var(--ink-soft);
-  font-family: var(--font-serif); font-size: clamp(1.05rem, 2.1vw, 1.42rem); font-weight: 500;
+  padding: 0.6rem 0.4rem; color: var(--ink-soft);
+  font-family: var(--font-display); font-size: clamp(1.1rem, 2.1vw, 1.5rem); font-weight: 600;
+  letter-spacing: -0.01em;
   transition: color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
 }
 .toc-list > li:last-child .toc-item { border-bottom: none; }
-.toc-item .toc-num { flex: none; width: 2.1rem; font-family: var(--font-label); font-size: 0.6em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
-.toc-item .toc-label { flex: 0 1 auto; color: var(--ink); }
+.toc-item .toc-num { flex: none; width: 2.1rem; font-family: var(--font-label); font-size: 0.62em; font-weight: 800; color: var(--green-deep); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.toc-item .toc-label { flex: 0 1 auto; color: var(--ink-bold); }
 .toc-item .toc-dots { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted var(--line-strong); position: relative; bottom: 0.32em; }
-.toc-item .toc-folio { flex: none; font-family: var(--font-label); font-size: 0.6em; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+.toc-item .toc-folio { flex: none; font-family: var(--font-label); font-size: 0.6em; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+.toc-item:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; border-radius: 2px; }
+.toc-item:focus-visible .toc-label { color: var(--green-deep); }
 .toc-item:hover { padding-left: 1rem; }
 .toc-item:hover .toc-label { color: var(--green-deep); }
-.toc-item:hover .toc-dots { border-bottom-color: color-mix(in oklch, var(--green), var(--paper) 40%); }
+.toc-item:hover .toc-dots { border-bottom-color: var(--green); }
 .toc-item.current .toc-num, .toc-item.current .toc-label, .toc-item.current .toc-folio { color: var(--green-deep); }
-.toc-item.current .toc-label { font-weight: 600; }
-.toc-foot { margin-top: clamp(1.1rem,3vw,1.8rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--ink-faint); font-family: var(--font-label); font-size: 0.8rem; }
+.toc-item.current .toc-label { font-weight: 800; }
+.toc-foot { margin-top: clamp(1.1rem,3vw,1.8rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--ink-faint); font-family: var(--font-label); font-size: 0.8rem; font-weight: 500; }
 .toc-foot kbd {
   font-family: var(--font-mono); font-size: 0.82em; padding: 0.12em 0.5em; border-radius: 4px;
   background: var(--sunken); color: var(--ink-soft); border: 1px solid var(--line);
@@ -698,7 +786,7 @@
 .toc-close {
   position: absolute; top: clamp(1.2rem,3vw,2rem); right: clamp(1.2rem,3vw,2rem);
   width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
-  background: var(--panel); border: 1px solid var(--line-strong);
+  background: var(--panel); border: 1.5px solid var(--line-strong);
   color: var(--ink-soft); transition: all var(--dur) var(--ease);
 }
 .toc-close:hover { background: var(--green-deep); color: var(--paper); border-color: var(--green-deep); }
@@ -709,20 +797,21 @@
    ---------------------------------------------------------------------------- */
 .reveal pre {
   width: 100%; margin: var(--space-md) 0; font-size: 0.6em; line-height: 1.5;
-  box-shadow: none; border-radius: var(--radius-md); background: var(--sunken); border: var(--hair);
+  box-shadow: none; border-radius: var(--radius-md); background: var(--sunken);
+  border: 1px solid var(--line);
 }
 .reveal pre code {
-  font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: var(--radius-md);
+  font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: 0;
   background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
   font-feature-settings: "liga" 0;
 }
-.reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 4px; color: var(--green-deep); }
+.reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 3px; color: var(--green-deep); }
 .reveal pre code.hljs { padding: 1.1em 1.3em; }
 .hljs-comment, .hljs-quote { color: var(--ink-soft); font-style: italic; }
-.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name, .hljs-tag { color: var(--navy); font-weight: 600; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name, .hljs-tag { color: var(--navy); font-weight: 700; }
 .hljs-string, .hljs-title.class_, .hljs-section, .hljs-attribute { color: var(--green-deep); }
 .hljs-number, .hljs-literal, .hljs-bullet, .hljs-link { color: var(--brown-deep); }
-.hljs-title, .hljs-title.function_, .hljs-function .hljs-title { color: color-mix(in oklch, var(--navy), var(--sky) 18%); font-weight: 600; }
+.hljs-title, .hljs-title.function_, .hljs-function .hljs-title { color: color-mix(in oklch, var(--navy), var(--sky) 18%); font-weight: 700; }
 .hljs-attr, .hljs-variable, .hljs-template-variable, .hljs-property { color: var(--brown-deep); }
 .hljs-meta { color: var(--ink-soft); }
 .hljs-type, .hljs-class .hljs-title { color: var(--navy); }
@@ -730,25 +819,24 @@
 .reveal .hljs-ln-numbers { color: var(--ink-faint); }
 .reveal pre .hljs-line-highlight, .reveal .highlight-line { background: var(--green-wash); }
 
-/* Scrollable file embed — e.g. the live SKILL.md; the presenter scrolls it
-   during the talk. Sits inside a flex-column slide and fills the leftover height. */
+/* Scrollable file embed — e.g. the live SKILL.md; the presenter scrolls it. */
 .reveal .scroll-panel {
   flex: 1 1 auto; min-height: 0; max-height: 25rem; width: 100%; overflow-y: auto; overscroll-behavior: contain;
-  background: var(--sunken); border: var(--hair); border-radius: var(--radius-md);
-  box-shadow: inset 0 6px 14px -12px oklch(0.3 0.04 258 / 0.5);
+  background: var(--sunken); border: 1px solid var(--line); border-radius: var(--radius-md);
+  box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5);
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in oklch, var(--green), var(--paper) 28%) transparent;
+  scrollbar-color: var(--green) transparent;
 }
 .reveal .scroll-panel::-webkit-scrollbar { width: 11px; }
 .reveal .scroll-panel::-webkit-scrollbar-thumb {
-  background: color-mix(in oklch, var(--green), var(--paper) 24%);
+  background: color-mix(in oklch, var(--green), var(--paper) 18%);
   border-radius: 999px; border: 3px solid var(--sunken);
 }
 .reveal .scroll-panel::-webkit-scrollbar-thumb:hover { background: var(--green); }
 .reveal .scroll-panel pre { margin: 0; border: none; border-radius: 0; box-shadow: none; background: transparent; width: 100%; }
 .reveal .scroll-panel pre code { display: block; padding: 1.2em 1.5em; font-size: 0.72em; line-height: 1.62; max-height: none; white-space: pre-wrap; word-break: break-word; color: var(--ink); }
 .reveal .scroll-hint {
-  margin: var(--space-sm) 0 0; font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft);
+  margin: var(--space-sm) 0 0; font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft); font-weight: 500;
   display: inline-flex; align-items: center; gap: 0.55em;
 }
 .reveal .scroll-hint::before {
@@ -759,18 +847,16 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E");
 }
 
-/* Framed live embed — a browser-style chrome bar over a fitted viewport, for
-   showing a website (an <iframe>) on stage. If the embedded site refuses framing
-   (X-Frame-Options / CSP frame-ancestors), swap the <iframe> for an <img>. */
+/* Framed live embed — a browser-style chrome bar over a fitted viewport. */
 .reveal .site-frame {
   flex: 1 1 auto; min-height: 0; width: 100%;
   display: flex; flex-direction: column;
-  background: var(--paper); border: var(--hair); border-radius: var(--radius-lg);
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--radius-lg);
   overflow: hidden; box-shadow: var(--shadow-2);
 }
 .reveal .site-frame-bar {
   flex: none; display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: var(--hair);
+  padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
 }
 .reveal .site-frame-bar .dot {
   width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
@@ -780,7 +866,7 @@
   margin-left: 0.5rem; font-family: var(--font-mono); font-size: var(--fs-footer);
   color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.reveal .site-frame-open { margin-left: auto; flex: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600; }
+.reveal .site-frame-open { margin-left: auto; flex: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700; }
 .reveal .site-frame-view { position: relative; flex: 1 1 auto; min-height: 0; background: var(--paper); }
 .reveal .site-frame-view > iframe,
 .reveal .site-frame-view > img {
@@ -791,27 +877,24 @@
 .reveal .site-qr {
   position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
   display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  background: #fff; padding: 0.6rem; border-radius: 10px; box-shadow: var(--shadow-2);
+  background: #fff; padding: 0.6rem; border-radius: 8px; box-shadow: var(--shadow-2);
 }
 .reveal .site-qr img { width: 116px; height: 116px; display: block; }
-.reveal .site-qr span { font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
+.reveal .site-qr span { font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
 
-/* "Scan for these slides" QR — a small labelled code for the cover/closing.
-   Inline by default; add .corner to float it into the top-right. */
+/* "Scan for these slides" QR — a small labelled code for the cover/closing. */
 .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
-.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 8px; border: 1px solid var(--line-strong); }
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 6px; border: 1px solid var(--line-strong); }
 .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
-.reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small); color: var(--ink); }
+.reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
 .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
-/* !important overrides the z-layering rule below for a .corner QR placed as a
-   direct child of a hero slide (e.g. a Markdown closing). */
 .reveal .slides-qr.corner { position: absolute !important; top: calc(var(--slide-pad-y) + var(--space-md)); right: var(--slide-pad-x); margin: 0; z-index: 3;
   flex-direction: column; align-items: center; gap: 0.4rem; }
 .reveal .slides-qr.corner .qr-label { text-align: center; align-items: center; }
-/* dark layouts (section divider / closing): lift the label to paper */
+/* dark fields (section divider / closing): lift the label to paper */
 .reveal section.section .slides-qr .qr-label b, .reveal section.closing .slides-qr .qr-label b { color: var(--paper); }
 .reveal section.section .slides-qr .qr-label .qr-url,
-.reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), var(--navy) 30%); }
+.reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), transparent 36%); }
 
 /* Framed screenshot inside a content column */
 .reveal .shot { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); box-shadow: none; }
@@ -825,7 +908,7 @@
   position: fixed; inset: 0; z-index: 80;
   display: flex; align-items: center; justify-content: center;
   padding: clamp(1.5rem, 4vw, 3.5rem);
-  background: color-mix(in oklch, var(--navy-deep), #02060f 40%);
+  background: color-mix(in oklch, oklch(0.14 0.012 258), #02060f 40%);
   opacity: 0; visibility: hidden; cursor: zoom-out;
   transition: opacity 260ms var(--ease), visibility 260ms;
 }
@@ -869,10 +952,6 @@
   .toc-overlay, .deck-btn { display: none !important; }
   .reveal section.section, .reveal section.closing,
   .reveal section.media .media-scrim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  /* Dark hero layouts paint their field via a CSS background on the <section>.
-     In ?print-pdf export reveal makes each section position:absolute with auto
-     height, so the field stopped at the content and left a white band below it.
-     Force the dark layouts to fill the printed .pdf-page. */
   .reveal .slides section.section,
   .reveal .slides section.closing,
   .reveal .slides section.media { height: 100% !important; }

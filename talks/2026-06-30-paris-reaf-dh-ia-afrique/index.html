@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanités numériques, IA et études africaines — Hiribarren &amp; Madore</title>
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <style>
+    /* Byline job-title line: sits between the gothic name and the italic-serif
+       affiliation, in the quiet news-gothic "label" voice. */
+    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+    /* Co-presenter byline (.byline.authors): stack each author as a tight
+       name+role+affil block, with a larger gap between authors. */
+    .reveal .byline.authors { gap: var(--space-sm); }
+    .reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
+    /* The design formula: a centred gothic line set off as a displayed equation
+       between two hairline rules — type and rules carry it, no box. */
+    .reveal .formula { font-family: var(--font-label); font-weight: 700;
+      letter-spacing: 0.01em; text-align: center; line-height: 1.15;
+      width: fit-content; max-width: 100%; margin: var(--space-md) auto var(--space-lg);
+      padding: var(--space-sm) var(--space-xl); border-block: 1px solid var(--line-strong); }
+    .reveal .formula .op { color: var(--ink-soft); font-weight: 400; padding: 0 0.35em; }
+    /* Live site-frame: give the frame a definite floor so the flex viewport
+       can't collapse (it did in the Luxembourg deck under some render modes);
+       flex-grow still expands it to fill the slide. */
+    .reveal section.live-site .site-frame { min-height: 408px; max-width: 1040px; margin-inline: auto; }
+  </style>
+</head>
+<body>
+
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Vincent Hiribarren · Frédérick Madore",
+    talkTitle: "Humanités numériques, IA et études africaines : retour sur une note de synthèse",
+    talkShort: "DH, IA & études africaines",
+    venue:     "9es REAF · Paris · 30 juin 2026",
+    tocEyebrow:"Sommaire",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ░░ 1 · COUVERTURE ░░ -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">9<sup>es</sup> Rencontres des études africaines en France · Paris · 30 juin 2026</p>
+      <h1>Humanités numériques, IA et études africaines</h1>
+      <p class="subtitle">Retour sur une note de synthèse collective (Hanovre, février 2026).</p>
+      <div class="byline authors">
+        <div class="author">
+          <span class="name">Vincent Hiribarren</span>
+          <span class="affil">King's College London</span>
+        </div>
+        <div class="author">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple Cluster of Excellence · Université de Bayreuth</span>
+        </div>
+      </div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
+      <aside class="notes">Bonjour. Vincent Hiribarren et moi-même revenons aujourd'hui sur une note de synthèse collective, issue d'un atelier tenu à Hanovre en février dernier. Quinze minutes : je résume l'essentiel, puis nous en discutons.</aside>
+    </section>
+
+    <!-- ░░ 2 · L'ATELIER (format + chiffres) ░░ -->
+    <section data-toc="L'atelier">
+      <p class="kicker">Hanovre · 18–20 février 2026</p>
+      <h2 class="slide-title">Un atelier, pas une conférence</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num">26</span><span class="stat-label">chercheur·es</span></div>
+        <div class="stat"><span class="stat-num">16</span><span class="stat-label">pays</span></div>
+        <div class="stat"><span class="stat-num">4</span><span class="stat-label">groupes de travail</span></div>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">jours</span></div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">Le format</span>
+        Château de Herrenhausen, financé par la fondation Volkswagen. Ni keynote ni communication individuelle&nbsp;: plénières, tables tournantes (World Café), posters et écriture collective, amorcée dès la fin du 2<sup>e</sup> jour.
+      </div>
+      <aside class="notes">L'atelier s'est tenu au château de Herrenhausen, du 18 au 20 février 2026, avec le soutien de la fondation Volkswagen. Vingt-six chercheuses et chercheurs, seize pays, quatre groupes de travail, trois jours. Le format comptait autant que le contenu : pas de conférences plénières classiques ni de communications individuelles, mais des discussions en plénière, des tables tournantes façon World Café, des posters, et surtout de l'écriture collective, commencée dès la fin du deuxième jour. Vincent et moi avons coordonné l'ensemble.</aside>
+    </section>
+
+    <!-- ░░ 3 · LE SITE DE L'ATELIER (iframe live) ░░ -->
+    <section class="balance live-site" data-toc="Le site de l'atelier" data-footer="light">
+      <p class="kicker">Tout est en ligne</p>
+      <h2 class="slide-title">Le site de l'atelier</h2>
+      <div class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">fmadore.github.io/dh-ai-african-studies-2026</span>
+          <a class="site-frame-open" href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener">Ouvrir ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <iframe src="https://fmadore.github.io/dh-ai-african-studies-2026/" title="Site de l'atelier de Hanovre" loading="lazy"></iframe>
+        </div>
+      </div>
+      <aside class="notes">Tout le matériel de l'atelier est en accès libre : le programme, la composition des groupes, une bibliographie de plus de cent trente références, six entretiens vidéo avec des participant·es, et une carte conceptuelle interactive. Le lien figure sur ces diapositives.</aside>
+    </section>
+
+    <!-- ░░ 4 · QUATRE GROUPES, UN TEXTE COLLECTIF ░░ -->
+    <section data-toc="Quatre groupes">
+      <h2 class="slide-title">Quatre groupes, un texte collectif</h2>
+      <ol class="index-list">
+        <li><span class="idx-title">Langues, TAL &amp; corpus</span></li>
+        <li><span class="idx-title">Les archives</span></li>
+        <li><span class="idx-title">Infrastructures &amp; gouvernance</span></li>
+        <li><span class="idx-title">Épistémologies &amp; éthique</span></li>
+      </ol>
+      <p class="source"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/participants?view=groups" target="_blank" rel="noopener">Composition des quatre groupes&nbsp;↗</a></p>
+      <div class="callout">
+        <span class="callout-label">Aboutissement</span>
+        Une note de synthèse (ZMO, <em>Programmatic Texts</em>).
+      </div>
+      <aside class="notes">Le texte s'organise en quatre groupes : langues et corpus ; archives ; infrastructures et gouvernance ; épistémologies et éthique. Chaque groupe croisait des disciplines et des praticien·nes, et les tables tournantes les ont gardés en dialogue plutôt qu'en silos. L'aboutissement principal est une note de synthèse, à paraître dans la série Programmatic Texts du ZMO ; un ouvrage collectif suivra chez Bielefeld University Press, pour lequel plus de quarante propositions de chapitres ont été reçues.</aside>
+    </section>
+
+    <!-- ░░ 5 · SECTION — LA NOTE DE SYNTHÈSE ░░ -->
+    <section class="section balance" data-toc="La note de synthèse">
+      <h2>La note de synthèse</h2>
+      <p class="sec-sub">Chercher un consensus sans effacer les désaccords.</p>
+      <aside class="notes">J'en viens maintenant au cœur de la note elle-même. Un mot sur la méthode d'écriture : nous avons cherché un terrain commun, mais sans lisser les désaccords — ils sont préservés dans le texte.</aside>
+    </section>
+
+    <!-- ░░ 6 · LA QUESTION CENTRALE ░░ -->
+    <section class="statement balance" data-footer="light" data-toc="Pour qui, pour quoi ?">
+      <p class="statement-body">Une question est revenue constamment&nbsp;: <span class="accent">pour qui, et dans quel but&nbsp;?</span></p>
+      <p class="attribution">Jeter un pont entre le monde académique et les communautés concernées.</p>
+      <aside class="notes">Une question est revenue constamment, dans les quatre groupes : pour qui, et dans quel but ? Elle paraît simple, mais elle jette un pont entre le monde académique et les communautés dont on numérise le patrimoine, les langues, les histoires. Avant de choisir une licence, un standard ou un outil d'IA, il faut savoir qui profite du projet, et qui pourrait en pâtir.</aside>
+    </section>
+
+    <!-- ░░ 7 · UNE HISTOIRE PLUS LONGUE QU'ON NE CROIT ░░ -->
+    <section data-toc="Une histoire contestée">
+      <p class="kicker">Avant l'IA générative</p>
+      <h2 class="slide-title">Une histoire plus longue qu'on ne croit</h2>
+      <p class="lead">Les humanités numériques sont présentes dans les études africaines depuis les années 2000.</p>
+      <ul>
+        <li><em>Slave Voyages</em>, bibliothèque Ajami, Archivi.ng, Open Restitution Africa</li>
+        <li>Aluka soupçonné d'appropriation&nbsp;; l'export, un «&nbsp;vol culturel&nbsp;» (Pickover, 2005)</li>
+        <li>Méfiance durable envers les projets pilotés depuis le Nord</li>
+        <li>Le «&nbsp;complexe du sauveur numérique&nbsp;» (Shringarpure, 2020)</li>
+      </ul>
+      <aside class="notes">Premier rappel : les humanités numériques sont présentes dans les études africaines depuis les années 2000 — de Slave Voyages à la bibliothèque Ajami, d'Archivi.ng à Open Restitution Africa. Cette histoire n'a pas été simple. Le projet Aluka, qui numérisait les archives des luttes de libération en Afrique australe, a été soupçonné d'être une captation de plus du patrimoine ; une conservatrice sud-africaine parlait d'une nouvelle forme de vol culturel. L'atelier a pris au sérieux ce que Shringarpure appelle le complexe du sauveur numérique : des projets pilotés depuis le Nord qui reconduisent des logiques coloniales tout en prétendant démocratiser l'accès.</aside>
+    </section>
+
+    <!-- ░░ 8 · UN VOCABULAIRE COMMUN ░░ -->
+    <section data-toc="Un vocabulaire commun">
+      <p class="kicker">Quatre groupes, un lexique partagé</p>
+      <h2 class="slide-title">Un vocabulaire commun</h2>
+      <ul>
+        <li><strong>Propriété et souveraineté</strong>&nbsp;: en strates, toujours contestées</li>
+        <li><strong>Accès</strong>&nbsp;: langue, littératie, appareils, électricité</li>
+        <li><strong>Pérennité</strong>&nbsp;: structurelle, non technique</li>
+        <li><strong>Standardisation</strong>&nbsp;: trouvabilité contre fidélité aux variations</li>
+      </ul>
+      <div class="callout navy">
+        <span class="callout-label">En toile de fond</span>
+        Le colonialisme des données (Couldry &amp; Mejias, 2019) et l'extractivisme (Birhane&nbsp;; Kwet)&nbsp;: l'appropriation des données du Sud global sans retour équitable.
+      </div>
+      <aside class="notes">Les quatre groupes ont travaillé séparément, mais un vocabulaire commun a émergé. La propriété et la souveraineté sont en strates et contestées, du manuscrit à l'infrastructure. L'accès ne se réduit pas à la connexion : il englobe la langue, la littératie, les appareils, l'électricité. La pérennité est structurelle, pas technique : elle tient aux cycles de financement et à la transmission. La standardisation, enfin, assure la trouvabilité, mais au prix de la variation. En toile de fond, une critique du colonialisme et de l'extractivisme des données : l'appropriation des données du Sud global sans retour équitable.</aside>
+    </section>
+
+    <!-- ░░ 9 · GROUPE 1 — LANGUES & CORPUS ░░ -->
+    <section data-toc="Langues & corpus">
+      <p class="kicker">Groupe 1 / 4</p>
+      <h2 class="slide-title">Langues, TAL et corpus</h2>
+      <p class="lead">«&nbsp;Langue peu dotée&nbsp;» nomme une vraie pénurie — mais la situe dans la langue.</p>
+      <ul>
+        <li>4 langues bien servies sur des centaines (Hussen et al., 2025)</li>
+        <li>«&nbsp;Data flaring&nbsp;»&nbsp;: sous-collectées, non sous-dotées (Adebara, 2025)</li>
+        <li>Partir de l'oral&nbsp;: le CLAD de Dakar (wolof, pulaar, sérère)</li>
+        <li>Au-delà du texte&nbsp;: idéophones, tons, clics (dictionnaire N|uu)</li>
+        <li>Licences situées&nbsp;: NOODL-1.0 conditionne l'usage à un retour</li>
+      </ul>
+      <aside class="notes">Premier groupe, les langues. Le label « langue peu dotée » nomme une vraie pénurie, mais grammaticalement il rabat cette pénurie sur la langue elle-même. Or les langues africaines ne sont pas pauvres : ce qui manque, c'est le matériau lisible par machine. Adebara parle de « data flaring », par analogie au torchage du gaz : des langues sous-collectées plutôt que sous-dotées. Au moment de l'étude de Hussen et ses collègues, quatre langues seulement étaient correctement servies par les grands modèles, et plus de 98 % restaient absentes. Cela dit, la situation évolue vite : les modèles multilingues les plus récents progressent rapidement sur plusieurs langues africaines. Et des réponses structurelles existent : le CLAD de Dakar part de l'oral pour le wolof, le pulaar et le sérère ; le dictionnaire N|uu place l'audio, les clics et les tons au centre ; des licences comme NOODL conditionnent l'usage des données à un retour vers les communautés.</aside>
+    </section>
+
+    <!-- ░░ 10 · GROUPE 2 — LES ARCHIVES ░░ -->
+    <section data-toc="Les archives">
+      <p class="kicker">Groupe 2 / 4</p>
+      <h2 class="slide-title">Les archives à l'ère du numérique</h2>
+      <p class="lead">Numériser n'est jamais neutre&nbsp;: que garde-t-on et pour qui&nbsp;?</p>
+      <ul>
+        <li>Propriété en strates&nbsp;: objet, copie, métadonnées, transmission</li>
+        <li>Archives des femmes du Mali&nbsp;: les familles, «&nbsp;productrices d'archives&nbsp;»</li>
+        <li>Tombouctou&nbsp;: patrimoine national contre garde communautaire</li>
+        <li>Consentir à numériser ≠ consentir à entraîner un modèle</li>
+        <li>OCR par IA (Collection Islam Afrique de l'Ouest)&nbsp;: le texte propre masque l'erreur</li>
+      </ul>
+      <aside class="notes">Deuxième groupe, les archives. Numériser n'est jamais neutre : choisir quoi numériser, comment cataloguer et classer, c'est un acte politique, comme l'ont montré Zaagsma, ou Chamelot, Hiribarren et Rodet pour le cas africain. La propriété est en strates : l'objet, sa copie numérique, les métadonnées, et pour l'oral, la chaîne de transmission. Le projet Archives des femmes du Mali ancre la propriété dans les familles, « productrices d'archives ». À Tombouctou, l'État invoque le patrimoine national contre des communautés qui revendiquent leurs collections. Et consentir à la numérisation n'est pas consentir à l'entraînement d'un modèle. Un exemple concret, tiré de la Collection Islam Afrique de l'Ouest : l'IA améliore beaucoup la reconnaissance de texte sur la presse ancienne. Mais là où l'OCR classique échouait visiblement, en produisant du charabia qu'on repérait d'un coup d'œil, l'IA rend un texte propre — qui peut masquer une invention ou une modernisation silencieuse. L'échec ne se voit plus.</aside>
+    </section>
+
+    <!-- ░░ 11 · GROUPE 3 — INFRASTRUCTURES & GOUVERNANCE ░░ -->
+    <section data-toc="Infrastructures">
+      <p class="kicker">Groupe 3 / 4</p>
+      <h2 class="slide-title">Infrastructures, gouvernance et accès</h2>
+      <p class="formula">Accès <span class="op">+</span> Gouvernance <span class="op">+</span> Souveraineté <span class="op">=</span> <span class="accent">Conception</span></p>
+      <ul>
+        <li><strong>Accès</strong>&nbsp;: appareils partagés, électricité instable, hors-ligne d'abord</li>
+        <li><strong>Gouvernance</strong>&nbsp;: confiance, voies de recours, langues locales</li>
+        <li><strong>Souveraineté</strong>&nbsp;: qui décide — infrastructure, données, financement</li>
+      </ul>
+      <div class="callout">
+        <span class="callout-label">Étude de cas · M-PESA</span>
+        Paiement mobile kényan (2007)&nbsp;: USSD, agents formés, régulation publique. Mais pas qu'une «&nbsp;réussite kényane&nbsp;»&nbsp;: né de Vodafone, critiqué pour surveillance et position dominante.
+      </div>
+      <aside class="notes">Troisième groupe, infrastructures et gouvernance. Le groupe propose une formule simple : la conception découle de l'accès, de la gouvernance et de la souveraineté. L'accès, ce sont des appareils souvent partagés et une électricité instable, d'où une logique « hors-ligne d'abord ». La gouvernance, c'est la confiance : des voies de recours, des consultations en langues locales. La souveraineté, c'est qui décide — de l'infrastructure, des données, du financement. M-PESA, le paiement mobile kényan, est souvent cité comme modèle : un système simple, sur USSD, avec des agents formés et une régulation publique. Mais, à un autre niveau peut-être plus important, le tableau est plus sombre : le service est né d'un projet de Vodafone, une entreprise britannique ; il a été associé à la surveillance des données, accusé de conditions de travail abusives et d'étouffer la concurrence. L'ignorer cadrerait mal avec notre perspective critique — d'où l'intérêt de le présenter en demi-teinte.</aside>
+    </section>
+
+    <!-- ░░ 12 · GROUPE 4 — ÉPISTÉMOLOGIES & ÉTHIQUE ░░ -->
+    <section data-toc="Épistémologies">
+      <p class="kicker">Groupe 4 / 4</p>
+      <h2 class="slide-title">Épistémologies, décolonialité et éthique</h2>
+      <p class="lead">Placer les épistémologies africaines au centre, non à la marge.</p>
+      <ul>
+        <li>DH postcoloniales&nbsp;: pouvoir et colonialité du savoir (Risam, 2018)</li>
+        <li>«&nbsp;Technologie de la récupération&nbsp;» (Gallon, 2016), encore inaboutie</li>
+        <li>Modèles entraînés hors d'Afrique&nbsp;: erreurs fréquentes (Błoch et al., 2025)</li>
+        <li>Incomplétude et convivialité comme méthode (Nyamnjoh, 2017)</li>
+        <li>Éthique&nbsp;: un processus, jamais un livrable</li>
+      </ul>
+      <aside class="notes">Quatrième groupe, épistémologies et éthique. La thèse : placer les épistémologies africaines et la critique décoloniale au centre, non à la marge. Les DH postcoloniales, à la suite de Risam, interrogent le pouvoir et la colonialité du savoir. Gallon appelait dès 2016 à une « technologie de la récupération » ; dix ans plus tard, elle reste largement inaboutie. Błoch et ses collègues ont montré, en 2025, que des modèles entraînés hors d'Afrique classent fréquemment mal les entités africaines — et que le problème tient au déséquilibre des données, non à l'architecture des modèles. Enfin, suivant Nyamnjoh, le groupe assume l'incomplétude et la convivialité comme méthode, et pense l'éthique comme un processus, jamais comme un livrable.</aside>
+    </section>
+
+    <!-- ░░ 13 · LES LIMITES ASSUMÉES ░░ -->
+    <section data-toc="Limites assumées">
+      <p class="kicker">Ce que l'atelier n'a pas surmonté</p>
+      <h2 class="slide-title">Des limites assumées</h2>
+      <p class="lead">L'atelier n'a pas effacé les asymétries qu'il décrit.</p>
+      <ul>
+        <li>Biais anglophone&nbsp;: la barrière de la langue pour l'Afrique de l'Ouest francophone</li>
+        <li>Procédures de visa&nbsp;: un collègue empêché de venir</li>
+        <li>Désaccords gardés dans le texte, plutôt que lissés</li>
+      </ul>
+      <aside class="notes">Il faut être honnête sur les limites. L'atelier n'a pas effacé les asymétries qu'il décrit. Le biais anglophone du champ — ses outils, ses réseaux, ses conférences — et la barrière de la langue ont tenu à l'écart nombre de collègues d'Afrique de l'Ouest francophone, surtout en dehors du Sénégal. C'est, vous l'entendez, l'une des raisons pour lesquelles nous tenons à présenter ce travail ici, aux REAF. Des procédures de visa ont par ailleurs empêché un collègue de venir — exactement l'inégalité dont nous parlions. Et dans le texte, les désaccords sont gardés, non lissés.</aside>
+    </section>
+
+    <!-- ░░ 14 · DES PRATIQUES SITUÉES ░░ -->
+    <section data-toc="Pratiques situées">
+      <p class="kicker">Non des règles universelles</p>
+      <h2 class="slide-title">Des pratiques situées</h2>
+      <p class="lead">La note ne tranche pas les tensions&nbsp;; elle propose des manières de travailler.</p>
+      <ul>
+        <li>Accords de numérisation comme documents vivants, révisables</li>
+        <li>Ontologies construites avec les communautés, non imposées</li>
+        <li>Concevoir à partir de l'accès, la gouvernance, la souveraineté</li>
+        <li>Éthique comme processus, jamais comme livrable</li>
+        <li>Repenser qui façonne ces technologies</li>
+      </ul>
+      <aside class="notes">La note ne prétend pas trancher ces tensions. Elle propose des manières de travailler, situées plutôt qu'universelles. Traiter les accords de numérisation comme des documents vivants, à rouvrir quand les techniques changent. Construire les ontologies avec les communautés, plutôt que d'imposer des taxinomies fixes. Concevoir à partir de l'accès, de la gouvernance et de la souveraineté. Penser l'éthique comme un processus. Et, au fond, repenser qui façonne ces technologies — et qui devrait le faire.</aside>
+    </section>
+
+    <!-- ░░ 15 · LA THÈSE PLUS FORTE ░░ -->
+    <section class="statement balance" data-footer="light" data-toc="La thèse">
+      <p class="statement-body">Propriété, consentement, standardisation, biais&nbsp;: communs aux DH et à l'IA, <span class="accent">plus visibles et plus aigus</span> en contexte africain.</p>
+      <p class="attribution">Les études africaines&nbsp;: une ressource pour repenser ces champs, non un cas à la marge.</p>
+      <aside class="notes">Au-delà de ces pratiques, la note avance une thèse plus forte. Les problèmes que nous examinons — la propriété, le consentement, la standardisation qui efface la variation, les biais algorithmiques, le travail caché derrière les données dites « propres » — ne sont pas propres à l'Afrique ; on les retrouve partout, Nord compris. Mais les contextes africains les rendent plus visibles, plus aigus, et théoriquement plus parlants. Et des praticien·nes y répondent concrètement. Lues ainsi, les études africaines ne sont pas un cas marginal : elles offrent une ressource pour repenser ces champs.</aside>
+    </section>
+
+    <!-- ░░ 16 · CONCLUSION — POUR QUI, CE QU'ELLE OFFRE ░░ -->
+    <section data-toc="Ce que la note offre">
+      <p class="kicker">En conclusion</p>
+      <h2 class="slide-title">Pour qui, et ce qu'elle offre</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Trois publics</div>
+          <ul>
+            <li>Concepteurs des DH et de l'IA</li>
+            <li>Spécialistes des études africaines</li>
+            <li>Financeurs, décideurs, institutions</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Ce qu'elle offre</div>
+          <ul>
+            <li>Un vocabulaire commun</li>
+            <li>Des pratiques situées</li>
+            <li>Une conviction</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">La conviction</span>
+        Concevoir pour les réalités africaines améliore les DH et l'IA partout — pas seulement en Afrique.
+      </div>
+      <aside class="notes">Pour conclure, et c'est le point qui me tient le plus à cœur : nous écrivons pour plusieurs publics à la fois. Les chercheuses, chercheurs et concepteurs des DH et de l'IA ; les spécialistes des études africaines ; et les financeurs, décideurs et institutions qui façonnent ce qui se construit. À chacun, la note offre la même chose : un vocabulaire commun pour nommer ces problèmes, un répertoire de pratiques situées pour les travailler, et une conviction. Concevoir pour les réalités africaines n'améliore pas seulement les outils en Afrique : cela améliore les DH et l'IA partout.</aside>
+    </section>
+
+    <!-- ░░ 17 · CLÔTURE ░░ -->
+    <section class="closing balance" data-footer="dark">
+      <p class="kicker">Merci de votre attention</p>
+      <h2>Pour qui, et dans quel but&nbsp;?</h2>
+      <p class="lead">Note de synthèse à paraître — ZMO, <em>Programmatic Texts</em>. Prochain atelier&nbsp;: <a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/fr" target="_blank" rel="noopener">STIAS, Stellenbosch · septembre 2026</a>.</p>
+      <div class="byline authors">
+        <div class="author">
+          <span class="name">Vincent Hiribarren</span>
+          <span class="affil">King's College London</span>
+        </div>
+        <div class="author">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple · Université de Bayreuth</span>
+        </div>
+      </div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
+      <aside class="notes">Je termine par la question du début : pour qui, et dans quel but ? La note de synthèse paraîtra dans la série Programmatic Texts du ZMO. Et un deuxième atelier se tiendra au STIAS, à Stellenbosch, en septembre : « Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables », dans le cadre du programme Point Sud, en mettant cette fois l'accent sur les chercheuses et chercheurs en début de carrière, basés sur le continent. Merci — nous serons heureux d'en discuter.</aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js core + plugins (vendored), then the deck engine. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>
