@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="../../shared/reveal/reset.css">
   <link rel="stylesheet" href="../../shared/reveal/reveal.css">
   <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <style>
+    /* Byline job-title line: sits between the gothic name and the italic-serif
+       affiliation, in the quiet news-gothic "label" voice. Covers the light
+       cover and the dark closing (which lightens .affil the same way). */
+    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+  </style>
 </head>
 <body>
 
@@ -18,16 +28,29 @@
      3. Add an entry to the TALKS array in /index.html (the landing page).
      Full layout catalogue + shortcuts: see /README.md.
 
+     This file is a LIVING CATALOGUE — every house layout appears below as a
+     working slide you can copy. Delete the ones you don't need.
+
      AUTHORING — PURE HTML (no Markdown plugin)
      • Every slide is a plain <section>. Slide options go on the tag: a layout
        class (cover / section / statement / closing / media), data-toc="Label"
        to add a contents entry, data-footer="light|dark" to force footer colour.
      • Use the house classes from theme.css (:root is the source of truth):
        .kicker, .slide-title, .lead, .cols/.col/.col-head, .callout,
-       .stat/.stat-grid, .panel, .chip …
+       .stat/.stat-grid, .panel, .chip, .figrow, .index-list, .metric …
+     • THE LOOK ("Broadsheet"): news-gothic display (Libre Franklin, heavy) does
+       the talking; the book serif (EB Garamond) is the quiet voice for prose
+       and quotes. Colour is a flat structural FIELD + heavy rule, not a sprinkle
+       — green leads, navy is the deep pole, gold the spark. Every .slide-title
+       carries a heavy green marker bar; add .no-rule to drop it.
      • Add class="balance" to a sparse <section> to vertically centre it.
      • Speaker notes go in <aside class="notes">…</aside> (press S). They are
        stripped on deploy, so candid cues are safe — but keep them professional.
+
+     CHECK YOUR SLIDES FIT — open this page with ?check appended
+     (…/index.html?check). Any slide whose content spills past the fixed
+     1280×720 canvas is outlined in red with a banner, so you catch overflow
+     while authoring instead of on stage.
      ============================================================================ -->
 <script>
   window.DECK_CONFIG = {
@@ -50,13 +73,14 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- COVER -->
+    <!-- ░░ COVER ░░ a journal masthead: event line, big serif title, byline ░░ -->
     <section class="cover" data-footer="light">
       <p class="eyebrow">Event · Place, DD Month YYYY</p>
       <h1>Talk title</h1>
       <p class="subtitle">A one-line description of the talk.</p>
       <div class="byline">
         <span class="name">Frédérick Madore</span>
+        <span class="role">Data curator</span>
         <span class="affil">Africa Multiple Cluster of Excellence</span>
       </div>
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
@@ -70,14 +94,26 @@
       <aside class="notes">Speaker notes for the cover — press S for the speaker view.</aside>
     </section>
 
-    <!-- SECTION DIVIDER (add class="section green" for the green variant) -->
+    <!-- ░░ NUMBERED INDEX ░░ a bold agenda/contents grid (.index-list) ░░ -->
+    <section data-toc="Outline">
+      <p class="kicker">In four movements</p>
+      <h2 class="slide-title">What this talk covers</h2>
+      <ol class="index-list">
+        <li><span class="idx-title">The question</span><span class="idx-desc">Why keyword search fails the archive.</span></li>
+        <li><span class="idx-title">The collection</span><span class="idx-desc">What the corpus holds, and what it omits.</span></li>
+        <li><span class="idx-title">A method</span><span class="idx-desc">Reading at scale without losing the text.</span></li>
+        <li><span class="idx-title">What it opens</span><span class="idx-desc">New questions the corpus makes askable.</span></li>
+      </ol>
+    </section>
+
+    <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field (add "navy" for the deep variant) ░░ -->
     <section class="section balance" data-toc="First section">
       <p class="sec-no">01</p>
       <h2>The first section</h2>
       <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
-    <!-- STANDARD CONTENT — the everyday slide -->
+    <!-- ░░ STANDARD CONTENT ░░ the everyday slide: kicker, title, lead, list ░░ -->
     <section data-toc="A key point">
       <p class="kicker">Optional eyebrow</p>
       <h2 class="slide-title">A slide title</h2>
@@ -90,26 +126,219 @@
       <aside class="notes">Everything in here is the speaker note for this slide.</aside>
     </section>
 
-    <!-- TWO COLUMNS -->
-    <section>
+    <!-- ░░ TWO COLUMNS ░░ comparison; .col-head labels, .alt tints the second ░░ -->
+    <section data-toc="A comparison">
       <h2 class="slide-title">A comparison</h2>
       <div class="cols">
-        <div class="col"><div class="col-head">Left</div><ul><li>…</li></ul></div>
-        <div class="col"><div class="col-head alt">Right</div><ul><li>…</li></ul></div>
+        <div class="col">
+          <div class="col-head">Before</div>
+          <ul>
+            <li>A point on the left</li>
+            <li>Another point</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">After</div>
+          <ul>
+            <li>The corresponding point</li>
+            <li>One more</li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <!-- BIG STATEMENT (add class="statement quote" for the quote variant) -->
+    <!-- ░░ TEXT + PANEL ░░ ratio columns (3:2); .panel is a ruled sidebar ░░ -->
+    <section>
+      <h2 class="slide-title">A point, with an aside</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="lead">The main argument runs in the wider column.</p>
+          <ul>
+            <li>Supporting detail</li>
+            <li>Supporting detail</li>
+            <li>Supporting detail</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <p class="kicker">In brief</p>
+            <p>A ruled sidebar groups a secondary thought without a heavy card.</p>
+            <p><span class="chip">tag</span> <span class="chip green">key</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ FIGURE + TEXT ░░ .figrow shows an image whole (object-fit: contain);
+         add class="figrow flip" to swap sides, "figrow crop" for full-bleed photos ░░ -->
+    <section data-toc="A figure">
+      <h2 class="slide-title">A figure beside its reading</h2>
+      <div class="figrow">
+        <div class="fig-frame">
+          <figure>
+            <img class="shot" src="assets/example-figure.png" alt="Describe the figure — this alt text shows in the lightbox">
+            <figcaption>A caption naming the source. Click the image to enlarge.</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <p>The text beside a documentary image. Because figures show whole, a map or manuscript keeps its edges.</p>
+          <ul>
+            <li>What to notice</li>
+            <li>Why it matters</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ FIGURE LEDGER ░░ .stat-grid: label left, figure right, hairline rows ░░ -->
+    <section data-toc="In figures">
+      <p class="kicker">The collection</p>
+      <h2 class="slide-title">In figures</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num">12,480</span><span class="stat-label">documents</span></div>
+        <div class="stat"><span class="stat-num">8</span><span class="stat-label">countries</span></div>
+        <div class="stat"><span class="stat-num">1953–2024</span><span class="stat-label">date range</span></div>
+        <div class="stat"><span class="stat-num">4</span><span class="stat-label">languages</span></div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">Note</span>
+        Counts are indicative — the corpus grows monthly.
+      </div>
+    </section>
+
+    <!-- ░░ BIG METRIC ░░ one oversized figure, centred (.metric) ░░ -->
+    <section class="metric" data-toc="One number">
+      <p class="kicker green">The headline figure</p>
+      <p class="metric-num">12,480</p>
+      <p class="metric-label">documents catalogued across eight countries — and the count climbs every month.</p>
+    </section>
+
+    <!-- ░░ TABLE ░░ gothic small-caps headers, hairline ruling, .num right-aligns ░░ -->
+    <section data-toc="A table">
+      <h2 class="slide-title">A table</h2>
+      <table>
+        <thead>
+          <tr><th>Source</th><th>Type</th><th class="num">Items</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Newspaper A</td><td>Periodical</td><td class="num">3,204</td></tr>
+          <tr><td>Archive B</td><td>Pamphlet</td><td class="num">1,876</td></tr>
+          <tr><td>Collection C</td><td>Photograph</td><td class="num">942</td></tr>
+        </tbody>
+      </table>
+      <p class="source">Source: a line crediting the data.</p>
+    </section>
+
+    <!-- ░░ CODE ░░ light highlight.js theme; set the language on the <code> ░░ -->
+    <section data-toc="Code">
+      <h2 class="slide-title">A query</h2>
+      <pre><code class="language-python">from iwac import Collection
+
+col = Collection.load("islam-west-africa")
+hits = col.search("réforme", lang="fr", after=1990)
+print(f"{len(hits)} documents")</code></pre>
+    </section>
+
+    <!-- ░░ FRAGMENTS ░░ reveal items step in on ←/→. Add class="fragment" to any
+         element; variants from theme.css: fade-up, highlight-green. data-fragment-index
+         controls order. Great for walking through a list without overwhelming the room. ░░ -->
+    <section data-toc="Step by step">
+      <p class="kicker">Built incrementally</p>
+      <h2 class="slide-title">One point at a time</h2>
+      <ul>
+        <li class="fragment">First it appears on its own</li>
+        <li class="fragment">Then the second joins it</li>
+        <li class="fragment fade-up">This one rises as it fades in</li>
+        <li class="fragment highlight-green">And this one lands in green</li>
+      </ul>
+      <aside class="notes">Press → to step through. Fragments keep the room with you instead of reading ahead.</aside>
+    </section>
+
+    <!-- ░░ AUTO-ANIMATE ░░ reveal smoothly tweens between two consecutive slides:
+         elements sharing the same data-id morph (position, size, style); the rest
+         cross-fades. Put data-auto-animate on BOTH <section>s. Here a heading shrinks
+         from centre to the top as the detail appears beneath it. ░░ -->
+    <section class="balance" data-auto-animate data-footer="light">
+      <h2 class="slide-title" data-id="aa-title" style="font-size: var(--fs-section); max-width: none;">A claim, in motion</h2>
+    </section>
+    <section data-auto-animate data-footer="light">
+      <h2 class="slide-title" data-id="aa-title">A claim, in motion</h2>
+      <p class="lead">The heading slid up and shrank — no cut. Now the evidence arrives.</p>
+      <ul>
+        <li>The same element, two slides, one <strong>data-id</strong></li>
+        <li>Reveal interpolates the difference</li>
+      </ul>
+      <aside class="notes">Auto-Animate is ideal for before/after, a growing number, or an evolving diagram.</aside>
+    </section>
+
+    <!-- ░░ SECTION DIVIDER (navy variant — the structural deep) ░░ -->
+    <section class="section navy balance" data-toc="Second section">
+      <p class="sec-no">02</p>
+      <h2>The second section</h2>
+      <p class="sec-sub">Green leads; navy is the deep pole — two fields, one system.</p>
+    </section>
+
+    <!-- ░░ BIG STATEMENT ░░ a claim worth pausing on; one accent phrase ░░ -->
     <section class="statement balance" data-footer="light">
       <p class="statement-body">A claim worth pausing on, with one <span class="accent">emphasised phrase.</span></p>
       <p class="attribution">A supporting line beneath it.</p>
     </section>
 
-    <!-- CLOSING / CONTACT -->
+    <!-- ░░ STATEMENT (quote variant) ░░ adds class="quote": italic, gold quote mark ░░ -->
+    <section class="statement quote balance" data-footer="light">
+      <p class="statement-body">The archive is not a neutral mirror; it is an argument about what was worth keeping.</p>
+      <p class="attribution">— An attributable source</p>
+    </section>
+
+    <!-- ░░ FULL-BLEED MEDIA ░░ .media: image fills, scrim + caption sit over it ░░ -->
+    <section class="media" data-toc="A place" data-footer="dark">
+      <div class="media-fill"><img src="assets/example-media.png" alt="Describe the scene"></div>
+      <div class="media-scrim"></div>
+      <div class="media-caption">
+        <p class="kicker">On location</p>
+        <h2>A full-bleed image</h2>
+        <p>A short caption in the protected left third.</p>
+      </div>
+    </section>
+
+    <!-- ░░ FRAMED WEBSITE ░░ .site-frame: browser chrome over a fitted viewport.
+         NOTE the class="balance" on the section — required. reveal forces the
+         active slide to display:block, which stops .site-frame (flex:1) from
+         growing and collapses the viewport to 0 height; .balance restores flex
+         on the present slide so the frame fills.
+         DEFAULT below is a screenshot (<img>) — robust, offline, always renders,
+         and click-to-zoom via the lightbox. For a LIVE page instead, swap the
+         <img> for an <iframe> (see the commented block) — but note: it needs a
+         network connection (not offline like the rest of the deck) and many sites
+         refuse framing (X-Frame-Options / CSP frame-ancestors). Verify in a real
+         browser; if it's blocked, keep the screenshot. ░░ -->
+    <section class="balance" data-toc="A live look" data-footer="light">
+      <p class="kicker">On the web</p>
+      <h2 class="slide-title">A framed website</h2>
+      <div class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de/s/westafrica</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <!-- SCREENSHOT (default, offline). Click to enlarge. -->
+          <img src="assets/example-site.png" alt="Describe the page — this alt text shows in the lightbox">
+          <!-- LIVE PAGE alternative — delete the <img> above and uncomment this:
+          <iframe src="https://example.com/" title="Live site" loading="lazy"></iframe>
+          -->
+          <!-- Optional "scan to explore" QR over the frame:
+          <div class="site-qr"><img src="assets/qr-slides.png" alt="QR to the site"><span>Scan to explore</span></div>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ CLOSING / CONTACT ░░ -->
     <section class="closing balance" data-footer="dark">
       <p class="kicker">Thank you · Merci</p>
       <h2>A closing line.</h2>
-      <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
+      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
       <div data-contact></div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
@@ -122,9 +351,19 @@
   </div>
 </div>
 
-<!-- reveal.js + plugins (vendored), then the deck engine. -->
+<!-- reveal.js core + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
+
+<!-- SYNTAX HIGHLIGHTING — two options:
+     • Default below: the vendored reveal highlight plugin (bundles every
+       language, ~921 KB).
+     • Slim build (recommended): run  python tools/fetch-highlight.py  once to
+       generate shared/highlight.min.js (core + only the languages you use,
+       ~30-60 KB), then DELETE the plugin <script> below and replace it with:
+         <script src="../../shared/highlight.min.js"></script>
+       deck.js highlights every <pre><code> via window.hljs either way. -->
 <script src="../../shared/reveal/plugin/highlight.js"></script>
+
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>
