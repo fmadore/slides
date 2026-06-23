@@ -17,6 +17,10 @@
     .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
       font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
     .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+    /* Co-presenter byline (.byline.authors): stack each author as a tight
+       name+role+affil block, with a larger gap between authors. */
+    .reveal .byline.authors { gap: var(--space-sm); }
+    .reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
   </style>
 </head>
 <body>
@@ -54,7 +58,7 @@
      ============================================================================ -->
 <script>
   window.DECK_CONFIG = {
-    presenter: "Frédérick Madore",
+    presenter: "Frédérick Madore",          // co-presented? list all names — shows in the TOC footer
     talkTitle: "Talk title",
     talkShort: "Talk title",                 // footer label — keep it short
     venue:     "Venue · DD Month YYYY",
@@ -83,6 +87,22 @@
         <span class="role">Data curator</span>
         <span class="affil">Africa Multiple Cluster of Excellence</span>
       </div>
+      <!-- CO-PRESENTERS (1–2 more)? Replace the single-author .byline above with this
+           stacked variant — each author keeps their own affiliation — and DELETE the
+           <div data-contact> below: the contact row is one person's links, so it's for
+           solo talks. Add a third .author block for a third presenter; .role is optional.
+      <div class="byline authors">
+        <div class="author">
+          <span class="name">Frédérick Madore</span>
+          <span class="role">Data curator</span>
+          <span class="affil">Africa Multiple Cluster of Excellence</span>
+        </div>
+        <div class="author">
+          <span class="name">Second Author</span>
+          <span class="affil">Their institution</span>
+        </div>
+      </div>
+      -->
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
@@ -339,6 +359,7 @@ print(f"{len(hits)} documents")</code></pre>
       <p class="kicker">Thank you · Merci</p>
       <h2>A closing line.</h2>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
+      <!-- Co-presented? Use the same <div class="byline authors">…</div> pattern as the cover, and delete the data-contact row below. -->
       <div data-contact></div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
