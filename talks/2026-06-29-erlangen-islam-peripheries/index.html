@@ -57,6 +57,20 @@
     .reveal section.locked .callout ul { margin: var(--space-xs) 0 0; }
     .reveal section.locked .callout li { margin: 0.18em 0; }
 
+    /* Live-site slides: reveal forces display:block on the present slide, which kills
+       the .site-frame flex-grow (it collapses to 0 height). Restore the flex column so
+       the framed iframe fills the space below the title. */
+    .reveal .slides > section.live-frame { display: flex !important; flex-direction: column; }
+    .reveal section.live-frame .site-frame { margin-top: var(--space-md); }
+
+    /* Two-collections slide: a third column holds a montage of sample documents. */
+    .reveal section.two-collections .cols { gap: var(--space-2xl); }
+    .reveal section.two-collections .montage-fig { margin: 0; }
+    .reveal section.two-collections .montage-fig .shot { width: 100%; max-width: 16rem; margin-inline: auto; }
+    .reveal section.two-collections .montage-fig figcaption { font-family: var(--font-label);
+      font-size: var(--fs-footer); color: var(--ink-faint); letter-spacing: 0.02em;
+      margin-top: var(--space-sm); text-align: center; }
+
     /* Osh fieldwork: a 2×2 contact grid of manuscript photos (each click-to-zoom via .shot). */
     .reveal section.osh .osh-figure { margin: 0; }
     .reveal section.osh .osh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
@@ -226,10 +240,10 @@
     </section>
 
     <!-- ░░ 7 · TWO COLLECTIONS AT ZMO ░░ -->
-    <section data-toc="Two collections">
+    <section class="two-collections" data-toc="Two collections">
       <p class="kicker">Both held at ZMO</p>
       <h2 class="slide-title">Two multilingual digital collections</h2>
-      <div class="cols">
+      <div class="cols" style="--cols:3">
         <div class="col">
           <div class="col-head">Islam West Africa Collection (IWAC)</div>
           <ul>
@@ -246,23 +260,51 @@
             <li>8 languages incl. Turki; multiple scripts</li>
           </ul>
         </div>
+        <div class="col">
+          <figure class="montage-fig">
+            <img class="shot" src="assets/montage-both-collections.webp" alt="A montage of sample documents from both collections: handwritten manuscripts, an Arabic-script newspaper, and printed francophone Islamic pamphlets, in several languages and scripts.">
+            <figcaption>Samples from both collections.</figcaption>
+          </figure>
+        </div>
       </div>
-      <aside class="notes">Concretely, two collections, both held at the Leibniz-Zentrum Moderner Orient in Berlin. The first is the Islam West Africa Collection, IWAC, which Frédérick has built since 2023: over fourteen thousand five hundred items — newspapers, Islamic publications, photographs — plus more than nine thousand minutes of audio in Hausa, drawn from six countries since the 1960s, and open access. The second is the Reinhard Eisener Collection: sixteen hundred documents across fifty archival boxes, the estate of a single scholar, covering the Emirate of Bukhara, early Soviet governance, and the Tajik civil war of the nineties — eight languages, including Turki, and several scripts. Two very different objects. The wager of the project is that the same set of methods can open both.</aside>
+      <aside class="notes">Concretely, two collections, both held at the Leibniz-Zentrum Moderner Orient in Berlin. The first is the Islam West Africa Collection, IWAC, which Frédérick has built since 2023: over fourteen thousand five hundred items — newspapers, Islamic publications, photographs — plus more than nine thousand minutes of audio in Hausa, drawn from six countries since the 1960s, and open access. The second is the Reinhard Eisener Collection: sixteen hundred documents across fifty archival boxes, the estate of a single scholar, covering the Emirate of Bukhara, early Soviet governance, and the Tajik civil war of the nineties — eight languages, including Turki, and several scripts. The montage on the right pulls together a few samples from both: handwritten manuscripts, an Arabic-script newspaper, printed francophone pamphlets. Two very different objects. The wager of the project is that the same set of methods can open both.</aside>
     </section>
 
-    <!-- ░░ 8 · THE EISENER ESTATE (full-bleed media) ░░ -->
-    <section class="media" data-toc="The Eisener estate" data-footer="dark">
-      <div class="media-fill"><img src="assets/eisener-estate.svg" alt="The Reinhard Eisener estate at ZMO — fifty archival boxes (photograph placeholder)"></div>
-      <div class="media-scrim"></div>
-      <div class="media-caption">
-        <p class="kicker">A scholar's estate</p>
-        <h2>The Reinhard Eisener Collection</h2>
-        <p>1,612 documents across 50 boxes — from the Emirate of Bukhara to the Tajik civil war.</p>
+    <!-- ░░ 8 · IWAC — LIVE SITE (iframe) ░░ -->
+    <section class="live-frame" data-toc="IWAC online">
+      <p class="kicker">Open access · islam.zmo.de</p>
+      <h2 class="slide-title">The Islam West Africa Collection, live</h2>
+      <div class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de/s/westafrica</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <iframe src="https://islam.zmo.de/s/westafrica/page/home" title="Islam West Africa Collection — home page"></iframe>
+        </div>
       </div>
-      <aside class="notes">This is what the Eisener collection physically is: a scholar's working estate, fifty boxes of papers, given to ZMO. It is exactly the kind of material that usually stays dark — uncatalogued, multilingual, accessible only to the person who assembled it. Digitising it is the first step; making it searchable and comparable is the harder one. That is where the methods come in.</aside>
+      <aside class="notes">And here's the West African side, live. This is the public home of the Islam West Africa Collection, and it's open access: anyone can browse the newspapers, the Islamic publications, the photographs, and the Hausa audio right now, without an account. That's what "open" means for us in practice — the collection isn't a promise, it's already on the web for researchers, students, and the public to use. Keep that in mind, because the Central Asian side isn't there yet.</aside>
     </section>
 
-    <!-- ░░ 9 · OSH, KYRGYZSTAN — A POSSIBLE THIRD COLLECTION ░░ -->
+    <!-- ░░ 9 · THE EISENER COLLECTION — LIVE SITE (iframe) ░░ -->
+    <section class="live-frame" data-toc="The Eisener estate">
+      <p class="kicker">A scholar's estate · not yet online</p>
+      <h2 class="slide-title">The Reinhard Eisener Collection</h2>
+      <div class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">zmo.de/en/library · Reinhard Eisener Bestand</span>
+          <a class="site-frame-open" href="https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <iframe src="https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand" title="ZMO Library — Reinhard Eisener special collection"></iframe>
+        </div>
+      </div>
+      <aside class="notes">The Central Asian side is at an earlier stage. What you're looking at isn't the collection itself, but the ZMO library's page describing it — the institutional record of the Reinhard Eisener estate: roughly sixteen hundred documents in fifty boxes, from the Emirate of Bukhara to the Tajik civil war. Unlike the West African collection, almost none of it is digitised or searchable online yet. Closing that gap is the work: scanning this estate, structuring it, and making it as open as IWAC. That's where the methods come in.</aside>
+    </section>
+
+    <!-- ░░ 10 · OSH, KYRGYZSTAN — A POSSIBLE THIRD COLLECTION ░░ -->
     <section class="osh" data-toc="A third collection">
       <p class="kicker">Fieldwork · Osh, Kyrgyzstan</p>
       <h2 class="slide-title">A possible third collection</h2>
@@ -294,7 +336,7 @@
       <aside class="notes">A brief word from Aksana's side of the project, because it points to where this could grow. For a while now, Aksana has been at Osh State University, in southern Kyrgyzstan. Through that connection, we've come to know the university's own holdings: a large collection of Islamic materials gathered from local people — handwritten manuscripts, devotional prints, worn loose-leaf texts. A few are on the screen. Most of this has never been digitised, and much of it is barely catalogued. So one thing we want to explore during the project is whether we can scan these holdings and bring them in as a third collection, alongside the West African and the Eisener materials. It isn't settled yet; it turns on permissions and on how fragile the originals are. But this is exactly the kind of new ground the Open Up funding is meant to make possible, and it's how a teaching relationship becomes a lasting research partnership.</aside>
     </section>
 
-    <!-- ░░ 10 · DIVIDER 02 ░░ -->
+    <!-- ░░ 11 · DIVIDER 02 ░░ -->
     <section class="section navy balance" data-toc="The approach">
       <p class="sec-no">02</p>
       <h2>The approach</h2>
@@ -302,14 +344,14 @@
       <aside class="notes">So how do we get from sixteen thousand documents in ten languages to a comparison a researcher can actually run? This is the heart of the talk: one guiding question, and three things we're building to answer it.</aside>
     </section>
 
-    <!-- ░░ 11 · RESEARCH QUESTION ░░ -->
+    <!-- ░░ 12 · RESEARCH QUESTION ░░ -->
     <section class="statement research-q balance" data-footer="light" data-toc="Research question">
       <p class="statement-body">How can AI-driven DH methods transform <span class="accent">access</span> to and <span class="accent">interpretation</span> of these collections — enabling new comparative methods for Islamic discourse across regions?</p>
       <p class="attribution">The project's guiding question.</p>
       <aside class="notes">Here is the question in full. Two verbs in it matter. Access — can we even get into these documents, read the text, search them, find what is there? And interpretation — once inside, can we ask analytical questions that cross the two regions, rather than treating each as a closed case? The phrase to hold onto is "comparative methods for Islamic discourse across regions." The point is not AI for its own sake; it is whether these tools let us pose a genuinely comparative history that the archives, in their raw state, simply do not permit. Three innovations follow.</aside>
     </section>
 
-    <!-- ░░ 12 · INNOVATION 1 — STRUCTURED DATA ░░ -->
+    <!-- ░░ 13 · INNOVATION 1 — STRUCTURED DATA ░░ -->
     <section data-toc="Structured data">
       <p class="kicker">Innovation 1 / 3</p>
       <h2 class="slide-title">From raw documents to structured data</h2>
@@ -325,15 +367,15 @@
         </div>
         <div class="fig-frame">
           <figure>
-            <img class="shot" src="assets/htr-newspaper.svg" alt="A conventional text-recognition tool struggling with a multi-column newspaper layout (screenshot placeholder)">
-            <figcaption>A conventional OCR tool struggling with a newspaper layout.</figcaption>
+            <img class="shot" src="assets/ocr-newspaper.webp" alt="A scanned francophone newspaper article, ‘Organisation du hadj — Les imams se battent’, with photographs and dense multi-column text — the kind of layout that defeats conventional OCR.">
+            <figcaption>A dense multi-column newspaper page — the kind of layout conventional OCR breaks on.</figcaption>
           </figure>
         </div>
       </div>
       <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
     </section>
 
-    <!-- ░░ 13 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
+    <!-- ░░ 14 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
     <section data-toc="A research chatbot">
       <p class="kicker">Innovation 2 / 3</p>
       <h2 class="slide-title">A cross-regional chatbot</h2>
@@ -357,7 +399,7 @@
       <aside class="notes">Second innovation: a way to ask. A keyword search only finds the exact string you typed — useless when meaning is spread across ten languages, when names are spelled three ways, when the OCR still carries noise. So we connect a language model directly to the collections using the Model Context Protocol, MCP. Two things matter about that. First, the data stays on our institutional servers — we send the question to the model, not the archive to a company. Second, we write what are called "skills": short documents that teach the AI what each collection holds, its historical context, and how to navigate it. A researcher then asks a question in plain language, in English or French, and the system searches both collections at once and answers with sources. We are putting this on the project website as a chatbot, open to anyone.</aside>
     </section>
 
-    <!-- ░░ 14 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
+    <!-- ░░ 15 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
     <section data-toc="Open &amp; sustainable">
       <p class="kicker">Innovation 3 / 3</p>
       <h2 class="slide-title">Equitable, accessible, sustainable</h2>
@@ -381,7 +423,7 @@
       <aside class="notes">Third innovation is really a set of principles, because how you build this matters as much as what it does. We use open-source models by default, and reach for a commercial system only where the local one genuinely falls short. It is designed to run locally, without expensive infrastructure — which is what makes it usable in Global South institutions, not only well-funded Northern ones. Nothing the AI produces enters the database unchecked: an expert validates it first. The screenshot shows our review interface, the AI-NER-Validator, where a specialist confirms or corrects the keywords the model extracted before they are committed. And all of the code is open access, written to be reused and adapted by other scholars and archivists. The aim is a method other people can pick up, not a black box only we can run.</aside>
     </section>
 
-    <!-- ░░ 15 · MANAGING RISK (table) ░░ -->
+    <!-- ░░ 16 · MANAGING RISK (table) ░░ -->
     <section class="risk" data-toc="Managing risk">
       <p class="kicker">Honest about the downside</p>
       <h2 class="slide-title">Embracing and managing risk</h2>
@@ -411,7 +453,7 @@
       <aside class="notes">We want to be candid about what can go wrong, because the failure modes here are specific. One: these models can hallucinate, or quietly modernise a historical spelling — and unlike old OCR, which produced obvious garbage, a clean wrong answer hides its own error. So we always keep the original scan beside the AI output, and we document every model and prompt publicly on GitHub. Two: nobody has really run this chatbot approach on archives like these, so we treat it as iterative and we write down what fails, not only what works. Three: the collections are only partly catalogued, so the AI complements human cataloguing rather than pretending to replace it. And four: the tools change every few months, so the architecture is modular — we can swap a component out when something better arrives. Managing risk here is not a disclaimer slide; it is built into the design.</aside>
     </section>
 
-    <!-- ░░ 16 · CONCLUSION — SUSTAINABLE NETWORKS ░░ -->
+    <!-- ░░ 17 · CONCLUSION — SUSTAINABLE NETWORKS ░░ -->
     <section data-toc="Sustainable networks">
       <p class="kicker">Where it leads</p>
       <h2 class="slide-title">Building sustainable networks</h2>
@@ -425,7 +467,7 @@
       <aside class="notes">Where does this end up? Not only as software, but as people who can use it. The project closes with a workshop that brings together scholars from West Africa and Central Asia — the two communities that, as we said at the start, rarely meet — across Islamic studies, history, anthropology, and digital humanities. It is hands-on: researchers, archivists, and heritage professionals are trained on the tools we have built, so the capacity stays in the institutions rather than leaving with us. The goal we care about most is the last one: South–South networks, direct ties between the two regions, that outlast the grant. The infrastructure is the means; the network is the point.</aside>
     </section>
 
-    <!-- ░░ 17 · CLOSING ░░ -->
+    <!-- ░░ 18 · CLOSING ░░ -->
     <section class="closing balance" data-footer="dark">
       <p class="kicker">Thank you · Vielen Dank</p>
       <h2>Comparing the “peripheries.”</h2>
