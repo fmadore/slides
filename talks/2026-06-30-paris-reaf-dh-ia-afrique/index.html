@@ -31,6 +31,14 @@
        can't collapse (it did in the Luxembourg deck under some render modes);
        flex-grow still expands it to fill the slide. */
     .reveal section.live-site .site-frame { min-height: 408px; max-width: 1040px; margin-inline: auto; }
+    /* This closing is content-rich (question + note + two bylines + logo), so the
+       centred block fills the slide and the kicker lands flush on the gold plate-rule.
+       Ease the oversized h2 (theme default fs-h1) to slide-title size to regain top slack. */
+    /* Per-author institution logos in the co-presenter byline. The KCL mark is a
+       white-on-red box (not a transparent monochrome wordmark like Bayreuth), so it
+       keeps its colour; only monochrome marks flip to white on the dark closing. */
+    .reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
+    .reveal section.closing .byline.authors .author-logo:not([src*="kcl"]) { filter: brightness(0) invert(1); opacity: 0.85; }
   </style>
 </head>
 <body>
@@ -64,13 +72,14 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
+          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>
           <span class="affil">Africa Multiple Cluster of Excellence · Université de Bayreuth</span>
+          <img class="author-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
         </div>
       </div>
-      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
       <aside class="notes">Bonjour. Vincent Hiribarren et moi-même revenons aujourd'hui sur une note de synthèse collective, issue d'un atelier tenu à Hanovre en février dernier. Quinze minutes : je résume l'essentiel, puis nous en discutons.</aside>
     </section>
 
@@ -305,13 +314,14 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
+          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>
           <span class="affil">Africa Multiple · Université de Bayreuth</span>
+          <img class="author-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
         </div>
       </div>
-      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="Université de Bayreuth">
       <aside class="notes">Je termine par la question du début : pour qui, et dans quel but ? La note de synthèse paraîtra dans la série Programmatic Texts du ZMO. Et un deuxième atelier se tiendra au STIAS, à Stellenbosch, en septembre : « Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables », dans le cadre du programme Point Sud, en mettant cette fois l'accent sur les chercheuses et chercheurs en début de carrière, basés sur le continent. Merci — nous serons heureux d'en discuter.</aside>
     </section>
 

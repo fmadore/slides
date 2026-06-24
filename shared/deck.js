@@ -21,6 +21,15 @@
   var CFG = window.DECK_CONFIG || {};
   CFG.links = CFG.links || {};
 
+  /* ---- engine UI strings, language-aware (from <html lang>; default English).
+     Add a language by extending I18N; decks opt in via <html lang="xx">. -------- */
+  var LANG = (CFG.lang || document.documentElement.lang || "en").slice(0, 2).toLowerCase();
+  var I18N = {
+    en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close" },
+    fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer" }
+  };
+  var STR = I18N[LANG] || I18N.en;
+
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
   var SCRIPT_BASE = (function () {
@@ -81,9 +90,9 @@
         "</div>" +
         '<div class="deck-nav">' +
           '<span class="counter"><span class="cur">1</span><span> / </span><span class="tot">1</span></span>' +
-          '<button class="deck-btn prev" title="Previous (←)" aria-label="Previous slide">' + ICON.prev + "</button>" +
-          '<button class="deck-btn next" title="Next (→)" aria-label="Next slide">' + ICON.next + "</button>" +
-          '<button class="deck-btn toc-btn" title="Table of contents (T)" aria-label="Open table of contents">' + ICON.toc + "<span>Contents</span></button>" +
+          '<button class="deck-btn prev" title="' + STR.prev + ' (←)" aria-label="' + STR.prev + '">' + ICON.prev + "</button>" +
+          '<button class="deck-btn next" title="' + STR.next + ' (→)" aria-label="' + STR.next + '">' + ICON.next + "</button>" +
+          '<button class="deck-btn toc-btn" title="' + STR.tocAria + ' (T)" aria-label="' + STR.tocOpen + '">' + ICON.toc + "<span>" + STR.contents + "</span></button>" +
         "</div>" +
       "</div>"
     );
@@ -144,16 +153,16 @@
     }).join("");
 
     overlay = elem(
-      '<div class="toc-overlay" role="dialog" aria-modal="true" aria-label="Table of contents">' +
+      '<div class="toc-overlay" role="dialog" aria-modal="true" aria-label="' + STR.tocAria + '">' +
         '<div class="toc-panel">' +
-          '<button class="toc-close" aria-label="Close">' + ICON.close + "</button>" +
+          '<button class="toc-close" aria-label="' + STR.closeAria + '">' + ICON.close + "</button>" +
           '<div class="toc-head"><div>' +
-            '<div class="toc-eyebrow">' + (CFG.tocEyebrow || "Contents") + "</div>" +
+            '<div class="toc-eyebrow">' + (CFG.tocEyebrow || STR.contents) + "</div>" +
             '<h2 class="toc-title">' + (CFG.talkTitle || "Overview") + "</h2>" +
           "</div></div>" +
           '<ul class="toc-list">' + rows + "</ul>" +
           '<div class="toc-foot"><span>' + (CFG.presenter || "") +
-            "</span><span><kbd>T</kbd> contents &nbsp; <kbd>O</kbd> overview &nbsp; <kbd>Esc</kbd> close</span></div>" +
+            "</span><span><kbd>T</kbd> " + STR.contents.toLowerCase() + " &nbsp; <kbd>O</kbd> " + STR.overview + " &nbsp; <kbd>Esc</kbd> " + STR.close + "</span></div>" +
         "</div>" +
       "</div>"
     );
@@ -234,6 +243,52 @@
       if (!isHero && runSec) runSec.textContent = sectionLabelFor(h);
     }
     markCurrentTOC();
+    fitSlide(cur);
+  }
+
+  /* ---- auto-fit: scale a slide's content down ONLY if it overflows the safe
+     area (gold-rule clearance on hero slides; footer reserve below). Slides that
+     already fit are never touched; an overflowing one is wrapped in an absolutely
+     placed .fit box and scaled to fit. Runs once per slide, after webfonts settle
+     so the measurement is real. ------------------------------------------------ */
+  var fitReady = !(document.fonts && document.fonts.ready);
+  var FIT_SEEN = (typeof WeakSet === "function") ? new WeakSet() : null;
+  function fitSlide(sec) {
+    if (!sec || !fitReady) return;
+    if (FIT_SEEN && FIT_SEEN.has(sec)) return;
+    if (sec.querySelector(":scope > .fit")) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
+    var cs = getComputedStyle(sec);
+    var padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
+    var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
+    var hasRule = sec.classList.contains("section") || sec.classList.contains("closing");  // gold plate-rule at top
+    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var clearance = hasRule ? 1.8 * rem : 0;   // breathing room below the gold plate-rule
+    var kids = [].slice.call(sec.children).filter(function (c) {
+      if (c.nodeName === "ASIDE" || (c.classList && c.classList.contains("fit")) || c.offsetParent === null) return false;
+      var pos = getComputedStyle(c).position;   // leave absolutely-placed decor (QR, media fill) in place
+      return pos !== "absolute" && pos !== "fixed";
+    });
+    if (!kids.length) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
+    var topMost = Infinity, botMost = -Infinity;
+    kids.forEach(function (c) {
+      topMost = Math.min(topMost, c.offsetTop);
+      botMost = Math.max(botMost, c.offsetTop + c.offsetHeight);
+    });
+    var H = botMost - topMost;
+    var boxTop = padT + clearance;
+    var safeH = sec.clientHeight - boxTop - padB;
+    var needFit = (H > safeH + 3) || (hasRule && topMost < boxTop - 3);
+    if (needFit && safeH > 40 && H > 0) {
+      var k = Math.max(0.55, Math.min(1, safeH / H));
+      var fit = document.createElement("div");
+      fit.className = "fit";
+      while (kids.length) fit.appendChild(kids.shift());
+      sec.insertBefore(fit, sec.firstChild);
+      fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
+        "px;margin:0;display:flex;flex-direction:column;transform-origin:top left;transform:scale(" + k.toFixed(4) + ");";
+      sec.setAttribute("data-fit", k.toFixed(3));
+    }
+    if (FIT_SEEN) FIT_SEEN.add(sec);
   }
 
   /* ---- boot --------------------------------------------------------------- */
@@ -385,8 +440,8 @@
 
       // Defensive relayout: recompute the scale once the window and webfonts
       // have settled, in case the deck initialised before it had real size.
-      window.addEventListener("load", function () { Reveal.layout(); });
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); });
+      window.addEventListener("load", function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
 
       Reveal.addKeyBinding({ keyCode: 84, key: "T", description: "Table of contents" }, toggleTOC);
       // Esc closes the TOC before reveal's overview takes it
