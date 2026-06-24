@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Islam's “Peripheries” — Ismailbekova &amp; Madore</title>
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <style>
+    /* Byline job-title line + co-presenter stack (two institutions). */
+    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+    .reveal .byline.authors { gap: var(--space-md); }
+    .reveal .byline.authors .author { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1em; }
+    /* Each author's institution mark sits directly under their name + affiliation. */
+    .reveal .byline.authors .author .author-logo { height: 2rem; width: auto; margin-top: var(--space-xs); opacity: 0.92; }
+    .reveal section.closing .byline.authors .author-logo { filter: brightness(0) invert(1); opacity: 0.9; }
+
+    /* Why-"peripheries": a filmstrip of three linked newspaper clippings. */
+    .reveal .clip-row { display: flex; gap: var(--space-md); align-items: flex-end;
+      justify-content: center; }
+    .reveal .clip-row figure { margin: 0; display: flex; flex-direction: column;
+      align-items: center; gap: var(--space-xs); }
+    .reveal .clip-row img.shot { height: 14rem; width: auto;
+      border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
+    .reveal .clip-row figcaption { font-family: var(--font-label); font-size: var(--fs-footer);
+      color: var(--ink-faint); letter-spacing: 0.02em; }
+    .reveal .clip-row figcaption a { color: var(--ink-soft); border-bottom: 1px solid var(--line-strong); }
+    .reveal .clip-row figcaption a:hover { color: var(--accent-ink); border-color: var(--accent); }
+
+    /* The research question runs long, so it sits below the default statement display size. */
+    .reveal section.research-q .statement-body { font-size: 2.9rem; line-height: 1.22; max-width: 26ch; }
+
+    /* Risk ledger: smaller type, a firm first column so the mitigations breathe. */
+    .reveal section.risk table { font-size: var(--fs-small); }
+    .reveal section.risk th:first-child, .reveal section.risk td:first-child { width: 36%; }
+  </style>
+</head>
+<body>
+
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Aksana Ismailbekova · Frédérick Madore",
+    talkTitle: "Islam's “Peripheries”: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
+    talkShort: "Islam's “Peripheries”",
+    venue:     "Digital History in/of Central Asia · FAU Erlangen-Nürnberg · 29 June 2026",
+    tocEyebrow:"Outline",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ░░ 1 · COVER ░░ -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Seminar series · Digital History in/of Central Asia · FAU Erlangen-Nürnberg · 29 June 2026</p>
+      <h1>Islam's “Peripheries”</h1>
+      <p class="subtitle">Digital humanities, algorithmic analysis, and AI in West Africa and Central Asia.</p>
+      <div class="byline authors">
+        <div class="author">
+          <span class="name">Aksana Ismailbekova</span>
+          <span class="affil">Leibniz-Zentrum Moderner Orient (ZMO)</span>
+          <img class="author-logo" src="assets/logo-zmo.png" alt="Leibniz-Zentrum Moderner Orient (ZMO)">
+        </div>
+        <div class="author">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple Cluster of Excellence · University of Bayreuth</span>
+          <img class="author-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+        </div>
+      </div>
+      <aside class="notes">Thank you for the invitation. Our two regions — West Africa and Central Asia — rarely share a seminar room, let alone a research project. Today we want to explain why we think they belong together, and how AI-assisted digital methods let two locked-up archives speak to each other for the first time. We'll move from the conceptual claim, through the archives and the problem they pose, to the three things we're building — and the risks we're managing as we go.</aside>
+    </section>
+
+    <!-- ░░ 2 · HOOK — WHY "PERIPHERIES"? (clippings) ░░ -->
+    <section class="hook" data-toc="Why “peripheries”?">
+      <p class="kicker">The conceptual stake</p>
+      <h2 class="slide-title">Why “peripheries”?</h2>
+      <div class="cols">
+        <div class="col">
+          <ul>
+            <li>In Islamic studies, sub-Saharan Africa and Central Asia are often treated as marginal</li>
+            <li>Distant from the “real” Islam of the Middle East</li>
+            <li>Yet Muslim delegations from Togo and Dahomey (Benin) visited Soviet Central Asia, 1960s–70s — and vice versa</li>
+            <li>The project challenges the centre–periphery frame itself</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="clip-row">
+            <figure>
+              <img class="shot" src="assets/clip-togo-presse-1963.webp" alt="Togo-Presse, 7 October 1963: ‘Ils vont prendre contact avec les Musulmans de l'U.R.S.S.’">
+              <figcaption><a href="https://islam.zmo.de/s/westafrica/item/31899" target="_blank" rel="noopener">Togo-Presse · 7 Oct. 1963</a></figcaption>
+            </figure>
+            <figure>
+              <img class="shot" src="assets/clip-togo-presse-1971.webp" alt="Togo-Presse, 15 September 1971: ‘Une délégation musulmane de l'URSS est arrivée hier à Lomé pour un séjour d'une semaine’">
+              <figcaption><a href="https://islam.zmo.de/s/westafrica/item/28136" target="_blank" rel="noopener">Togo-Presse · 15 Sept. 1971</a></figcaption>
+            </figure>
+            <figure>
+              <img class="shot" src="assets/clip-daho-express-1972.webp" alt="Daho-Express, 14 November 1972 (Benin): ‘Visite de Musulmans soviétiques au Dahomey’">
+              <figcaption><a href="https://islam.zmo.de/s/afrique_ouest/item/10217" target="_blank" rel="noopener">Daho-Express · 14 Nov. 1972</a></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Start with the word in the title, in quotation marks. In Islamic studies, both of our regions are framed as edges — sub-Saharan Africa and Central Asia, far from the Arab heartland, doing a supposedly derivative version of the faith. The framing is old and it is wrong. These clippings from the West African press — Togo-Presse and Daho-Express, between 1963 and 1972 — report Muslim delegations travelling between Togo, Dahomey, and the Soviet Central Asian republics. The traffic went both ways. So the periphery was never isolated; it was networked. Our project takes that as its starting point: not to add two more cases to the margin, but to question the centre against which they were ever called marginal.</aside>
+    </section>
+
+    <!-- ░░ 3 · DIVIDER 01 ░░ -->
+    <section class="section balance" data-toc="The challenge">
+      <p class="sec-no">01</p>
+      <h2>The challenge</h2>
+      <p class="sec-sub">Vast multilingual archives, studied in silos.</p>
+      <aside class="notes">Before the methods, the material. Two problems stand in the way of the comparison we just described: the sheer scale and language spread of the sources, and a scholarly habit of keeping the two regions apart.</aside>
+    </section>
+
+    <!-- ░░ 4 · VAST ARCHIVES, LOCKED AWAY ░░ -->
+    <section data-toc="Vast archives">
+      <p class="kicker">The problem</p>
+      <h2 class="slide-title">Vast archives, locked away</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-num">~16,000</span><span class="stat-label">documents</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">languages</span></div>
+        <div class="stat"><span class="stat-num">Partial</span><span class="stat-label">cataloguing</span></div>
+      </div>
+      <p class="small" style="margin-top: var(--space-sm)">
+        <span class="chip">Russian</span> <span class="chip">Arabic</span> <span class="chip">Hausa</span>
+        <span class="chip">Tajik</span> <span class="chip">French</span> <span class="chip">Uzbek</span>
+        <span class="chip">Persian</span> <span class="chip">Turki</span> <span class="chip">German</span>
+        <span class="chip">English</span>
+      </p>
+      <div class="callout">
+        <span class="callout-label">Why it stays locked</span>
+        Volume and linguistic diversity defeat traditional analysis; rich historical insight stays out of researchers' reach.
+      </div>
+      <aside class="notes">Here is the scale. Across the two collections, roughly sixteen thousand documents, in more than ten languages — Russian, Arabic, Hausa, Tajik, French, Uzbek, Persian, Turki, German, English. Several scripts, several alphabets. Only part of it is catalogued. No single scholar reads all of these languages, and even a team can't manually work through this volume across this many tongues. So the material exists, it is preserved, but it is effectively closed: the insight inside it is unreachable with the methods we usually bring to an archive. That gap between what is held and what is usable is the practical problem the project sets out to solve.</aside>
+    </section>
+
+    <!-- ░░ 5 · STUDIED IN SILOS ░░ -->
+    <section data-toc="Studied in silos">
+      <p class="kicker">Rarely compared</p>
+      <h2 class="slide-title">Studied in silos</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">West Africa · post-1960s</div>
+          <ul>
+            <li>Islamic discourse and public engagement</li>
+            <li>Post-colonial nation-building</li>
+            <li>Western-educated Muslim voices</li>
+            <li>Francophone press and audiovisual sources</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Central Asia · Soviet era + Tajik civil war</div>
+          <ul>
+            <li>Russian imperial administration records</li>
+            <li>Early Soviet governance of Muslim communities</li>
+            <li>Islamic reformers and local agency</li>
+            <li>Rare Emirate of Bukhara materials</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">The second obstacle is scholarly, not technical. These two fields almost never talk. West African Islam, since the 1960s, is studied through public debate, the post-colonial nation, a Western-educated Muslim elite, and a rich francophone press and audiovisual record. Central Asian Islam is studied through imperial Russian and early Soviet governance, reformers pushing back, the rare materials of the Emirate of Bukhara. Different archives, different languages, different historiographies — and so the obvious comparative questions never get asked. Were Muslim publics being formed in similar ways under very different states? We can't know while the two literatures sit in separate rooms. Putting the sources on common ground is the precondition for asking.</aside>
+    </section>
+
+    <!-- ░░ 6 · TWO COLLECTIONS AT ZMO ░░ -->
+    <section data-toc="Two collections">
+      <p class="kicker">Both held at ZMO</p>
+      <h2 class="slide-title">Two multilingual digital collections</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Islam West Africa Collection (IWAC)</div>
+          <ul>
+            <li><strong>14,500+ items</strong> — newspapers, Islamic publications, photographs</li>
+            <li><strong>9,315 minutes</strong> of audio in Hausa</li>
+            <li>6 countries, since the 1960s</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Reinhard Eisener Collection</div>
+          <ul>
+            <li><strong>1,612 documents</strong> across 50 archival boxes</li>
+            <li>Bukhara (1917–30), Soviet governance, Tajik civil war (1992–97)</li>
+            <li>8 languages incl. Turki; multiple scripts</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">Concretely, two collections, both held at the Leibniz-Zentrum Moderner Orient in Berlin. The first is the Islam West Africa Collection, IWAC, which Frédérick has built since 2023: over fourteen thousand five hundred items — newspapers, Islamic publications, photographs — plus more than nine thousand minutes of audio in Hausa, drawn from six countries since the 1960s, and open access. The second is the Reinhard Eisener Collection: sixteen hundred documents across fifty archival boxes, the estate of a single scholar, covering the Emirate of Bukhara, early Soviet governance, and the Tajik civil war of the nineties — eight languages, including Turki, and several scripts. Two very different objects. The wager of the project is that the same set of methods can open both.</aside>
+    </section>
+
+    <!-- ░░ 7 · THE EISENER ESTATE (full-bleed media) ░░ -->
+    <section class="media" data-toc="The Eisener estate" data-footer="dark">
+      <div class="media-fill"><img src="assets/eisener-estate.svg" alt="The Reinhard Eisener estate at ZMO — fifty archival boxes (photograph placeholder)"></div>
+      <div class="media-scrim"></div>
+      <div class="media-caption">
+        <p class="kicker">A scholar's estate</p>
+        <h2>The Reinhard Eisener Collection</h2>
+        <p>1,612 documents across 50 boxes — from the Emirate of Bukhara to the Tajik civil war.</p>
+      </div>
+      <aside class="notes">This is what the Eisener collection physically is: a scholar's working estate, fifty boxes of papers, given to ZMO. It is exactly the kind of material that usually stays dark — uncatalogued, multilingual, accessible only to the person who assembled it. Digitising it is the first step; making it searchable and comparable is the harder one. That is where the methods come in.</aside>
+    </section>
+
+    <!-- ░░ 8 · DIVIDER 02 ░░ -->
+    <section class="section navy balance" data-toc="The approach">
+      <p class="sec-no">02</p>
+      <h2>The approach</h2>
+      <p class="sec-sub">AI-driven digital humanities, built across two regions.</p>
+      <aside class="notes">So how do we get from sixteen thousand documents in ten languages to a comparison a researcher can actually run? This is the heart of the talk: one guiding question, and three things we're building to answer it.</aside>
+    </section>
+
+    <!-- ░░ 9 · RESEARCH QUESTION ░░ -->
+    <section class="statement research-q balance" data-footer="light" data-toc="Research question">
+      <p class="statement-body">How can AI-driven DH methods transform <span class="accent">access</span> to and <span class="accent">interpretation</span> of these collections — enabling new comparative methods for Islamic discourse across regions?</p>
+      <p class="attribution">The project's guiding question.</p>
+      <aside class="notes">Here is the question in full. Two verbs in it matter. Access — can we even get into these documents, read the text, search them, find what is there? And interpretation — once inside, can we ask analytical questions that cross the two regions, rather than treating each as a closed case? The phrase to hold onto is "comparative methods for Islamic discourse across regions." The point is not AI for its own sake; it is whether these tools let us pose a genuinely comparative history that the archives, in their raw state, simply do not permit. Three innovations follow.</aside>
+    </section>
+
+    <!-- ░░ 10 · INNOVATION 1 — STRUCTURED DATA ░░ -->
+    <section data-toc="Structured data">
+      <p class="kicker">Innovation 1 / 3</p>
+      <h2 class="slide-title">From raw documents to structured data</h2>
+      <div class="figrow">
+        <div class="col">
+          <p class="lead">AI turns scanned, multilingual pages into machine-readable data.</p>
+          <ul>
+            <li>Extracts text from scans — Hausa, Arabic, Cyrillic, Old Tatar</li>
+            <li>Handles complex layouts that defeat conventional tools</li>
+            <li>Transcribes audio recordings</li>
+            <li>Pulls out people, places, dates as structured fields</li>
+          </ul>
+        </div>
+        <div class="fig-frame">
+          <figure>
+            <img class="shot" src="assets/htr-newspaper.svg" alt="A conventional text-recognition tool struggling with a multi-column newspaper layout (screenshot placeholder)">
+            <figcaption>A conventional OCR tool struggling with a newspaper layout.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
+    </section>
+
+    <!-- ░░ 11 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
+    <section data-toc="A research chatbot">
+      <p class="kicker">Innovation 2 / 3</p>
+      <h2 class="slide-title">A cross-regional chatbot</h2>
+      <div class="figrow flip">
+        <div class="fig-frame">
+          <figure>
+            <img class="shot" src="assets/mcp-claude-code.svg" alt="An AI assistant answering a research query against the collections via a Model Context Protocol server (screenshot placeholder)">
+            <figcaption>An AI assistant answering a query via an MCP server.</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <p class="lead">Keyword search returns exact matches, not meaning — and breaks on 10+ languages, variant spellings, OCR noise.</p>
+          <ul>
+            <li><strong>MCP</strong> connects AI to the collections — data stays on our servers</li>
+            <li>“Skills” encode each collection's contents, context, navigation</li>
+            <li>Plain-language questions search both collections at once</li>
+            <li>A public chatbot on the project website, open to all</li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">Second innovation: a way to ask. A keyword search only finds the exact string you typed — useless when meaning is spread across ten languages, when names are spelled three ways, when the OCR still carries noise. So we connect a language model directly to the collections using the Model Context Protocol, MCP. Two things matter about that. First, the data stays on our institutional servers — we send the question to the model, not the archive to a company. Second, we write what are called "skills": short documents that teach the AI what each collection holds, its historical context, and how to navigate it. A researcher then asks a question in plain language, in English or French, and the system searches both collections at once and answers with sources. We are putting this on the project website as a chatbot, open to anyone.</aside>
+    </section>
+
+    <!-- ░░ 12 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
+    <section data-toc="Open &amp; sustainable">
+      <p class="kicker">Innovation 3 / 3</p>
+      <h2 class="slide-title">Equitable, accessible, sustainable</h2>
+      <div class="figrow">
+        <div class="col">
+          <p class="lead">Designed to run anywhere, and to be checked by people.</p>
+          <ul>
+            <li>Open-source models by default; commercial AI only as fallback</li>
+            <li>Runs locally — no expensive infrastructure</li>
+            <li>Human-in-the-loop: experts validate before anything enters the database</li>
+            <li>All code open access — reusable by scholars and archivists anywhere</li>
+          </ul>
+        </div>
+        <div class="fig-frame">
+          <figure>
+            <img class="shot" src="assets/ner-validator.svg" alt="AI-NER-Validator: a review interface where experts verify AI-extracted keywords before database entry (screenshot placeholder)">
+            <figcaption>AI-NER-Validator — experts verify AI-extracted keywords before entry.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="notes">Third innovation is really a set of principles, because how you build this matters as much as what it does. We use open-source models by default, and reach for a commercial system only where the local one genuinely falls short. It is designed to run locally, without expensive infrastructure — which is what makes it usable in Global South institutions, not only well-funded Northern ones. Nothing the AI produces enters the database unchecked: an expert validates it first. The screenshot shows our review interface, the AI-NER-Validator, where a specialist confirms or corrects the keywords the model extracted before they are committed. And all of the code is open access, written to be reused and adapted by other scholars and archivists. The aim is a method other people can pick up, not a black box only we can run.</aside>
+    </section>
+
+    <!-- ░░ 13 · MANAGING RISK (table) ░░ -->
+    <section class="risk" data-toc="Managing risk">
+      <p class="kicker">Honest about the downside</p>
+      <h2 class="slide-title">Embracing and managing risk</h2>
+      <table>
+        <thead>
+          <tr><th>Risk</th><th>Mitigation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI invents text (hallucination) or modernises historical spelling</td>
+            <td>Original scans preserved beside every AI output; all models and prompts documented on GitHub</td>
+          </tr>
+          <tr>
+            <td>The chatbot approach is largely untested on these collections</td>
+            <td>Iterative development; we document what works and what does not</td>
+          </tr>
+          <tr>
+            <td>Collections are only partially catalogued</td>
+            <td>AI complements — never replaces — manual cataloguing</td>
+          </tr>
+          <tr>
+            <td>AI tools evolve rapidly</td>
+            <td>Modular architecture; swap components as better tools emerge</td>
+          </tr>
+        </tbody>
+      </table>
+      <aside class="notes">We want to be candid about what can go wrong, because the failure modes here are specific. One: these models can hallucinate, or quietly modernise a historical spelling — and unlike old OCR, which produced obvious garbage, a clean wrong answer hides its own error. So we always keep the original scan beside the AI output, and we document every model and prompt publicly on GitHub. Two: nobody has really run this chatbot approach on archives like these, so we treat it as iterative and we write down what fails, not only what works. Three: the collections are only partly catalogued, so the AI complements human cataloguing rather than pretending to replace it. And four: the tools change every few months, so the architecture is modular — we can swap a component out when something better arrives. Managing risk here is not a disclaimer slide; it is built into the design.</aside>
+    </section>
+
+    <!-- ░░ 14 · CONCLUSION — SUSTAINABLE NETWORKS ░░ -->
+    <section data-toc="Sustainable networks">
+      <p class="kicker">Where it leads</p>
+      <h2 class="slide-title">Building sustainable networks</h2>
+      <p class="lead">A concluding workshop turns the tools into a lasting network.</p>
+      <ul>
+        <li>Scholars from West Africa and Central Asia, in one room</li>
+        <li>Interdisciplinary: Islamic studies, history, anthropology, DH</li>
+        <li>Hands-on training for researchers, archivists, heritage professionals</li>
+        <li>Goal: South–South networks that outlast the project</li>
+      </ul>
+      <aside class="notes">Where does this end up? Not only as software, but as people who can use it. The project closes with a workshop that brings together scholars from West Africa and Central Asia — the two communities that, as we said at the start, rarely meet — across Islamic studies, history, anthropology, and digital humanities. It is hands-on: researchers, archivists, and heritage professionals are trained on the tools we have built, so the capacity stays in the institutions rather than leaving with us. The goal we care about most is the last one: South–South networks, direct ties between the two regions, that outlast the grant. The infrastructure is the means; the network is the point.</aside>
+    </section>
+
+    <!-- ░░ 15 · CLOSING ░░ -->
+    <section class="closing balance" data-footer="dark">
+      <p class="kicker">Thank you · Vielen Dank</p>
+      <h2>Comparing the “peripheries.”</h2>
+      <p class="lead">AI-driven DH lets two locked archives speak to each other — and questions the centre they were measured against. <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener">islam.zmo.de</a></p>
+      <div class="byline authors">
+        <div class="author">
+          <span class="name">Aksana Ismailbekova</span>
+          <span class="affil">Leibniz-Zentrum Moderner Orient (ZMO)</span>
+          <img class="author-logo" src="assets/logo-zmo.png" alt="Leibniz-Zentrum Moderner Orient (ZMO)">
+        </div>
+        <div class="author">
+          <span class="name">Frédérick Madore</span>
+          <span class="affil">Africa Multiple · University of Bayreuth</span>
+          <img class="author-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+        </div>
+      </div>
+      <aside class="notes">To close, back to the word we began with. Calling these regions "peripheries" was always a judgement about where the centre is. Read side by side, with methods that finally make the archives legible, they stop being two margins and become a comparison in their own right — one that asks what the centre was for. We would be glad to take your questions, on the regions, the methods, or the risks. Thank you.</aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js core + plugins (vendored), then the deck engine. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>

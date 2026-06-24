@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="'Libre Franklin',system-ui,sans-serif">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0.8" y2="1">
+    <stop offset="0" stop-color="#0a1430"/><stop offset="1" stop-color="#05080f"/>
+  </linearGradient></defs>
+  <rect width="1600" height="900" fill="url(#g)"/>
+  <g transform="translate(800.0,360.0)" stroke="#cdd3df" stroke-width="9" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.55"><rect x="-150" y="-105.0" width="300" height="210.0" rx="12.0"/><circle cx="-67.5" cy="-45.0" r="24.0" fill="#cdd3df" stroke="none"/><path d="M -150 82.5 L -45.0 -7.5 L 15.0 45.0 L 75.0 -22.5 L 150 82.5"/></g>
+  <text x="800.0" y="540" text-anchor="middle" fill="#9aa6c2" font-size="26" font-weight="700" letter-spacing="3">PHOTO PLACEHOLDER</text>
+  <text x="800.0" y="612" text-anchor="middle" fill="#c9d1e3" font-size="40" font-weight="500"><tspan x="800.0" dy="0">The Reinhard Eisener estate at ZMO</tspan><tspan x="800.0" dy="48">50 archival boxes</tspan></text>
+  <text x="1574" y="876" text-anchor="end" fill="#5c6a86" font-size="14" letter-spacing="1">assets/eisener-estate.svg</text>
+</svg>
