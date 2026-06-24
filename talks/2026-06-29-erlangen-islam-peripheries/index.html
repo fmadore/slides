@@ -57,6 +57,19 @@
     .reveal section.locked .callout ul { margin: var(--space-xs) 0 0; }
     .reveal section.locked .callout li { margin: 0.18em 0; }
 
+    /* Bichkek 2026: two contemporary news cards echoing the 1960s clippings. */
+    .reveal section.bichkek .news-row { display: flex; gap: var(--space-2xl); align-items: flex-start; }
+    .reveal section.bichkek .news-card { flex: 1 1 0; min-width: 0; margin: 0;
+      display: flex; flex-direction: column; gap: var(--space-xs); }
+    .reveal section.bichkek .news-card .shot { width: 100%; }
+    .reveal section.bichkek .news-card .src { font-family: var(--font-label); font-size: var(--fs-footer);
+      text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-faint); margin-top: var(--space-2xs); }
+    .reveal section.bichkek .news-card .head { font-family: var(--font-serif); font-size: 1.55rem;
+      line-height: 1.16; font-weight: 600; color: var(--ink-bold); }
+    .reveal section.bichkek .news-card .meta { font-family: var(--font-label); font-size: var(--fs-footer); color: var(--ink-soft); }
+    .reveal section.bichkek .news-card .meta a { color: var(--accent-ink); border-bottom: 1px solid var(--line-strong); }
+    .reveal section.bichkek .news-card .meta a:hover { border-color: var(--accent); }
+
     /* Live-site slides: reveal forces display:block on the present slide, which kills
        the .site-frame flex-grow (it collapses to 0 height). Restore the flex column so
        the framed iframe fills the space below the title. */
@@ -178,7 +191,29 @@
       <aside class="notes">Start with the word in the title, in quotation marks. In Islamic studies, both of our regions are framed as edges — sub-Saharan Africa and Central Asia, far from the Arab heartland, doing a supposedly derivative version of the faith. The framing is old and it is wrong. These clippings from the West African press — Togo-Presse and Daho-Express, between 1963 and 1972 — report Muslim delegations travelling between Togo, Dahomey, and the Soviet Central Asian republics. The traffic went both ways. So the periphery was never isolated; it was networked. Our project takes that as its starting point: not to add two more cases to the margin, but to question the centre against which they were ever called marginal.</aside>
     </section>
 
-    <!-- ░░ 4 · DIVIDER 01 ░░ -->
+    <!-- ░░ 4 · THE LINK TODAY — BICHKEK 2026 (news cards) ░░ -->
+    <section class="bichkek" data-toc="Togo in Bishkek, 2026">
+      <p class="kicker">In the news · April 2026</p>
+      <h2 class="slide-title">Togo ↔ Kyrgyzstan, 2026</h2>
+      <p class="lead">A different kind of tie, in the present. In April 2026, Togo's president made the first-ever state visit to Kyrgyzstan — diplomacy and trade now, where the 1960s links were religious.</p>
+      <div class="news-row">
+        <figure class="news-card">
+          <img class="shot" src="assets/togo-bichkek-republicoftogo.webp" alt="Faure Gnassingbé, in an embroidered Kyrgyz robe, walks with Kyrgyz officials past traditional musicians during his April 2026 visit to Kyrgyzstan.">
+          <span class="src">République Togolaise</span>
+          <span class="head">« Faure Gnassingbé à Bichkek »</span>
+          <span class="meta">First Togolese leader to visit Kyrgyzstan · April 2026 · <a href="https://www.republicoftogo.com/toutes-les-rubriques/diplomatie/faure-gnassingbe-a-bichkek" target="_blank" rel="noopener">republicoftogo.com ↗</a></span>
+        </figure>
+        <figure class="news-card">
+          <img class="shot" src="assets/togo-bichkek-akipress.webp" alt="Presidents Faure Gnassingbé of Togo and Sadyr Japarov of Kyrgyzstan at a formal signing ceremony in Bishkek, 29 April 2026.">
+          <span class="src">AKIpress · Bishkek</span>
+          <span class="head">Kyrgyzstan and Togo sign accords</span>
+          <span class="meta">Education, trade, health, digitalisation · 29 Apr 2026 · <a href="https://kg.akipress.org/news:2459325" target="_blank" rel="noopener">akipress.org ↗</a></span>
+        </figure>
+      </div>
+      <aside class="notes">A quick jump to the present, to show the pairing of these two regions isn't only a historical curiosity. In April 2026, Faure Gnassingbé became the first Togolese head of state ever to visit Kyrgyzstan. This is a different kind of contact from the clippings we just saw. Those were Muslim delegations; this is state diplomacy. On the left, the Togolese presidency's own photographs of the visit; on the right, the Kyrgyz agency AKIpress, reporting the agreements the two countries signed on education, trade, health, and digitalisation. The religious networks of the sixties and a diplomatic visit today are very different things. But both make one simple point for us: West Africa and Central Asia are not two sealed-off worlds, and bringing their archives into a single project is less far-fetched than it might first sound.</aside>
+    </section>
+
+    <!-- ░░ 5 · DIVIDER 01 ░░ -->
     <section class="section balance" data-toc="The challenge">
       <p class="sec-no">01</p>
       <h2>The challenge</h2>
@@ -186,7 +221,7 @@
       <aside class="notes">Before the methods, the material. Two problems stand in the way of the comparison we just described: the sheer scale and language spread of the sources, and a scholarly habit of keeping the two regions apart.</aside>
     </section>
 
-    <!-- ░░ 5 · VAST ARCHIVES, LOCKED AWAY ░░ -->
+    <!-- ░░ 6 · VAST ARCHIVES, LOCKED AWAY ░░ -->
     <section class="locked" data-toc="Vast archives">
       <p class="kicker">The problem</p>
       <h2 class="slide-title">Vast archives, locked away</h2>
@@ -212,7 +247,7 @@
       <aside class="notes">Here is the scale. Across the two collections, roughly sixteen thousand documents, in more than ten languages — Russian, Arabic, Hausa, Ewe, Kabyè, Tajik, French, Uzbek, Persian, Turki, German, English. Several scripts, several alphabets. Only part of it is catalogued. No single scholar reads all of these languages, and even a team can't manually work through this volume across this many tongues. So the material exists, it is preserved, but it is effectively closed: the insight inside it is unreachable with the methods we usually bring to an archive. That gap between what is held and what is usable is the practical problem the project sets out to solve.</aside>
     </section>
 
-    <!-- ░░ 6 · STUDIED IN SILOS ░░ -->
+    <!-- ░░ 7 · STUDIED IN SILOS ░░ -->
     <section data-toc="Studied in silos">
       <p class="kicker">Rarely compared</p>
       <h2 class="slide-title">Studied in silos</h2>
@@ -239,7 +274,7 @@
       <aside class="notes">The second obstacle is scholarly, not technical. These two fields almost never talk. West African Islam, since the 1960s, is studied through public debate, the post-colonial nation, a Western-educated Muslim elite, and a rich francophone press and audiovisual record. Central Asian Islam is studied through imperial Russian and early Soviet governance, reformers pushing back, the rare materials of the Emirate of Bukhara. Different archives, different languages, different historiographies — and so the obvious comparative questions never get asked. Were Muslim publics being formed in similar ways under very different states? We can't know while the two literatures sit in separate rooms. Putting the sources on common ground is the precondition for asking.</aside>
     </section>
 
-    <!-- ░░ 7 · TWO COLLECTIONS AT ZMO ░░ -->
+    <!-- ░░ 8 · TWO COLLECTIONS AT ZMO ░░ -->
     <section class="two-collections" data-toc="Two collections">
       <p class="kicker">Both held at ZMO</p>
       <h2 class="slide-title">Two multilingual digital collections</h2>
@@ -270,7 +305,7 @@
       <aside class="notes">Concretely, two collections, both held at the Leibniz-Zentrum Moderner Orient in Berlin. The first is the Islam West Africa Collection, IWAC, which Frédérick has built since 2023: over fourteen thousand five hundred items — newspapers, Islamic publications, photographs — plus more than nine thousand minutes of audio in Hausa, drawn from six countries since the 1960s, and open access. The second is the Reinhard Eisener Collection: sixteen hundred documents across fifty archival boxes, the estate of a single scholar, covering the Emirate of Bukhara, early Soviet governance, and the Tajik civil war of the nineties — eight languages, including Turki, and several scripts. The montage on the right pulls together a few samples from both: handwritten manuscripts, an Arabic-script newspaper, printed francophone pamphlets. Two very different objects. The wager of the project is that the same set of methods can open both.</aside>
     </section>
 
-    <!-- ░░ 8 · IWAC — LIVE SITE (iframe) ░░ -->
+    <!-- ░░ 9 · IWAC — LIVE SITE (iframe) ░░ -->
     <section class="live-frame" data-toc="IWAC online">
       <p class="kicker">Open access · islam.zmo.de</p>
       <h2 class="slide-title">The Islam West Africa Collection, live</h2>
@@ -287,7 +322,7 @@
       <aside class="notes">And here's the West African side, live. This is the public home of the Islam West Africa Collection, and it's open access: anyone can browse the newspapers, the Islamic publications, the photographs, and the Hausa audio right now, without an account. That's what "open" means for us in practice — the collection isn't a promise, it's already on the web for researchers, students, and the public to use. Keep that in mind, because the Central Asian side isn't there yet.</aside>
     </section>
 
-    <!-- ░░ 9 · THE EISENER COLLECTION — LIVE SITE (iframe) ░░ -->
+    <!-- ░░ 10 · THE EISENER COLLECTION — LIVE SITE (iframe) ░░ -->
     <section class="live-frame" data-toc="The Eisener estate">
       <p class="kicker">A scholar's estate · not yet online</p>
       <h2 class="slide-title">The Reinhard Eisener Collection</h2>
@@ -304,7 +339,7 @@
       <aside class="notes">The Central Asian side is at an earlier stage. What you're looking at isn't the collection itself, but the ZMO library's page describing it — the institutional record of the Reinhard Eisener estate: roughly sixteen hundred documents in fifty boxes, from the Emirate of Bukhara to the Tajik civil war. Unlike the West African collection, almost none of it is digitised or searchable online yet. Closing that gap is the work: scanning this estate, structuring it, and making it as open as IWAC. That's where the methods come in.</aside>
     </section>
 
-    <!-- ░░ 10 · OSH, KYRGYZSTAN — A POSSIBLE THIRD COLLECTION ░░ -->
+    <!-- ░░ 11 · OSH, KYRGYZSTAN — A POSSIBLE THIRD COLLECTION ░░ -->
     <section class="osh" data-toc="A third collection">
       <p class="kicker">Fieldwork · Osh, Kyrgyzstan</p>
       <h2 class="slide-title">A possible third collection</h2>
@@ -336,7 +371,7 @@
       <aside class="notes">A brief word from Aksana's side of the project, because it points to where this could grow. For a while now, Aksana has been at Osh State University, in southern Kyrgyzstan. Through that connection, we've come to know the university's own holdings: a large collection of Islamic materials gathered from local people — handwritten manuscripts, devotional prints, worn loose-leaf texts. A few are on the screen. Most of this has never been digitised, and much of it is barely catalogued. So one thing we want to explore during the project is whether we can scan these holdings and bring them in as a third collection, alongside the West African and the Eisener materials. It isn't settled yet; it turns on permissions and on how fragile the originals are. But this is exactly the kind of new ground the Open Up funding is meant to make possible, and it's how a teaching relationship becomes a lasting research partnership.</aside>
     </section>
 
-    <!-- ░░ 11 · DIVIDER 02 ░░ -->
+    <!-- ░░ 12 · DIVIDER 02 ░░ -->
     <section class="section navy balance" data-toc="The approach">
       <p class="sec-no">02</p>
       <h2>The approach</h2>
@@ -344,14 +379,14 @@
       <aside class="notes">So how do we get from sixteen thousand documents in ten languages to a comparison a researcher can actually run? This is the heart of the talk: one guiding question, and three things we're building to answer it.</aside>
     </section>
 
-    <!-- ░░ 12 · RESEARCH QUESTION ░░ -->
+    <!-- ░░ 13 · RESEARCH QUESTION ░░ -->
     <section class="statement research-q balance" data-footer="light" data-toc="Research question">
       <p class="statement-body">How can AI-driven DH methods transform <span class="accent">access</span> to and <span class="accent">interpretation</span> of these collections — enabling new comparative methods for Islamic discourse across regions?</p>
       <p class="attribution">The project's guiding question.</p>
       <aside class="notes">Here is the question in full. Two verbs in it matter. Access — can we even get into these documents, read the text, search them, find what is there? And interpretation — once inside, can we ask analytical questions that cross the two regions, rather than treating each as a closed case? The phrase to hold onto is "comparative methods for Islamic discourse across regions." The point is not AI for its own sake; it is whether these tools let us pose a genuinely comparative history that the archives, in their raw state, simply do not permit. Three innovations follow.</aside>
     </section>
 
-    <!-- ░░ 13 · INNOVATION 1 — STRUCTURED DATA ░░ -->
+    <!-- ░░ 14 · INNOVATION 1 — STRUCTURED DATA ░░ -->
     <section data-toc="Structured data">
       <p class="kicker">Innovation 1 / 3</p>
       <h2 class="slide-title">From raw documents to structured data</h2>
@@ -375,7 +410,7 @@
       <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
     </section>
 
-    <!-- ░░ 14 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
+    <!-- ░░ 15 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
     <section data-toc="A research chatbot">
       <p class="kicker">Innovation 2 / 3</p>
       <h2 class="slide-title">A cross-regional chatbot</h2>
@@ -399,7 +434,7 @@
       <aside class="notes">Second innovation: a way to ask. A keyword search only finds the exact string you typed — useless when meaning is spread across ten languages, when names are spelled three ways, when the OCR still carries noise. So we connect a language model directly to the collections using the Model Context Protocol, MCP. Two things matter about that. First, the data stays on our institutional servers — we send the question to the model, not the archive to a company. Second, we write what are called "skills": short documents that teach the AI what each collection holds, its historical context, and how to navigate it. A researcher then asks a question in plain language, in English or French, and the system searches both collections at once and answers with sources. We are putting this on the project website as a chatbot, open to anyone.</aside>
     </section>
 
-    <!-- ░░ 15 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
+    <!-- ░░ 16 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
     <section data-toc="Open &amp; sustainable">
       <p class="kicker">Innovation 3 / 3</p>
       <h2 class="slide-title">Equitable, accessible, sustainable</h2>
@@ -415,7 +450,7 @@
         </div>
         <div class="fig-frame">
           <figure>
-            <img class="shot" src="assets/ner-validator.svg" alt="AI-NER-Validator: a review interface where experts verify AI-extracted keywords before database entry (screenshot placeholder)">
+            <img class="shot" src="assets/ner-validator.webp" alt="The AI-NER-Validator interface: a French newspaper text with AI-extracted people, places, and organisations colour-highlighted, and a sidebar where an expert confirms or corrects each entity before it enters the database.">
             <figcaption>AI-NER-Validator — experts verify AI-extracted keywords before entry.</figcaption>
           </figure>
         </div>
@@ -423,7 +458,7 @@
       <aside class="notes">Third innovation is really a set of principles, because how you build this matters as much as what it does. We use open-source models by default, and reach for a commercial system only where the local one genuinely falls short. It is designed to run locally, without expensive infrastructure — which is what makes it usable in Global South institutions, not only well-funded Northern ones. Nothing the AI produces enters the database unchecked: an expert validates it first. The screenshot shows our review interface, the AI-NER-Validator, where a specialist confirms or corrects the keywords the model extracted before they are committed. And all of the code is open access, written to be reused and adapted by other scholars and archivists. The aim is a method other people can pick up, not a black box only we can run.</aside>
     </section>
 
-    <!-- ░░ 16 · MANAGING RISK (table) ░░ -->
+    <!-- ░░ 17 · MANAGING RISK (table) ░░ -->
     <section class="risk" data-toc="Managing risk">
       <p class="kicker">Honest about the downside</p>
       <h2 class="slide-title">Embracing and managing risk</h2>
@@ -453,7 +488,7 @@
       <aside class="notes">We want to be candid about what can go wrong, because the failure modes here are specific. One: these models can hallucinate, or quietly modernise a historical spelling — and unlike old OCR, which produced obvious garbage, a clean wrong answer hides its own error. So we always keep the original scan beside the AI output, and we document every model and prompt publicly on GitHub. Two: nobody has really run this chatbot approach on archives like these, so we treat it as iterative and we write down what fails, not only what works. Three: the collections are only partly catalogued, so the AI complements human cataloguing rather than pretending to replace it. And four: the tools change every few months, so the architecture is modular — we can swap a component out when something better arrives. Managing risk here is not a disclaimer slide; it is built into the design.</aside>
     </section>
 
-    <!-- ░░ 17 · CONCLUSION — SUSTAINABLE NETWORKS ░░ -->
+    <!-- ░░ 18 · CONCLUSION — SUSTAINABLE NETWORKS ░░ -->
     <section data-toc="Sustainable networks">
       <p class="kicker">Where it leads</p>
       <h2 class="slide-title">Building sustainable networks</h2>
@@ -467,7 +502,7 @@
       <aside class="notes">Where does this end up? Not only as software, but as people who can use it. The project closes with a workshop that brings together scholars from West Africa and Central Asia — the two communities that, as we said at the start, rarely meet — across Islamic studies, history, anthropology, and digital humanities. It is hands-on: researchers, archivists, and heritage professionals are trained on the tools we have built, so the capacity stays in the institutions rather than leaving with us. The goal we care about most is the last one: South–South networks, direct ties between the two regions, that outlast the grant. The infrastructure is the means; the network is the point.</aside>
     </section>
 
-    <!-- ░░ 18 · CLOSING ░░ -->
+    <!-- ░░ 19 · CLOSING ░░ -->
     <section class="closing balance" data-footer="dark">
       <p class="kicker">Thank you · Vielen Dank</p>
       <h2>Comparing the “peripheries.”</h2>
