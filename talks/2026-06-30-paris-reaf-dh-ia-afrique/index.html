@@ -39,6 +39,25 @@
        keeps its colour; only monochrome marks flip to white on the dark closing. */
     .reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
     .reveal section.closing .byline.authors .author-logo:not([src*="kcl"]) { filter: brightness(0) invert(1); opacity: 0.85; }
+    /* Slide 4 — the four-group index resolves into a single outcome. The
+       index-list's own closing rule is the one divider (no second heavy rule,
+       no italic source jammed between two rules): the result sits left and
+       emphasised, the quiet group-composition source aligns right. */
+    .reveal .groups-outcome {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: var(--space-xl); margin-top: var(--space-md); max-width: none;
+    }
+    .reveal .groups-outcome .outcome { margin: 0; max-width: none; font-size: var(--fs-body); color: var(--ink); }
+    .reveal .groups-outcome .outcome-label {
+      font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer);
+      text-transform: uppercase; letter-spacing: var(--track-label); color: var(--green-deep);
+      margin-right: 0.7em;
+    }
+    .reveal .groups-outcome .source { margin: 0; flex: none; }
+    /* Each slide-4 index row now carries a title + a serif gloss; ease the row
+       padding so the taller list and its outcome line breathe within the slide. */
+    .reveal .index-list > li { padding-block: var(--space-sm); }
+    .reveal .index-list .idx-desc { line-height: 1.28; }
   </style>
 </head>
 <body>
@@ -97,7 +116,11 @@
         <span class="callout-label">Le format</span>
         Château de Herrenhausen, financé par la fondation Volkswagen. Ni keynote ni communication individuelle&nbsp;: plénières, tables tournantes (World Café), posters et écriture collective, amorcée dès la fin du 2<sup>e</sup> jour.
       </div>
-      <aside class="notes">L'atelier s'est tenu au château de Herrenhausen, du 18 au 20 février 2026, avec le soutien de la fondation Volkswagen. Vingt-six chercheuses et chercheurs, seize pays, quatre groupes de travail, trois jours. Le format comptait autant que le contenu : pas de conférences plénières classiques ni de communications individuelles, mais des discussions en plénière, des tables tournantes façon World Café, des posters, et surtout de l'écriture collective, commencée dès la fin du deuxième jour. Vincent et moi avons coordonné l'ensemble.</aside>
+      <div class="callout green">
+        <span class="callout-label">Une écriture co-produite</span>
+        Le choix du format assure une <span class="accent">co-production des savoirs</span> entre les auteur·rices de la note de synthèse.
+      </div>
+      <aside class="notes">L'atelier s'est tenu au château de Herrenhausen, du 18 au 20 février 2026, avec le soutien de la fondation Volkswagen. Vingt-six chercheuses et chercheurs, seize pays, quatre groupes de travail, trois jours. Le format comptait autant que le contenu : pas de conférences plénières classiques ni de communications individuelles, mais des discussions en plénière, des tables tournantes façon World Café, des posters, et surtout de l'écriture collective, commencée dès la fin du deuxième jour. Ce choix n'est pas anodin : il garantit une co-production des savoirs entre les auteur·rices de la note de synthèse, plutôt qu'une simple juxtaposition de contributions individuelles. Vincent et moi avons coordonné l'ensemble.</aside>
     </section>
 
     <!-- ░░ 3 · LE SITE DE L'ATELIER (iframe live) ░░ -->
@@ -121,17 +144,16 @@
     <section data-toc="Quatre groupes">
       <h2 class="slide-title">Quatre groupes, un texte collectif</h2>
       <ol class="index-list">
-        <li><span class="idx-title">Langues, TAL &amp; corpus</span></li>
-        <li><span class="idx-title">Les archives</span></li>
-        <li><span class="idx-title">Infrastructures &amp; gouvernance</span></li>
-        <li><span class="idx-title">Épistémologies &amp; éthique</span></li>
+        <li><span class="idx-title">Langues et corpus</span><span class="idx-desc">Technologies du langage et traitement automatique (TAL)</span></li>
+        <li><span class="idx-title">Les archives</span><span class="idx-desc">Préservation, garde communautaire et patrimoine visuel</span></li>
+        <li><span class="idx-title">Infrastructures et gouvernance</span><span class="idx-desc">Accès et souveraineté technologique</span></li>
+        <li><span class="idx-title">Épistémologies et décolonialité</span><span class="idx-desc">Cadres éthiques et savoirs africains</span></li>
       </ol>
-      <p class="source"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/participants?view=groups" target="_blank" rel="noopener">Composition des quatre groupes&nbsp;↗</a></p>
-      <div class="callout">
-        <span class="callout-label">Aboutissement</span>
-        Une note de synthèse (ZMO, <em>Programmatic Texts</em>).
+      <div class="groups-outcome">
+        <p class="outcome"><span class="outcome-label">Aboutissement</span>Une note de synthèse — ZMO, <a href="https://www.zmo.de/en/publications/translate-to-english-zmo-programmatic-texts" target="_blank" rel="noopener"><em>Programmatic Texts</em>&nbsp;↗</a></p>
+        <p class="source"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/participants?view=groups" target="_blank" rel="noopener">Composition des groupes&nbsp;↗</a></p>
       </div>
-      <aside class="notes">Le texte s'organise en quatre groupes : langues et corpus ; archives ; infrastructures et gouvernance ; épistémologies et éthique. Chaque groupe croisait des disciplines et des praticien·nes, et les tables tournantes les ont gardés en dialogue plutôt qu'en silos. L'aboutissement principal est une note de synthèse, à paraître dans la série Programmatic Texts du ZMO ; un ouvrage collectif suivra chez Bielefeld University Press, pour lequel plus de quarante propositions de chapitres ont été reçues.</aside>
+      <aside class="notes">Le texte s'organise en quatre groupes : langues et corpus ; archives ; infrastructures et gouvernance ; épistémologies et décolonialité. Chaque groupe croisait des disciplines et des praticien·nes, et les tables tournantes les ont gardés en dialogue plutôt qu'en silos. L'aboutissement principal est une note de synthèse, à paraître dans la série Programmatic Texts du ZMO ; un ouvrage collectif suivra chez Bielefeld University Press, pour lequel plus de quarante propositions de chapitres ont été reçues.</aside>
     </section>
 
     <!-- ░░ 5 · SECTION — LA NOTE DE SYNTHÈSE ░░ -->
