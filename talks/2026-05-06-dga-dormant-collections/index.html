@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dormant Digital Collections, AI Triage — Frédérick Madore</title>
+  <meta name="author" content="Frédérick Madore">
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+
+  <!-- reveal.js core (vendored locally → works fully offline) -->
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <!-- Africa Multiple / Bayreuth editorial theme (imports the self-hosted fonts) -->
+  <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <style>
+    /* Slide 2 — a small framed strip of selected work (two book covers + the DH/AI hero).
+       flex:0 0 auto + object-fit:contain stop the row from shrink-distorting the covers
+       when the three together are wider than the column; uniform height reads as a shelf. */
+    .reveal .bio-gallery { display: flex; gap: var(--space-sm); align-items: flex-end; margin-top: var(--space-xs); }
+    .reveal .bio-gallery figure { margin: 0; flex: 0 0 auto; display: flex; flex-direction: column; gap: var(--space-2xs); }
+    .reveal .bio-gallery img { display: block; height: 162px; width: auto; flex-shrink: 0; object-fit: contain;
+      border: var(--hair); border-radius: var(--radius-sm); box-shadow: var(--shadow-1); }
+    .reveal .bio-gallery figcaption { font-family: var(--font-label); font-size: 0.74rem;
+      letter-spacing: .04em; color: var(--ink-faint); text-align: center; max-width: 16ch; }
+
+    /* Slide 5 — the six-uses roadmap: a numbered two-column ledger. */
+    .reveal .roadmap { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-2xl);
+      margin-top: var(--space-sm); }
+    .reveal .ruse { display: grid; grid-template-columns: auto 1fr; gap: var(--space-md);
+      align-items: baseline; padding: var(--space-sm) 0; border-top: var(--hair); }
+    .reveal .ruse .n { font-family: var(--font-label); font-weight: 700; font-size: 1.5rem;
+      line-height: 1; color: var(--green); font-variant-numeric: tabular-nums; }
+    .reveal .ruse b { font-weight: 600; }
+    .reveal .ruse span.d { display: block; font-size: var(--fs-small); color: var(--ink-soft);
+      line-height: 1.3; }
+
+    /* Slides 7–8 — scan → extracted-text pairs. */
+    .reveal .extract { background: var(--sunken); border: var(--hair); border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg); }
+    .reveal .extract .extract-label { font-family: var(--font-label); font-size: var(--fs-footer);
+      font-weight: 600; letter-spacing: var(--track-label); text-transform: uppercase;
+      color: var(--navy); display: block; margin-bottom: var(--space-xs); }
+    .reveal .extract p { margin: 0; font-size: 1.16rem; line-height: 1.4; }
+    .reveal .extract .ext-src { font-style: italic; font-size: var(--fs-caption);
+      color: var(--ink-faint); margin-top: var(--space-sm); }
+    /* 7–8 — the WHOLE transcript in a fixed-height scroll box: shows the model read the
+       full page, not a snippet, and the fixed height keeps the slide inside the canvas. */
+    .reveal .extract-scroll { max-height: 232px; overflow-y: auto; overscroll-behavior: contain;
+      margin: var(--space-xs) 0 0; padding-right: var(--space-sm); }
+    .reveal .extract-scroll p { font-size: 1rem; line-height: 1.42; margin: 0 0 0.6em; }
+    .reveal .extract-scroll p:last-child { margin-bottom: 0; }
+    .reveal .extract-scroll .doc-head { font-weight: 700; }
+    .reveal .extract-scroll .doc-ref { font-family: var(--font-mono); font-size: var(--fs-caption);
+      color: var(--ink-faint); letter-spacing: .04em; }
+    .reveal .extract-scroll .doc-list { margin: 0 0 0.6em; padding-left: 1.1em; }
+    .reveal .extract-scroll .doc-list li { font-size: 1rem; line-height: 1.42; margin: 0.1em 0; }
+    .reveal .extract-scroll::-webkit-scrollbar { width: 8px; }
+    .reveal .extract-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+    .reveal .extract-scroll { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+    /* a typo the model PRESERVED from the source (it did not silently "correct" it) */
+    .reveal .extract .typo { background: color-mix(in oklch, var(--brown) 26%, transparent);
+      border-bottom: 1.5px solid var(--brown-deep); border-radius: 2px; padding: 0 0.08em; cursor: help; }
+    .reveal .typo-legend { font-family: var(--font-label); font-size: var(--fs-footer);
+      color: var(--ink-soft); margin-top: var(--space-sm); display: flex; align-items: baseline; gap: 0.45em; }
+    .reveal .typo-legend .swatch { flex: none; align-self: center; width: 0.85em; height: 0.85em;
+      background: color-mix(in oklch, var(--brown) 26%, transparent); border-bottom: 1.5px solid var(--brown-deep); border-radius: 2px; }
+
+    /* Slide 6 — a small model tag (Gemini spark + label) inside a callout. The spark must be
+       inline-block: the theme sets img{display:block}, which otherwise drops it onto its own
+       line above the text. Plain inline (not inline-flex, whose box baseline drifts). */
+    .reveal .model-tag { font-weight: 600; white-space: nowrap; }
+    .reveal .model-tag img { display: inline-block; height: 1.1em; width: auto;
+      vertical-align: -0.18em; margin-right: 0.3em; }
+
+    /* Slide 12 — knowledge-base view grid (2×2 of dashboard shots). */
+    .reveal .kb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md) var(--space-lg);
+      margin-top: var(--space-xs); }
+    .reveal .kb-grid figure { margin: 0; display: flex; flex-direction: column; gap: var(--space-2xs); }
+    .reveal .kb-grid .shot { margin: 0; }
+    .reveal .kb-grid .shot img { display: block; width: 100%; height: 188px; object-fit: cover;
+      object-position: top center; }
+    .reveal .kb-grid figcaption { font-family: var(--font-label); font-size: var(--fs-footer);
+      letter-spacing: .04em; color: var(--ink-soft); }
+    .reveal .kb-grid figcaption b { color: var(--ink); font-weight: 600; }
+
+    /* Slide 14 — NotebookLM live-demo QR call-to-scan. */
+    .reveal .demo-qr { display: flex; flex-direction: column; align-items: center;
+      gap: var(--space-2xs); margin-top: var(--space-sm); }
+    .reveal .demo-qr img { width: 128px; height: 128px; border: var(--hair);
+      border-radius: var(--radius-sm); background: #fff; padding: 6px; box-shadow: var(--shadow-1); }
+    .reveal .demo-qr span { font-family: var(--font-label); font-size: var(--fs-footer);
+      font-weight: 600; letter-spacing: .04em; color: var(--ink-soft); }
+
+    /* ---- Per-slide height fits (keep every slide inside the 1280×720 canvas) ---- */
+    /* 3 · scanning party — two framed covers + a callout below */
+    .reveal #s-scan .shot.tall { max-height: 292px; }
+    .reveal #s-scan .callout { margin-top: var(--space-sm); }
+    /* 4 · backlog/triage — the 2×2 stat grid overflows the narrow 2fr column (the big
+       figures + labels can't fit two columns); lay it out as a single-column ledger
+       (label left, big number right) so the numbers keep their size and stay on-canvas. */
+    .reveal #s-triage .stat-grid { grid-template-columns: 1fr; gap: 0; margin-top: var(--space-sm); }
+    .reveal #s-triage .stat-grid .stat { flex-direction: row; align-items: baseline;
+      justify-content: space-between; gap: var(--space-lg); padding: var(--space-sm) 0;
+      border-top: 1px solid var(--line); }
+    .reveal #s-triage .stat-grid .stat:first-child { border-top: 3px solid var(--rule); }
+    .reveal #s-triage .stat-grid .stat .stat-num { order: 2; white-space: nowrap; }
+    .reveal #s-triage .stat-grid .stat .stat-label { order: 1; text-align: left;
+      align-self: baseline; max-width: 24ch; }
+    /* 9 · audio & video — two stacked shots in the right column */
+    .reveal #s-av figure .shot { max-height: 200px; width: auto; margin-inline: 0; }
+    /* 12 · knowledge base — tighten the lead and the 2×2 grid */
+    .reveal #s-kb .lead { font-size: var(--fs-body); margin-bottom: var(--space-xs); max-width: none; }
+    .reveal #s-kb .kb-grid .shot img { height: 156px; }
+    /* 14 · NotebookLM — trim the QR block */
+    .reveal #s-nb .demo-qr { margin-top: var(--space-xs); }
+    .reveal #s-nb .demo-qr img { width: 110px; height: 110px; }
+    /* 16 · closing — rein in the big headline and the list */
+    .reveal #s-close h2 { font-size: 2.7rem; line-height: 1.08; margin-bottom: var(--space-sm); }
+    .reveal #s-close ul { font-size: var(--fs-small); }
+    .reveal #s-close ul li { margin: 0.15em 0; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================================
+     PER-DECK CONFIG — Deutsche Gesellschaft für Asienforschung roundtable.
+     Everything else (theme.css, deck.js, reveal/, fonts/) is the reusable engine.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Frédérick Madore",
+    talkTitle: "Dormant Digital Collections, AI Triage",
+    talkShort: "Dormant Collections · AI Triage",
+    venue:     "Deutsche Gesellschaft für Asienforschung · 6 May 2026",
+    tocEyebrow:"Outline",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ════════ 1 · COVER ═══════════════════════════════════════ -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Deutsche Gesellschaft für Asienforschung · Roundtable: DH &amp; KI in den Regionalwissenschaften</p>
+      <h1>Dormant Digital Collections, AI Triage</h1>
+      <p class="subtitle">Lessons from the Islam West Africa Collection and beyond</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <div data-contact></div>
+      <div class="slides-qr">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
+      <aside class="notes">I'll open on the hook, not the title. Arlette Farge wrote about the allure of the archive: the slow, physical encounter with a document. Most of us now work very differently. We come back from fieldwork with thousands of scans we will never read. My argument today is simple: AI won't replace close reading, but it can triage — it can tell us where close reading is worth our time. The examples come from a collection on Islam in West Africa, but the lessons travel to any region's archives, including Asia.</aside>
+    </section>
+
+    <!-- ════════ 2 · WHO I AM (bio + selected work) ═══════════════ -->
+    <section>
+      <p class="kicker">Who I am</p>
+      <h2 class="slide-title">A historian, working with AI</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>Data Curator, Cluster of Excellence <strong>"Africa Multiple"</strong>, University of Bayreuth</li>
+            <li>Historian of Islam in Francophone West Africa since the 1960s — youth, women, politics, education</li>
+            <li>Developer of the <strong>Islam West Africa Collection</strong> (IWAC) since 2021</li>
+            <li>Coordinator, <em>Digital Humanities and AI in African Studies</em></li>
+            <li>Edited volume forthcoming, Bielefeld University Press (2027)</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="bio-gallery">
+            <figure>
+              <img src="assets/book-campuses.webp" alt="Book cover: Religious Activism on Campuses in Togo and Benin by Frédérick Madore (De Gruyter)">
+              <figcaption>Monograph · 2025</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/book-religiosity.webp" alt="Book cover: Religiosity on University Campuses in Africa, edited by Sounaye and Madore (LIT)">
+              <figcaption>Co-edited · 2023</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/dh-bielefeld-hero.webp" alt="Blog: Charting New Territory — Digital Humanities und Künstliche Intelligenz in den African Studies, by Frédérick Madore and Vincent Hiribarren">
+              <figcaption>DH &amp; AI initiative</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">A word on where I stand. I'm a historian of Islam in Francophone West Africa — youth, women, politics, education since the 1960s — and a data curator at the Africa Multiple cluster in Bayreuth. Since 2021 I've built the Islam West Africa Collection, and I coordinate an initiative on digital humanities and AI in African studies, with an edited volume due from Bielefeld in 2027. The important thing: I'm not a computer scientist. Everything today is a working historian using off-the-shelf tools.</aside>
+    </section>
+
+    <!-- ════════ 3 · THE SCANNING PARTY (reading room vs backroom) ═ -->
+    <section data-toc="The scanning party" id="s-scan">
+      <p class="kicker warm">The allure of the archive</p>
+      <h2 class="slide-title">From the reading room to the "scanning party"</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">The reading room</div>
+          <img class="shot tall" src="assets/farge-allure.jpg" alt="Book cover: The Allure of the Archives by Arlette Farge — a magnifying glass over an old handwritten manuscript">
+          <p class="small muted">Farge (1989): the slow, tactile encounter — "touching the real".</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">The scanning party</div>
+          <img class="shot tall" src="assets/scanning-party.jpg" alt="An unsorted backroom: stacks of old newspapers and bound volumes piled on tables, chairs and a sofa, with a scanner in the foreground — awaiting digitisation">
+          <p class="small muted">An unsorted backroom, photographed in three days.</p>
+        </div>
+      </div>
+      <div class="callout warm">
+        <span class="callout-label">The shift</span>
+        Thousands of JPEGs and hours of recordings, half-named, untouched for years — affect moves from slow intimacy to frantic accumulation.
+      </div>
+      <aside class="notes">Farge located the allure of the archive in touching the real: handling the paper, reading slowly. That's the reading room, on the left. The reality for many of us is on the right — an unsorted backroom, photographed in three days, because that's all the access you get. You leave with thousands of JPEGs and hours of recordings, half-named, and they sit untouched for years. The feeling changes, from slow intimacy to frantic accumulation. Those dormant scans are the problem I want to address.</aside>
+    </section>
+
+    <!-- ════════ 4 · FROM BACKLOG TO TRIAGE (bullets + stat panel) ═ -->
+    <section data-toc="From backlog to triage" id="s-triage">
+      <p class="kicker">From backlog to triage</p>
+      <h2 class="slide-title">One historian, no team</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>Fieldwork across West Africa, plus libraries in Berlin, Paris, Washington</li>
+            <li>Public side: the open-access IWAC — <a href="https://islam.zmo.de/s/westafrica/">islam.zmo.de</a></li>
+            <li>Cataloguing it all by hand is impossible</li>
+          </ul>
+          <div class="callout">
+            <span class="callout-label">The question I put to AI</span>
+            Not "read this for me" — but <strong>where is close reading worth my time?</strong>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">A digital hoarder, in numbers</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">30,000+</span><span class="stat-label">items collected (Zotero)</span></div>
+              <div class="stat"><span class="stat-num">~15,000</span><span class="stat-label">still unprocessed</span></div>
+              <div class="stat"><span class="stat-num">14,500+</span><span class="stat-label">open access (IWAC)</span></div>
+              <div class="stat"><span class="stat-num">1</span><span class="stat-label">historian, no team</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Some numbers from my own drives. Fieldwork across West Africa, plus libraries in Berlin, Paris and Washington. I'm a bit of a digital hoarder: over thirty thousand items in Zotero, about fifteen thousand still unprocessed. The public side is the IWAC, around fourteen and a half thousand items, open access. It's one historian, no team, so cataloguing it all by hand is simply impossible. So the question I put to AI is not "read this for me", but "where is my close reading actually worth it?" That is triage.</aside>
+    </section>
+
+    <!-- ════════ 5 · SIX USES (numbered roadmap) ══════════════════ -->
+    <section class="balance" data-toc="Six uses of AI">
+      <p class="kicker navy">The shape of the talk</p>
+      <h2 class="slide-title">Six uses of AI in the research workflow</h2>
+      <div class="roadmap">
+        <div class="ruse"><span class="n">1</span><span><b>Text extraction</b><span class="d">OCR and HTR with multimodal models</span></span></div>
+        <div class="ruse"><span class="n">2</span><span><b>Audio &amp; video transcription</b><span class="d">including under-resourced languages</span></span></div>
+        <div class="ruse"><span class="n">3</span><span><b>Entity &amp; topic extraction</b><span class="d">who, where, what, about what</span></span></div>
+        <div class="ruse"><span class="n">4</span><span><b>"No-code" visualisation</b><span class="d">through AI-assisted coding</span></span></div>
+        <div class="ruse"><span class="n">5</span><span><b>First-pass analysis at scale</b><span class="d">sentiment, classification, triage</span></span></div>
+        <div class="ruse"><span class="n">6</span><span><b>NotebookLM</b><span class="d">chat with your own sources</span></span></div>
+      </div>
+      <aside class="notes">Here's the shape of the talk: six ways I use AI in the workflow. Text extraction from scans. Audio and video transcription. Pulling out entities and topics — who, where, what, and what it's about. No-code visualisation. First-pass analysis at scale, like sentiment. And NotebookLM, the easiest place to start. I'll take them roughly in order, with real examples from the collection, and flag the dangers as we go.</aside>
+    </section>
+
+    <!-- ════════ 6 · USE 1 · READING THE PAGE (concept + annotated scan) ═ -->
+    <section data-toc="1 · Reading the page">
+      <p class="kicker navy">Use 1 · Text extraction</p>
+      <h2 class="slide-title">Multimodal LLMs read the page like a person</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot tall" src="assets/ocr-newspaper-annotated.jpg" alt="A multi-column Ivorian newspaper article, 'Les imams se battent', overlaid with red numbered markers showing the reading order that traditional OCR scrambles — labelled 'Layout recognition failure'">
+          <p class="small muted">Layout recognition failure: traditional OCR scrambles a multi-column page.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Traditional OCR breaks on multi-column papers, tables, handwriting, quick phone scans</li>
+            <li>Even a <strong>5–10% error rate</strong> matters: one typo in a name hides a document</li>
+            <li>"Ouédraogo" → "Oueclaoqo": the source is there, but no one will find it</li>
+            <li>Multimodal AI handles it in one pass: printed &amp; handwritten, French &amp; Arabic, messy layout</li>
+          </ul>
+          <div class="callout navy">
+            <span class="callout-label">Strongest so far</span>
+            <span class="model-tag"><img src="assets/logo-gemini-mark.svg" alt="">Google Gemini 3 Pro</span> — the best model I have tested for this.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Start with text extraction. Traditional OCR was built for clean, single-column print. It breaks on West African newspapers: multiple columns, tables, handwriting, a quick phone scan. And a five-to-ten percent error rate isn't a rounding error. One typo in a name buries the document: "Ouédraogo" comes out as nonsense, and now no one searching that very common name will ever find it. Multimodal models read the page the way a person does: layout, printed and handwritten, French and Arabic, in a single pass. Gemini 3 Pro is the strongest I've tested so far.</aside>
+    </section>
+
+    <!-- ════════ 7 · USE 1 · PRINTED EWÉ (scan → text) ════════════ -->
+    <section>
+      <p class="kicker navy">Use 1 · in practice</p>
+      <h2 class="slide-title">Reading printed Ewé</h2>
+      <div class="cols ratio-1-2">
+        <div class="col">
+          <img class="shot tall" src="assets/ocr-ewe-togopresse.jpg" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics">
+          <p class="small muted">Togo Presse, 31 July 1976.</p>
+        </div>
+        <div class="col">
+          <div class="extract">
+            <span class="extract-label">Extracted text · Ewé</span>
+            <div class="extract-scroll">
+              <p class="doc-head">MIAFE ŊUTIFAFAFIA EYADEMA KPE TA KPLE MƆSLEMTƆWO FE ƉEKAWƆWƆ DƆDZIKPƆHA LA</p>
+              <p>Mia nɔvi Mɔslem hamea ngɔnɔlawo se nya xɔasiwo tso Togo yeyea fofo nu</p>
+              <p>«Woayra amesiwo léa avu la, elabena woayɔwo be Mawuviwo»</p>
+              <p>Enye Togo yeyea fofo avafiawodzifia Gnassingbe Eyadema fe didi vevi be amesiame nanɔ dzidzɔ kple ŋutifafa me lle yefe Denyigba la katã dzi, Dzre, fuéle kple mamãwo manɔ amewo kple habɔbɔwo domo o. Eyaŋuti dukplɔla Eyadema anukwaretɔ la lɔna ɖɔɖɔɖowo wɔwɔ edziedzi le dukɔmeviwo dome ɖo.</p>
+              <p>Ete ŋu dze edzi be miafe tatɔ nutefewɔla la do go kple mia nɔvi Mɔslem Hame fe amegãwo nyitsɔ le RPT fea me hena wodome nyawo sese, […]</p>
+            </div>
+            <p class="ext-src">Printed Ewé, diacritics and all — read in a single pass. Scroll for the full extraction.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">An example. This is Togo Presse, from 1976, in Ewé — printed, with the diacritics that trip up most OCR. The model read it in one pass, special characters and all — the full extraction is here, and you can scroll the whole column. I can't fully verify the Ewé myself, which is exactly the catch we'll come to in a moment. But as a first draft over a language with almost no digital tooling, this is a real opening.</aside>
+    </section>
+
+    <!-- ════════ 8 · USE 1 · CURSIVE FRENCH (scan → text) ═════════ -->
+    <section>
+      <p class="kicker navy">Use 1 · in practice</p>
+      <h2 class="slide-title">Reading cursive French</h2>
+      <div class="cols ratio-1-2">
+        <div class="col">
+          <img class="shot tall" src="assets/ocr-handwritten-burkina.jpg" alt="A handwritten 1991 letter in French from Muslim associations in Burkina Faso addressed to the Minister of Information and Culture">
+          <p class="small muted">Handwritten letter, Burkina Faso, 1991.</p>
+        </div>
+        <div class="col">
+          <div class="extract">
+            <span class="extract-label">Transcribed text · French</span>
+            <div class="extract-scroll">
+              <p class="doc-ref">3 H 1 a</p>
+              <p class="doc-head">Des musulmans du Burkina Faso,</p>
+              <ul class="doc-list">
+                <li>Communauté Musulmane</li>
+                <li>Mouvement <span class="typo" title="should read “Sunnite” (one n)">Sunite</span></li>
+                <li>Association de la Tidjania.</li>
+              </ul>
+              <p>au Camarade Ministre de l'Information et de la Culture, Ouagadougou</p>
+              <p>Nous venons, par cette mise en garde, vous entretenir d'un sujet qui nous tourmente depuis des années. La goutte d'eau fait déborder le vase dit-on et c'est la raison pour laquelle nous pensons qu'il est temps de vous sensibiliser, de vous mettre en garde.</p>
+              <p>Mardi 16 avril 1991. Fête de fin du jeûne musulman. Journée chômée et payée en raison d'une loi de l'État.</p>
+              <p>Mardi 25 décembre 1990 Fête de la nativité, fête chrétienne Journée chômée et payée en raison d'une loi de l'État.</p>
+              <p>Il y a là une coïncidence heureuse mais <span class="typo" title="should read “fâcheuse” (missing circumflex)">facheuse</span> à l'analyse.</p>
+              <p>Mardi 25 <span class="typo" title="should read “Décembre” — yet “décembre” is correctly accented two lines above">Decembre</span> 1990. Jour de la semaine coïncidant avec une fête ; cette fête est chrétienne, le ministère décide : les mass media, patrimoine de tous les Burkinabè, sont à la disposition des chrétiens. La télévision qui d'ordinaire n'émet que les seuls samedis et dimanches dans la journée s'organise et dès 12h30, elle émet et diffuse le message <span class="typo" title="should read “chrétien” (missing accent)">chretien</span> jusqu'à la nuit.</p>
+              <p>Mardi 16 avril 1991 <span class="typo" title="should read “Également” (missing accent)">Egalement</span> jour de la semaine coïncidant avec une fête. Cette fête est musulmane. Le ministère occulte : la direction de l'information fait comme bon lui semble. La Télé</p>
+            </div>
+            <p class="typo-legend"><span class="swatch"></span>Highlighted: the writer's own spelling slips, kept verbatim — the model didn't silently correct them.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Harder still: cursive. This is a handwritten letter from 1991 — Muslim associations in Burkina Faso writing to a minister to protest unequal media treatment of Muslim and Christian holidays. Traditional OCR does nothing with this; the model transcribed the whole letter. And look at what it kept — the writer's own spelling slips, highlighted: "Sunite" for Sunnite, "facheuse", "chretien", and a "Decembre" that flatly contradicts the correctly-accented "décembre" two lines above. It preserved them rather than tidying them away — exactly the fidelity a historian wants, because the errors are part of the record. Though, as the very next slide warns, it does not always behave so well.</aside>
+    </section>
+
+    <!-- ════════ 9 · USE 2 · AUDIO & VIDEO ════════════════════════ -->
+    <section data-toc="2 · Audio &amp; video" id="s-av">
+      <p class="kicker navy">Use 2 · Transcription</p>
+      <h2 class="slide-title">Audio and video transcription</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>The same multimodal logic extends to audio and video</li>
+            <li>Transcripts return with <strong>timestamps and speaker labels</strong></li>
+            <li>IWAC corpus: <strong>~155 hours</strong> of Nigerian preachers, mostly Hausa &amp; Arabic</li>
+            <li>Early tests in Hausa, Arabic, Kurmanji Kurdish — promising as a first draft</li>
+          </ul>
+        </div>
+        <div class="col">
+          <figure style="margin:0">
+            <img class="shot" src="assets/av-demokuradiyyah.png" alt="A video still from the IWAC audiovisual corpus: a preacher delivering a sermon titled Demokuradiyyah">
+            <img class="shot" src="assets/av-transcript.png" alt="A timestamped, speaker-labelled transcript of a Hausa and Arabic sermon, generated with Google gemini-3-pro" style="margin-top:var(--space-sm)">
+            <figcaption class="small muted">A sermon and its machine transcript — timestamps, speaker labels.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="notes">The same logic extends to sound and video. You get a transcript back with timestamps and speaker labels. The IWAC has about a hundred and fifty-five hours of Nigerian preachers, mostly in Hausa and Arabic — material I could never transcribe by hand. Early tests in Hausa, Arabic, even Kurmanji Kurdish are promising as a first draft. Not publishable as it stands, but enough to find the ten minutes worth a full listen.</aside>
+    </section>
+
+    <!-- ════════ 10 · THE CLEAN-TEXT TRAP (the caution) ═══════════ -->
+    <section data-toc="The clean-text trap">
+      <p class="kicker warm">A caution</p>
+      <h2 class="slide-title">Cleaner than the source</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>AI-OCR and audio-to-text open previously unusable material</li>
+            <li>The model silently <strong>modernises spellings</strong>, standardises toponyms, smooths regional variants</li>
+            <li>It can also <strong>hallucinate</strong>: invent text that was never there</li>
+            <li>The failure mode is harder to spot: a fluent paragraph with invented detail</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout warm">
+            <span class="callout-label">The discipline</span>
+            Keep the original image alongside the text. <strong>Verify against the scan before you quote.</strong>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Now the danger, and it's the most important slide. These tools open material that was effectively unusable. But they don't just transcribe — they tidy. The model silently modernises spellings, standardises place-names, smooths regional variants. And it can hallucinate: invent text that was never on the page. The failure mode is the problem. Not garble you would catch, but a fluent, plausible paragraph with invented detail. So the discipline is non-negotiable: keep the original image beside the text, and verify against the scan before you quote a single word.</aside>
+    </section>
+
+    <!-- ════════ 11 · USE 3 · ENTITIES & TOPICS ══════════════════ -->
+    <section data-toc="3 · Entities &amp; topics">
+      <p class="kicker navy">Use 3 · Extraction at scale</p>
+      <h2 class="slide-title">Entities and topics: who, where, what, about what</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot tall" src="assets/kb-network.png" alt="A network graph from the IWAC dashboard linking a central figure to the people, organisations and places that co-occur with him across the corpus">
+          <p class="small muted">Entities linked across the corpus.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Manual keyword tagging: unworkable across thousands of documents</li>
+            <li>Standard DH tools trained on Western text — they miss local names</li>
+            <li>OCR noise compounds the problem</li>
+            <li>LLMs extract not just entities but <strong>topics</strong>, given the right prompt</li>
+          </ul>
+          <div class="callout navy">
+            <span class="callout-label">A feasible query, now</span>
+            "Find me every document that discusses <strong>secularism</strong> or the <strong>pilgrimage</strong>."
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Third use: entities and topics. Tagging thousands of documents by hand is hopeless. The standard digital-humanities tools were trained on Western text and miss local names, and OCR noise makes it worse. Language models, given careful instructions, pull out not just names and places but topics — what a document is actually about. So "find me everything that touches secularism, or the pilgrimage" becomes a query you can really run across the whole collection.</aside>
+    </section>
+
+    <!-- ════════ 12 · USE 4 · A KNOWLEDGE BASE (viz grid) ═════════ -->
+    <section data-toc="4 · A knowledge base" id="s-kb">
+      <p class="kicker navy">Use 4 · "No-code" visualisation</p>
+      <h2 class="slide-title">From text repository to knowledge base</h2>
+      <p class="lead">An explorable layer over the documents — built without hand-written code.</p>
+      <div class="kb-grid">
+        <figure>
+          <span class="shot"><img src="assets/kb-map-world.png" alt="A world map from the IWAC dashboard with article counts plotted by location, concentrated in West Africa"></span>
+          <figcaption><b>Mapped</b> · articles by place</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><img src="assets/kb-network.png" alt="A network graph linking people, organisations and places that co-occur across the IWAC corpus"></span>
+          <figcaption><b>Linked</b> · who appears with whom</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><img src="assets/kb-heatmap.png" alt="A heat-map matrix showing how themes such as radicalisation, extremism, terrorism and jihadism co-occur across articles"></span>
+          <figcaption><b>Co-occurrence</b> · themes that travel together</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><img src="assets/kb-wordcloud.png" alt="A word cloud of the most frequent terms across the corpus, led by musulmans, président and pays"></span>
+          <figcaption><b>Topics</b> · the corpus at a glance</figcaption>
+        </figure>
+      </div>
+      <aside class="notes">Once you've extracted all that, the pile of documents becomes a knowledge base you can explore. These are views of the IWAC dashboard: articles mapped by place, networks of who appears with whom, co-occurring themes, topic clouds. The point for this audience is the fourth use on my list. I wrote none of this interface by hand. I described what I wanted to an AI coding assistant, and it built it. That's what I mean by no-code visualisation.</aside>
+    </section>
+
+    <!-- ════════ 13 · USE 5 · SENTIMENT AT SCALE ═════════════════ -->
+    <section data-toc="5 · Sentiment at scale">
+      <p class="kicker navy">Use 5 · First-pass analysis</p>
+      <h2 class="slide-title">Sentiment analysis, without writing code</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot tall" src="assets/sentiment-dashboard.jpg" alt="The IWAC Sentiment Analysis dashboard comparing three AI models across 12,287 articles, with discrepancy counts and breakdowns by polarity and subjectivity">
+          <p class="small muted">Three models compared, article by article. <a href="https://fmadore.github.io/IWAC-sentiment-analysis/" target="_blank" rel="noopener">fmadore.github.io/IWAC-sentiment-analysis ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li><strong>12,000+ articles</strong>, three LLMs, three axes: polarity towards Islam, subjectivity, centrality of religion</li>
+            <li><strong>~€35 and 24 hours</strong> of batch processing — months of manual coding avoided</li>
+            <li>Triage, not full reading; model disagreement is itself a signal</li>
+          </ul>
+          <div class="callout">
+            <span class="callout-label">A pattern I'd have missed</span>
+            Positive portrayals of Muslim communities <em>inside</em> Sahelian terrorism coverage.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Fifth: first-pass analysis at scale. I had three language models classify twelve thousand articles on three axes — how they portray Islam, how subjective they are, and how central religion is to the piece. It cost about thirty-five euros and a day of batch processing, against months of manual coding. Again, this is triage, not reading. Two things I'd flag. Where the models disagree is itself a signal worth a look. And a pattern surfaced that I would have missed: surprisingly positive portrayals of Muslim communities inside coverage of Sahelian terrorism. The whole dashboard, again, written without my hand-coding a line.</aside>
+    </section>
+
+    <!-- ════════ 14 · USE 6 · NOTEBOOKLM ═════════════════════════ -->
+    <section data-toc="6 · NotebookLM" id="s-nb">
+      <p class="kicker navy">Use 6 · Chat with your sources</p>
+      <h2 class="slide-title">NotebookLM: the lowest-friction entry point</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <img class="shot tall" src="assets/notebooklm-app.jpg" alt="The NotebookLM interface loaded with IWAC newspaper articles: uploaded sources on the left, an answer with inline citations in the centre">
+          <p class="small muted">NotebookLM over the IWAC newspaper corpus.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Only knows what you upload; <strong>cites the exact passage</strong> for every answer</li>
+            <li>Your sources are not used to train models</li>
+            <li>Free tier: 50 sources per notebook (PDF, web, YouTube, audio)</li>
+            <li>Multilingual: ask in your language, it searches sources in any of 80+</li>
+          </ul>
+          <div class="demo-qr">
+            <img src="assets/notebooklm-qr.png" alt="QR code to a shared NotebookLM notebook of the IWAC newspaper corpus">
+            <span>Live demo · scan to query the corpus</span>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">If you take one practical thing away, start here. NotebookLM only knows what you upload, and it cites the exact passage for every answer, so hallucination drops sharply. Your sources aren't used to train the model. The free tier takes fifty sources per notebook — PDFs, web pages, YouTube, audio. And it's multilingual: ask in your language, it searches the sources in any of eighty-plus. There's a QR here, so you can query the IWAC newspaper corpus yourself. [Live demo cue: open the shared notebook, ask one question, show the citation.]</aside>
+    </section>
+
+    <!-- ════════ 15 · THE STAKES (costs vs what it opens) ═════════ -->
+    <section data-toc="The stakes">
+      <p class="kicker warm">The stakes</p>
+      <h2 class="slide-title">Western tools, non-Western sources</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">The costs</div>
+          <ul>
+            <li><strong>Training data</strong> overwhelmingly Western — concepts read through European lenses</li>
+            <li><strong>Labour</strong>: Kenyan annotators paid ~$5/day; similar conditions elsewhere</li>
+            <li><strong>Infrastructure</strong>: strongest models in US firms; only China credible as an alternative</li>
+            <li><strong>Opaque</strong> and non-reproducible: the same input can yield different answers</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head">What it makes possible</div>
+          <p>Research at <strong>scales</strong>, and with <strong>documents</strong>, not previously feasible — degraded scans, under-resourced languages, corpora too large to read.</p>
+          <div class="callout warm">
+            <span class="callout-label">Held in tension</span>
+            Neither uncritical adoption nor refusal. Use the tools, and disclose what they cost.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">I don't want to sell this without the costs. The training data is overwhelmingly Western, so these models read other societies through European categories. The labour behind them is real and badly paid: Kenyan annotators on about five dollars a day, and similar conditions elsewhere. The infrastructure is concentrated — the strongest models sit in a handful of US firms, with only China credible as an alternative. And the systems are opaque and non-reproducible: the same input can give different answers. I hold all of that against the other side of the ledger. AI makes research possible at scales, and with documents, that simply weren't reachable before. The honest position is to use the tools and disclose what they cost.</aside>
+    </section>
+
+    <!-- ════════ 16 · CLOSING / TAKEAWAY ═════════════════════════ -->
+    <section class="closing" data-footer="dark" data-toc="Takeaway" id="s-close">
+      <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
+        <p class="kicker">In closing</p>
+        <h2>The scans on our hard drives are the raw material</h2>
+        <ul>
+          <li>The technology is no longer the obstacle — small teams, no deep coding required</li>
+          <li>Models you can <strong>download and run on a university server</strong> — evolving fast</li>
+          <li>AI organises; <strong>we interpret. Always.</strong></li>
+          <li>Experiment with sources you know well, so you can catch the errors</li>
+        </ul>
+        <div data-contact></div>
+        <div class="slides-qr corner">
+          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+          <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+        </div>
+        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      </div>
+      <aside class="notes">So where does that leave us. The technology is no longer the obstacle: you don't need a big team or deep coding. And you can now download capable models and run them on a university server, on your own terms — that's moving fast. The division of labour holds: AI organises, we interpret, always. My advice is to start with sources you know well, so you can catch the errors. Because the scans sitting dormant on our hard drives are the raw material of the next phase. Thank you — I'm glad to take questions, and to browse the collection live.</aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js + plugins (vendored), then the deck engine. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>
