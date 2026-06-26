@@ -90,6 +90,28 @@
     .reveal section.osh .osh-grid .shot { aspect-ratio: 1 / 1; object-fit: cover; }
     .reveal section.osh .osh-cap { font-family: var(--font-label); font-size: var(--fs-footer);
       color: var(--ink-faint); letter-spacing: 0.02em; margin-top: var(--space-sm); }
+
+    /* Live-demo "saved runs" (offline fallback for the MCP demo). Each shows a Claude
+       share framed in browser chrome, displayed whole (no crop) and height-capped so
+       the slide never overflows 720px. The frame hugs the image and centres in the
+       leftover height. Lifted from the Luxembourg deck's demo section. */
+    .reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: var(--space-md); }
+    .reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
+      display: flex; flex-direction: column; min-height: 0;
+      border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
+      box-shadow: var(--shadow-2); background: var(--paper); }
+    .reveal .demo-shot .site-frame-bar { flex: none; }
+    .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
+    .reveal .demo-shot-view img { display: block; width: auto; height: auto;
+      max-height: 360px; max-width: 100%; }
+    .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+    /* Keep the share/repo URL in a scroll-hint as one unbroken, clickable link. */
+    .reveal .scroll-hint a { white-space: nowrap; }
+    /* Demo intro: cap the Claude Desktop shot so the figure column never outgrows
+       the text column — keeps the whole slide inside the auto-fit safe area (else it
+       gets wrapped + scaled, which drifts it left of its neighbours). */
+    .reveal section[data-toc="Live demo"] .shot.tall { max-height: 290px; }
   </style>
 </head>
 <body>
@@ -410,28 +432,96 @@
       <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
     </section>
 
-    <!-- ░░ 15 · INNOVATION 2 — A RESEARCH CHATBOT (MCP) ░░ -->
+    <!-- ░░ 15 · INNOVATION 2 — A RESEARCH CHATBOT / THE THIRD PATH (MCP) ░░ -->
     <section data-toc="A research chatbot">
       <p class="kicker">Innovation 2 / 3</p>
-      <h2 class="slide-title">A cross-regional chatbot</h2>
-      <div class="figrow flip">
-        <div class="fig-frame">
-          <figure>
-            <img class="shot" src="assets/mcp-claude-code.svg" alt="An AI assistant answering a research query against the collections via a Model Context Protocol server (screenshot placeholder)">
-            <figcaption>An AI assistant answering a query via an MCP server.</figcaption>
-          </figure>
+      <h2 class="slide-title">Queried by AI, not surrendered to it</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <img class="shot" src="assets/glam-e-lab.jpg" alt="GLAM-E Lab report by Michael Weinberg, June 2025 — ‘Are AI Bots Knocking Cultural Heritage Offline?’">
+          <p class="small muted"><strong>39 of 43</strong> heritage institutions hit by AI-bot traffic spikes (Weinberg, GLAM-E Lab, 2025); Wikimedia: <strong>65%</strong> of its costliest traffic is bots. <a href="https://www.glamelab.org/products/are-ai-bots-knocking-cultural-heritage-offline/" target="_blank" rel="noopener">Read it ↗</a></p>
         </div>
         <div class="col">
-          <p class="lead">Keyword search returns exact matches, not meaning — and breaks on 10+ languages, variant spellings, OCR noise.</p>
+          <p class="lead">Not a choice between unrestricted scraping and a locked repository.</p>
           <ul>
-            <li><strong>MCP</strong> connects AI to the collections — data stays on our servers</li>
-            <li>“Skills” encode each collection's contents, context, navigation</li>
-            <li>Plain-language questions search both collections at once</li>
-            <li>A public chatbot on the project website, open to all</li>
+            <li>The default is <strong>extraction</strong> — bots crawl GLAMs, ignoring <code>robots.txt</code></li>
+            <li><strong>MCP, a middle layer</strong> — auditable, institution-controlled; the data stays put</li>
           </ul>
+          <div class="callout warm">
+            <span class="callout-label">Yékú's paradox · 2026</span>
+            Un-digitised, an African archive is invisible to AI; digitised, it's exposed to scraping.
+          </div>
         </div>
       </div>
-      <aside class="notes">Second innovation: a way to ask. A keyword search only finds the exact string you typed — useless when meaning is spread across ten languages, when names are spelled three ways, when the OCR still carries noise. So we connect a language model directly to the collections using the Model Context Protocol, MCP. Two things matter about that. First, the data stays on our institutional servers — we send the question to the model, not the archive to a company. Second, we write what are called "skills": short documents that teach the AI what each collection holds, its historical context, and how to navigate it. A researcher then asks a question in plain language, in English or French, and the system searches both collections at once and answers with sources. We are putting this on the project website as a chatbot, open to anyone.</aside>
+      <aside class="notes">Second innovation: a way to ask — but it has to be built carefully, so let me start with why. Today the default way an AI meets a collection is extraction. A 2025 GLAM-E Lab survey found thirty-nine of forty-three heritage institutions hit by AI-bot traffic spikes that ignore robots.txt; Wikimedia reports sixty-five per cent of its costliest traffic is bots, not people. I've seen the same spike on the IWAC myself — thousands of hits a day, out of the US and China. Underfunded institutions and unpaid labour end up subsidising commercial AI: digital colonialism in its newest form. And Yékú names the trap precisely — leave an African archive un-digitised and it is invisible to the models; digitise it and you expose it to scraping, where an incomplete corpus risks becoming the single story. So the real question is not scrape-or-lock. The Model Context Protocol offers a third path: a middle layer in which the collection is queried by an AI without being handed over to it. The data stays on our servers; the institution decides what the model can see. It's concrete, auditable, and ours to control. Let me show you what that looks like.</aside>
+    </section>
+
+    <!-- ░░ 15b · LIVE DEMO — THE IWAC MCP SERVER (intro + offline fallbacks) ░░ -->
+    <section data-toc="Live demo">
+
+      <!-- 15b.0 — intro + Claude Desktop screenshot + live cue -->
+      <section>
+        <p class="kicker navy">Live demo · the IWAC MCP server</p>
+        <h2 class="slide-title">From a plain question to cited sources</h2>
+        <div class="cols ratio-2-3">
+          <div class="col">
+            <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
+            <p class="small muted">A Claude Desktop extension — read-only, ~22 tools, no API key for the core tools.</p>
+          </div>
+          <div class="col">
+            <p class="lead">One real question — the server runs the method live.</p>
+            <ul>
+              <li>Scopes the collection, then searches it in French</li>
+              <li>Reads the strongest hits in full</li>
+              <li>Every claim linked back to its IWAC record</li>
+            </ul>
+            <p class="small muted">Live for the IWAC (West Africa); the same door onto the Eisener estate is the goal.</p>
+            <p class="scroll-hint">Two saved runs below — press ↓</p>
+          </div>
+        </div>
+        <aside class="notes">Enough description — let's run it live. This is the IWAC server installed in Claude Desktop: read-only, about twenty-two tools, no API key for the core ones. I'll put one real question to it, in plain language, and let it work: it scopes the collection, searches in French, reads the strongest articles in full, then answers with every claim linked straight back to its record in the archive. One honest caveat before I start: this is live for the Islam West Africa Collection only — West Africa. Extending the same door onto the Eisener estate, so a single question can eventually span both regions, is the goal, not something I've built yet. [Live-demo cue: open Claude Desktop, put the query, show the citations and the links.] If the network misbehaves, I have two saved runs on the next slides — just press down.</aside>
+      </section>
+
+      <!-- 15b.1 — saved run: BRIEF (offline fallback) -->
+      <section>
+        <p class="kicker navy">Saved run · secularism in Côte d'Ivoire</p>
+        <h2 class="slide-title">Brief — the default depth</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">claude.ai/share/d37cbcb6…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/d37cbcb6-7257-4ffd-82b5-595bc80aabfc" target="_blank" rel="noopener">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <img src="assets/demo-brief.jpg" alt="A Claude conversation: asked in English what the Islam West Africa Collection says about secularism in Côte d'Ivoire, the iwac-mcp skill reads its method files and then offers a Brief-or-Extended depth choice, defaulting to Brief">
+            </div>
+          </figure>
+          <p class="small muted">Claude Sonnet 4.6 · high effort</p>
+        </div>
+        <aside class="notes">Here's one I prepared earlier, in case we need it. I asked, in English, what the collection says about secularism in Côte d'Ivoire. Watch what happens before any searching: the server reads its own method file, then stops to ask how deep I want to go — a quick Brief or a fuller Extended pass, with Brief the default. That pause is the method setting its own terms before it answers, rather than dumping a reply. The full report, every source cited, is one tap away at the top of the frame.</aside>
+      </section>
+
+      <!-- 15b.2 — saved run: EXTENDED (offline fallback) -->
+      <section>
+        <p class="kicker navy">Saved run · Islam in Kpalimé, Togo</p>
+        <h2 class="slide-title">Extended — the full method</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">claude.ai/share/2bdf2009…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/2bdf2009-d54a-4f93-9ef9-a7eb7dc21b8c" target="_blank" rel="noopener">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <img src="assets/demo-extended.jpg" alt="A Claude conversation: asked about Islam in Kpalimé, Togo, the user answers ‘extended’, and the iwac-mcp skill begins its five-phase analysis with Phase 1 scoping">
+            </div>
+          </figure>
+          <p class="small muted">A five-phase pass — every claim traced to a record, not to the model's memory.</p>
+        </div>
+        <aside class="notes">The second saved run goes deeper: Islam in Kpalimé, a small town in Togo. Here I answer "extended", and a five-phase method kicks off — phase one is scoping, before a single keyword. The point is what grounding buys you: every claim traces back to a record in the collection, not to the model's memory. That is the difference between an answer you can check and one you simply have to trust.</aside>
+      </section>
+
     </section>
 
     <!-- ░░ 16 · INNOVATION 3 — EQUITABLE, SUSTAINABLE ░░ -->
@@ -504,7 +594,7 @@
 
     <!-- ░░ 19 · CLOSING ░░ -->
     <section class="closing balance" data-footer="dark">
-      <p class="kicker">Thank you · Vielen Dank</p>
+      <p class="kicker">Thank you</p>
       <h2>Comparing the “peripheries.”</h2>
       <p class="lead">AI-driven DH lets two locked archives speak to each other — and questions the centre they were measured against. <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener">islam.zmo.de</a></p>
       <div class="byline authors">
