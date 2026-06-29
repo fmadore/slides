@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reconfiguring the Archive — Frédérick Madore</title>
+  <meta name="author" content="Frédérick Madore">
+  <link rel="icon" href="../../shared/logo-africamultiple.png">
+
+  <!-- reveal.js core (vendored locally → works fully offline) -->
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <!-- Africa Multiple / Bayreuth editorial theme (imports the self-hosted fonts) -->
+  <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <style>
+    /* Screenshot placeholders — the relational-view slides await real captures
+       from the live atlas. These dashed slots read as deliberate "to add" frames
+       (not broken images) and are height-capped so the slide never overflows 720px.
+       Swap each .shot-todo for <img class="shot" src="assets/…"> once captured. */
+    .reveal .shot-todo { display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: var(--space-sm); text-align: center;
+      border: 2px dashed var(--line-strong); border-radius: var(--radius-lg);
+      background: var(--sunken); padding: var(--space-lg) var(--space-md); min-height: 300px; }
+    .reveal .shot-todo.tall { min-height: 384px; }
+    .reveal .shot-todo .todo-frame { font-size: 2.4rem; line-height: 1; color: var(--ink-faint); }
+    .reveal .shot-todo .todo-label { font-family: var(--font-label); text-transform: uppercase;
+      letter-spacing: var(--track-label); font-size: var(--fs-footer); font-weight: 600;
+      color: var(--brown-deep); }
+    .reveal .shot-todo .todo-desc { font-family: var(--font-display); font-style: italic;
+      color: var(--ink-soft); font-size: var(--fs-small); max-width: 34ch; margin: 0; }
+    .reveal .shot-todo .todo-src { font-family: var(--font-mono); font-size: 0.76rem;
+      color: var(--ink-faint); }
+    .reveal figure.shot-fig { margin: 0; display: flex; flex-direction: column; gap: 0; }
+    .reveal figure.shot-fig figcaption { margin-top: var(--space-sm); font-size: var(--fs-caption);
+      color: var(--ink-soft); font-style: italic; }
+
+    /* AMRC live embed (DRE collection-overview/clusterPartners). Fixed height so the
+       embed fits the 1280×720 canvas instead of auto-resizing to its ~400px content;
+       the JS at the end of <body> swaps in assets/amrc-map.png if the embed can't reach
+       the network (so the slide still works offline). The figcaption restates the
+       legend, so a clipped in-embed colour key is harmless. */
+    .reveal .amrc-iframe { display: block; width: 100%; height: 290px; border: 0;
+      border-radius: var(--radius-lg); background: var(--sunken); }
+    .reveal img.amrc-fallback[hidden] { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================================
+     PER-DECK CONFIG — edit this block (and the slides) for each new talk.
+     Everything else (theme.css, deck.js, reveal/, fonts/) is the reusable engine.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    presenter: "Frédérick Madore",
+    talkTitle: "Reconfiguring the Archive",
+    talkShort: "Reconfiguring the Archive",
+    venue:     "Reimagining the Archive · Rhodes University · 1 July 2026",
+    tocEyebrow:"Outline",
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ════════ 1 · COVER ═══════════════════════════════════════ -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Reimagining the Archive in the Post-Truth Era · Rhodes University, Makhanda · 1 July 2026</p>
+      <h1>Reconfiguring the Archive</h1>
+      <p class="subtitle">Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA)</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <div data-contact></div>
+      <!-- TODO: add assets/qr-slides.png (QR to the deployed deck) and restore the
+           .slides-qr block from talks/_template/index.html once the URL is live. -->
+      <aside class="notes">I'll open on what AMIRA is and who builds it — not on the title — then come to the argument. [advance]</aside>
+    </section>
+
+    <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
+    <section data-toc="The Cluster">
+      <p class="kicker">University of Bayreuth · German Excellence Strategy · since 2019</p>
+      <h2 class="slide-title">The Africa Multiple Cluster of Excellence</h2>
+      <p class="lead">A large African studies cluster, reconfiguring the field both conceptually and structurally to confront <span class="accent-navy">power imbalances in how knowledge is produced and transmitted</span>.</p>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="col-head">Three working concepts</div>
+          <ul>
+            <li><strong>Multiplicity:</strong> relationships before fixed entities</li>
+            <li><strong>Relationality:</strong> worlds made, unmade, silenced</li>
+            <li><strong>Reflexivity:</strong> our own positions, and the power behind them</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">In brief</span>
+            300+ researchers across five Research Centres in five countries — now in its second phase, 2026–2032.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">A word on where I sit. The Africa Multiple Cluster of Excellence is a large African studies cluster based at the University of Bayreuth, funded under the German Excellence Strategy since 2019 and now in its second phase, running to 2032. It is sizeable: over three hundred researchers, organised through five Research Centres in five countries. What holds it together is an agenda it calls "Reconfiguring African Studies": reworking the field both in its concepts and in its structures, and squarely confronting the power imbalances in how knowledge about Africa gets produced and passed on. That last point is the one to keep in mind today. The cluster works through three concepts: multiplicity, which puts relationships before fixed entities; relationality, which attends to worlds being made, unmade, and silenced; and reflexivity, the duty to examine our own positions and the power behind them. All of that research throws off a great deal of data, and someone has to look after it. That is my team.</aside>
+    </section>
+
+    <!-- ════════ 3 · THE AMRCs — the distributed network + map ═══════════════ -->
+    <section data-toc="The Research Centres">
+      <p class="kicker">About us · Africa Multiple Research Centres (AMRCs)</p>
+      <h2 class="slide-title">Five centres, one network</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <figure class="shot-fig amrc-embed">
+            <iframe class="amrc-iframe" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/collection-overview/clusterPartners" title="Africa Multiple Research Centres (AMRCs) and its partners" scrolling="no"></iframe>
+            <img class="shot amrc-fallback" src="assets/amrc-map.png" alt="World map showing the five Africa Multiple Research Centres — Université Joseph Ki-Zerbo (Ouagadougou), University of Bayreuth, Moi University (Eldoret), University of Lagos and Rhodes University (Makhanda) — alongside a privileged partner, cooperation partners and global partner Centres of African Studies across the Americas, Europe, Asia and Australia." hidden>
+            <figcaption>Five Research Centres (green) · a privileged partner, cooperation partners and Centres of African Studies worldwide. <span class="source">data.africamultiple…/amira · live</span></figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="col-head">Five centres, five countries</div>
+          <ul>
+            <li>Université Joseph Ki-Zerbo — Ouagadougou</li>
+            <li>University of Bayreuth</li>
+            <li>Moi University — Eldoret</li>
+            <li>University of Lagos</li>
+            <li>Rhodes University — Makhanda</li>
+          </ul>
+          <p class="small muted">Horizontally connected · shared governance. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">The question I keep returning to</span>
+        Each centre describes the data it knows best — so who holds authority over how knowledge is <strong>described</strong>, and therefore <strong>found</strong>?
+      </div>
+      <aside class="notes">Now, the cluster isn't one place; it's a network. There are five Africa Multiple Research Centres, in five countries: Ouagadougou, Bayreuth, Eldoret, Lagos, and Rhodes, here in Makhanda. The relationship between them has shifted over time, from a model with Bayreuth in the lead to a more horizontal one, with shared governance and a real emphasis on South–South cooperation. That matters for what follows, because the research, and the first description of the data, happen at the centres: each knows its own material best, and each describes it. The grey dots are partners: a privileged partner in Brazil, cooperation partners, and Centres of African Studies around the world. So the data is genuinely distributed. And that is the problem my team exists to solve: how do you connect five centres' worth of material without hauling it all onto one server, and without overwriting what each has said about its own? Hold that question about description; it runs through the whole talk.</aside>
+    </section>
+
+    <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
+    <section data-toc="The DRE">
+      <p class="kicker">Digital Research Environment (DRE) — the cluster's digital infrastructure unit</p>
+      <h2 class="slide-title">We build the cluster's data infrastructure</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li><strong>Research data management &amp; curation:</strong> metadata, ontologies, Wikidata, DOIs, archival</li>
+            <li><strong>Data science &amp; computational methods:</strong> text mining, NLP, network analysis, scraping</li>
+            <li><strong>AI-assisted processing:</strong> OCR, transcription, entity extraction, tagging</li>
+            <li><strong>Dissemination &amp; presentation:</strong> dashboards, maps, Omeka S databases, websites</li>
+          </ul>
+          <p class="small muted">AI on local, open-source, GDPR-compliant models · grounded in FAIR &amp; CARE and multiple knowledge systems. Full range: <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener">africamultiple…/digital-solutions</a></p>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">Our flagship — AMIRA</div>
+            <p class="small">The cluster's research-data atlas, built on Omeka S.</p>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num" data-count="3975">3,975</span><span class="stat-label">research items</span></div>
+              <div class="stat"><span class="stat-num" data-count="93">93</span><span class="stat-label">projects</span></div>
+              <div class="stat"><span class="stat-num" data-count="1643">1,643</span><span class="stat-label">people</span></div>
+              <div class="stat"><span class="stat-num" data-count="592">592</span><span class="stat-label">organisations</span></div>
+              <div class="stat"><span class="stat-num" data-count="39">39</span><span class="stat-label">countries</span></div>
+              <div class="stat"><span class="stat-num" data-count="28">28</span><span class="stat-label">languages</span></div>
+            </div>
+            <hr class="rule">
+            <p class="small muted">Open metadata · public API</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">My team is the Digital Research Environment, the DRE. The simplest way to put it: we make the cluster's research data findable, reusable, and presentable. The work falls into four areas. First, we manage and curate data: metadata schemas, mapping vocabularies to the cluster ontology, reconciling with Wikidata, building taxonomies in African languages, and archiving datasets with DOIs. Second, data science: text mining, network analysis, scraping. Third, AI for the heavy lifting: OCR, transcription, entity extraction, tagging, always with local, open-source, GDPR-compliant models, which matters for the ethics I'll come to. Fourth, dissemination: dashboards, maps, Omeka S databases, and websites. The flagship of that last area is AMIRA, the atlas this talk is about: already close to four thousand research items, across thirty-nine countries and twenty-eight languages. Hold on to two of these: the African-language taxonomies, and CARE. Both come back.</aside>
+    </section>
+
+    <!-- ════════ 5 · BUILT ON RELATIONALITY (statement) ═════════════════════ -->
+    <section class="statement balance" data-toc="Built on relationality" data-footer="light">
+      <p class="statement-body">The cluster's premise: nothing here is best understood <span class="accent">alone</span>.</p>
+      <p class="attribution">Of the cluster's three concepts, <em>relationality</em> is the one the atlas is built to show — entities through their ties, not in isolation.</p>
+      <aside class="notes">One idea drives the cluster's whole research agenda, and it shapes the atlas. The cluster works with three concepts: multiplicity, relationality, reflexivity. The middle one matters most today. Relationality says that a person, a project, a place, a publication is best understood through its relationships, not on its own — that entities are, in part, the product of the ties they sit in. Now, a catalogue runs on the opposite instinct: one record, one thing, described in isolation, filed away. So the design question for the atlas was easy to state and hard to do. Can the archive show the relationships, and not only the records? The next few slides are what that looks like in practice.</aside>
+    </section>
+
+    <!-- ════════ 6 · CONNECTIONS, NOT RECORDS (KG + collaboration network) ═══ -->
+    <section data-toc="From records to relations">
+      <p class="kicker navy">Relationality, made visible</p>
+      <h2 class="slide-title">Connections, not records</h2>
+      <p class="lead">Two views built on the links between entities, not the entities alone.</p>
+      <div class="cols">
+        <div class="col">
+          <figure class="shot-fig">
+            <div class="shot-todo">
+              <span class="todo-frame" aria-hidden="true">▢</span>
+              <span class="todo-label">Screenshot to add</span>
+              <p class="todo-desc">A per-item knowledge graph — one record and everything it links to</p>
+              <span class="todo-src">amira · any research item → “Knowledge graph”</span>
+            </div>
+            <figcaption>A record becomes a junction: authors, places, projects, institutions.</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <figure class="shot-fig">
+            <div class="shot-todo">
+              <span class="todo-frame" aria-hidden="true">▢</span>
+              <span class="todo-label">Screenshot to add</span>
+              <p class="todo-desc">A collaboration network — who works with whom, across projects</p>
+              <span class="todo-src">amira · Connections → “Collaboration network”</span>
+            </div>
+            <figcaption>People linked through shared projects and affiliations.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="notes">Here's the first pair of views. On the left, a knowledge graph for a single item. Open any record — a publication, a project — and you see it sitting in a web: its authors, the places it's about, the projects it belongs to, the institutions behind it. The record stops being a dead end and becomes a junction you can travel through. On the right, a collaboration network: people linked through shared projects and affiliations, drawn across the whole cluster. You can pick out groups of researchers who keep appearing together, and the individuals who bridge otherwise separate clusters. Neither of these is visible in an ordinary catalogue, where you click through one record at a time and the connections stay implicit. The relationships were always in the data. These views just let you see them. [These two slots are screenshots I'll capture from the live atlas before the talk.]</aside>
+    </section>
+
+    <!-- ════════ 7 · DISCURSIVE COMMUNITIES (the hinge into the critique) ════ -->
+    <section data-toc="Discursive communities">
+      <p class="kicker navy">Relationality, made visible</p>
+      <h2 class="slide-title">Discursive communities</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <figure class="shot-fig">
+            <div class="shot-todo tall">
+              <span class="todo-frame" aria-hidden="true">▢</span>
+              <span class="todo-label">Screenshot to add</span>
+              <p class="todo-desc">Subjects that co-occur across collections, clustered into communities</p>
+              <span class="todo-src">amira · Subjects → co-occurrence clusters</span>
+            </div>
+            <figcaption>Themes that recur together — named by no single record.</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <p>Clusters of subjects that keep appearing together — themes the collection holds in aggregate, not in any one item.</p>
+          <div class="callout warm">
+            <span class="callout-label">The catch, already visible</span>
+            These clusters are built from subject keywords. They are only ever as good as that description.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">The third view is the one I find most suggestive, and also the most fragile. We take the subject keywords attached to items, and we look at which ones co-occur — which subjects keep turning up together across the collections. Cluster those co-occurrences and you get what we call discursive communities: groupings of themes that no single catalogue record would ever announce on its own. It's a way of asking what a collection is about in aggregate, rather than what any one item happens to be tagged with. And here the catch is already in plain sight. This whole view is built from subject description — from keywords. If the keywords are thin, or skewed, or borrowed from a vocabulary that doesn't fit the material, then the communities it draws are thin and skewed in the same way. So the most ambitious relational view rests on the least reliable part of the metadata. That is the turn in the talk.</aside>
+    </section>
+
+    <!-- ════════ 8 · THE TURN (statement) ══════════════════════════════════ -->
+    <section class="statement balance" data-toc="Where it's hardest" data-footer="light">
+      <p class="statement-body">An atlas of relations is only as strong as its <span class="accent">weakest metadata</span>.</p>
+      <p class="attribution">And the weakest, almost always, is subject description — the part researchers supply most sparingly of all.</p>
+      <aside class="notes">So here's the honest middle of the talk. Everything I've shown depends on metadata, and metadata is supplied by busy researchers who would much rather be doing their research. Names, dates, places — those come in reasonably well, because they're concrete and you can't write the project up without them. Subject description is the part that gets skipped. It's optional, it takes thought, and it's the first thing to go when a deadline is close. Which is awkward, because subject description is exactly what the relational views lean on hardest. The atlas is most ambitious precisely where its data is thinnest. That isn't a complaint about colleagues; it's a structural fact about how collections actually get made, everywhere. The interesting question is what we do about it — and that splits in two.</aside>
+    </section>
+
+    <!-- ════════ 9 · LCSH AND ITS LIMITS ═══════════════════════════════════ -->
+    <section data-toc="The limits of description">
+      <p class="kicker warm">When terms do exist</p>
+      <h2 class="slide-title">Whose subject headings?</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="lead">Where subject terms exist, they tend to come from Library of Congress Subject Headings.</p>
+          <ul>
+            <li>Our pipeline matches subjects against the LCSH API</li>
+            <li>LCSH was built elsewhere, for other collections</li>
+            <li>African concepts and languages fit it poorly</li>
+            <li>Borrowed terms reshape what can be found</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout navy">
+            <span class="callout-label">The vocabulary problem</span>
+            Two people pick the same term for the same thing under a fifth of the time (Furnas et al., 1987). One imposed vocabulary makes that worse, not better.
+          </div>
+          <p class="small muted">Risam (2018): standard schemas can carry epistemic violence — categories that erase as they describe.</p>
+        </div>
+      </div>
+      <aside class="notes">When subject terms do exist, where do they come from? Mostly from Library of Congress Subject Headings — LCSH, the big American controlled vocabulary. Our own pipeline does this automatically: it takes a subject term and reconciles it against the LCSH authority. That's convenient, it's interoperable, and it quietly imports a problem. LCSH was built somewhere else, for other collections, around other assumptions about what matters. African concepts, African-language terms, African knowledge systems often have no good home in it. You either force a near-match or drop the term, and either way the description bends toward what the vocabulary already knows. Two ideas from the literature sharpen this. Furnas and colleagues showed, back in 1987, that two people choose the same word for the same thing less than a fifth of the time; vocabulary is slippery even within one language. And Roopika Risam argues that standard schemas can do a kind of epistemic violence — the category that describes also erases, when it has no room for the thing in front of it. So we carry two problems at once. The description is thin. And where it exists, it's borrowed, which means someone else's categories decide what fits.</aside>
+    </section>
+
+    <!-- ════════ 10 · A WAY FORWARD — Wikidata + AI ════════════════════════ -->
+    <section data-toc="A way forward">
+      <p class="kicker">Still exploratory</p>
+      <h2 class="slide-title">Building the entities the vocabulary lacks</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Wikidata, not only Library of Congress</div>
+          <p>Open, multilingual, editable by communities rather than one national library.</p>
+          <ul>
+            <li>Reconcile people, places, institutions to Wikidata</li>
+            <li>Create the African entities it still lacks</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">AI to help, not to decide</div>
+          <p>Language models draft candidates at scale; people review and approve.</p>
+          <ul>
+            <li>Draft labels, definitions, links for review</li>
+            <li>Curators and centres keep the final say</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">The honest status</span>
+        Exploratory, by design. The aim is not a finished vocabulary — it is to move authority over description closer to the people the data is about.
+      </div>
+      <aside class="notes">So what do we do? Our thinking here is genuinely exploratory, so I'll show a direction, not a solution. The first move is to shift authority work away from Library of Congress and toward Wikidata. Wikidata is open, multilingual, and editable — communities can add and correct entities, instead of waiting on one national library. We already reconcile people, places and institutions against it. The harder and more interesting part is creating the African entities and concepts that Wikidata itself still lacks, so that the right terms exist to be used at all. That's a great deal of careful work, and it's where AI earns a role — a narrow one. Language models are good at drafting: proposing a candidate entity, a label in several languages, a short definition, some links to check. They are not good at deciding what is true. So the model drafts at scale, and curators and the centres review and keep the final say. The goal isn't a perfect vocabulary. It's to move the authority over description closer to the people and places the data is actually about.</aside>
+    </section>
+
+    <!-- ════════ 11 · THE AUTHORITY QUESTION (statement) ═══════════════════ -->
+    <section class="statement balance" data-toc="Who names the subject?" data-footer="light">
+      <p class="statement-body">Who holds authority over how knowledge is <span class="accent">described</span> — and therefore <span class="accent">found</span>?</p>
+      <p class="attribution">In an era of contested truth, that is what reimagining the archive has to confront.</p>
+      <aside class="notes">So I end where the conference begins, but through a side door. The post-truth worry is usually about forgery and denial: false things dressed up to look true. Underneath it sits something quieter and just as decisive, which is description. What gets a name, in whose language, decides what can be found at all. A record that can't be described in terms that fit it isn't argued with or refuted; it simply never surfaces. That's a soft erasure, and it long predates AI — the colonial library did it with catalogue cards. The atlas, with all its graphs and networks, makes the stakes legible, because every relationship it draws runs back through a keyword that someone chose, or didn't. Reimagining the archive, for me, means taking that single choice seriously, and moving the authority over it closer to the people the knowledge belongs to.</aside>
+    </section>
+
+    <!-- ════════ 12 · CLOSING / CONTACT ════════════════════════════════════ -->
+    <section class="closing" data-footer="dark">
+      <!-- flex-centred: reveal sets the present section to display:block, which would
+           top-align this sparse slide; the wrapper re-centres it. -->
+      <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
+        <p class="kicker">Thank you · Enkosi</p>
+        <h2>Description is the first act of the archive.</h2>
+        <p class="lead">Before access, before discovery, before any network graph. Move the authority over it closer to the people the data is about — that's the work.</p>
+        <p><strong>Explore AMIRA:</strong> <a href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home">data.africamultiple.uni-bayreuth.de/s/amira</a></p>
+        <div data-contact></div>
+        <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      </div>
+      <aside class="notes">To close. The eye-catching part of this project is the visualisations, and they're genuinely useful. But the foundation is the unglamorous part: who describes the material, and in whose words. Description is the first act of the archive — it comes before access, before discovery, before any network graph. Get it wrong and everything downstream inherits the error, very persuasively. So the work I care about most is the quiet work: building the entities that don't yet exist, in vocabularies that fit, with the centres and the communities holding the pen. The atlas is online if you'd like to explore it afterwards, and, as I said at the start, a fair amount of your own institution's research is already in there. Thank you. [Note: "Enkosi" is isiXhosa for thank you — please confirm it reads well for this room, or swap it.]</aside>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js + plugins (vendored), then the deck engine. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+<!-- AMRC live embed: load the DRE iframe only when its slide is shown — a MapLibre map in
+     an offscreen / display:none slide initialises at zero size and never renders. The
+     embed is responsive (reports the iframe's height), so the fixed 290px CSS height fits
+     the canvas with no clipping. If it hasn't reported a height within 5s of being shown
+     (offline / framing blocked), swap in the static map screenshot so the slide is never
+     blank. -->
+<script>
+(function(){
+  function setup(){
+    var ifr=document.querySelector('.amrc-iframe');
+    var img=document.querySelector('.amrc-fallback');
+    if(!ifr||!img) return;
+    var src=ifr.getAttribute('data-src'), loaded=false, live=false;
+    window.addEventListener('message',function(e){
+      if(ifr.contentWindow&&e.source===ifr.contentWindow&&e.data&&e.data.type==='dre-embed-height'){ live=true; }
+    });
+    function activate(){
+      if(loaded||!src) return; loaded=true;
+      ifr.src=src;
+      setTimeout(function(){ if(!live){ ifr.remove(); img.hidden=false; } },5000);
+    }
+    function isAmrc(sl){ return sl&&sl.querySelector&&sl.querySelector('.amrc-iframe'); }
+    if(window.Reveal&&Reveal.on){
+      Reveal.on('slidechanged',function(ev){ if(isAmrc(ev.currentSlide)) activate(); });
+      Reveal.on('ready',function(ev){ if(isAmrc(ev.currentSlide)) activate(); });
+      try{ if(Reveal.isReady&&Reveal.isReady()&&isAmrc(Reveal.getCurrentSlide())) activate(); }catch(e){}
+    } else { activate(); }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
+})();
+</script>
+
+</body>
+</html>
