@@ -244,6 +244,7 @@
     }
     markCurrentTOC();
     fitSlide(cur);
+    animateCounts(cur);
   }
 
   /* ---- auto-fit: scale a slide's content down ONLY if it overflows the safe
@@ -291,10 +292,77 @@
     if (FIT_SEEN) FIT_SEEN.add(sec);
   }
 
+  /* ---- duotone filters (Move 2): inject the green/navy duotone SVG filters
+     once so any deck can drop class="duotone" or a .plate figure and reference
+     url(#duo-green) without hand-pasting the filter into every index.html. ---- */
+  function injectFilters() {
+    if (document.getElementById("duo-green")) return;
+    var DESAT = '<feColorMatrix type="matrix" values="0.33 0.34 0.33 0 0  0.33 0.34 0.33 0 0  0.33 0.34 0.33 0 0  0 0 0 1 0"></feColorMatrix>';
+    var svg = elem(
+      '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">' +
+        '<filter id="duo-green" color-interpolation-filters="sRGB">' + DESAT +
+          '<feComponentTransfer><feFuncR type="table" tableValues="0.03 0.93"></feFuncR><feFuncG type="table" tableValues="0.17 0.95"></feFuncG><feFuncB type="table" tableValues="0.12 0.91"></feFuncB></feComponentTransfer>' +
+        '</filter>' +
+        '<filter id="duo-navy" color-interpolation-filters="sRGB">' + DESAT +
+          '<feComponentTransfer><feFuncR type="table" tableValues="0.02 0.90"></feFuncR><feFuncG type="table" tableValues="0.05 0.93"></feFuncG><feFuncB type="table" tableValues="0.20 0.99"></feFuncB></feComponentTransfer>' +
+        '</filter>' +
+      '</svg>'
+    );
+    document.body.appendChild(svg);
+  }
+
+  /* ---- figures that count (Move 3): animate any [data-count] numeral up from
+     zero when its slide arrives. Opt-in per element; the element's authored text
+     is the exact final value (so "14,700+", "28.1M", ranges all render right).
+       data-count="14700"            target number
+       data-count-decimals="1"       fixed decimals during the roll (default 0)
+       data-count-prefix / -suffix   glued on each frame (e.g. "+", "M", "×")
+     Stilled entirely under prefers-reduced-motion. ----------------------------- */
+  var REDUCE = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function animateCounts(slide) {
+    if (!slide || typeof requestAnimationFrame !== "function") return;
+    // Hold the final value (no roll) when motion is unwanted or frames won't run:
+    // reduced-motion, the PDF export, or a hidden tab (rAF is paused there, so a
+    // rolling numeral would otherwise stick at 0).
+    var still = REDUCE || document.hidden || /[?&]print-pdf\b/.test(location.search);
+    slide.querySelectorAll("[data-count]").forEach(function (el) {
+      var target = parseFloat(el.getAttribute("data-count"));
+      if (isNaN(target)) return;
+      var dec = parseInt(el.getAttribute("data-count-decimals") || "0", 10) || 0;
+      var pre = el.getAttribute("data-count-prefix") || "";
+      var suf = el.getAttribute("data-count-suffix") || "";
+      var done = el.getAttribute("data-count-text");
+      if (done === null) { done = el.textContent; el.setAttribute("data-count-text", done); }
+      if (still) {
+        if (el._countRAF) { cancelAnimationFrame(el._countRAF); el._countRAF = null; }
+        if (el._countTO) { clearTimeout(el._countTO); el._countTO = null; }
+        el.textContent = done; return;
+      }
+      if (el._countRAF) return;   // a roll is already running — never reset it back to 0
+      var loc = document.documentElement.lang || "en";   // group digits in the deck's language
+      function fmt(v) { return pre + v.toLocaleString(loc, { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf; }
+      var dur = 900, t0 = null;
+      function tick(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        el.textContent = fmt(target * (1 - Math.pow(1 - p, 3)));   // ease-out-cubic
+        if (p < 1) el._countRAF = requestAnimationFrame(tick);
+        else { el.textContent = done; el._countRAF = null; if (el._countTO) { clearTimeout(el._countTO); el._countTO = null; } }
+      }
+      // Safety net: if frames stop arriving (tab hidden mid-roll), force the
+      // final value so a numeral can never be left reading 0. setTimeout still
+      // fires when rAF is throttled.
+      el._countTO = setTimeout(function () { if (el._countRAF) { cancelAnimationFrame(el._countRAF); el._countRAF = null; } el.textContent = done; }, dur + 600);
+      el.textContent = fmt(0);
+      el._countRAF = requestAnimationFrame(tick);
+    });
+  }
+
   /* ---- boot --------------------------------------------------------------- */
   /* Chrome that doesn't depend on slide content — safe to run before init. */
   function decorateChrome() {
     if (CFG.talkTitle && !document.title.trim()) document.title = CFG.talkTitle;
+    injectFilters();   // make url(#duo-green) / url(#duo-navy) available deck-wide
   }
 
   /* Per-slide decoration: fill every [data-contact] slot from DECK_CONFIG. */
@@ -436,6 +504,17 @@
       buildLightbox();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)
       update();
+      // If the tab hides mid-roll, rAF freezes; snap any counting numeral to its
+      // final value so none is ever left reading a partial count (or 0).
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden) return;
+        document.querySelectorAll("[data-count]").forEach(function (el) {
+          if (el._countRAF) { cancelAnimationFrame(el._countRAF); el._countRAF = null; }
+          if (el._countTO) { clearTimeout(el._countTO); el._countTO = null; }
+          var done = el.getAttribute("data-count-text");
+          if (done !== null) el.textContent = done;
+        });
+      });
       if (/[?&]check\b/.test(location.search)) enableOverflowCheck();
 
       // Defensive relayout: recompute the scale once the window and webfonts

@@ -28,25 +28,7 @@
     .reveal .liveshot-open { font-family: var(--font-mono); font-size: var(--fs-caption);
       font-weight: 600; white-space: nowrap; }
 
-    /* Semantic-search slide — a 3-step "how it works" pipeline (in the server section). */
-    .reveal .semflow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
-      align-items: stretch; gap: var(--space-sm); margin: var(--space-lg) 0; }
-    .reveal .semstep { display: flex; flex-direction: column; gap: 0.4em;
-      background: transparent; border: 1px solid var(--line); border-radius: var(--radius-md);
-      padding: var(--space-md) var(--space-lg); }
-    .reveal .semstep .step-n { font-family: var(--font-label); font-size: var(--fs-footer);
-      font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--navy); }
-    .reveal .semstep .step-h { font-family: var(--font-display); font-weight: 600;
-      font-size: 1.4rem; line-height: 1.08; color: var(--ink); }
-    .reveal .semstep p { margin: 0; font-size: var(--fs-caption); color: var(--ink-soft);
-      max-width: none; line-height: 1.4; }
-    .reveal .semstep .step-q { font-family: var(--font-display); font-style: italic;
-      font-size: var(--fs-small); color: var(--ink); }
-    .reveal .semstep .semvec { font-family: var(--font-mono); font-size: 0.78rem;
-      color: var(--brown-deep); background: var(--sunken); border: var(--hair);
-      border-radius: var(--radius-sm); padding: .2em .5em; align-self: flex-start; }
-    .reveal .semarrow { display: flex; align-items: center; justify-content: center;
-      color: var(--green); font-weight: 700; font-size: 1.7rem; }
+    /* (The 3-step semantic-search pipeline now uses the shared .flow component.) */
 
     /* Slide 14 — live-demo "saved runs". The two examples are vertical sub-slides
        (press ↓). Each shows a Claude share framed in browser chrome, displayed
@@ -61,7 +43,7 @@
     .reveal .demo-shot .site-frame-bar { flex: none; }
     .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
     .reveal .demo-shot-view img { display: block; width: auto; height: auto;
-      max-height: 360px; max-width: 100%; }
+      max-height: 336px; max-width: 100%; }
     .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
 
     /* Slide 13 — keep the repo URL in the scroll-hint as one unbroken, clickable link
@@ -75,6 +57,58 @@
     .reveal .mcp-uses { display: flex; flex-wrap: wrap; align-items: center;
       gap: 0.5em; margin: 0 0 var(--space-md); max-width: none; }
     .reveal .mcp-uses-sep { color: var(--green); font-weight: 700; padding: 0 0.1em; }
+
+    /* Slide — LIVE keyword-vs-meaning demo (offline; the deck performs its own
+       thesis). The two buttons set [data-mode] on .kvm, which swaps the panel. */
+    .reveal .kvm { margin-top: var(--space-sm); }
+    .reveal .kvm-query { display: flex; align-items: center; gap: var(--space-md);
+      border: 1.5px solid var(--line-strong); border-radius: var(--radius-md);
+      padding: 0.55em 0.9em; background: var(--paper); margin-bottom: var(--space-md); }
+    .reveal .kvm-query > svg { width: 1.3em; height: 1.3em; flex: none; color: var(--ink-faint); }
+    .reveal .kvm-q { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead); color: var(--ink); flex: 1 1 auto; min-width: 0; }
+    .reveal .kvm-toggle { display: flex; gap: 0.4em; flex: none; }
+    .reveal .kvm-btn { appearance: none; -webkit-appearance: none; cursor: pointer;
+      font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer); line-height: 1;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85em 1.1em; border-radius: var(--radius-sm);
+      background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line-strong); transition: all var(--dur) var(--ease); }
+    .reveal .kvm-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .reveal .kvm-btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+    .reveal .kvm[data-mode="keyword"] .kvm-btn[data-mode="keyword"],
+    .reveal .kvm[data-mode="meaning"] .kvm-btn[data-mode="meaning"] { background: var(--navy); color: var(--paper); border-color: var(--navy); }
+    .reveal .kvm-panel { display: none; }
+    .reveal .kvm[data-mode="keyword"] .kvm-keyword,
+    .reveal .kvm[data-mode="meaning"] .kvm-meaning { display: block; }
+    .reveal .kvm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; margin-bottom: 0.3em; }
+    .reveal .kvm-count { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); }
+    .reveal .kvm-count.poor { color: var(--ink-soft); }
+    .reveal .kvm-metric { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+    .reveal .kvm-rows { border-top: 3px solid var(--rule); }
+    .reveal .kvm-row { display: grid; grid-template-columns: 1fr auto 4rem; align-items: center; gap: var(--space-md);
+      padding: 0.36em 0; border-bottom: 1px solid var(--line); }
+    .reveal .kvm-title { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); min-width: 0; }
+    .reveal .kvm-title.rtl { direction: rtl; text-align: left; }
+    .reveal .kvm-tag { font-family: var(--font-label); font-weight: 700; font-size: 0.62rem; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--ink-soft); border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+      padding: 0.25em 0.6em; white-space: nowrap; }
+    .reveal .kvm-tag.cross { color: var(--brown-deep); border-color: color-mix(in oklch, var(--brown), white 50%); }
+    .reveal .kvm-score { font-family: var(--font-label); font-weight: 800; font-size: var(--fs-small); color: var(--navy);
+      text-align: right; font-variant-numeric: tabular-nums; }
+    .reveal .kvm-kwrow { padding: 0.42em 0; border-bottom: 1px solid var(--line); }
+    .reveal .kvm-excerpt { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); }
+    .reveal .kvm-src { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); color: var(--ink-faint); margin-top: 0.2em; }
+    .reveal .kvm-blind { border-top: 3px solid var(--brown); padding-top: 0.5em; margin-top: var(--space-md); }
+    .reveal .kvm-blind-label { display: block; font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer);
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--brown-deep); margin-bottom: 0.2em; }
+    .reveal .kvm-blind p { margin: 0; font-size: var(--fs-small); color: var(--ink-soft); max-width: none; }
+    .reveal .kvm-note { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-soft); margin: 0.7em 0 0; max-width: none; }
+    .reveal .kvm-illus { font-style: normal; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer);
+      letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); }
+
+    /* Tidy pass — let the cover and the conclusion sit at FULL scale (no mild
+       auto-fit shrink), and lift the SKILL.md panel clear of the footer. */
+    .reveal section.cover .subtitle { margin-bottom: var(--space-md); }
+    .reveal section.cover .slides-qr { margin-top: var(--space-sm); }
+    .reveal .scroll-panel { max-height: 23rem; }
   </style>
 </head>
 <body>
@@ -127,7 +161,7 @@
     <section data-toc="The collection">
       <p class="kicker">The Islam West Africa Collection (IWAC)</p>
       <h2 class="slide-title">An open archive, built by one historian</h2>
-      <div class="cols ratio-3-2">
+      <div class="cols">
         <div class="col">
           <p class="lead">Fifteen years of fieldwork and library work — Benin, Burkina Faso, Côte d'Ivoire, Togo — turned into an open-access collection.</p>
           <ul>
@@ -140,12 +174,12 @@
           <div class="panel">
             <div class="kicker">In numbers</div>
             <div class="stat-grid">
-              <div class="stat"><span class="stat-num">14,700+</span><span class="stat-label">documents</span></div>
-              <div class="stat"><span class="stat-num">28.1M</span><span class="stat-label">words</span></div>
-              <div class="stat"><span class="stat-num">68,122</span><span class="stat-label">pages</span></div>
-              <div class="stat"><span class="stat-num">13</span><span class="stat-label">document types</span></div>
-              <div class="stat"><span class="stat-num">9,315</span><span class="stat-label">audiovisual minutes</span></div>
-              <div class="stat"><span class="stat-num">864</span><span class="stat-label">references</span></div>
+              <div class="stat"><span class="stat-num" data-count="14700" data-count-suffix="+">14,700+</span><span class="stat-label">documents</span></div>
+              <div class="stat"><span class="stat-num" data-count="28.1" data-count-decimals="1" data-count-suffix="M">28.1M</span><span class="stat-label">words</span></div>
+              <div class="stat"><span class="stat-num" data-count="68122">68,122</span><span class="stat-label">pages</span></div>
+              <div class="stat"><span class="stat-num" data-count="13">13</span><span class="stat-label">document types</span></div>
+              <div class="stat"><span class="stat-num" data-count="9315">9,315</span><span class="stat-label">audiovisual minutes</span></div>
+              <div class="stat"><span class="stat-num" data-count="864">864</span><span class="stat-label">references</span></div>
             </div>
             <hr class="rule">
             <p class="small muted">Six countries · mostly French — also Arabic &amp; Hausa · open access since 2023</p>
@@ -340,23 +374,23 @@
     <section data-toc="Search by meaning">
       <p class="kicker navy">Inside the server · semantic search</p>
       <h2 class="slide-title">Search by meaning, not words</h2>
-      <div class="semflow">
-        <div class="semstep">
+      <div class="flow">
+        <div class="flow-step">
           <span class="step-n">1 · Ask</span>
           <span class="step-h">Your question</span>
           <p class="step-q">« Islam et laïcité au Burkina Faso »</p>
           <p>Plain language — and any language works.</p>
         </div>
-        <div class="semarrow" aria-hidden="true">→</div>
-        <div class="semstep">
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
           <span class="step-n">2 · Embed</span>
           <span class="step-h">Turned into coordinates</span>
           <p>An embedding model (Gemini) maps the text to <strong>768 numbers</strong> — one point in a space of meaning.</p>
-          <span class="semvec">laïcité → [0.07, -0.12, 0.93, …]</span>
+          <span class="step-vec">laïcité → [0.07, -0.12, 0.93, …]</span>
           <p>Every article was mapped the same way, in advance.</p>
         </div>
-        <div class="semarrow" aria-hidden="true">→</div>
-        <div class="semstep">
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
           <span class="step-n">3 · Match</span>
           <span class="step-h">Nearest points win</span>
           <p>Cosine similarity ranks all <strong>12,000+</strong> articles by how close they sit — closest in meaning, not in wording.</p>
@@ -367,6 +401,56 @@
         Finds the right articles even when they never say <em>« laïcité »</em> — secularism, Franco-Arabic schools, family-code debates. The one tool that runs a model live, just to turn your question into coordinates.
       </div>
       <aside class="notes">This is the one feature that goes past matching words. Keyword search asks which articles contain a string; semantic search asks which mean the same thing. Three steps. You ask in plain language — for example, Islam et laïcité au Burkina Faso — and in any language, because the embedding model is multilingual. That question becomes an embedding: Gemini, for now, maps it to about 768 numbers, a single point in a space of meaning. Every article was put through the same model in advance, so all twelve thousand already sit as points in that same space. The server then measures how close your question sits to each, and returns the nearest. So laïcité surfaces pieces on secularism, Franco-Arabic schools, family-code reform — about the idea even when the word never appears. One caveat: I said the server runs no AI at query time, and this is the exception, embedding your question once and nothing else. Now, how the skill decides which tool to reach for: that's the method.</aside>
+    </section>
+
+    <!-- ════════ 8c · LIVE KEYWORD-VS-MEANING DEMO (offline · the slide proves it) ═
+         Defaults to the keyword panel (the impoverished result + blind spot); the
+         presenter clicks "By meaning" to reveal the richer, cross-language set.
+         NOTE: the result rows are an ILLUSTRATIVE slice — swap in a real query from
+         the IWAC semantic-search tool before presenting. ═══════════════════════ -->
+    <section data-toc="Try it live">
+      <p class="kicker navy">Search the collection · offline demo</p>
+      <h2 class="slide-title">Keyword vs. meaning — in the slide itself</h2>
+      <div class="kvm" data-mode="keyword">
+        <div class="kvm-query">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+          <span class="kvm-q">laïcité au Burkina Faso</span>
+          <div class="kvm-toggle" role="group" aria-label="Search mode">
+            <button class="kvm-btn" data-mode="keyword" type="button">Keyword</button>
+            <button class="kvm-btn" data-mode="meaning" type="button">By meaning</button>
+          </div>
+        </div>
+
+        <!-- KEYWORD: 2 exact-string hits + the blind spot -->
+        <div class="kvm-panel kvm-keyword">
+          <div class="kvm-head"><span class="kvm-count poor">2 documents · exact-string match only</span></div>
+          <div class="kvm-rows">
+            <div class="kvm-kwrow"><span class="kvm-excerpt">« … le débat sur la <mark>laïcité</mark> au Burkina Faso … »</span><div class="kvm-src">L’Observateur Paalga · 1994</div></div>
+            <div class="kvm-kwrow"><span class="kvm-excerpt">« … la <mark>laïcité</mark> de l’État et les écoles … »</span><div class="kvm-src">Sidwaya · 2002</div></div>
+          </div>
+          <div class="kvm-blind">
+            <span class="kvm-blind-label">The blind spot</span>
+            <p>Dozens of articles are <em>about</em> secularism but never type the word — schooling, family-code debates, the Arabic press. Keyword search cannot see them. Click <strong>By meaning</strong>.</p>
+          </div>
+        </div>
+
+        <!-- MEANING: 7 ranked, across languages -->
+        <div class="kvm-panel kvm-meaning">
+          <div class="kvm-head">
+            <span class="kvm-count">7 documents · ranked by meaning · across languages</span>
+            <span class="kvm-metric">cosine similarity</span>
+          </div>
+          <div class="kvm-rows">
+            <div class="kvm-row"><span class="kvm-title">Écoles franco-arabes et le programme national</span><span class="kvm-tag">education · state</span><span class="kvm-score">0.89</span></div>
+            <div class="kvm-row"><span class="kvm-title">Le code de la famille relance la controverse</span><span class="kvm-tag">family law</span><span class="kvm-score">0.86</span></div>
+            <div class="kvm-row"><span class="kvm-title">L’État et les associations islamiques</span><span class="kvm-tag">religion · state</span><span class="kvm-score">0.84</span></div>
+            <div class="kvm-row"><span class="kvm-title rtl" lang="ar">النظام العلماني ودوره في التعليم</span><span class="kvm-tag cross">Arabic · cross-lang</span><span class="kvm-score">0.81</span></div>
+            <div class="kvm-row"><span class="kvm-title">Neutralité religieuse de l’administration publique</span><span class="kvm-tag">governance</span><span class="kvm-score">0.79</span></div>
+          </div>
+          <p class="kvm-note">None contain the word <em>laïcité</em> — all are about the idea, including the Arabic record keyword search would never reach. <span class="kvm-illus">· illustrative slice</span></p>
+        </div>
+      </div>
+      <aside class="notes">The talk argues meaning beats keywords — so let the slide prove it, live and offline. Start on Keyword: two exact hits, and a whole blind spot. Then click "By meaning": seven results, none of which contain the word, one of them in Arabic. The deck performing its own thesis. (These rows are an illustrative slice — I'll swap in a real query before the talk.)</aside>
     </section>
 
     <!-- ════════ 9 · FIVE-PHASE METHOD (numbered) ════════════════════════ -->
@@ -448,7 +532,7 @@
         <h2 class="slide-title">From a plain question to cited sources</h2>
         <div class="cols ratio-2-3">
           <div class="col">
-            <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
+            <img class="shot tall" src="assets/iwac-mcp-server.png" style="max-height:320px" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
             <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
           </div>
           <div class="col">
@@ -531,10 +615,9 @@
 
     <!-- ════════ 14 · CONCLUSION / CONTACT (HTML; flex-centred — reveal sets the
          present section to display:block, which would top-align this sparse slide) ═ -->
-    <section class="closing" data-footer="dark">
-      <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
+    <section class="closing balance" data-footer="dark">
         <h2>Conclusion</h2>
-        <p class="lead">A real opening for <strong>public access</strong> — not a panacea: it finds what you ask for, not the serendipity of the stacks.</p>
+        <p class="lead">A new way in for <strong>a wider public</strong> — but no replacement for archival research. It finds what you ask for, not what you weren’t looking for: the unexpected find that slow reading turns up.</p>
         <p><strong>Try it:</strong> connect Claude or ChatGPT to the collection — how-to on the <a href="https://islam.zmo.de/s/westafrica/page/ai-access">IWAC AI-access page</a>.</p>
         <p><strong>Next:</strong> a small open-source model on the server itself, answering on the website — no install, no account. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
         <div data-contact></div>
@@ -543,7 +626,6 @@
           <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
         </div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
-      </div>
       <aside class="notes">A few honest caveats to close. I'm not claiming the MCP server solves the problems I've raised; it raises others. And it's genuinely convincing — knowing this collection, I'm amazed by the answers, which is exactly the risk: that we take them for granted. There's a subtler loss too: in the archive the old way you get serendipity, the thing you weren't looking for, and this method gives you only what you ask for. So it's a promising avenue for public access, not a replacement for archival research. The answers are also only as good as the metadata underneath — the unglamorous work of cleaning, standardising and reconciling spellings is the real foundation. And the question the protocol can't settle: CARE asks what FAIR doesn't — not just who controls the data, but who benefits. A West African collection hosted at a German institute: for whom are we doing this? If you'd like to try it, there's now an AI-access page on the collection's own website with connection instructions for both Claude and ChatGPT — the server already runs as a hosted endpoint on the IWAC's domain. What's next: a small open-source model on that server, answering on the website itself, with no install and no account. Thank you.</aside>
     </section>
 
@@ -557,6 +639,17 @@
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>
 <script src="../../shared/deck.js"></script>
+
+<!-- Live keyword-vs-meaning demo: swap the visible result panel. Delegated so it
+     survives reveal's slide handling; self-contained (it never touches the engine). -->
+<script>
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest(".kvm-btn");
+    if (!btn) return;
+    var kvm = btn.closest(".kvm");
+    if (kvm) kvm.setAttribute("data-mode", btn.getAttribute("data-mode"));
+  });
+</script>
 
 </body>
 </html>

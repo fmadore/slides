@@ -3,152 +3,299 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Frédérick Madore — Talks &amp; Slides</title>
-  <meta name="description" content="Slides from talks by Frédérick Madore on Islam in West Africa, digital humanities, and the Islam West Africa Collection.">
+  <title>Slides — Frédérick Madore</title>
+  <meta name="description" content="Talk slides on Islam in West Africa, digital humanities, and the Islam West Africa Collection (IWAC).">
   <link rel="icon" href="shared/logo-africamultiple.png">
+  <link rel="stylesheet" href="shared/fonts/fonts.css">
   <style>
-    @import "shared/fonts/fonts.css";
-
+    /* ── BROADSHEET landing page — same system as the decks ───────────────── */
     :root {
-      --green:#009260; --navy:#00268a; --gold:#cca352; --sky:#44b8f2; --brown:#d57912; --amber:#f59c08;
-      --green-deep: color-mix(in oklch, var(--green), #0a1812 28%);
-      --navy-deep:  color-mix(in oklch, var(--navy), #05060f 22%);
-      --paper: oklch(0.974 0.013 88);
-      --panel: oklch(0.988 0.007 88);
-      --ink:   oklch(0.252 0.021 258);
-      --ink-soft: oklch(0.440 0.024 258);
-      --ink-faint: oklch(0.582 0.020 256);
-      --line:  oklch(0.884 0.014 86);
-      --serif: "EB Garamond","Iowan Old Style",Georgia,"Times New Roman",serif;
-      --sans:  "Libre Franklin",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-      --maxw: 60rem;
-      --ease: cubic-bezier(0.22,1,0.36,1);
+      --green:#009260; --navy:#00268a; --gold:#cca352; --brown:#d57912;
+      --green-deep: color-mix(in oklch, var(--green), #06140d 26%);
+      --green-field: color-mix(in oklch, var(--green), #04140d 14%);
+      --navy-field: color-mix(in oklch, var(--navy), #03081c 8%);
+      --paper: oklch(0.991 0.001 250);
+      --panel: oklch(0.972 0.002 250);
+      --line: oklch(0.872 0.005 250);
+      --line-strong: oklch(0.700 0.010 256);
+      --rule: oklch(0.165 0.014 258);
+      --ink: oklch(0.205 0.016 258);
+      --ink-bold: oklch(0.150 0.016 262);
+      --ink-soft: oklch(0.405 0.018 258);
+      --ink-faint: oklch(0.560 0.016 256);
+      --display: "Libre Franklin", system-ui, sans-serif;
+      --serif: "EB Garamond", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+      --track-label: 0.18em;
+      --maxw: 76rem;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
     * { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body {
       margin: 0; background: var(--paper); color: var(--ink);
-      font-family: var(--sans); line-height: 1.6;
-      font-feature-settings: "kern","liga"; -webkit-font-smoothing: antialiased;
+      font-family: var(--serif); font-size: 1.125rem; line-height: 1.5;
+      -webkit-font-smoothing: antialiased; font-feature-settings: "kern","liga";
     }
+    ::selection { background: color-mix(in oklch, var(--green), transparent 68%); }
     a { color: var(--green-deep); text-decoration: none; }
-    body { font-weight: 400; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1.4rem, 5vw, 4rem); }
 
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) clamp(1.4rem, 5vw, 3rem) 4rem; }
-
-    /* Masthead */
-    .masthead { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
-    .masthead .logo { height: 2.6rem; width: auto; margin-bottom: clamp(1.6rem, 4vw, 2.4rem); display: block; }
-    .eyebrow {
-      font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em;
-      font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 0.7rem;
+    /* ── Masthead ─────────────────────────────────────────────────────────── */
+    header.masthead { padding: clamp(3rem, 7vw, 6rem) 0 clamp(1.6rem, 3vw, 2.4rem); }
+    .masthead .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6em;
+      font-family: var(--display); font-weight: 700; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-soft);
+      margin: 0 0 1.4rem;
     }
-    h1 {
-      font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em;
-      font-size: clamp(2.6rem, 7vw, 4.2rem); line-height: 1.04; margin: 0 0 1rem; max-width: 16ch;
+    .masthead .eyebrow::before { content:""; width: 1.6em; height: 3px; background: var(--green); border-radius: 1px; }
+    .masthead h1 {
+      font-family: var(--display); font-weight: 800; letter-spacing: -0.035em;
+      font-size: clamp(3.4rem, 11vw, 8rem); line-height: 0.9; margin: 0;
+      color: var(--ink-bold); text-wrap: balance;
     }
-    .lead { font-size: clamp(1.05rem, 2.4vw, 1.3rem); color: var(--ink-soft); max-width: 46ch; margin: 0 0 1.6rem; }
-    .links { display: flex; flex-wrap: wrap; gap: 0.9rem 1.5rem; }
-    .links a { display: inline-flex; align-items: center; gap: 0.5em; color: var(--ink-soft); font-size: 0.95rem; font-weight: 500; transition: color 0.2s var(--ease); }
-    .links a:hover { color: var(--green-deep); }
-    .links a svg { width: 1.1em; height: 1.1em; }
-    .links a .ico { color: var(--green-deep); display: inline-flex; }
-
-    /* Talks list */
-    .talks-head { font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.82rem; color: var(--ink-soft); padding-bottom: 0.9rem; border-bottom: 2px solid var(--ink); margin-bottom: 0.5rem; }
-    .talk {
-      display: grid; grid-template-columns: 8.5rem 1fr auto; gap: 0.4rem 1.8rem; align-items: baseline;
-      padding: 1.5rem 0.4rem; border-bottom: 1px solid var(--line);
-      color: var(--ink); transition: background 0.2s var(--ease), padding-left 0.2s var(--ease);
+    .masthead .standfirst {
+      font-family: var(--serif); font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+      font-style: italic; color: var(--ink-soft); max-width: 44ch; margin: 1.4rem 0 0;
     }
-    .talk:hover { background: color-mix(in oklch, var(--green), var(--paper) 92%); padding-left: 1rem; }
-    .talk-date { font-family: var(--serif); font-variant-numeric: tabular-nums; color: var(--ink-soft); font-size: 0.98rem; padding-top: 0.35rem; }
-    .talk-event { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.74rem; color: var(--ink-soft); display: block; margin-bottom: 0.3rem; }
-    .talk-title { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 600; line-height: 1.15; color: var(--ink); display: block; }
-    .talk:hover .talk-title { color: var(--green-deep); }
-    .talk-desc { color: var(--ink-soft); font-size: 0.98rem; margin-top: 0.35rem; max-width: 52ch; }
-    .talk-arrow { color: var(--ink-faint); font-size: 1.4rem; align-self: center; transition: transform 0.2s var(--ease), color 0.2s var(--ease); }
-    .talk:hover .talk-arrow { transform: translateX(4px); color: var(--green-deep); }
+    .masthead .rule { height: 5px; background: var(--rule); margin: clamp(1.8rem,4vw,2.8rem) 0 0; border: 0; }
 
-    .foot { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: space-between; }
-    .foot a { color: var(--ink-soft); } .foot a:hover { color: var(--green-deep); }
+    /* ── Talks index ──────────────────────────────────────────────────────── */
+    main { padding-bottom: clamp(3rem, 6vw, 5rem); }
+    .index-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+      padding: 1.4rem 0 0; flex-wrap: wrap;
+    }
+    .index-head .label {
+      font-family: var(--display); font-weight: 700; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-bold);
+    }
+    .index-head .count {
+      font-family: var(--mono); font-size: 0.85rem; color: var(--ink-faint);
+      font-variant-numeric: tabular-nums;
+    }
+    ol.talks { list-style: none; margin: 0.4rem 0 0; padding: 0; counter-reset: talk; }
+    li.talk { counter-increment: talk; border-top: 1px solid var(--line); }
+    li.talk:first-child { border-top: 2px solid var(--rule); }
+    li.talk:last-child { border-bottom: 2px solid var(--rule); }
+    a.talk-row {
+      display: grid;
+      grid-template-columns: 4rem 1fr auto;
+      grid-template-areas:
+        ".    event  date"
+        "num  title  go"
+        ".    desc   .";
+      column-gap: clamp(1rem, 3vw, 2.4rem);
+      row-gap: 0.5rem;
+      align-items: baseline;
+      padding: clamp(1.4rem, 3vw, 2.2rem) 0;
+      color: inherit; position: relative;
+      transition: padding-left var(--dur,220ms) var(--ease);
+    }
+    a.talk-row::before {
+      grid-area: num; justify-self: start;
+      content: counter(talk, decimal-leading-zero);
+      font-family: var(--display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+      color: var(--green-deep); letter-spacing: -0.02em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .talk-event {
+      grid-area: event;
+      font-family: var(--display); font-weight: 700; font-size: 0.78rem;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-soft);
+      margin: 0;
+    }
+    .talk-title {
+      grid-area: title; min-width: 0;
+      font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
+      font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.02; color: var(--ink-bold);
+      margin: 0; text-wrap: balance;
+    }
+    .talk-desc {
+      grid-area: desc;
+      font-family: var(--serif); font-size: 1.1rem; color: var(--ink-soft);
+      margin: 0; max-width: 56ch;
+    }
+    .talk-date {
+      grid-area: date; justify-self: end;
+      font-family: var(--mono); font-size: 0.86rem; color: var(--ink-faint);
+      font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .talk-go {
+      grid-area: go; justify-self: end; align-self: baseline;
+      font-family: var(--display); font-weight: 700; font-size: 0.76rem;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--green-deep);
+      display: inline-flex; align-items: center; gap: 0.4em;
+      opacity: 0; transform: translateX(-4px); transition: all var(--dur,220ms) var(--ease);
+    }
+    a.talk-row:hover { padding-left: 1rem; }
+    a.talk-row:hover .talk-title { color: var(--green-deep); }
+    a.talk-row:hover .talk-go { opacity: 1; transform: none; }
+    a.talk-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 3px; }
 
-    @media (max-width: 600px) {
-      .talk { grid-template-columns: 1fr auto; }
-      .talk-date { grid-column: 1 / -1; order: -1; font-size: 0.85rem; padding-top: 0; }
+    /* empty state */
+    .empty {
+      border-top: 2px solid var(--rule); border-bottom: 2px solid var(--rule);
+      padding: 3rem 0; color: var(--ink-soft); font-style: italic;
+    }
+    .empty code { font-family: var(--mono); font-style: normal; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 3px; color: var(--green-deep); }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    footer.colophon {
+      background: var(--navy-field); color: var(--paper);
+      margin-top: clamp(2rem, 5vw, 4rem);
+    }
+    footer.colophon .wrap { padding-top: clamp(2.4rem,5vw,3.6rem); padding-bottom: clamp(2.4rem,5vw,3.6rem); }
+    footer.colophon .top-rule { height: 4px; background: var(--gold); margin-bottom: clamp(1.6rem,3vw,2.4rem); }
+    .colophon-grid { display: flex; flex-wrap: wrap; gap: 2rem 3rem; align-items: flex-start; justify-content: space-between; }
+    .colophon h2 {
+      font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem,3vw,2rem);
+      letter-spacing: -0.02em; margin: 0; color: var(--paper); max-width: 18ch;
+    }
+    .colophon p.sub { font-family: var(--serif); font-style: italic; color: color-mix(in oklch, var(--paper), transparent 28%); margin: 0.6rem 0 0; max-width: 38ch; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; }
+    .links a {
+      display: inline-flex; align-items: center; gap: 0.5em;
+      font-family: var(--display); font-weight: 500; font-size: 0.95rem;
+      color: color-mix(in oklch, var(--paper), transparent 18%);
+    }
+    .links a:hover { color: var(--paper); }
+    .links a svg { width: 1.05em; height: 1.05em; }
+    .links a .ico { color: var(--gold); display: inline-flex; }
+    .colophon .imprint {
+      display: flex; align-items: center; gap: 0.9rem; margin-top: clamp(1.6rem,3vw,2.2rem);
+      padding-top: 1.4rem; border-top: 1px solid color-mix(in oklch, var(--paper), transparent 80%);
+      font-family: var(--display); font-size: 0.8rem; letter-spacing: 0.04em;
+      color: color-mix(in oklch, var(--paper), transparent 42%);
+    }
+    .colophon .imprint img { height: 1.5rem; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
+
+    @media (max-width: 620px) {
+      a.talk-row {
+        grid-template-columns: 2.6rem 1fr;
+        grid-template-areas:
+          ".    event"
+          "num  title"
+          ".    desc"
+          ".    date";
+        row-gap: 0.4rem;
+      }
+      .talk-date { justify-self: start; }
+      .talk-go { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
 
-    <header class="masthead">
-      <img class="logo" src="shared/logo-africamultiple.png" alt="Africa Multiple — Cluster of Excellence">
-      <p class="eyebrow">Talks &amp; presentations</p>
-      <h1>Frédérick Madore</h1>
-      <p class="lead">Slides from talks on Islam in West Africa, digital humanities, and the Islam West Africa Collection (IWAC).</p>
-      <nav class="links" id="links"></nav>
-    </header>
+  <header class="masthead">
+    <div class="wrap">
+      <p class="eyebrow">Africa Multiple · Universität Bayreuth</p>
+      <h1>Slides</h1>
+      <p class="standfirst">Talks on Islam in West Africa, digital humanities, and the Islam West Africa Collection — built as offline reveal.js decks.</p>
+      <hr class="rule">
+    </div>
+  </header>
 
-    <main>
-      <p class="talks-head">Talks</p>
-      <div id="talks"></div>
-    </main>
+  <main>
+    <div class="wrap">
+      <div class="index-head">
+        <span class="label">The talks</span>
+        <span class="count" id="talk-count"></span>
+      </div>
+      <ol class="talks" id="talk-list"></ol>
+    </div>
+  </main>
 
-    <footer class="foot">
-      <span>Africa Multiple Cluster of Excellence · University of Bayreuth</span>
-      <span>Built with reveal.js · <a href="https://github.com/fmadore/slides">source</a></span>
-    </footer>
+  <footer class="colophon">
+    <div class="top-rule"></div>
+    <div class="wrap">
+      <div class="colophon-grid">
+        <div>
+          <h2>Frédérick Madore</h2>
+          <p class="sub">Africa Multiple Cluster of Excellence, University of Bayreuth.</p>
+        </div>
+        <nav class="links" id="links"></nav>
+      </div>
+      <div class="imprint">
+        <img src="shared/logo-africamultiple.png" alt="Africa Multiple — Cluster of Excellence">
+        <span>Africa Multiple Cluster of Excellence · reveal.js (MIT)</span>
+      </div>
+    </div>
+  </footer>
 
-  </div>
-
-  <!-- ============================================================
-       To add a talk: copy talks/_template → talks/<slug>, then add
-       one entry below (newest first). `slug` is the folder name.
-       ============================================================ -->
   <script>
-    const PROFILE = {
+    /* ─────────────────────────────────────────────────────────────────────────
+       TALKS — newest first. Add one entry per talk; `slug` is the folder under
+       talks/. Date format YYYY-MM-DD.
+       ───────────────────────────────────────────────────────────────────────── */
+    const TALKS = [
+      { date: "2026-07-01", event: "Reimagining the Archive · Rhodes University", title: "Reconfiguring the Archive",
+        desc: "Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA).", slug: "2026-07-01-rhodes-reconfiguring-archive" },
+      { date: "2026-06-30", event: "Rencontres des études africaines en France · Paris", title: "Humanités numériques, IA et études africaines",
+        desc: "Retour sur une note de synthèse collective (Hanovre, février 2026).", slug: "2026-06-30-paris-reaf-dh-ia-afrique" },
+      { date: "2026-06-29", event: "Digital History in/of Central Asia · FAU Erlangen-Nürnberg", title: "Islam's &ldquo;Peripheries&rdquo;",
+        desc: "Comparing two locked multilingual archives — West Africa and Central Asia — with AI-driven DH.", slug: "2026-06-29-erlangen-islam-peripheries" },
+      { date: "2026-06-15", event: "Digital Humanities &amp; History · C²DH, Luxembourg", title: "Beyond Keywords",
+        desc: "Opening the Islam West Africa Collection to AI on its own terms.", slug: "2026-06-15-luxembourg-beyond-keywords" },
+      { date: "2026-05-06", event: "German Society of Asia Studies · Berlin", title: "Dormant Digital Collections, AI Triage",
+        desc: "Lessons from the Islam West Africa Collection and beyond.", slug: "2026-05-06-dga-dormant-collections" },
+    ];
+
+    const LINKS = {
       github:  "https://github.com/fmadore",
       website: "https://www.frederickmadore.com/",
       orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/",
       email:   "frederick.madore@uni-bayreuth.de"
     };
 
-    const TALKS = [
-      {
-        date:  "2026-06-15",
-        event: "Eighth Conference on Digital Humanities and Digital History · C²DH, University of Luxembourg",
-        title: "Beyond Keywords: AI-Mediated Access to the Islam West Africa Collection through an MCP Server and Agent Skill",
-        slug:  "2026-06-15-luxembourg-beyond-keywords"
-      }
-    ];
-
     const ICON = {
       github:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
-      globe:'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M3 12h18M12 2.8c2.6 2.6 3.9 6.2 3.9 9.2s-1.3 6.6-3.9 9.2c-2.6-2.6-3.9-6.2-3.9-9.2S9.4 5.4 12 2.8z"/></svg>',
+      globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M3 12h18M12 2.8c2.6 2.6 3.9 6.2 3.9 9.2s-1.3 6.6-3.9 9.2c-2.6-2.6-3.9-6.2-3.9-9.2S9.4 5.4 12 2.8z"/></svg>',
       orcid:'<svg viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r="128" fill="#A6CE39"/><g fill="#fff"><path d="M86.3 186.2H70.9V79.1h15.4v107.1z"/><path d="M108.9 79.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.6-56.8 53.6h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7 0-21.5-13.7-39.7-43.7-39.7h-23.7v79.4z"/><circle cx="78.6" cy="56.8" r="10.1"/></g></svg>',
-      mail:'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.2"/><path d="M3 6.5l9 6 9-6"/></svg>'
+      linkedin:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>',
+      mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.2"/><path d="M3 6.5l9 6 9-6"/></svg>',
+      arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
     };
-    const tidy = u => u.replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
-    const fmtDate = iso => { const [y,m,d]=iso.split("-").map(Number); return new Date(Date.UTC(y,m-1,d)).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}); };
 
-    document.getElementById("links").innerHTML =
-      `<a href="${PROFILE.github}" target="_blank" rel="noopener"><span class="ico">${ICON.github}</span>${tidy(PROFILE.github)}</a>` +
-      `<a href="${PROFILE.website}" target="_blank" rel="noopener"><span class="ico">${ICON.globe}</span>${tidy(PROFILE.website)}</a>` +
-      `<a href="${PROFILE.orcid}" target="_blank" rel="noopener"><span class="ico">${ICON.orcid}</span>${tidy(PROFILE.orcid)}</a>` +
-      `<a href="mailto:${PROFILE.email}"><span class="ico">${ICON.mail}</span>${PROFILE.email}</a>`;
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    function fmtDate(iso) {
+      const [y,m,d] = iso.split("-").map(Number);
+      return `${String(d).padStart(2,"0")} ${MONTHS[m-1]} ${y}`;
+    }
 
-    document.getElementById("talks").innerHTML = TALKS
-      .slice().sort((a,b)=>b.date.localeCompare(a.date))
-      .map(t => `<a class="talk" href="talks/${t.slug}/">
-        <span class="talk-date">${fmtDate(t.date)}</span>
-        <span class="talk-body">
-          <span class="talk-event">${t.event}</span>
-          <span class="talk-title">${t.title}</span>
-          ${t.desc ? `<span class="talk-desc">${t.desc}</span>` : ""}
-        </span>
-        <span class="talk-arrow" aria-hidden="true">→</span>
-      </a>`).join("");
+    (function render() {
+      const list = document.getElementById("talk-list");
+      const count = document.getElementById("talk-count");
+      const sorted = [...TALKS].sort((a,b) => b.date.localeCompare(a.date));
+      count.textContent = sorted.length ? String(sorted.length).padStart(2,"0") + (sorted.length === 1 ? " talk" : " talks") : "";
+
+      if (!sorted.length) {
+        list.outerHTML = '<div class="empty">No talks published yet. Add an entry to the <code>TALKS</code> array in <code>index.html</code>, then copy <code>talks/_template</code> to start one.</div>';
+      } else {
+        list.innerHTML = sorted.map(t => `
+          <li class="talk">
+            <a class="talk-row" href="talks/${t.slug}/">
+              <p class="talk-event">${t.event || ""}</p>
+              <span class="talk-date">${fmtDate(t.date)}</span>
+              <h3 class="talk-title">${t.title}</h3>
+              <span class="talk-go">Open ${ICON.arrow}</span>
+              ${t.desc ? `<p class="talk-desc">${t.desc}</p>` : ""}
+            </a>
+          </li>`).join("");
+      }
+
+      const L = LINKS, rows = [];
+      const tidy = u => String(u||"").replace(/^https?:\/\//,"").replace(/^www\./,"").replace(/\/$/,"");
+      function row(href, ico, label) { rows.push(`<a href="${href}" target="_blank" rel="noopener"><span class="ico">${ico}</span><span>${label}</span></a>`); }
+      if (L.github)   row(L.github, ICON.github, tidy(L.github).replace(/^github\.com\//,""));
+      if (L.website)  row(L.website, ICON.globe, tidy(L.website));
+      if (L.orcid)    row(L.orcid, ICON.orcid, tidy(L.orcid).replace(/^orcid\.org\//,""));
+      if (L.linkedin) row(L.linkedin, ICON.linkedin, tidy(L.linkedin).replace(/^linkedin\.com\/in\//,""));
+      if (L.email)    row("mailto:"+L.email, ICON.mail, L.email);
+      document.getElementById("links").innerHTML = rows.join("");
+    })();
   </script>
 </body>
 </html>

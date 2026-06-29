@@ -42,6 +42,15 @@
      • Use the house classes from theme.css (:root is the source of truth):
        .kicker, .slide-title, .lead, .cols/.col/.col-head, .callout,
        .stat/.stat-grid, .panel, .chip, .figrow, .index-list, .metric …
+     • SIGNATURE COMPONENTS (the direction board): data charts (.barchart +
+       .bar-axis, .share-bars); the image system (.plate duotone photo, .chrome
+       app shot, .duotone utility); editorial marks (.dateline, p.dropcap,
+       .marginnote, .folio-ghost, .colophon); .flow process diagrams; and the
+       warm "critique" thread (.section.warm, .kicker/.callout/.col-head .warm).
+     • MOTION is automatic + restrained: heavy rules/markers draw in and chart
+       bars grow as a slide arrives; add data-count="14700" to a numeral and it
+       counts up (data-count-suffix / -prefix / -decimals to taste). All of it
+       is stilled under prefers-reduced-motion and in the PDF export.
      • THE LOOK ("Broadsheet"): news-gothic display (Libre Franklin, heavy) does
        the talking; the book serif (EB Garamond) is the quiet voice for prose
        and quotes. Colour is a flat structural FIELD + heavy rule, not a sprinkle
@@ -215,10 +224,10 @@
       <p class="kicker">The collection</p>
       <h2 class="slide-title">In figures</h2>
       <div class="stat-grid">
-        <div class="stat"><span class="stat-num">12,480</span><span class="stat-label">documents</span></div>
-        <div class="stat"><span class="stat-num">8</span><span class="stat-label">countries</span></div>
+        <div class="stat"><span class="stat-num" data-count="12480">12,480</span><span class="stat-label">documents</span></div>
+        <div class="stat"><span class="stat-num" data-count="8">8</span><span class="stat-label">countries</span></div>
         <div class="stat"><span class="stat-num">1953–2024</span><span class="stat-label">date range</span></div>
-        <div class="stat"><span class="stat-num">4</span><span class="stat-label">languages</span></div>
+        <div class="stat"><span class="stat-num" data-count="4">4</span><span class="stat-label">languages</span></div>
       </div>
       <div class="callout">
         <span class="callout-label">Note</span>
@@ -229,7 +238,7 @@
     <!-- ░░ BIG METRIC ░░ one oversized figure, centred (.metric) ░░ -->
     <section class="metric" data-toc="One number">
       <p class="kicker green">The headline figure</p>
-      <p class="metric-num">12,480</p>
+      <p class="metric-num" data-count="12480">12,480</p>
       <p class="metric-label">documents catalogued across eight countries — and the count climbs every month.</p>
     </section>
 
@@ -354,6 +363,115 @@ print(f"{len(hits)} documents")</code></pre>
       </div>
     </section>
 
+    <!-- ░░ DATA AS DESIGN ░░ native house charts: .barchart on a heavy baseline
+         (height per bar via --h) + .share-bars (width via --p). Values count up
+         with data-count; the bars grow in on slide entry. ░░ -->
+    <section data-toc="Data as design">
+      <p class="kicker">Make the data the design</p>
+      <h2 class="slide-title">A corpus has a shape — so draw it</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="chart">
+            <div class="chart-head">Documents by decade · 14,700 total</div>
+            <div class="barchart" role="img" aria-label="Documents per decade, rising from 180 in the 1950s to a peak of 4,070 in the 2010s.">
+              <div class="bar" style="--h:6%"><span class="bar-v" data-count="180">180</span></div>
+              <div class="bar" style="--h:16%"><span class="bar-v" data-count="640">640</span></div>
+              <div class="bar" style="--h:27%"><span class="bar-v" data-count="1080">1,080</span></div>
+              <div class="bar" style="--h:37%"><span class="bar-v" data-count="1520">1,520</span></div>
+              <div class="bar" style="--h:61%"><span class="bar-v" data-count="2480">2,480</span></div>
+              <div class="bar" style="--h:83%"><span class="bar-v" data-count="3360">3,360</span></div>
+              <div class="bar is-peak" style="--h:100%"><span class="bar-v" data-count="4070">4,070</span></div>
+              <div class="bar is-mute" style="--h:34%"><span class="bar-v" data-count="1370">1,370</span></div>
+            </div>
+            <div class="bar-axis"><span>’50s</span><span>’60s</span><span>’70s</span><span>’80s</span><span>’90s</span><span>’00s</span><span>’10s</span><span>’20s</span></div>
+            <p class="chart-src">Indicative distribution · Source: a line crediting the data.</p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="chart-head">Share by country</div>
+          <ul class="share-bars" style="gap: var(--space-xs)">
+            <li style="--p:31%"><div class="share-head"><span>Burkina Faso</span><b data-count="31" data-count-suffix="%">31%</b></div><div class="share-track"></div></li>
+            <li style="--p:27%"><div class="share-head"><span>Côte d’Ivoire</span><b data-count="27" data-count-suffix="%">27%</b></div><div class="share-track"></div></li>
+            <li style="--p:18%"><div class="share-head"><span>Bénin</span><b data-count="18" data-count-suffix="%">18%</b></div><div class="share-track"></div></li>
+            <li style="--p:16%"><div class="share-head"><span>Togo</span><b data-count="16" data-count-suffix="%">16%</b></div><div class="share-track"></div></li>
+            <li class="is-mute" style="--p:5%"><div class="share-head"><span>Niger</span><b data-count="5" data-count-suffix="%">5%</b></div><div class="share-track"></div></li>
+            <li class="is-mute" style="--p:3%"><div class="share-head"><span>Nigeria</span><b data-count="3" data-count-suffix="%">3%</b></div><div class="share-track"></div></li>
+          </ul>
+          <div class="marginnote"><span class="mn-label">In the margin</span>The thin bars <em>are</em> the bias disclosure — made visible.</div>
+        </div>
+      </div>
+      <aside class="notes">The one subject the system couldn't render used to be the data itself — which, for a talk about a corpus, is the whole talk. Now the chart is a house component, in the green/navy fields with a single heavy baseline.</aside>
+    </section>
+
+    <!-- ░░ ONE IMAGE TREATMENT ░░ two rules, never broken: documentary photos get
+         a .plate (green duotone + ruled Fig. caption); app shots get real .chrome.
+         The #duo-green filter is injected by deck.js — just add the classes. ░░ -->
+    <section data-toc="Image treatment">
+      <p class="kicker">One coherent image treatment</p>
+      <h2 class="slide-title">Two image types, one system</h2>
+      <div class="cols">
+        <figure class="plate">
+          <div class="plate-img" style="height:280px"><img src="assets/example-figure.png" alt="A documentary photograph, rendered as a green duotone plate."></div>
+          <figcaption><span class="fig-no">Fig. 1</span><span class="fig-cap">Documentary photos get a green duotone and a ruled plate caption — every one belongs.</span></figcaption>
+        </figure>
+        <div class="col">
+          <figure class="chrome">
+            <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-url">islam.zmo.de/s/westafrica</span></div>
+            <div class="chrome-view" style="height:280px"><img src="assets/example-site.png" style="height:100%" alt="An application screenshot, shown in true colour inside browser chrome."></div>
+          </figure>
+          <p class="small muted">App screenshots keep their true colour — but always inside the same chrome.</p>
+        </div>
+      </div>
+      <aside class="notes">Pick two rules and never break them. A deck of scavenged JPEGs then reads as one authored object.</aside>
+    </section>
+
+    <!-- ░░ EDITORIAL SIGNATURE ░░ the broadsheet, taken further: a .dateline
+         masthead, a p.dropcap versal, a .marginnote sidenote, and a faint
+         .folio-ghost anchoring the field. ░░ -->
+    <section data-toc="Editorial signature">
+      <div class="folio-ghost" aria-hidden="true">02</div>
+      <div class="dateline"><span class="dl-part">Part Two · The approach</span><span class="dl-meta">House masthead · running dateline</span></div>
+      <h2 class="slide-title no-rule">Plumbing, then intelligence</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="lead dropcap">The server gives any AI assistant structured, read-only access to the collection; the skill — a plain-text file — encodes how to use it <em>well</em>.</p>
+        </div>
+        <div class="col">
+          <div class="marginnote"><span class="mn-label">In the margin</span>The serif counter-voice becomes a true sidenote — a scholar’s marginalia, exactly where the eye expects it on a printed page.</div>
+        </div>
+      </div>
+      <aside class="notes">A versal opens the argument; a dateline runs the masthead; the serif voice becomes a true margin note; an oversized ghosted folio anchors the field. None of it is decoration — it's the newspaper logic the system already chose, made unmistakable.</aside>
+    </section>
+
+    <!-- ░░ FLOW DIAGRAM ░░ a process drawn, not bulleted: .flow with .flow-step
+         boxes and .flow-arrow connectors (takes any number of steps). ░░ -->
+    <section data-toc="A process">
+      <p class="kicker navy">Diagrams over lists</p>
+      <h2 class="slide-title">A process, drawn — not bulleted</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="step-n">1 · Ask</span><span class="step-h">Your question</span>
+          <p class="step-q">laïcité au Burkina Faso</p>
+          <p>Plain language — and any language works.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">2 · Embed</span><span class="step-h">Turned into coordinates</span>
+          <p>An embedding model maps the text to 768 numbers — one point in a space of meaning.</p>
+          <span class="step-vec">laïcité → [0.07, −0.12, …]</span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">3 · Match</span><span class="step-h">Nearest points win</span>
+          <p>Cosine similarity ranks every record by how close it sits — in meaning, not wording.</p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">Why it matters</span>
+        Finds the right records even when they never say the word — the diagram carries what a bullet list would bury.
+      </div>
+    </section>
+
     <!-- ░░ CLOSING / CONTACT ░░ -->
     <section class="closing balance" data-footer="dark">
       <p class="kicker">Thank you · Merci</p>
@@ -361,6 +479,12 @@ print(f"{len(hits)} documents")</code></pre>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
       <!-- Co-presented? Use the same <div class="byline authors">…</div> pattern as the cover, and delete the data-contact row below. -->
       <div data-contact></div>
+      <!-- Colophon — a printer's imprint to close on (label·value pairs on a rule). Delete to omit. -->
+      <div class="colophon">
+        <span class="col-item"><b>Type</b> EB Garamond &amp; Libre Franklin</span>
+        <span class="col-item"><b>Palette</b> Bayreuth green · navy · gold</span>
+        <span class="col-item"><b>Built with</b> reveal.js · fully offline</span>
+      </div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
       <div class="slides-qr corner">

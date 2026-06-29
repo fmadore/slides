@@ -245,9 +245,9 @@
           <div class="panel">
             <div class="kicker">A digital hoarder, in numbers</div>
             <div class="stat-grid">
-              <div class="stat"><span class="stat-num">30,000+</span><span class="stat-label">items collected (Zotero)</span></div>
-              <div class="stat"><span class="stat-num">~15,000</span><span class="stat-label">still unprocessed</span></div>
-              <div class="stat"><span class="stat-num">14,500+</span><span class="stat-label">open access (IWAC)</span></div>
+              <div class="stat"><span class="stat-num" data-count="30000" data-count-suffix="+">30,000+</span><span class="stat-label">items collected (Zotero)</span></div>
+              <div class="stat"><span class="stat-num" data-count="15000" data-count-prefix="~">~15,000</span><span class="stat-label">still unprocessed</span></div>
+              <div class="stat"><span class="stat-num" data-count="14500" data-count-suffix="+">14,500+</span><span class="stat-label">open access (IWAC)</span></div>
               <div class="stat"><span class="stat-num">1</span><span class="stat-label">historian, no team</span></div>
             </div>
           </div>
@@ -306,17 +306,14 @@
           <p class="small muted">Togo Presse, 31 July 1976.</p>
         </div>
         <div class="col">
-          <div class="extract">
-            <span class="extract-label">Extracted text · Ewé</span>
-            <div class="extract-scroll">
-              <p class="doc-head">MIAFE ŊUTIFAFAFIA EYADEMA KPE TA KPLE MƆSLEMTƆWO FE ƉEKAWƆWƆ DƆDZIKPƆHA LA</p>
-              <p>Mia nɔvi Mɔslem hamea ngɔnɔlawo se nya xɔasiwo tso Togo yeyea fofo nu</p>
-              <p>«Woayra amesiwo léa avu la, elabena woayɔwo be Mawuviwo»</p>
-              <p>Enye Togo yeyea fofo avafiawodzifia Gnassingbe Eyadema fe didi vevi be amesiame nanɔ dzidzɔ kple ŋutifafa me lle yefe Denyigba la katã dzi, Dzre, fuéle kple mamãwo manɔ amewo kple habɔbɔwo domo o. Eyaŋuti dukplɔla Eyadema anukwaretɔ la lɔna ɖɔɖɔɖowo wɔwɔ edziedzi le dukɔmeviwo dome ɖo.</p>
-              <p>Ete ŋu dze edzi be miafe tatɔ nutefewɔla la do go kple mia nɔvi Mɔslem Hame fe amegãwo nyitsɔ le RPT fea me hena wodome nyawo sese, […]</p>
-            </div>
-            <p class="ext-src">Printed Ewé, diacritics and all — read in a single pass. Scroll for the full extraction.</p>
+          <!-- The Ewé extraction is vendored in assets/ocr-ewe-togopresse.md and
+               loaded + highlighted at runtime by deck.js (data-skill-src), exactly
+               like the Luxembourg SKILL.md embed. Edit the text in that file. -->
+          <div class="col-head">Extracted text · Ewé</div>
+          <div class="scroll-panel" data-skill-src="assets/ocr-ewe-togopresse.md" style="max-height: 18rem;">
+            <pre><code class="language-markdown" style="font-size:1.05rem">Loading the extraction…</code></pre>
           </div>
+          <p class="scroll-hint">Printed Ewé, diacritics and all — scroll for the full extraction.</p>
         </div>
       </div>
       <aside class="notes">An example. This is Togo Presse, from 1976, in Ewé — printed, with the diacritics that trip up most OCR. The model read it in one pass, special characters and all — the full extraction is here, and you can scroll the whole column. I can't fully verify the Ewé myself, which is exactly the catch we'll come to in a moment. But as a first draft over a language with almost no digital tooling, this is a real opening.</aside>

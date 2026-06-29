@@ -51,6 +51,8 @@
   --green-wash:   color-mix(in oklch, var(--green), var(--paper) 90%);
   --navy-wash:    color-mix(in oklch, var(--navy),  var(--paper) 92%);
   --amber-wash:   color-mix(in oklch, var(--amber), var(--paper) 88%);
+  --warm-field:   color-mix(in oklch, var(--brown), #160b02 30%); /* the warm "stakes" field    */
+  --duo-ground:   #04140d;                                        /* duotone plate backing      */
 
   /* — Neutrals: a cool, crisp near-white; a cool near-black ink. High contrast. — */
   --paper:       oklch(0.991 0.001 250);   /* page / slide background       */
@@ -119,6 +121,7 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --dur: 220ms;
+  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw, bars grow, figures count */
 
   /* — Slide geometry — */
   --slide-pad-x: 4.8rem;
@@ -970,4 +973,231 @@
   .deck-runhead { display: none !important; }
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 2rem; padding: 0; }
+}
+
+/* =============================================================================
+   11. DATA AS DESIGN — native, on-brand charts        (direction-board · Move 1)
+   A corpus has a shape, so the system must be able to DRAW it: bars, a timeline,
+   a share breakdown — set in the green/navy fields with gothic labels, tabular
+   figures and a single heavy editorial baseline. Not a chart library; the
+   broadsheet's own type and rules, holding numbers.
+   ============================================================================= */
+/* A captioned chart block: gothic over-label, the plot, an italic source line. */
+.reveal .chart { margin: var(--space-md) 0; max-width: none; display: flex; flex-direction: column; }
+.reveal .chart-head {
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-md);
+}
+.reveal .chart-src { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-faint); margin: var(--space-sm) 0 0; }
+
+/* COLUMN CHART — a row of bars on a heavy baseline. Height per bar via --h (a %).
+   Bars grow up on slide entry; values can count up (data-count, see deck.js). */
+.reveal .barchart {
+  display: flex; align-items: flex-end; gap: var(--space-md);
+  height: var(--chart-h, 14rem); border-bottom: 3px solid var(--rule); margin: 0;
+}
+.reveal .barchart .bar {
+  flex: 1 1 0; min-width: 0; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+}
+.reveal .barchart .bar-v {
+  font-family: var(--font-label); font-weight: 800; font-size: var(--fs-caption);
+  color: var(--ink-faint); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 0.45em;
+}
+.reveal .barchart .bar::after {
+  content: ""; display: block; width: 100%; max-width: 3.4rem;
+  height: var(--h, 0%); background: var(--green); border-radius: 1px 1px 0 0;
+}
+.reveal .barchart .bar.is-peak .bar-v { color: var(--ink-bold); }
+.reveal .barchart .bar.is-peak::after { background: var(--green-field); }
+.reveal .barchart .bar.is-mute::after { opacity: 0.45; }
+.reveal .barchart.navy .bar::after { background: var(--navy); }
+.reveal .barchart.navy .bar.is-peak::after { background: var(--navy-field); }
+/* the x-axis tick labels — a matching flex row beneath the baseline */
+.reveal .bar-axis { display: flex; gap: var(--space-md); margin-top: 0.55em; max-width: none; list-style: none; padding: 0; }
+.reveal .bar-axis > * { flex: 1 1 0; text-align: center; margin: 0;
+  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.04em; color: var(--ink-faint); }
+.reveal .bar-axis > *::before { content: none; }   /* kill the generic ul/ol marker */
+
+/* SHARE BARS — horizontal breakdown. Width per row via --p (a %). Navy by default
+   (data's structural deep); .green tips it to the lead colour. Fills draw in. */
+.reveal .share-bars { list-style: none; margin: 0; padding: 0; max-width: none; display: flex; flex-direction: column; gap: var(--space-md); }
+.reveal .share-bars > li { margin: 0; padding: 0; }
+.reveal .share-bars > li::before { content: none; }
+.reveal .share-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); margin-bottom: 0.34em; }
+.reveal .share-head > span { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); }
+.reveal .share-head > b { font-family: var(--font-label); font-weight: 800; font-size: var(--fs-caption); color: var(--navy); font-variant-numeric: tabular-nums; }
+.reveal .share-track { height: 9px; background: var(--sunken); border-radius: 1px; overflow: hidden; }
+.reveal .share-track::before { content: ""; display: block; height: 100%; width: var(--p, 0%); background: var(--navy); }
+.reveal .share-bars.green .share-head > b { color: var(--green-deep); }
+.reveal .share-bars.green .share-track::before { background: var(--green); }
+.reveal .share-bars > li.is-mute .share-head > b { color: var(--ink-faint); }
+.reveal .share-bars > li.is-mute .share-track::before { opacity: 0.5; }
+
+/* =============================================================================
+   12. ONE IMAGE TREATMENT — duotone plates + browser chrome  (Move 2)
+   Two rules, never broken: documentary photographs get a green duotone behind a
+   ruled "plate" caption; live UI keeps its true colour but always inside real
+   browser chrome. A scavenged pile of JPEGs starts to read as one authored object.
+   The #duo-green / #duo-navy SVG filters are injected once by deck.js.
+   ============================================================================= */
+/* The duotone utility — drop on any deck img, or use the .plate figure below. */
+.reveal img.duotone, .reveal .duotone > img { filter: url(#duo-green); }
+.reveal img.duotone.navy, .reveal .duotone.navy > img { filter: url(#duo-navy); }
+
+/* PLATE — a documentary photo as a printed plate: duotone image on the ink
+   ground, a heavy ruled caption with a gothic "Fig." mark and serif gloss. */
+.reveal .plate { margin: 0; display: flex; flex-direction: column; min-height: 0; }
+.reveal .plate .plate-img { background: var(--duo-ground); border: 1px solid var(--line-strong); line-height: 0; overflow: hidden; }
+.reveal .plate .plate-img img { display: block; width: 100%; height: 100%; object-fit: cover; filter: url(#duo-green); border: 0; border-radius: 0; }
+.reveal .plate.navy .plate-img { background: var(--navy-deep); }
+.reveal .plate.navy .plate-img img { filter: url(#duo-navy); }
+.reveal .plate figcaption {
+  display: flex; gap: 0.7em; margin-top: 0.55em; padding-top: 0.5em;
+  border-top: 2px solid var(--rule); max-width: none; font-style: normal;
+}
+.reveal .plate .fig-no { flex: none; font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); }
+.reveal .plate.navy .fig-no { color: var(--navy); }
+.reveal .plate .fig-cap { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); line-height: 1.34; color: var(--ink-soft); }
+
+/* CHROME — an app/UI screenshot in real browser chrome, at its natural size
+   (the filling, flex-driven version is .site-frame; this drops into any column). */
+.reveal .chrome { margin: 0; border: 1px solid var(--line-strong); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-2); background: var(--paper); }
+.reveal .chrome-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.85rem;
+  background: var(--sunken); border-bottom: 1px solid var(--line); }
+.reveal .chrome-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
+  background: color-mix(in oklch, var(--ink-faint), var(--paper) 25%); }
+.reveal .chrome-url { margin-left: 0.4rem; font-family: var(--font-mono); font-size: var(--fs-footer);
+  color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reveal .chrome-open { margin-left: auto; flex: none; font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); }
+.reveal .chrome-view { line-height: 0; background: var(--paper); }
+.reveal .chrome-view img { display: block; width: 100%; height: auto; object-fit: cover; border: 0; border-radius: 0; }
+
+/* =============================================================================
+   13. PUSH THE BROADSHEET FURTHER — editorial signature      (Move 4)
+   Versal, margin note, dateline masthead, ghosted folio, colophon. Not
+   decoration — the newspaper logic the system already chose, taken all the way.
+   ============================================================================= */
+/* VERSAL / drop-cap — opens an argument. Green on paper, gold on the dark fields. */
+.reveal p.dropcap::first-letter {
+  float: left; font-family: var(--font-display); font-weight: 800; font-size: 3.4em;
+  line-height: 0.66; padding: 0.06em 0.14em 0 0; color: var(--green-deep);
+}
+.reveal p.dropcap.gold::first-letter,
+.reveal section.section p.dropcap::first-letter,
+.reveal section.closing p.dropcap::first-letter { color: var(--gold); }
+
+/* MARGIN NOTE — the serif counter-voice as true marginalia: a heavy rule, a
+   gothic label, an italic gloss. Sits in the narrow column of a ratio split. */
+.reveal .marginnote { border-top: 3px solid var(--rule); padding-top: 0.55em; max-width: 34ch;
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); line-height: 1.4; color: var(--ink-soft); }
+.reveal .marginnote .mn-label { display: block; font-family: var(--font-label); font-style: normal; font-weight: 800;
+  font-size: var(--fs-footer); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-bold); margin-bottom: 0.3em; }
+.reveal .marginnote.warm { border-top-color: var(--brown); }
+.reveal .marginnote.warm .mn-label { color: var(--brown-deep); }
+.reveal section.section .marginnote, .reveal section.closing .marginnote { border-top-color: var(--gold); color: color-mix(in oklch, var(--paper), transparent 20%); }
+.reveal section.section .marginnote .mn-label, .reveal section.closing .marginnote .mn-label { color: var(--gold-bright); }
+
+/* DATELINE — a masthead row: the part/strand on the left, the venue on the
+   right, on a heavy rule. Gothic small-caps; gold-keyed on dark fields. */
+.reveal .dateline { display: flex; justify-content: space-between; align-items: baseline; gap: 1em;
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker); text-transform: uppercase;
+  letter-spacing: 0.16em; color: var(--ink-faint); padding-bottom: 0.6em; margin: 0 0 var(--space-lg);
+  border-bottom: 3px solid var(--rule); max-width: none; }
+.reveal .dateline .dl-part { color: var(--green-deep); }
+.reveal .dateline .dl-meta { font-weight: 600; letter-spacing: 0.12em; }
+.reveal section.section .dateline, .reveal section.closing .dateline { border-bottom-color: var(--gold); color: color-mix(in oklch, var(--paper), transparent 38%); }
+.reveal section.section .dateline .dl-part, .reveal section.closing .dateline .dl-part { color: var(--gold-bright); }
+
+/* GHOSTED FOLIO — an oversized faint gothic number anchoring a field, like a
+   pressroom plate. :has() scopes the stacking fix to slides that use one. */
+/* Oversized but bounded: line-height 1 keeps the glyph inside its own box, and
+   the box is anchored within the canvas so it never inflates the slide's
+   scrollHeight (which would trip the ?check guard or split a PDF page). */
+.reveal .folio-ghost { position: absolute; right: var(--slide-pad-x); bottom: calc(var(--footer-h) + var(--space-md)); z-index: 0;
+  font-family: var(--font-display); font-weight: 800; font-size: 14rem; line-height: 1; letter-spacing: -0.04em;
+  color: color-mix(in oklch, var(--ink), transparent 94%); font-variant-numeric: tabular-nums; pointer-events: none; user-select: none; }
+.reveal section.section .folio-ghost, .reveal section.closing .folio-ghost { color: color-mix(in oklch, var(--paper), transparent 90%); }
+.reveal section:has(> .folio-ghost) > :not(.folio-ghost) { position: relative; z-index: 1; }
+
+/* COLOPHON — a printer's imprint to close on: label·value pairs on a rule. */
+.reveal .colophon { display: flex; flex-wrap: wrap; gap: 0.35em 1.6em; align-items: baseline; max-width: none;
+  border-top: 2px solid var(--rule); padding-top: var(--space-sm); margin-top: var(--space-md); }
+.reveal .colophon .col-item { display: inline-flex; align-items: baseline; gap: 0.5em;
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-soft); }
+.reveal .colophon .col-item b { font-family: var(--font-label); font-style: normal; font-weight: 800;
+  font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-bold); }
+.reveal section.closing .colophon { border-top-color: color-mix(in oklch, var(--paper), transparent 70%); }
+.reveal section.closing .colophon .col-item { color: color-mix(in oklch, var(--paper), transparent 30%); }
+.reveal section.closing .colophon .col-item b { color: color-mix(in oklch, var(--paper), transparent 8%); }
+
+/* =============================================================================
+   14. WIDEN THE PALETTE · DIAGRAMS OVER LISTS               (Move 6)
+   The brown/amber pole carries the critical "counter-thread" (the stakes, the
+   blind spot); and a process is better drawn than bulleted.
+   ============================================================================= */
+/* A warm section divider — for the critical "stakes" strand (use sparingly). */
+.reveal section.section.warm { background: var(--warm-field); }
+.reveal section.section.warm::before { background: var(--gold-bright); }
+/* A warm statement accent (the claim worth pausing on, in the critical key). */
+.reveal section.statement.warm .statement-body .accent { color: var(--brown-deep); }
+.reveal section.statement.warm.quote .statement-body::before { color: var(--brown); }
+/* gold/navy/warm chips, to round out the set */
+.reveal .chip.navy { border-color: var(--navy); color: var(--navy); }
+.reveal .chip.warm { border-color: var(--brown); color: var(--brown-deep); }
+
+/* FLOW — a process as a diagram: numbered steps joined by arrows. Generalises
+   the per-deck "semflow"; flex so it takes any number of steps. */
+.reveal .flow { display: flex; align-items: stretch; gap: var(--space-xs); margin: var(--space-lg) 0; max-width: none; }
+.reveal .flow-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0.4em;
+  border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
+.reveal .flow-step .step-n { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); }
+.reveal .flow-step .step-h { font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; line-height: 1.08; color: var(--ink); }
+.reveal .flow-step p { margin: 0; font-size: var(--fs-caption); line-height: 1.4; color: var(--ink-soft); max-width: none; }
+.reveal .flow-step .step-q { font-family: var(--font-display); font-style: italic; font-size: var(--fs-small); color: var(--ink); }
+.reveal .flow-step .step-vec { align-self: flex-start; font-family: var(--font-mono); font-size: 0.78rem;
+  color: var(--brown-deep); background: var(--sunken); border: var(--hair); border-radius: var(--radius-sm); padding: 0.2em 0.5em; }
+.reveal .flow-step ul { margin: 0; } .reveal .flow-step li { margin: 0 0 0.25em; }
+.reveal .flow-arrow { flex: none; align-self: center; display: flex; align-items: center;
+  color: var(--green); font-weight: 700; font-size: 1.7rem; }
+.reveal .flow.tight { gap: 0; } .reveal .flow.tight .flow-arrow { padding: 0 0.15em; }
+
+/* =============================================================================
+   15. MOTION SIGNATURE — rules that draw, bars that grow     (Move 3, CSS half)
+   One ink-on-paper idea, repeated and restrained: the heavy markers and rules
+   lay themselves down as a slide arrives; the chart fills rise from the
+   baseline. Numbers count up in deck.js. All of it stilled for print and for
+   prefers-reduced-motion (the global rule in §10 zeroes these durations).
+   ============================================================================= */
+@keyframes rule-draw { from { transform: scaleX(0); } }
+@keyframes grow-up   { from { height: 0; } }
+@keyframes grow-right{ from { width: 0; } }
+
+/* the signature green marker + kicker tick + gold plate-rule draw from the left */
+.reveal section.present .slide-title::before,
+.reveal section.present .kicker::before,
+.reveal section.section.present::before,
+.reveal section.closing.present::before {
+  transform-origin: left center; animation: rule-draw var(--draw) var(--ease) both;
+}
+/* chart fills rise / sweep in once their slide is present */
+.reveal section.present .barchart .bar::after { animation: grow-up var(--draw) var(--ease) both; }
+.reveal section.present .share-track::before { animation: grow-right var(--draw) var(--ease) both; }
+
+/* Opt-out hook for a deck or a single slide that wants the page to arrive still. */
+.reveal.no-draw section .slide-title::before,
+.reveal.no-draw section .kicker::before,
+.reveal .no-draw .slide-title::before,
+.reveal section.no-draw .barchart .bar::after,
+.reveal section.no-draw .share-track::before { animation: none !important; }
+
+/* Print: ink the new dark fields, and never hold a half-drawn rule on paper. */
+@media print {
+  .reveal section.section.warm { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .reveal section .slide-title::before, .reveal section .kicker::before,
+  .reveal section.section::before, .reveal section.closing::before,
+  .reveal .barchart .bar::after, .reveal .share-track::before { animation: none !important; }
 }
