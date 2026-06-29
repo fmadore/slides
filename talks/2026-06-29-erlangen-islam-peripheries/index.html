@@ -459,6 +459,26 @@
       <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
     </section>
 
+    <!-- ░░ 14b · INNOVATION 1 IN PRACTICE — READING PRINTED EWÉ (scan → text) ░░ -->
+    <section>
+      <p class="kicker">Innovation 1 · in practice</p>
+      <h2 class="slide-title">Reading printed Ewé</h2>
+      <div class="cols ratio-1-2">
+        <div class="col">
+          <img class="shot tall" src="assets/ocr-ewe-togopresse.jpg" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics">
+          <p class="small muted">Togo Presse, 31 July 1976.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">Extracted text · Ewé</div>
+          <div class="scroll-panel" data-skill-src="assets/ocr-ewe-togopresse.md" style="max-height: 18rem;">
+            <pre><code class="language-markdown" style="font-size:1.05rem">Loading the extraction…</code></pre>
+          </div>
+          <p class="scroll-hint">Printed Ewé, diacritics and all — scroll for the full extraction.</p>
+        </div>
+      </div>
+      <aside class="notes">A concrete result, from the West African side. This is Togo-Presse, 1976, printed in Ewé — a West African language with full diacritics and almost no digital tooling behind it, exactly the kind of source conventional OCR fails on. A multimodal model read the whole page in one pass, special characters and all; the full extraction is on the right, scrollable end to end. The same step is what would open the Cyrillic and Old Tatar of the Eisener materials on the Central Asian side. One honest caveat: I can't fully verify the Ewé myself, and these models can quietly tidy — or even invent — text, so we keep the original scan beside every output and treat this as a first draft, not a final reading. As an opening onto a language the tools have ignored, though, it is a real one.</aside>
+    </section>
+
     <!-- ░░ 15 · INNOVATION 2 — A RESEARCH CHATBOT / THE THIRD PATH (MCP) ░░ -->
     <section data-toc="A research chatbot">
       <p class="kicker">Innovation 2 / 3</p>
