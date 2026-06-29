@@ -70,6 +70,24 @@
     .reveal section.bichkek .news-card .meta a { color: var(--accent-ink); border-bottom: 1px solid var(--line-strong); }
     .reveal section.bichkek .news-card .meta a:hover { border-color: var(--accent); }
 
+    /* ░ "Studied in silos" (slide 7) ░ Below the two silo columns, a green
+       "bridge" band names the analytical concepts that run through BOTH fields —
+       the latent comparative ground the silos keep apart. The green rule is the
+       connective, comparative move (vs the black + brown rules over each silo). */
+    .reveal section.silos .cols { flex: 0 0 auto; }
+    .reveal section.silos .common-ground { margin-top: var(--space-xl); }
+    .reveal section.silos .cg-label { display: block; font-family: var(--font-label);
+      font-weight: 700; font-size: var(--fs-footer); text-transform: uppercase;
+      letter-spacing: var(--track-label); color: var(--green-deep);
+      padding-top: var(--space-sm); border-top: 3px solid var(--green); margin-bottom: var(--space-md); }
+    .reveal section.silos .cg-row { display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg); margin: 0; max-width: none; }
+    .reveal section.silos .cg-row > li { margin: 0; padding-left: var(--space-lg);
+      border-left: 1px solid var(--line-strong); font-family: var(--font-serif);
+      font-weight: 600; font-size: 1.7rem; line-height: 1.12; color: var(--ink-bold); }
+    .reveal section.silos .cg-row > li:first-child { padding-left: 0; border-left: none; }
+    .reveal section.silos .cg-row > li::before { content: none; }
+
     /* Live-site slides: reveal forces display:block on the present slide, which kills
        the .site-frame flex-grow (it collapses to 0 height). Restore the flex column so
        the framed iframe fills the space below the title. */
@@ -217,13 +235,13 @@
     <section class="bichkek" data-toc="Togo in Bishkek, 2026">
       <p class="kicker">In the news · April 2026</p>
       <h2 class="slide-title">Togo ↔ Kyrgyzstan, 2026</h2>
-      <p class="lead">A different kind of tie, in the present. In April 2026, Togo's president made the first-ever state visit to Kyrgyzstan — diplomacy and trade now, where the 1960s links were religious.</p>
+      <p class="lead">A different kind of tie in the present day. In April 2026, Togo's president made the first-ever state visit to Kyrgyzstan — diplomacy and trade now, where the 1960s links were religious.</p>
       <div class="news-row">
         <figure class="news-card">
           <img class="shot" src="assets/togo-bichkek-republicoftogo.webp" alt="Faure Gnassingbé, in an embroidered Kyrgyz robe, walks with Kyrgyz officials past traditional musicians during his April 2026 visit to Kyrgyzstan.">
           <span class="src">République Togolaise</span>
-          <span class="head">« Faure Gnassingbé à Bichkek »</span>
-          <span class="meta">First Togolese leader to visit Kyrgyzstan · April 2026 · <a href="https://www.republicoftogo.com/toutes-les-rubriques/diplomatie/faure-gnassingbe-a-bichkek" target="_blank" rel="noopener">republicoftogo.com ↗</a></span>
+          <span class="head">Faure Gnassingbé à Bichkek</span>
+          <span class="meta">First Togolese leader to visit Kyrgyzstan · 29 April 2026 · <a href="https://www.republicoftogo.com/toutes-les-rubriques/diplomatie/faure-gnassingbe-a-bichkek" target="_blank" rel="noopener">republicoftogo.com ↗</a></span>
         </figure>
         <figure class="news-card">
           <img class="shot" src="assets/togo-bichkek-akipress.webp" alt="Presidents Faure Gnassingbé of Togo and Sadyr Japarov of Kyrgyzstan at a formal signing ceremony in Bishkek, 29 April 2026.">
@@ -249,7 +267,7 @@
       <h2 class="slide-title">Vast archives, locked away</h2>
       <div class="stat-grid">
         <div class="stat"><span class="stat-num" data-count="16000" data-count-prefix="~">~16,000</span><span class="stat-label">documents</span></div>
-        <div class="stat"><span class="stat-num" data-count="10" data-count-suffix="+">10+</span><span class="stat-label">languages</span></div>
+        <div class="stat"><span class="stat-num" data-count="12" data-count-suffix="+">12+</span><span class="stat-label">languages</span></div>
         <div class="stat"><span class="stat-num">Partial</span><span class="stat-label">cataloguing</span></div>
       </div>
       <p class="small" style="margin-top: var(--space-sm)">
@@ -270,7 +288,7 @@
     </section>
 
     <!-- ░░ 7 · STUDIED IN SILOS ░░ -->
-    <section data-toc="Studied in silos">
+    <section class="silos" data-toc="Studied in silos">
       <p class="kicker">Rarely compared</p>
       <h2 class="slide-title">Studied in silos</h2>
       <div class="cols">
@@ -293,7 +311,16 @@
           </ul>
         </div>
       </div>
-      <aside class="notes">The second obstacle is scholarly, not technical. These two fields almost never talk. West African Islam, since the 1960s, is studied through public debate, the post-colonial nation, a Western-educated Muslim elite, and a rich francophone press and audiovisual record. Central Asian Islam is studied through imperial Russian and early Soviet governance, reformers pushing back, the rare materials of the Emirate of Bukhara. Different archives, different languages, different historiographies — and so the obvious comparative questions never get asked. Were Muslim publics being formed in similar ways under very different states? We can't know while the two literatures sit in separate rooms. Putting the sources on common ground is the precondition for asking.</aside>
+      <div class="common-ground">
+        <span class="cg-label">Common comparative ground</span>
+        <ul class="cg-row">
+          <li>Secularism</li>
+          <li>Modernity</li>
+          <li>Development</li>
+          <li>Islamic reformism</li>
+        </ul>
+      </div>
+      <aside class="notes">The second obstacle is scholarly, not technical. These two fields almost never talk. West African Islam, since the 1960s, is studied through public debate, the post-colonial nation, a Western-educated Muslim elite, and a rich francophone press. Central Asian Islam is studied through imperial Russian and early Soviet governance, local reformers, the rare materials of the Emirate of Bukhara. Different archives, different languages, different historiographies — so the obvious comparative questions never get asked. But look at the band along the bottom: the same big concepts run through both stories. Secularism — French laïcité in West Africa, Soviet atheism in Central Asia, and in both, Muslims defining themselves against a secular state. Modernity and development — rival colonial, Soviet, and post-colonial projects that Muslims had to live inside. And Islamic reformism — the Jadids in Central Asia, reformist currents in West Africa, each arguing over what a correct, modern Islam should be. These are the same questions, asked in two rooms that never compare notes. Putting the sources on common ground is what would finally let us ask them together — which is exactly what the methods in the next section are for.</aside>
     </section>
 
     <!-- ░░ 8 · TWO COLLECTIONS AT ZMO ░░ -->
@@ -302,17 +329,17 @@
       <h2 class="slide-title">Two multilingual digital collections</h2>
       <div class="cols" style="--cols:3">
         <div class="col">
-          <div class="col-head">Islam West Africa Collection (IWAC)</div>
+          <div class="col-head">Islam West Africa Collection<br>(IWAC)</div>
           <ul>
-            <li><strong>14,500+ items</strong> — newspapers, Islamic publications, photographs</li>
+            <li><strong>14,500+ items</strong> — newspapers, Islamic publications, audiovisual recordings, photographs</li>
             <li><strong>9,315 minutes</strong> of audio in Hausa</li>
             <li>6 countries, since the 1960s</li>
           </ul>
         </div>
         <div class="col">
-          <div class="col-head alt">Reinhard Eisener Collection</div>
+          <div class="col-head alt">Reinhard Eisener<br>Collection</div>
           <ul>
-            <li><strong>1,612 documents</strong> across 50 archival boxes</li>
+            <li><strong>1,619 documents</strong> across 50 archival boxes</li>
             <li>Bukhara (1917–30), Soviet governance, Tajik civil war (1992–97)</li>
             <li>8 languages incl. Turki; multiple scripts</li>
           </ul>
@@ -330,7 +357,7 @@
     <!-- ░░ 9 · IWAC — LIVE SITE (iframe) ░░ -->
     <section class="live-frame" data-toc="IWAC online">
       <p class="kicker">Open access · islam.zmo.de</p>
-      <h2 class="slide-title">The Islam West Africa Collection, live</h2>
+      <h2 class="slide-title">The Islam West Africa Collection</h2>
       <div class="site-frame">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -346,7 +373,7 @@
 
     <!-- ░░ 10 · THE EISENER COLLECTION — LIVE SITE (iframe) ░░ -->
     <section class="live-frame" data-toc="The Eisener estate">
-      <p class="kicker">A scholar's estate · not yet online</p>
+      <p class="kicker">A scholar's estate · access on request</p>
       <h2 class="slide-title">The Reinhard Eisener Collection</h2>
       <div class="site-frame">
         <div class="site-frame-bar">
