@@ -40,7 +40,9 @@
       display: flex; flex-direction: column; min-height: 0;
       border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: var(--shadow-2); background: var(--paper); }
-    .reveal .demo-shot .site-frame-bar { flex: none; }
+    /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
+       (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
+    .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
     .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
     .reveal .demo-shot-view img { display: block; width: auto; height: auto;
       max-height: 336px; max-width: 100%; }
