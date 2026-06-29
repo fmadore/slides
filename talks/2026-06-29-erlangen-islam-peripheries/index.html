@@ -88,6 +88,14 @@
     .reveal section.silos .cg-row > li:first-child { padding-left: 0; border-left: none; }
     .reveal section.silos .cg-row > li::before { content: none; }
 
+    /* "Structured data" (slide 13): the multimodal-LLM gloss is a caption to the
+       lead, so pull it tight underneath — keeps lead + gloss + bullets on-canvas. */
+    .reveal section[data-toc="Structured data"] .lead { margin-bottom: var(--space-xs); }
+
+    /* "Grounded answers" (slide 16): the status/roadmap callout carries a full repo URL,
+       so let it use the slide's full width (fewer lines) to stay on-canvas. */
+    .reveal section.grounded .callout { max-width: none; }
+
     /* Live-site slides: reveal forces display:block on the present slide, which kills
        the .site-frame flex-grow (it collapses to 0 height). Restore the flex column so
        the framed iframe fills the space below the title. */
@@ -119,13 +127,15 @@
       display: flex; flex-direction: column; min-height: 0;
       border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
       box-shadow: var(--shadow-2); background: var(--paper); }
-    .reveal .demo-shot .site-frame-bar { flex: none; }
+    /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
+       (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
+    .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
     .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
     .reveal .demo-shot-view img { display: block; width: auto; height: auto;
       max-height: 360px; max-width: 100%; }
     .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
-    /* Keep the share/repo URL in a scroll-hint as one unbroken, clickable link. */
-    .reveal .scroll-hint a { white-space: nowrap; }
+    /* Keep share/repo URLs unbroken (no ugly mid-string wrap) in scroll-hints + callouts. */
+    .reveal .scroll-hint a, .reveal .callout a { white-space: nowrap; }
     /* Demo intro: cap the Claude Desktop shot so the figure column never outgrows
        the text column — keeps the whole slide inside the auto-fit safe area (else it
        gets wrapped + scaled, which drifts it left of its neighbours). */
@@ -431,7 +441,7 @@
     <!-- ░░ 13 · RESEARCH QUESTION ░░ -->
     <section class="statement research-q balance" data-footer="light" data-toc="Research question">
       <p class="statement-body">How can AI-driven DH methods transform <span class="accent">access</span> to and <span class="accent">interpretation</span> of these collections — enabling new comparative methods for Islamic discourse across regions?</p>
-      <p class="attribution">The project's guiding question.</p>
+      <p class="attribution">The project's guiding question</p>
       <aside class="notes">Here is the question in full. Two verbs in it matter. Access — can we even get into these documents, read the text, search them, find what is there? And interpretation — once inside, can we ask analytical questions that cross the two regions, rather than treating each as a closed case? The phrase to hold onto is "comparative methods for Islamic discourse across regions." The point is not AI for its own sake; it is whether these tools let us pose a genuinely comparative history that the archives, in their raw state, simply do not permit. Three innovations follow.</aside>
     </section>
 
@@ -441,12 +451,13 @@
       <h2 class="slide-title">From raw documents to structured data</h2>
       <div class="figrow">
         <div class="col">
-          <p class="lead">AI turns scanned, multilingual pages into machine-readable data.</p>
+          <p class="lead">Multimodal LLMs turn scanned pages into structured data</p>
+          <p class="small muted">AI models that take in images and audio, not just text</p>
           <ul>
-            <li>Extracts text from scans — Hausa, Arabic, Cyrillic, Old Tatar</li>
-            <li>Handles complex layouts that defeat conventional tools</li>
-            <li>Transcribes audio recordings</li>
+            <li>Extracts text from scans and audio files — Hausa, Arabic, Cyrillic, Old Tatar</li>
+            <li>Now reads handwriting too — cursive letters and manuscripts, not just print</li>
             <li>Pulls out people, places, dates as structured fields</li>
+            <li>Opens DH methods — maps, networks, analysis at scale</li>
           </ul>
         </div>
         <div class="fig-frame">
@@ -456,7 +467,7 @@
           </figure>
         </div>
       </div>
-      <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, and the dense multi-column layout of a newspaper, like the one on the right. Modern AI models read these far better. They cope with Hausa, Arabic, Cyrillic, even Old Tatar; they follow a complicated page; they transcribe the Hausa audio; and, crucially, they do not just hand back a wall of text — they pull out the entities, the people, places, and dates, as structured fields we can query and link. That single step, from raw scan to structured record, is what turns a box of papers into something a computer can compare.</aside>
+      <aside class="notes">First innovation: getting the text out. Until recently, optical character recognition broke on exactly this material — non-Latin scripts, historical typefaces, the dense multi-column layout of a newspaper like the one on the right. Modern multimodal models — language models that also take in images and audio, not just text — read it far better: Hausa, Arabic, Cyrillic, even Old Tatar, following a complicated page in one pass. The bigger leap is handwriting. These models now read cursive and manuscript hands, not just clean print — and that matters enormously here, because so much of both archives is handwritten: the Bukhara manuscripts, the Osh holdings, archival letters that conventional OCR could never touch. They transcribe the Hausa audio too. And, crucially, they don't just hand back a wall of text — they pull out the entities, the people, places and dates, as structured fields we can query and link. Once the material is structured like that, the digital-humanities methods open up: mapping where events cluster, tracing who connects to whom, analysing patterns across thousands of documents at once. That single step, from raw scan to structured record, is what turns a box of papers into something we can actually compare across the two regions.</aside>
     </section>
 
     <!-- ░░ 14b · INNOVATION 1 IN PRACTICE — READING PRINTED EWÉ (scan → text) ░░ -->
@@ -479,28 +490,47 @@
       <aside class="notes">A concrete result, from the West African side. This is Togo-Presse, 1976, printed in Ewé — a West African language with full diacritics and almost no digital tooling behind it, exactly the kind of source conventional OCR fails on. A multimodal model read the whole page in one pass, special characters and all; the full extraction is on the right, scrollable end to end. The same step is what would open the Cyrillic and Old Tatar of the Eisener materials on the Central Asian side. One honest caveat: I can't fully verify the Ewé myself, and these models can quietly tidy — or even invent — text, so we keep the original scan beside every output and treat this as a first draft, not a final reading. As an opening onto a language the tools have ignored, though, it is a real one.</aside>
     </section>
 
-    <!-- ░░ 15 · INNOVATION 2 — A RESEARCH CHATBOT / THE THIRD PATH (MCP) ░░ -->
-    <section data-toc="A research chatbot">
+    <!-- ░░ 15 · INNOVATION 2 — AI-MEDIATED ACCESS: MCP SERVER + SKILL ░░ -->
+    <section data-toc="AI-mediated access">
       <p class="kicker">Innovation 2 / 3</p>
-      <h2 class="slide-title">Queried by AI, not surrendered to it</h2>
-      <div class="cols ratio-2-3">
+      <h2 class="slide-title">Two layers: a server and a skill</h2>
+      <div class="cols">
         <div class="col">
-          <img class="shot" src="assets/glam-e-lab.jpg" alt="GLAM-E Lab report by Michael Weinberg, June 2025 — ‘Are AI Bots Knocking Cultural Heritage Offline?’">
-          <p class="small muted"><strong>39 of 43</strong> heritage institutions hit by AI-bot traffic spikes (Weinberg, GLAM-E Lab, 2025); Wikimedia: <strong>65%</strong> of its costliest traffic is bots. <a href="https://www.glamelab.org/products/are-ai-bots-knocking-cultural-heritage-offline/" target="_blank" rel="noopener">Read it ↗</a></p>
+          <div class="col-head">MCP server · the plumbing</div>
+          <ul>
+            <li>A standardised, <strong>read-only</strong> interface any AI assistant can call — Claude, ChatGPT, or open-source</li>
+            <li>Both collections behind one door; the data stays on our servers</li>
+          </ul>
         </div>
         <div class="col">
-          <p class="lead">Not a choice between unrestricted scraping and a locked repository.</p>
+          <div class="col-head alt">AI skill · the intelligence</div>
           <ul>
-            <li>The default is <strong>extraction</strong> — bots crawl GLAMs, ignoring <code>robots.txt</code></li>
-            <li><strong>MCP, a middle layer</strong> — auditable, institution-controlled; the data stays put</li>
+            <li>A curator's method, written down — search strategies, transliteration variants</li>
+            <li>Bias and gaps disclosed in every answer</li>
           </ul>
-          <div class="callout warm">
-            <span class="callout-label">Yékú's paradox · 2026</span>
-            Un-digitised, an African archive is invisible to AI; digitised, it's exposed to scraping.
-          </div>
         </div>
       </div>
-      <aside class="notes">Second innovation: a way to ask — but it has to be built carefully, so let me start with why. Today the default way an AI meets a collection is extraction. A 2025 GLAM-E Lab survey found thirty-nine of forty-three heritage institutions hit by AI-bot traffic spikes that ignore robots.txt; Wikimedia reports sixty-five per cent of its costliest traffic is bots, not people. I've seen the same spike on the IWAC myself — thousands of hits a day, out of the US and China. Underfunded institutions and unpaid labour end up subsidising commercial AI: digital colonialism in its newest form. And Yékú names the trap precisely — leave an African archive un-digitised and it is invisible to the models; digitise it and you expose it to scraping, where an incomplete corpus risks becoming the single story. So the real question is not scrape-or-lock. The Model Context Protocol offers a third path: a middle layer in which the collection is queried by an AI without being handed over to it. The data stays on our servers; the institution decides what the model can see. It's concrete, auditable, and ours to control. Let me show you what that looks like.</aside>
+      <div class="callout navy">
+        <span class="callout-label">Model Context Protocol · an open standard</span>
+        Ask once, in plain language; the server searches both archives across eight languages — the same kind of connector that links an AI to Gmail, here pointed at a digital collection.
+      </div>
+      <aside class="notes">Second innovation: how a researcher actually reaches these collections. Not a bare chatbot — on its own that just invents things. The architecture has two layers. The first is an MCP server — the Model Context Protocol, an open standard from late 2024. It's the same kind of connector that lets an AI assistant into your Gmail or your GitHub, except here it's pointed at our archives: a standardised, read-only interface that any assistant — Claude, ChatGPT, or an open-source model — can call. Both collections sit behind that one door, and the data never leaves our servers. The second layer is where the real work lives: an AI skill, a curator's method written down in plain language — how to search this material, the transliteration variants that matter, Tabaski is Eid al-Adha, and the biases to disclose in every answer. The pay-off is the line in the box: you ask once, in plain language, and it searches both archives across all eight languages — you don't have to master any of them. One honest note: the server is live today for the West African collection; extending it to the Eisener materials, so a single question really spans both regions, is the plan, not yet done.</aside>
+    </section>
+
+    <!-- ░░ 15a · INNOVATION 2 — GROUNDED, EXPLORATORY, THE DELIVERABLE ░░ -->
+    <section class="grounded">
+      <p class="kicker">Innovation 2 · the potential</p>
+      <h2 class="slide-title">Grounded answers</h2>
+      <ul>
+        <li>Claims <strong>cited back to a record</strong> — grounding curbs the hallucinations a bare chatbot invents</li>
+        <li><strong>Exploratory</strong> — surfaces links across people, places and subjects the catalogue keeps apart</li>
+        <li><strong>Read-only and verifiable</strong> — every call a lookup; the data is never handed over</li>
+      </ul>
+      <div class="callout">
+        <span class="callout-label">Built — and where it's going</span>
+        The IWAC server already runs, open source: <a href="https://github.com/fmadore/iwac-mcp-server" target="_blank" rel="noopener">github.com/fmadore/iwac-mcp-server</a>. The goal: fold in the <strong>Eisener collection</strong>, then a public assistant on the project website, on an <strong>open-source model</strong>.
+      </div>
+      <aside class="notes">What that buys you, and where it goes. Three things. First, grounding: every claim the assistant makes is tied back to a specific record in the collection — which is exactly what a generic chatbot can't do, and it is what stops the model inventing plausible-looking sources. Second, it is exploratory, not just a lookup: because the records are linked, it can surface connections across people, places and subjects that a catalogue keeps in separate boxes — a way in for questions you didn't know to ask. Third, it is verifiable: every call is a read-only lookup, the data is never handed over, and you can always check the answer against the record. And this isn't vapourware: the IWAC server already runs, and it's open source — anyone can read it or connect to it on GitHub. The next step is to fold the Eisener collection in behind the same interface, so a single question really does reach both regions; and beyond that, to put a public conversational assistant on the project's own website, running an open-source model, with no install and no account. Let me show you the working prototype.</aside>
     </section>
 
     <!-- ░░ 15b · LIVE DEMO — THE IWAC MCP SERVER (intro + offline fallbacks) ░░ -->
@@ -513,16 +543,16 @@
         <div class="cols ratio-2-3">
           <div class="col">
             <img class="shot tall" src="assets/iwac-mcp-server.png" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools">
-            <p class="small muted">A Claude Desktop extension — read-only, ~22 tools, no API key for the core tools.</p>
+            <p class="small muted">A Claude Desktop extension — read-only, ~22 tools.</p>
           </div>
           <div class="col">
-            <p class="lead">One real question — the server runs the method live.</p>
+            <p class="lead">Question in natural language — the AI runs the tools</p>
             <ul>
               <li>Scopes the collection, then searches it in French</li>
               <li>Reads the strongest hits in full</li>
-              <li>Every claim linked back to its IWAC record</li>
+              <li>Claims linked back to its IWAC record</li>
             </ul>
-            <p class="small muted">Live for the IWAC (West Africa); the same door onto the Eisener estate is the goal.</p>
+            <p class="small muted">Live for the IWAC; the same door onto the Eisener estate is the goal.</p>
             <p class="scroll-hint">Two saved runs below — press ↓</p>
           </div>
         </div>
@@ -580,9 +610,9 @@
           <p class="lead">Designed to run anywhere, and to be checked by people.</p>
           <ul>
             <li>Open-source models by default; commercial AI only as fallback</li>
-            <li>Runs locally — no expensive infrastructure</li>
+            <li>Runs locally — but requires some infrastructure</li>
             <li>Human-in-the-loop: experts validate before anything enters the database</li>
-            <li>All code open access — reusable by scholars and archivists anywhere</li>
+            <li>All code open access — reuse and adapt the pipelines: <a href="https://github.com/fmadore/iwac-ai-pipelines" target="_blank" rel="noopener">fmadore/iwac-ai-pipelines ↗</a></li>
           </ul>
         </div>
         <div class="fig-frame">
@@ -592,12 +622,12 @@
           </figure>
         </div>
       </div>
-      <aside class="notes">Third innovation is really a set of principles, because how you build this matters as much as what it does. We use open-source models by default, and reach for a commercial system only where the local one genuinely falls short. It is designed to run locally, without expensive infrastructure — which is what makes it usable in Global South institutions, not only well-funded Northern ones. Nothing the AI produces enters the database unchecked: an expert validates it first. The screenshot shows our review interface, the AI-NER-Validator, where a specialist confirms or corrects the keywords the model extracted before they are committed. And all of the code is open access, written to be reused and adapted by other scholars and archivists. The aim is a method other people can pick up, not a black box only we can run.</aside>
+      <aside class="notes">Third innovation is really a set of principles, because how you build this matters as much as what it does. We use open-source models by default, and reach for a commercial system only where the local one genuinely falls short. It is designed to run locally, without expensive infrastructure — which is what makes it usable in Global South institutions, not only well-funded Northern ones. Nothing the AI produces enters the database unchecked: an expert validates it first. The screenshot shows our review interface, the AI-NER-Validator, where a specialist confirms or corrects the keywords the model extracted before they are committed. And all of the code is open access — the scripts and pipelines I have built for the IWAC are on GitHub, at iwac-ai-pipelines, for other scholars and archivists to reuse and adapt. The aim is a method other people can pick up, not a black box only we can run.</aside>
     </section>
 
     <!-- ░░ 17 · MANAGING RISK (table) ░░ -->
     <section class="risk" data-toc="Managing risk">
-      <p class="kicker">Honest about the downside</p>
+      <p class="kicker">Potential downsides</p>
       <h2 class="slide-title">Embracing and managing risk</h2>
       <table>
         <thead>
@@ -629,9 +659,9 @@
     <section data-toc="Sustainable networks">
       <p class="kicker">Where it leads</p>
       <h2 class="slide-title">Building sustainable networks</h2>
-      <p class="lead">A concluding workshop turns the tools into a lasting network.</p>
+      <p class="lead">A concluding workshop turns the tools into a lasting network</p>
       <ul>
-        <li>Scholars from West Africa and Central Asia, in one room</li>
+        <li>Bringing together scholars from West Africa and Central Asia</li>
         <li>Interdisciplinary: Islamic studies, history, anthropology, DH</li>
         <li>Hands-on training for researchers, archivists, heritage professionals</li>
         <li>Goal: South–South networks that outlast the project</li>
@@ -642,8 +672,8 @@
     <!-- ░░ 19 · CLOSING ░░ -->
     <section class="closing balance" data-footer="dark">
       <p class="kicker">Thank you</p>
-      <h2>Comparing the “peripheries.”</h2>
-      <p class="lead">AI-driven DH lets two locked archives speak to each other — and questions the centre they were measured against. <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener">islam.zmo.de</a></p>
+      <h2>Comparing the “peripheries”</h2>
+      <p class="lead">AI-driven DH lets two locked archives speak to each other and questions the centre they were measured against.</p>
       <div class="byline authors">
         <div class="author">
           <span class="name">Aksana Ismailbekova</span>

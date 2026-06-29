@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" font-family="'Libre Franklin',system-ui,sans-serif">
-  <rect width="1280" height="800" fill="#fbfbfc"/>
-  <rect x="10" y="10" width="1260" height="780" fill="#f1f2f4" stroke="#a6abb2" stroke-width="2" stroke-dasharray="9 7" rx="4"/>
-  <g transform="translate(640.0,240.0)" stroke="#828a93" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity="0.55"><rect x="-130" y="-91.0" width="260" height="182.0" rx="10.4"/><circle cx="-58.5" cy="-39.0" r="20.8" fill="#828a93" stroke="none"/><path d="M -130 71.5 L -39.0 -6.5 L 13.0 39.0 L 65.0 -19.5 L 130 71.5"/></g>
-  <text x="640.0" y="368" text-anchor="middle" fill="#009260" font-size="28" font-weight="700" letter-spacing="3">SCREENSHOT</text>
-  <text x="640.0" y="480" text-anchor="middle" fill="#5b616a" font-size="44" font-weight="600"><tspan x="640.0" dy="0">AI-NER-Validator — experts verify</tspan><tspan x="640.0" dy="55">AI-extracted keywords before entry</tspan></text>
-  <text x="640.0" y="778" text-anchor="middle" fill="#828a93" font-size="24" letter-spacing="1">assets/ner-validator.svg</text>
-</svg>
