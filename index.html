@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slides — Frédérick Madore</title>
-  <meta name="description" content="Talk slides on Islam in West Africa, digital humanities, and the Islam West Africa Collection (IWAC).">
+  <meta name="description" content="Talk slides on Islam in West Africa, digital humanities and artificial intelligence.">
   <link rel="icon" href="shared/logo-africamultiple.png">
   <link rel="stylesheet" href="shared/fonts/fonts.css">
   <style>
@@ -170,6 +170,10 @@
       color: color-mix(in oklch, var(--paper), transparent 42%);
     }
     .colophon .imprint img { height: 1.5rem; width: auto; filter: brightness(0) invert(1); opacity: 0.85; }
+    .colophon .imprint a { display: flex; transition: opacity var(--dur,220ms) var(--ease); }
+    .colophon .imprint a:hover img { opacity: 1; }
+    .colophon h2 a { color: inherit; text-decoration: none; }
+    .colophon h2 a:hover { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; }
 
     @media (max-width: 620px) {
       a.talk-row {
@@ -190,9 +194,9 @@
 
   <header class="masthead">
     <div class="wrap">
-      <p class="eyebrow">Africa Multiple · Universität Bayreuth</p>
+      <p class="eyebrow">Africa Multiple · University of Bayreuth</p>
       <h1>Slides</h1>
-      <p class="standfirst">Talks on Islam in West Africa, digital humanities, and the Islam West Africa Collection — built as offline reveal.js decks.</p>
+      <p class="standfirst">Talks on Islam in West Africa, digital humanities and artificial intelligence.</p>
       <hr class="rule">
     </div>
   </header>
@@ -212,13 +216,15 @@
     <div class="wrap">
       <div class="colophon-grid">
         <div>
-          <h2>Frédérick Madore</h2>
-          <p class="sub">Africa Multiple Cluster of Excellence, University of Bayreuth.</p>
+          <h2><a href="https://www.frederickmadore.com/" target="_blank" rel="noopener">Frédérick Madore, Ph.D.</a></h2>
+          <p class="sub">Data curator, Africa Multiple Cluster of Excellence, University of Bayreuth.</p>
         </div>
         <nav class="links" id="links"></nav>
       </div>
       <div class="imprint">
-        <img src="shared/logo-africamultiple.png" alt="Africa Multiple — Cluster of Excellence">
+        <a href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener">
+          <img src="shared/logo-africamultiple.png" alt="Africa Multiple — Cluster of Excellence">
+        </a>
         <span>Africa Multiple Cluster of Excellence · reveal.js (MIT)</span>
       </div>
     </div>
