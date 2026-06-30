@@ -72,6 +72,35 @@
     /* Africa Multiple cluster logo on the cluster slide (a wide ~4:1 lockup). */
     .reveal .cluster-logo { display: block; width: 100%; max-width: 300px; height: auto;
       margin: 0 0 var(--space-lg); }
+
+    /* "Enter AMIRA" hero — the spelled-out atlas name as a quiet italic subtitle
+       under the big gothic title, then a row of status / tech chips. */
+    .reveal .amira-full { font-family: var(--font-display); font-style: italic;
+      font-size: 1.65rem; line-height: 1.25; color: var(--ink-soft);
+      margin: 0 0 var(--space-md); max-width: 46ch; }
+    .reveal .amira-full strong { font-style: normal; font-weight: 600; color: var(--ink-bold); }
+    .reveal .chips { display: flex; flex-wrap: wrap; align-items: center;
+      gap: var(--space-sm); margin: var(--space-lg) 0 0; }
+
+    /* Live AMIRA embeds in the relational-views run — the item page plus the two
+       custom DRE visualisation modules. reveal forces display:block on the present
+       section, which collapses .site-frame's flex-fill, so each frame takes an
+       explicit height sized to its slide's vertical budget. map-embed is full-width;
+       the item- and network-embeds sit in a 3-2 column beside their explanation. */
+    .reveal .site-frame.item-embed { height: 470px; }
+    .reveal .site-frame.map-embed { height: 462px; }
+    .reveal .site-frame.network-embed { height: 430px; }
+
+    /* Fallback shown only if a custom DRE-embed module never reports a height
+       (offline / framing blocked) — a centred note over the blank viewport, so the
+       frame never reads as broken. The two viz iframes lazy-load when their slide
+       opens (a WebGL/canvas embed built off-screen initialises at zero size). */
+    .reveal .viz-fallback { position: absolute; inset: 0; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: var(--space-xs); text-align: center; padding: var(--space-lg); background: var(--sunken); }
+    .reveal .viz-fallback[hidden] { display: none; }
+    .reveal .viz-fallback p { margin: 0; font-family: var(--font-display); font-style: italic;
+      color: var(--ink-soft); font-size: var(--fs-small); }
   </style>
 </head>
 <body>
@@ -238,24 +267,28 @@
 
     <!-- ════════ 7 · AMIRA — the new platform ═══════════════════════════════ -->
     <section data-toc="The new platform">
-      <p class="kicker navy">Now live · replacing WissKI@UBT</p>
-      <h2 class="slide-title">Enter AMIRA</h2>
-      <p class="lead">The Cluster's new platform for exploring and visualising its research data, publications and outputs — built on Omeka S.</p>
+      <p class="kicker navy">The new platform · replacing WissKI@UBT</p>
+      <h2 class="slide-title">Enter <span class="accent-navy">AMIRA</span></h2>
+      <p class="amira-full">The <strong>A</strong>frica <strong>M</strong>ultiple <strong>I</strong>nteractive <strong>R</strong>esearch <strong>A</strong>tlas — the Cluster's new home for its research data, publications and outputs.</p>
       <div class="cols" style="--cols:3">
         <div class="col">
           <div class="col-head">Browse</div>
-          <p class="small">Research items, publications, podcasts, videos, people and organisations — through search, autocomplete and faceted filters.</p>
+          <p class="small">Items, people, projects, publications and media — with type-ahead autocomplete and faceted filters.</p>
         </div>
         <div class="col">
-          <div class="col-head">Visualise</div>
-          <p class="small">Charts, maps and network graphs: who works with whom, where projects sit, which themes cut across the collection.</p>
+          <div class="col-head alt">Visualise</div>
+          <p class="small">Maps, network graphs and charts across the whole collection — not one record at a time.</p>
         </div>
         <div class="col">
           <div class="col-head">Cross-linked</div>
-          <p class="small">Click any person, project, subject or location and land on its detail page.</p>
+          <p class="small">Every person, project, subject and place is its own page you can travel to.</p>
         </div>
       </div>
-      <p class="small muted">data.africamultiple.uni-bayreuth.de · replacing WissKI@UBT, phased out over the coming months.</p>
+      <p class="chips">
+        <span class="chip green">Now live</span>
+        <span class="chip navy">Built on Omeka S</span>
+        <span class="chip">data.africamultiple.uni-bayreuth.de</span>
+      </p>
       <aside class="notes">So, the new platform. The DRE recently launched AMIRA — the Africa Multiple Interactive Research Atlas — the cluster's new home for exploring and visualising its research data, publications and outputs. It runs on Omeka S, and it is replacing WissKI, which we'll phase out over the coming months. Three things it does. You can browse: research items, publications, podcasts, YouTube videos, people, organisations, with search, autocomplete and faceted filters. You can visualise: charts, maps and network graphs that show who works with whom, where projects sit on the map, and which themes cut across the collection. And everything is cross-linked: click a person, a project, a subject, a place, and you land on its own detail page, with its own web of connections. Let me just show you.</aside>
     </section>
 
@@ -298,63 +331,87 @@
       <aside class="notes">One idea drives the cluster's whole research agenda, and it shapes the atlas. The cluster works with three concepts: multiplicity, relationality, reflexivity. The middle one matters most today. Relationality says that a person, a project, a place, a publication is best understood through its relationships, not on its own — that entities are, in part, the product of the ties they sit in. Now, a catalogue runs on the opposite instinct: one record, one thing, described in isolation, filed away. So the design question for the atlas was easy to state and hard to do. Can the archive show the relationships, and not only the records? The next few slides are what that looks like in practice.</aside>
     </section>
 
-    <!-- ════════ 11 · CONNECTIONS, NOT RECORDS (KG + collaboration network) ═══ -->
+    <!-- ════════ 11 · A RECORD AS A JUNCTION — live AMIRA item (Ute Fendler) ═══ -->
     <section data-toc="From records to relations">
       <p class="kicker navy">Relationality, made visible</p>
       <h2 class="slide-title">Connections, not records</h2>
-      <p class="lead">Two views built on the links between entities, not the entities alone.</p>
-      <div class="cols">
+      <div class="cols ratio-3-2">
         <div class="col">
-          <figure class="shot-fig">
-            <div class="shot-todo">
-              <span class="todo-frame" aria-hidden="true">▢</span>
-              <span class="todo-label">Screenshot to add</span>
-              <p class="todo-desc">A per-item knowledge graph — one record and everything it links to</p>
-              <span class="todo-src">amira · any research item → “Knowledge graph”</span>
+          <figure class="site-frame item-embed">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">data.africamultiple.uni-bayreuth.de/s/amira/item/293</span>
+              <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/293" target="_blank" rel="noopener">Open record ↗</a>
             </div>
-            <figcaption>A record becomes a junction: authors, places, projects, institutions.</figcaption>
+            <div class="site-frame-view">
+              <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/item/293" title="AMIRA — Prof. Ute Fendler: a person record with its linked resources and knowledge graph" allowfullscreen allow="fullscreen"></iframe>
+            </div>
           </figure>
         </div>
         <div class="col">
-          <figure class="shot-fig">
-            <div class="shot-todo">
-              <span class="todo-frame" aria-hidden="true">▢</span>
-              <span class="todo-label">Screenshot to add</span>
-              <p class="todo-desc">A collaboration network — who works with whom, across projects</p>
-              <span class="todo-src">amira · Connections → “Collaboration network”</span>
-            </div>
-            <figcaption>People linked through shared projects and affiliations.</figcaption>
-          </figure>
+          <p>Open any record — here, <strong>Prof. Ute Fendler</strong> — and it stops being a dead end. It becomes a <span class="accent">junction</span> onto everything it touches.</p>
+          <div class="stat">
+            <span class="stat-num">71</span>
+            <span class="stat-label">linked resources on this one record</span>
+          </div>
+          <p class="small muted">Projects, publications, co-authors, places and subjects — each a page of its own. Scroll down and the record even draws its own <strong>knowledge graph</strong>: the same relationality, per item.</p>
         </div>
       </div>
-      <aside class="notes">Here's the first pair of views. On the left, a knowledge graph for a single item. Open any record — a publication, a project — and you see it sitting in a web: its authors, the places it's about, the projects it belongs to, the institutions behind it. The record stops being a dead end and becomes a junction you can travel through. On the right, a collaboration network: people linked through shared projects and affiliations, drawn across the whole cluster. You can pick out groups of researchers who keep appearing together, and the individuals who bridge otherwise separate clusters. Neither of these is visible in an ordinary catalogue, where you click through one record at a time and the connections stay implicit. The relationships were always in the data. These views just let you see them. [These two slots are screenshots I'll capture from the live atlas before the talk.]</aside>
+      <aside class="notes">This is what relationality looks like at the level of a single record. I've opened the page for Ute Fendler, a colleague in the cluster. In an ordinary catalogue this would be a dead end — a name, an affiliation, maybe a list. Here it's a junction. Seventy-one linked resources hang off this one record: the projects she leads and belongs to, her publications, her co-authors, the places and subjects her work touches — and every one of those is itself a page you can travel to. Scroll down and the page draws its own knowledge graph: the same record, rendered as a small web of relations. [Scroll the frame to show the linked resources, then the graph.] That is one record. The next two views do the same thing for the whole collection — and they're custom modules we built.</aside>
     </section>
 
-    <!-- ════════ 12 · DISCURSIVE COMMUNITIES (the hinge into the critique) ════ -->
+    <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
+    <section data-toc="Spatial exploration">
+      <p class="kicker">Custom Omeka S modules · built in-house</p>
+      <h2 class="slide-title">Spatial exploration</h2>
+      <p class="lead">One of the DRE visualisation modules I build — every <span class="accent">georeferenced place</span> in the collection, on one map you can pan, zoom and open.</p>
+      <figure class="site-frame map-embed">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">data.africamultiple.uni-bayreuth.de/s/amira/page/spatial-exploration</span>
+          <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/spatial-exploration" target="_blank" rel="noopener">Open the map ↗</a>
+        </div>
+        <div class="site-frame-view">
+          <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/spatial-exploration" title="Spatial exploration — every georeferenced place in the AMIRA collection, on an interactive map" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
+          <div class="viz-fallback" hidden>
+            <p>Live map — open it at</p>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/spatial-exploration" target="_blank" rel="noopener">data.africamultiple…/spatial-exploration ↗</a>
+          </div>
+        </div>
+      </figure>
+      <aside class="notes">A quick word on how these are built, because it's part of the point about who controls discovery. The visualisations aren't off-the-shelf — they're custom Omeka S modules I develop for the DRE, so we can show the data the way the cluster actually needs to see it, not the way a generic plugin assumes. This is the first: spatial exploration. Every place in the collection we've georeferenced shows up on the map; you can pan, zoom, and click through to whatever was made or studied there. It turns "where" into a way in. [Pan and zoom briefly; open a point or cluster.] Next, the same idea applied to themes.</aside>
+    </section>
+
+    <!-- ════════ 13 · DISCURSIVE COMMUNITIES — custom DRE module (entity network) ═ -->
     <section data-toc="Discursive communities">
-      <p class="kicker navy">Relationality, made visible</p>
+      <p class="kicker">Custom Omeka S modules · entity network</p>
       <h2 class="slide-title">Discursive communities</h2>
       <div class="cols ratio-3-2">
         <div class="col">
-          <figure class="shot-fig">
-            <div class="shot-todo tall">
-              <span class="todo-frame" aria-hidden="true">▢</span>
-              <span class="todo-label">Screenshot to add</span>
-              <p class="todo-desc">Subjects that co-occur across collections, clustered into communities</p>
-              <span class="todo-src">amira · Subjects → co-occurrence clusters</span>
+          <figure class="site-frame network-embed">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">data.africamultiple.uni-bayreuth.de/s/amira/page/networks</span>
+              <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">Open the network ↗</a>
             </div>
-            <figcaption>Themes that recur together — named by no single record.</figcaption>
+            <div class="site-frame-view">
+              <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/discursive-communities" title="Discursive communities — an entity network of subjects that co-occur across the AMIRA collection" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
+              <div class="viz-fallback" hidden>
+                <p>Live network — open it at</p>
+                <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">data.africamultiple…/networks ↗</a>
+              </div>
+            </div>
           </figure>
         </div>
         <div class="col">
-          <p>Clusters of subjects that keep appearing together — themes the collection holds in aggregate, not in any one item.</p>
+          <p>An entity network of <strong>subjects</strong>: terms that keep appearing together cluster into communities — themes the collection holds in aggregate, not in any one item.</p>
           <div class="callout warm">
             <span class="callout-label">The catch, already visible</span>
             These clusters are built from subject keywords. They are only ever as good as that description.
           </div>
         </div>
       </div>
-      <aside class="notes">The third view is the one I find most suggestive, and also the most fragile. We take the subject keywords attached to items, and we look at which ones co-occur — which subjects keep turning up together across the collections. Cluster those co-occurrences and you get what we call discursive communities: groupings of themes that no single catalogue record would ever announce on its own. It's a way of asking what a collection is about in aggregate, rather than what any one item happens to be tagged with. And here the catch is already in plain sight. This whole view is built from subject description — from keywords. If the keywords are thin, or skewed, or borrowed from a vocabulary that doesn't fit the material, then the communities it draws are thin and skewed in the same way. So the most ambitious relational view rests on the least reliable part of the metadata. That is the turn in the talk.</aside>
+      <aside class="notes">This last view is the one I find most suggestive, and also the most fragile. We take the subject keywords attached to items, and we look at which ones co-occur — which subjects keep turning up together across the collections. Cluster those co-occurrences and you get what we call discursive communities: groupings of themes that no single catalogue record would ever announce on its own. It's a way of asking what a collection is about in aggregate, rather than what any one item happens to be tagged with. And here the catch is already in plain sight. This whole view is built from subject description — from keywords. If the keywords are thin, or skewed, or borrowed from a vocabulary that doesn't fit the material, then the communities it draws are thin and skewed in the same way. So the most ambitious relational view rests on the least reliable part of the metadata. That is the turn in the talk.</aside>
     </section>
 
     <!-- ════════ 13 · THE TURN (statement) ══════════════════════════════════ -->
@@ -480,6 +537,43 @@
     } else { activate(); }
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
+})();
+</script>
+
+<!-- Custom DRE visualisation modules (spatial map + entity network): lazy-load each
+     embed only when its slide is shown — a WebGL/canvas viz built in a display:none
+     slide initialises at zero size and never paints. Each embed reports its height via
+     postMessage('dre-embed-height'); we use that purely as a liveness ping (NOT to
+     resize — the slide canvas is fixed at 1280×720). If none arrives within 7s
+     (offline / framing blocked), reveal the frame's .viz-fallback so it never reads
+     as a broken/blank frame. -->
+<script>
+(function(){
+  var frames = [].slice.call(document.querySelectorAll('iframe.js-viz-embed'));
+  if(!frames.length) return;
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.type!=='dre-embed-height') return;
+    frames.forEach(function(f){ if(f.contentWindow===e.source) f.__live=true; });
+  });
+  function activate(f){
+    if(f.__loaded || !f.getAttribute('data-src')) return;
+    f.__loaded=true;
+    f.src=f.getAttribute('data-src');
+    setTimeout(function(){
+      if(!f.__live){
+        var view=f.parentNode, fb=view&&view.querySelector('.viz-fallback');
+        if(fb) fb.hidden=false;
+      }
+    },7000);
+  }
+  function check(slide){
+    if(slide&&slide.querySelectorAll) [].forEach.call(slide.querySelectorAll('iframe.js-viz-embed'), activate);
+  }
+  if(window.Reveal&&Reveal.on){
+    Reveal.on('slidechanged',function(ev){ check(ev.currentSlide); });
+    Reveal.on('ready',function(ev){ check(ev.currentSlide); });
+    try{ if(Reveal.isReady&&Reveal.isReady()) check(Reveal.getCurrentSlide()); }catch(e){}
+  } else { frames.forEach(activate); }
 })();
 </script>
 
