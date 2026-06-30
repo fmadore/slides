@@ -860,6 +860,10 @@
 .reveal .site-frame-bar {
   flex: none; display: flex; align-items: center; gap: 0.5rem;
   padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
+  /* The bar must span the frame. If authored as a <figcaption>, it would otherwise
+     inherit `.reveal figcaption { max-width: 52ch }` and clamp to ~413px, truncating
+     the URL — so pin it open regardless of the element used. */
+  max-width: none;
 }
 .reveal .site-frame-bar .dot {
   width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
