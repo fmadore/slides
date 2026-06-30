@@ -15,6 +15,11 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
+    /* Byline job-title line — sits between the gothic name and the italic-serif
+       affiliation, in the quiet news-gothic "label" voice (matches the template). */
+    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+
     /* Slide 2 — a small framed strip of selected work (two book covers + the DH/AI hero).
        flex:0 0 auto + object-fit:contain stop the row from shrink-distorting the covers
        when the three together are wider than the column; uniform height reads as a shelf. */
@@ -156,6 +161,7 @@
       <p class="subtitle">Lessons from the Islam West Africa Collection and beyond</p>
       <div class="byline">
         <span class="name">Frédérick Madore</span>
+        <span class="role">Data Curator</span>
         <span class="affil">Africa Multiple Cluster of Excellence</span>
       </div>
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->

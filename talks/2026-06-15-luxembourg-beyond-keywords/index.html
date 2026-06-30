@@ -15,6 +15,11 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
+    /* Byline job-title line — sits between the gothic name and the italic-serif
+       affiliation, in the quiet news-gothic "label" voice (matches the template). */
+    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+
     /* Slide 3 — "A live look": a clean, robust framed screenshot. Replaces the
        browser-chrome .site-frame, whose absolutely-positioned viewport collapsed
        to 0 height here (so only the fake URL bar showed — read as a dead embed). */
@@ -147,6 +152,7 @@
       <p class="subtitle">AI-Mediated Access to the Islam West Africa Collection through an MCP Server and Agent Skill</p>
       <div class="byline">
         <span class="name">Frédérick Madore</span>
+        <span class="role">Data Curator</span>
         <span class="affil">Africa Multiple Cluster of Excellence</span>
       </div>
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
