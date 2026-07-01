@@ -64,10 +64,26 @@
     .reveal .site-frame.amira-embed,
     .reveal .site-frame.dre-search-embed { height: 558px; box-shadow: var(--shadow-2); overflow: hidden; }
 
-    /* First-phase WissKI screenshots — height-capped so the two differently shaped
-       captures sit in a row without overflowing the slide. */
-    .reveal .wisski-shot { display: block; width: auto; max-width: 100%; height: auto;
-      max-height: 300px; margin-inline: auto; }
+    /* First-phase WissKI slide — a compact two-column header (headline left, the
+       lead + definition moved into the top-right, filling what was dead space)
+       over a full-width figure row. The two captures have very different aspect
+       ratios: wisski-1 is a wide ~2:1 banner, wisski-2 nearly square. The row runs
+       a 5:3 grid so that at those column widths BOTH images fill their width at the
+       same height (~340px) — aligned, no floating side-gaps. reveal forces
+       display:block on the present slide, so nothing here relies on flex-fill. */
+    .reveal section.wisski-slide .wisski-head {
+      display: grid; grid-template-columns: 2fr 3fr; gap: var(--space-2xl);
+      align-items: start; margin-bottom: var(--space-md); }
+    .reveal section.wisski-slide .wisski-head-title .kicker { display: flex; }
+    .reveal section.wisski-slide .wisski-head .slide-title { margin-bottom: 0; max-width: 14ch; }
+    .reveal section.wisski-slide .wisski-head-note .lead { margin-bottom: var(--space-xs); max-width: 54ch; }
+    .reveal section.wisski-slide .wisski-head-note .small { margin-bottom: 0; max-width: 60ch; }
+    .reveal section.wisski-slide .wisski-figs {
+      display: grid; grid-template-columns: 5fr 3fr; gap: var(--space-xl); align-items: start;
+      max-width: 1180px; margin-inline: auto; }
+    .reveal section.wisski-slide .wisski-figs .shot-fig { min-width: 0; margin: 0; }
+    .reveal section.wisski-slide .wisski-figs img.shot {
+      display: block; width: 100%; height: auto; margin: 0; }
 
     /* Africa Multiple cluster logo on the cluster slide (a wide ~4:1 lockup). */
     .reveal .cluster-logo { display: block; width: 100%; max-width: 260px; height: auto;
@@ -176,7 +192,7 @@
       <div data-contact></div>
       <!-- TODO: add assets/qr-slides.png (QR to the deployed deck) and restore the
            .slides-qr block from talks/_template/index.html once the URL is live. -->
-      <aside class="notes">I'll open on what AMIRA is and who builds it — not on the title — then come to the argument. [advance]</aside>
+      <aside class="notes">Thank you to the conference organisers for inviting me. The title of my presentation is 'Reconfiguring the Archive: Relationality and Discovery in the Africa Multiple Interactive Research Atlas.</aside>
     </section>
 
     <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
@@ -233,7 +249,7 @@
           <p class="small muted">Shown in green on the map. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
         </div>
       </div>
-      <aside class="notes">As I mentioned in the last slide, the cluster is a network. There are five Africa Multiple Research Centres: Université Joseph Ki-Zerbo in Burkina Faso, the University of Bayreuth in Germany, Moi University in Kenya, the University of Lagos in Nigeria and Rhodes University in South Africa. These are represented by the green dots on the map. The cluster also has a privileged partner in Brazil and other partners around the world. The problem that my team is trying to solve is how to connect the research material from the five centres without hauling it all onto one server and overwriting what each centre has said about its own work.</aside>
+      <aside class="notes">There are five Africa Multiple Research Centres: Université Joseph Ki-Zerbo in Burkina Faso, the University of Bayreuth in Germany, Moi University in Kenya, the University of Lagos in Nigeria and Rhodes University in South Africa. These are represented by the green dots on the map. The cluster also has a privileged partner in Brazil and other partners around the world. My team and I are trying to solve the problem of how to connect the research material from the five centres.</aside>
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
@@ -251,7 +267,7 @@
           <p class="small">Text mining, NLP, network analysis, web scraping.</p>
         </div>
         <div class="col">
-          <div class="col-head">AI-assisted processing</div>
+          <div class="col-head">AI-assisted document processing</div>
           <p class="small">OCR, transcription, entity extraction, tagging — on local, open-source, GDPR-compliant models.</p>
         </div>
         <div class="col">
@@ -285,26 +301,28 @@
     </section>
 
     <!-- ════════ 6 · FIRST PHASE — WissKI ═══════════════════════════════════ -->
-    <section data-toc="First phase: WissKI">
-      <p class="kicker">The first phase</p>
-      <h2 class="slide-title">We began with WissKI</h2>
-      <p class="lead">A semantic research-data system built on <span class="accent-navy">knowledge graphs</span> — entities and their relations, tied to shared ontologies.</p>
-      <p class="small muted"><strong>WissKI</strong> — <em>Wissenschaftliche Kommunikationsinfrastruktur</em>, "scientific communication infrastructure".</p>
-      <div class="cols">
-        <div class="col">
-          <figure class="shot-fig">
-            <img class="shot wisski-shot" src="assets/wisski-1.png" alt="WissKI@UBT — searching and exploring the cluster's research data through a web interface.">
-            <figcaption>Searching and exploring research data across the centres.</figcaption>
-          </figure>
+    <section class="wisski-slide" data-toc="First phase: WissKI">
+      <div class="wisski-head">
+        <div class="wisski-head-title">
+          <p class="kicker">The first phase</p>
+          <h2 class="slide-title">We began with WissKI</h2>
         </div>
-        <div class="col">
-          <figure class="shot-fig">
-            <img class="shot wisski-shot" src="assets/wisski-2.png" alt="A WissKI knowledge graph — entities connected to each other and to shared ontologies through typed relations.">
-            <figcaption>Records as a knowledge graph: entities linked by typed relations.</figcaption>
-          </figure>
+        <div class="wisski-head-note">
+          <p class="lead">A semantic research-data system built on <span class="accent-navy">knowledge graphs</span> — entities and their relations, tied to shared ontologies.</p>
+          <p class="small muted"><strong>WissKI</strong> — <em>Wissenschaftliche Kommunikationsinfrastruktur</em>, "scientific communication infrastructure".</p>
         </div>
       </div>
-      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI. The aim was to enable the cluster's research data to be searched and explored across the centres, allowing you to find collaborators and see what was happening elsewhere. It was built on knowledge graphs, which represent things as entities and the typed relations between them — subject, relation, object — and tie those entities to shared ontologies and open data on the web. Knowledge graphs were a major focus for us in that phase. However, we were limited in various ways and wanted to develop a more user-friendly system for researchers.</aside>
+      <div class="wisski-figs">
+        <figure class="shot-fig">
+          <img class="shot" src="assets/wisski-1.png" alt="WissKI@UBT — searching and exploring the cluster's research data through a web interface.">
+          <figcaption>Searching and exploring research data across the centres.</figcaption>
+        </figure>
+        <figure class="shot-fig">
+          <img class="shot" src="assets/wisski-2.png" alt="A WissKI knowledge graph — entities connected to each other and to shared ontologies through typed relations.">
+          <figcaption>Records as a knowledge graph: entities linked by typed relations.</figcaption>
+        </figure>
+      </div>
+      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI. The aim was to enable the cluster's research data to be searched and explored. This system was built on knowledge graphs, which represent entities and the typed relations between them — subject, relation and object — tying those entities to shared ontologies and open data on the web. However, we were faced with various limitations and wanted to develop a more user-friendly system for researchers.</aside>
     </section>
 
     <!-- ════════ 7 · AMIRA — the new platform ═══════════════════════════════ -->
@@ -335,7 +353,7 @@
         <img src="assets/qr-amira.png" alt="QR code linking to the AMIRA website">
         <span class="qr-label"><b>Scan to explore AMIRA</b><span class="qr-url">data.africamultiple.uni-bayreuth.de</span></span>
       </div>
-      <aside class="notes">So, the new platform. The DRE recently launched AMIRA — the Africa Multiple Interactive Research Atlas — the cluster's new home for exploring and visualising its research data, publications and outputs. It runs on Omeka S. Three things it does. You can browse: research items, publications, podcasts, YouTube videos, people, organisations, with search, autocomplete and faceted filters. You can visualise: charts, maps and network graphs that show who works with whom, where projects sit on the map, and which themes cut across the collection. And everything is cross-linked: click a person, a project, a subject, a place, and you land on its own detail page, with its own web of connections.</aside>
+      <aside class="notes">The DRE has recently launched AMIRA (the Africa Multiple Interactive Research Atlas), which is the cluster's new platform for exploring and visualising its research data, publications, and outputs. Built using Omeka S, it allows you to browse research items, publications, podcasts, YouTube videos, people and organisations, and features search, autocomplete and faceted filters. You can also visualise charts, maps, and network graphs showing who works with whom, where projects are located, and which themes cut across the collection. Everything is cross-linked: click on a person, project, subject or place to land on its detail page with its web of connections.</aside>
     </section>
 
     <!-- ════════ 8 · A LIVE LOOK — AMIRA home page (live iframe) ═════════════ -->
@@ -369,7 +387,7 @@
         </div>
       </figure>
       <p class="small muted ilam-caption">An external collection from <strong>ILAM</strong> at Rhodes — its catalogue is described in AMIRA</p>
-      <aside class="notes">This is the International Library of African Music (ILAM), based right here at Rhodes University, and the foremost repository of African music on the continent. Although it is an external collection and the material stays with ILAM, its catalogue is described and discoverable inside AMIRA.</aside>
+      <aside class="notes">This is the International Library of African Music, based right here at Rhodes University, and the foremost repository of African music on the continent. Although it is an external collection and the material stays with ILAM, its catalogue is described and discoverable inside AMIRA.</aside>
     </section>
 
     <!-- ════════ 10 · SEARCH — Typesense facets/filters/autocomplete (live) ══ -->
