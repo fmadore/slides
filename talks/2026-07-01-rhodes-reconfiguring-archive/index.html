@@ -101,6 +101,11 @@
        explicit height sized to its slide's vertical budget. map-embed is full-width;
        the item- and network-embeds sit in a 3-2 column beside their explanation. */
     .reveal .site-frame.item-embed { height: 470px; }
+    /* "Connections, not records" — the right column is shorter than the tall item
+       frame, so open up the rhythm: centre it against the frame and space the
+       71-figure stat generously from the intro line and the detail line below it. */
+    .reveal section.record-slide .cols { align-items: center; }
+    .reveal section.record-slide .col > .stat { margin: var(--space-xl) 0; }
     .reveal .site-frame.map-embed { height: 462px; }
     .reveal .site-frame.network-embed { height: 430px; }
     /* ILAM slide — give the live frame the most height it can take: title on one
@@ -381,11 +386,11 @@
     <section class="statement balance" data-toc="Built on relationality" data-footer="light">
       <p class="statement-body">Here an entity is the sum of its <span class="accent">relationships</span>, rather than a standalone record.</p>
       <p class="attribution"><em>Relationality</em>, one of the cluster's three concepts, treats phenomena as formed through their relationships — and attends to the worlds those relationships leave <em>unmade or silenced</em>.</p>
-      <aside class="notes">A word on the concept behind the atlas. The cluster works with three concepts, held together: multiplicity, relationality and reflexivity. Today I lean on relationality. It says a phenomenon — a person, a project, a place, a publication — is formed in and through its relationships, not given in isolation; and, just as importantly, it attends to the relationships that are absent — the worlds a description leaves unmade or silenced. A catalogue runs on the opposite instinct: one record, one thing, filed on its own. So the design question was easy to state and hard to do. Can the archive show the relationships — and later, can it own up to the ones it fails to show? The next few slides are the first half; the critique after is the second.</aside>
+      <aside class="notes">Here, I focus on one of the cluster's three concepts: relationality. It proposes that a person, project or publication is formed through their relationships, and asks what those relationships leave out. So the question is whether the archive can demonstrate these relationships — and Omeka S, the platform AMIRA runs on, turns out to be genuinely helpful for showing those connections.</aside>
     </section>
 
     <!-- ════════ 11 · A RECORD AS A JUNCTION — live AMIRA item (Ute Fendler) ═══ -->
-    <section data-toc="From records to relations">
+    <section class="record-slide" data-toc="From records to relations">
       <p class="kicker navy">Relationality, made visible</p>
       <h2 class="slide-title">Connections, not records</h2>
       <div class="cols ratio-3-2">
@@ -402,15 +407,15 @@
           </figure>
         </div>
         <div class="col">
-          <p>Open any record — here, <strong>Prof. Ute Fendler</strong> — and it stops being a dead end. It becomes a <span class="accent">junction</span> onto everything it touches.</p>
+          <p>Open a record — here, <strong>Prof. Ute Fendler</strong> — and AMIRA lists every resource linked to it, each labelled with the <span class="accent">nature of the connection</span>.</p>
           <div class="stat">
             <span class="stat-num">71</span>
-            <span class="stat-label">linked resources on this one record</span>
+            <span class="stat-label">linked resources on this record</span>
           </div>
-          <p class="small muted">Projects, publications, co-authors, places and subjects — each a page of its own. Scroll down and the record even draws its own <strong>knowledge graph</strong>: the same relationality, per item.</p>
+          <p class="small muted">Projects, publications, co-authors, places and subjects — each its own page, and each link naming the relationship.</p>
         </div>
       </div>
-      <aside class="notes">This is what relationality looks like at the level of a single record. I've opened the page for Ute Fendler, a colleague in the cluster. In an ordinary catalogue this would be a dead end — a name, an affiliation, maybe a list. Here it's a junction. Seventy-one linked resources hang off this one record: the projects she leads and belongs to, her publications, her co-authors, the places and subjects her work touches — and every one of those is itself a page you can travel to. Scroll down and the page draws its own knowledge graph: the same record, rendered as a small web of relations. [Scroll the frame to show the linked resources, then the graph.] That is one record. The next two views do the same thing for the whole collection — and they're custom modules we built.</aside>
+      <aside class="notes">This is a single record — the page for Ute Fendler, a colleague in the cluster. Instead of a name and a flat list, it shows the resources linked to her and the nature of each connection: the projects she leads or belongs to, her publications, co-authors, places and subjects — seventy-one links in all, each a page you can open. Scroll down and the record also draws its own knowledge graph.</aside>
     </section>
 
     <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
