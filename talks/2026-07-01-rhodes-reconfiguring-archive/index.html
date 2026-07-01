@@ -103,7 +103,13 @@
     .reveal .site-frame.item-embed { height: 470px; }
     .reveal .site-frame.map-embed { height: 462px; }
     .reveal .site-frame.network-embed { height: 430px; }
-    .reveal .site-frame.ilam-embed { height: 432px; }
+    /* ILAM slide — give the live frame the most height it can take: title on one
+       line (drop the 22ch clamp) with a tighter margin, and a one-line full-width
+       caption. The frame is pinned to a fixed height (not flex-grow) so it fills
+       the reclaimed space while leaving a clear gap above the footer. */
+    .reveal .site-frame.ilam-embed { flex: 0 0 auto; height: 414px; }
+    .reveal section.ilam-slide .slide-title { max-width: none; margin-bottom: var(--space-md); }
+    .reveal section.ilam-slide .ilam-caption { margin-top: var(--space-sm); max-width: none; }
 
     /* Fallback shown only if a custom DRE-embed module never reports a height
        (offline / framing blocked) — a centred note over the blank viewport, so the
@@ -334,13 +340,13 @@
           <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" title="AMIRA — Africa Multiple Interactive Research Atlas (home page)" allowfullscreen allow="fullscreen"></iframe>
         </div>
       </figure>
-      <aside class="notes">And here it is, live — AMIRA's public home page, open to anyone at this one address. From here you can search, open a collection, follow any link into the data. [Demo briefly if the connection allows.] Everything I've described lives in here. And one of those collections comes from right here at Rhodes — let me show you.</aside>
+      <aside class="notes">This is AMIRA's public homepage. From here, you can search, open a collection or follow any link into the data. One of those collections comes from right here at Rhodes — let me show you.</aside>
     </section>
 
     <!-- ════════ 9 · A COLLECTION IN AMIRA — ILAM, from Rhodes (live page) ═════ -->
-    <section data-toc="ILAM · from Rhodes">
+    <section class="ilam-slide" data-toc="ILAM · from Rhodes">
       <p class="kicker navy">International Library of African Music (ILAM)</p>
-      <h2 class="slide-title">An archive from Rhodes, in AMIRA</h2>
+      <h2 class="slide-title">A collection from Rhodes, in AMIRA</h2>
       <figure class="site-frame ilam-embed">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -351,7 +357,7 @@
           <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" title="ILAM — International Library of African Music: an external collection in AMIRA, sourced from Rhodes University" allowfullscreen allow="fullscreen"></iframe>
         </div>
       </figure>
-      <p class="small muted">An external collection sourced from <strong>ILAM</strong> — Africa's foremost repository of music: ethnomusicological recordings, journals and photographic materials from across the continent.</p>
+      <p class="small muted ilam-caption">An external collection from <strong>ILAM</strong> at Rhodes — its catalogue is described in AMIRA</p>
       <aside class="notes">And here's something close to home. This is the International Library of African Music — ILAM — based right here at Rhodes, and the foremost repository of African music on the continent: ethnomusicological recordings, journals, photographs, built up over decades. It's an external collection — the material stays with ILAM — but its catalogue is now described and discoverable inside AMIRA, alongside everything else in the cluster. So your own archive sits in the same relational space I've been showing: searchable, linkable, visualisable. It felt right to show you your data on our platform. Now, how you actually find things across all of it — search.</aside>
     </section>
 
