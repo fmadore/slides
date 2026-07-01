@@ -11,3 +11,6 @@ __pycache__/
 # Editor
 .vscode/
 .idea/
+
+# Claude Code (local preview dev-server config, not shared)
+.claude/launch.json
