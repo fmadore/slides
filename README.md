@@ -1,11 +1,16 @@
 # Slides — Frédérick Madore
 
-Talk slides on Islam in West Africa, digital humanities, and the **Islam West Africa
-Collection (IWAC)**. Built as offline-capable [reveal.js](https://revealjs.com) decks with a
-shared **“Broadsheet”** theme using the Africa Multiple Cluster of Excellence logo and the
-University of Bayreuth colour palette.
+Conference talks, lectures and keynotes by **[Frédérick Madore](https://www.frederickmadore.com/)** —
+historian of Islam in West Africa and data curator at the [Africa Multiple Cluster of
+Excellence](https://www.africamultiple.uni-bayreuth.de/en/index.html), University of Bayreuth.
+The decks range across Islam in West Africa, digital humanities, artificial intelligence, and
+the **[Islam West Africa Collection (IWAC)](https://islam.zmo.de/s/westafrica/)**.
 
-**Live:** https://fmadore.github.io/slides/ — a custom subdomain is planned ([ROADMAP](ROADMAP.md)).
+Built as offline-capable [reveal.js](https://revealjs.com) decks on a shared **“Broadsheet”**
+theme, using the Africa Multiple Cluster of Excellence logo and the University of Bayreuth
+colour palette.
+
+**Live: <https://slides.frederickmadore.com/>**
 
 ---
 
@@ -30,8 +35,8 @@ A bold scholarly broadsheet, not a slide template. Three rules carry the whole s
 **Signature device:** a heavy green marker bar sits above every standard slide title
 (add `.no-rule` to drop it). Section numbers and metrics run oversized.
 
-The previous serif-led *editorial-archive* theme is preserved at
-`shared/theme-editorial-archive.css.bak` if you ever want to compare or revert.
+The full design brief and rationale — including the earlier serif-led *editorial-archive*
+iteration this theme grew out of — live in [`.impeccable.md`](.impeccable.md).
 
 ---
 
@@ -39,24 +44,27 @@ The previous serif-led *editorial-archive* theme is preserved at
 
 ```
 slides/
-├── index.html        ← landing page (lists talks — edit the TALKS array)
-├── shared/           ← the reusable ENGINE, one copy for every talk
-│   ├── theme.css  deck.js
-│   ├── logo-africamultiple.png  logo-bayreuth.webp
-│   ├── fonts/        self-hosted EB Garamond + Libre Franklin (offline)
-│   └── reveal/       vendored reveal.js v6 + plugins (offline)
+├── index.html            ← landing page (lists talks — edit the TALKS array)
+├── shared/               ← the reusable ENGINE, one copy shared by every talk
+│   ├── theme.css deck.js     the “Broadsheet” theme + nav / chrome / TOC script
+│   ├── logo-*.{png,webp,svg} Africa Multiple, Bayreuth, KCL marks
+│   ├── fonts/                self-hosted EB Garamond + Libre Franklin (offline)
+│   └── reveal/               vendored reveal.js v6 + plugins (offline)
 ├── talks/
-│   ├── _template/    ← copy this to start a new talk
-│   └── 2026-06-15-luxembourg-beyond-keywords/
-│       ├── index.html        (slides + config; points to ../../shared)
-│       └── assets/           (this talk's images / embedded files)
-├── serve-deck.py     ← no-cache dev server (serves the whole repo)
-├── .nojekyll  CNAME  README.md
+│   ├── _template/            ← copy this to start a new talk
+│   └── YYYY-MM-DD-place-title/
+│       ├── index.html            (slides + DECK_CONFIG; points to ../../shared)
+│       └── assets/               (this talk's images / embedded files)
+├── tools/                    strip-notes.py · fetch-highlight.py (build helpers)
+├── serve-deck.py             ← no-cache dev server (serves the whole repo)
+├── .github/workflows/        pages.yml — deploy to GitHub Pages (notes stripped)
+└── .nojekyll  CNAME  .impeccable.md  README.md
 ```
 
 Each talk references the one shared engine via `../../shared/…`, so a fix to `theme.css`
-or `deck.js` updates **every** talk. Paths are relative, so the site works both at
-`slides.frederickmadore.com` and at `fmadore.github.io/slides/`.
+or `deck.js` updates **every** talk. All paths are relative, so the site works whether it is
+served from the custom domain or a subpath — `fmadore.github.io/slides/` still resolves and
+redirects to `slides.frederickmadore.com`.
 
 ---
 
@@ -188,7 +196,7 @@ on every push to `main` it builds a copy of the site with **speaker notes stripp
 (`tools/strip-notes.py` removes `<aside class="notes">` blocks) and
 publishes that — so the live site never exposes notes via the `S` speaker view or
 view-source. Your repo keeps the notes; only the deployed copy is stripped. Live at
-**https://fmadore.github.io/slides/**.
+**<https://slides.frederickmadore.com/>**.
 
 > **One-time setup:** repo *Settings → Pages → Build and deployment → Source* must be set to
 > **GitHub Actions** (not "Deploy from a branch"), or the workflow won't publish.
@@ -201,8 +209,9 @@ python3 tools/strip-notes.py _site && (cd _site && python -m http.server 8000)
 # then open http://localhost:8000/  — speaker notes (S) should be gone
 ```
 
-A custom subdomain (`slides.frederickmadore.com`) is planned but not set up yet; the steps
-are in [ROADMAP.md](ROADMAP.md).
+**Custom domain.** The site is served at **`slides.frederickmadore.com`**. The [`CNAME`](CNAME)
+file plus the matching *Settings → Pages → Custom domain* entry bind the subdomain to this Pages
+deployment; the DNS record itself lives in Cloudflare. `fmadore.github.io/slides/` redirects here.
 
 ---
 
