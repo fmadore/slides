@@ -190,7 +190,7 @@
           </div>
         </div>
       </div>
-      <aside class="notes">A word on where I sit. The Africa Multiple Cluster of Excellence is a large African studies cluster based at the University of Bayreuth, funded under the German Excellence Strategy since 2019 and now in its second phase, running to 2032. It is sizeable: over three hundred researchers, organised through five Research Centres in five countries. What holds it together is an agenda it calls "Reconfiguring African Studies": reworking the field both in its concepts and in its structures, and squarely confronting the power imbalances in how knowledge about Africa gets produced and passed on. That last point is the one to keep in mind today. The cluster works through three concepts: multiplicity, which puts relationships before fixed entities; relationality, which attends to worlds being made, unmade, and silenced; and reflexivity, the duty to examine our own positions and the power behind them. All of that research throws off a great deal of data, and someone has to look after it. That is my team.</aside>
+      <aside class="notes">To provide some context for this website, I need to talk briefly about the Africa Multiple Cluster of Excellence. It is a major African studies cluster based at the University of Bayreuth. It has been funded by the German Research Foundation since 2019 and is now in its second phase, which runs until 2032. It comprises over three hundred researchers organised through five research centres in five countries. The overarching theme is an agenda called 'Reconfiguring African Studies': reworking the field in terms of both its concepts and its structures, and confronting the power imbalances in how knowledge about Africa is produced and disseminated. Three concepts developed by the cluster are particularly relevant to this presentation: 'multiplicity', which prioritises relationships over fixed entities; 'relationality', which considers the creation, dissolution and silencing of worlds; and 'reflexivity', which involves examining our own positions and the power behind them.</aside>
     </section>
 
     <!-- ════════ 3 · THE AMRCs — the distributed network + map ═══════════════ -->
@@ -216,7 +216,7 @@
           <p class="small muted">Shown in green on the map. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
         </div>
       </div>
-      <aside class="notes">Now, the cluster isn't one place; it's a network. There are five Africa Multiple Research Centres, in five countries: Ouagadougou, Bayreuth, Eldoret, Lagos, and Rhodes, here in Makhanda. The relationship between them has shifted over time, from a model with Bayreuth in the lead to a more horizontal one, with shared governance and a real emphasis on South–South cooperation. That matters for what follows, because the research, and the first description of the data, happen at the centres: each knows its own material best, and each describes it. The grey dots are partners: a privileged partner in Brazil, cooperation partners, and Centres of African Studies around the world. So the data is genuinely distributed. And that is the problem my team exists to solve: how do you connect five centres' worth of material without hauling it all onto one server, and without overwriting what each has said about its own? Hold that question about description; it runs through the whole talk.</aside>
+      <aside class="notes">As I mentioned in the last slide, the cluster is a network. There are five Africa Multiple Research Centres: Université Joseph Ki-Zerbo in Burkina Faso, the University of Bayreuth in Germany, Moi University in Kenya, the University of Lagos in Nigeria and Rhodes University in South Africa. These are represented by the green dots on the map. The cluster also has a privileged partner in Brazil and other partners around the world. The problem that my team is trying to solve is how to connect the research material from the five centres without hauling it all onto one server and overwriting what each centre has said about its own work.</aside>
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
@@ -243,7 +243,7 @@
         </div>
       </div>
       <p class="small muted">Grounded in FAIR &amp; CARE and multiple knowledge systems. Full range: <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener">africamultiple…/digital-solutions</a></p>
-      <aside class="notes">My team is the Digital Research Environment, the DRE. The simplest way to put it: we make the cluster's research data findable, reusable, and presentable. The work falls into four areas. First, we manage and curate data: metadata schemas, mapping vocabularies to the cluster ontology, reconciling with Wikidata, building taxonomies in African languages, and archiving datasets with DOIs. Second, data science: text mining, network analysis, scraping. Third, AI for the heavy lifting: OCR, transcription, entity extraction, tagging, always with local, open-source, GDPR-compliant models, which matters for the ethics I'll come to. Fourth, dissemination: dashboards, maps, Omeka S databases, and websites. Hold on to two things from this list: the African-language taxonomies, and CARE. Both come back. Next, the two principles behind how we do all this — and the platform it now runs on.</aside>
+      <aside class="notes">My team is the Digital Research Environment (DRE). Our role is to make the cluster's research data findable, reusable and presentable. Our work falls into four categories. Firstly, we manage and curate data, including metadata schemas, designing ontologies and taxonomies, and archiving datasets. Secondly, we do data science, including text mining, network analysis and scraping. Thirdly, we are experimenting with using local open-source AI models to perform OCR, transcription, entity extraction and tagging. Fourthly, we focus on dissemination through dashboards, maps, Omeka S databases and websites. </aside>
     </section>
 
     <!-- ════════ 5 · TWO PRINCIPLES — how the DRE works ═════════════════════ -->
@@ -253,14 +253,18 @@
       <div class="cols">
         <div class="col">
           <div class="col-head">Description is a joint effort</div>
-          <p>Curation and description are shared with our AMRC partners — <strong>Université Joseph Ki-Zerbo</strong>, <strong>Rhodes University</strong>, <strong>University of Lagos</strong> and <strong>Moi University</strong>. Each centre describes the data it knows best; the DRE runs the shared infrastructure that connects them.</p>
+          <p>Curation and description are shared with our AMRC partners. Each centre describes the data it knows best; the DRE runs the shared infrastructure that connects them.</p>
         </div>
         <div class="col">
           <div class="col-head alt">Storage stays distributed</div>
           <p>Data stays in its local repository; Bayreuth holds the <strong>metadata layer</strong> that points to it. Research data becomes <span class="accent">findable without being relocated</span>.</p>
         </div>
       </div>
-      <aside class="notes">Two principles run under everything we build. First, description is a joint effort. We don't describe other people's material for them — curation and description are shared with our partner centres in Ouagadougou, here at Rhodes, in Lagos and in Eldoret. Each centre describes the data it knows best, and the DRE runs the shared infrastructure that connects those descriptions. Second, storage stays distributed by default. We don't haul everyone's data onto one server in Germany. The data stays in its local repository; what Bayreuth holds is the metadata layer — the descriptions and the links that point back to it. That is the whole pay-off: research data becomes findable without being relocated. Now, how we built that — starting with the system we began with.</aside>
+      <div class="callout navy">
+        <span class="callout-label">Not an extractive model</span>
+        A considered response to debates on <strong>data colonialism and extractivism</strong>: the field's material is not drawn from Africa onto a server in Germany.
+      </div>
+      <aside class="notes">Two principles guide our work. Firstly, description is a joint effort. We don't describe other people's material for them; curation and description are shared with our partner centres. Each centre and its researchers describe the data they know best, and the DRE runs the shared infrastructure that connects these descriptions. Secondly, storage remains distributed by default. We don't transfer all the data to one server in Germany. The data remains in its local repository. Bayreuth holds the metadata layer — the descriptions and links pointing back to it. This is how we attempt to address debates on data colonialism and extraction. Research data becomes findable without being relocated. Now, let me explain how we built that, starting with the system we began with.</aside>
     </section>
 
     <!-- ════════ 6 · FIRST PHASE — WissKI ═══════════════════════════════════ -->
@@ -268,6 +272,7 @@
       <p class="kicker">The first phase</p>
       <h2 class="slide-title">We began with WissKI</h2>
       <p class="lead">A semantic research-data system built on <span class="accent-navy">knowledge graphs</span> — entities and their relations, tied to shared ontologies.</p>
+      <p class="small muted"><strong>WissKI</strong> — <em>Wissenschaftliche Kommunikationsinfrastruktur</em>, "scientific communication infrastructure".</p>
       <div class="cols">
         <div class="col">
           <figure class="shot-fig">
@@ -282,7 +287,7 @@
           </figure>
         </div>
       </div>
-      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI — WissKI@UBT. The aim was to make the cluster's research data searchable and explorable across the centres, so you could find collaborators and see what was happening elsewhere. Under the hood it was built on knowledge graphs: instead of flat records, you represent things as entities and the typed relations between them — subject, relation, object — and you tie those entities to shared ontologies and to open data on the web. Knowledge graphs were a major focus for us in that phase; relationality in a very literal, technical form. On the left, the interface for searching the data; on the right, the graph itself, entities and their links. It worked, and we learned a great deal. But it was demanding to maintain and hard for researchers to use day to day. So we built something new.</aside>
+      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI. The aim was to enable the cluster's research data to be searched and explored across the centres, allowing you to find collaborators and see what was happening elsewhere. It was built on knowledge graphs, which represent things as entities and the typed relations between them — subject, relation, object — and tie those entities to shared ontologies and open data on the web. Knowledge graphs were a major focus for us in that phase. However, we were limited in various ways and wanted to develop a more user-friendly system for researchers.</aside>
     </section>
 
     <!-- ════════ 7 · AMIRA — the new platform ═══════════════════════════════ -->
@@ -307,14 +312,18 @@
       <p class="chips">
         <span class="chip green">Now live</span>
         <span class="chip navy">Built on Omeka S</span>
-        <span class="chip">data.africamultiple.uni-bayreuth.de</span>
       </p>
-      <aside class="notes">So, the new platform. The DRE recently launched AMIRA — the Africa Multiple Interactive Research Atlas — the cluster's new home for exploring and visualising its research data, publications and outputs. It runs on Omeka S, and it is replacing WissKI, which we'll phase out over the coming months. Three things it does. You can browse: research items, publications, podcasts, YouTube videos, people, organisations, with search, autocomplete and faceted filters. You can visualise: charts, maps and network graphs that show who works with whom, where projects sit on the map, and which themes cut across the collection. And everything is cross-linked: click a person, a project, a subject, a place, and you land on its own detail page, with its own web of connections. Let me just show you.</aside>
+      <!-- QR to the live AMIRA site — inline lockup under the chips. -->
+      <div class="slides-qr">
+        <img src="assets/qr-amira.png" alt="QR code linking to the AMIRA website">
+        <span class="qr-label"><b>Scan to explore AMIRA</b><span class="qr-url">data.africamultiple.uni-bayreuth.de</span></span>
+      </div>
+      <aside class="notes">So, the new platform. The DRE recently launched AMIRA — the Africa Multiple Interactive Research Atlas — the cluster's new home for exploring and visualising its research data, publications and outputs. It runs on Omeka S. Three things it does. You can browse: research items, publications, podcasts, YouTube videos, people, organisations, with search, autocomplete and faceted filters. You can visualise: charts, maps and network graphs that show who works with whom, where projects sit on the map, and which themes cut across the collection. And everything is cross-linked: click a person, a project, a subject, a place, and you land on its own detail page, with its own web of connections.</aside>
     </section>
 
     <!-- ════════ 8 · A LIVE LOOK — AMIRA home page (live iframe) ═════════════ -->
     <section data-toc="The atlas, live">
-      <p class="kicker navy">Africa Multiple Interactive Research Atlas · see it for yourself</p>
+      <p class="kicker navy">Africa Multiple Interactive Research Atlas</p>
       <figure class="site-frame amira-embed">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
