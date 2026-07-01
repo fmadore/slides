@@ -116,6 +116,12 @@
     .reveal section.ilam-slide .slide-title { max-width: none; margin-bottom: var(--space-md); }
     .reveal section.ilam-slide .ilam-caption { margin-top: var(--space-sm); max-width: none; }
 
+    /* Final slide — the closing carries the authority question as its heading, so
+       size it down from the cover-scale h1 and widen it, leaving room for the
+       thank-you, AMIRA link and contact row beneath. */
+    .reveal section.closing.final-question h2 { font-size: var(--fs-h2); max-width: 26ch; }
+    .reveal section.closing.final-question .lead { margin-top: var(--space-sm); }
+
     /* Fallback shown only if a custom DRE-embed module never reports a height
        (offline / framing blocked) — a centred note over the blank viewport, so the
        frame never reads as broken. The two viz iframes lazy-load when their slide
@@ -420,7 +426,7 @@
 
     <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
     <section data-toc="Spatial exploration">
-      <p class="kicker">Custom Omeka S modules · built in-house</p>
+      <p class="kicker">Custom Omeka S module · built in-house</p>
       <h2 class="slide-title">Spatial exploration</h2>
       <p class="lead">One of the DRE visualisation modules I build — every <span class="accent">georeferenced place</span> in the collection, on one map you can pan, zoom and open.</p>
       <figure class="site-frame map-embed">
@@ -437,13 +443,13 @@
           </div>
         </div>
       </figure>
-      <aside class="notes">A quick word on how these are built, because it's part of the point about who controls discovery. The visualisations aren't off-the-shelf — they're custom Omeka S modules I develop for the DRE, so we can show the data the way the cluster actually needs to see it, not the way a generic plugin assumes. This is the first: spatial exploration. Every place in the collection we've georeferenced shows up on the map; you can pan, zoom, and click through to whatever was made or studied there. It turns "where" into a way in. [Pan and zoom briefly; open a point or cluster.] Next, the same idea applied to themes.</aside>
+      <aside class="notes">I mentioned that Amira provides an extensive range of data visualisations. I developed a custom Omeka S module tailored to our needs. I don't have time to show you everything, but here's a spatial exploration on the slide. Every place in the collection that we have georeferenced appears on the map, based on the original location and the current location of the research items.</aside>
     </section>
 
-    <!-- ════════ 13 · DISCURSIVE COMMUNITIES — custom DRE module (entity network) ═ -->
-    <section data-toc="Discursive communities">
-      <p class="kicker">Custom Omeka S modules · entity network</p>
-      <h2 class="slide-title">Discursive communities</h2>
+    <!-- ════════ 13 · THE NETWORK VIEW — custom DRE module (entity network) ══════ -->
+    <section data-toc="The network view">
+      <p class="kicker">Custom Omeka S module · knowledge-graph links</p>
+      <h2 class="slide-title">Entities and their links</h2>
       <div class="cols ratio-3-2">
         <div class="col">
           <figure class="site-frame network-embed">
@@ -453,7 +459,7 @@
               <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">Open the network ↗</a>
             </div>
             <div class="site-frame-view">
-              <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/discursive-communities" title="Discursive communities — an entity network of subjects that co-occur across the AMIRA collection" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
+              <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/discursive-communities" title="Networks — an entity network of the AMIRA collection, drawn from its knowledge-graph links" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
               <div class="viz-fallback" hidden>
                 <p>Live network — open it at</p>
                 <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">data.africamultiple…/networks ↗</a>
@@ -462,21 +468,21 @@
           </figure>
         </div>
         <div class="col">
-          <p>An entity network of <strong>subjects</strong>: terms that keep appearing together cluster into communities — themes the collection holds in aggregate, not in any one item.</p>
+          <p>The whole collection as one network — entities such as people, projects, subjects and places, drawn together by the <strong>links recorded between them</strong> in the knowledge graph.</p>
           <div class="callout warm">
             <span class="callout-label">The catch, already visible</span>
-            These clusters are built from subject keywords. They are only ever as good as that description.
+            Every link here was described by someone. The network is only ever as good as that description — and subject description is the thinnest of it.
           </div>
         </div>
       </div>
-      <aside class="notes">This last view is the one I find most suggestive, and also the most fragile. We take the subject keywords attached to items, and we look at which ones co-occur — which subjects keep turning up together across the collections. Cluster those co-occurrences and you get what we call discursive communities: groupings of themes that no single catalogue record would ever announce on its own. It's a way of asking what a collection is about in aggregate, rather than what any one item happens to be tagged with. And here the catch is already in plain sight. This whole view is built from subject description — from keywords. If the keywords are thin, or skewed, or borrowed from a vocabulary that doesn't fit the material, then the communities it draws are thin and skewed in the same way. So the most ambitious relational view rests on the least reliable part of the metadata. That is the turn in the talk.</aside>
+      <aside class="notes">This is the whole collection seen as a network: entities — people, projects, subjects, places — and the links recorded between them in the knowledge graph. It's the most eye-catching of the views and the most fragile, because every link was described by someone. The network is only ever as good as that description — and the thinnest part of the description, almost always, is subjects. That is the turn I want to make next.</aside>
     </section>
 
     <!-- ════════ 13 · THE TURN (statement) ══════════════════════════════════ -->
     <section class="statement balance" data-toc="Where it's hardest" data-footer="light">
       <p class="statement-body">An atlas of relations is only as strong as its <span class="accent">weakest metadata</span>.</p>
-      <p class="attribution">And the weakest, almost always, is subject description — the part researchers supply most sparingly of all.</p>
-      <aside class="notes">So here's the honest middle of the talk. Everything I've shown depends on metadata, and metadata is supplied by busy researchers who would much rather be doing their research. Names, dates, places — those come in reasonably well, because they're concrete and you can't write the project up without them. Subject description is the part that gets skipped. It's optional, it takes thought, and it's the first thing to go when a deadline is close. Which is awkward, because subject description is exactly what the relational views lean on hardest. The atlas is most ambitious precisely where its data is thinnest. That isn't a complaint about colleagues; it's a structural fact about how collections actually get made, everywhere. The interesting question is what we do about it — and that splits in two.</aside>
+      <p class="attribution">The weakest part is almost always subject description — the part that researchers supply the least of all.</p>
+      <aside class="notes">Everything I've shown relies on metadata, which is supplied by researchers who would rather be conducting research or working on papers. While information such as names, dates and places is provided fairly well, subject descriptions tend to be much less comprehensive. This isn't a criticism of my colleagues; metadata intake is rarely researchers' favourite part of the job.</aside>
     </section>
 
     <!-- ════════ 14 · LCSH AND ITS LIMITS ══════════════════════════════════ -->
@@ -519,7 +525,7 @@
         </div>
         <div class="col">
           <div class="col-head alt">AI to help, not to decide</div>
-          <p>Language models draft candidates at scale; people review and approve.</p>
+          <p>Open-source local LLMs draft candidates at scale; people review and approve.</p>
           <ul>
             <li>Draft labels, definitions, links for review</li>
             <li>Curators and centres keep the final say</li>
@@ -527,32 +533,25 @@
         </div>
       </div>
       <div class="callout">
-        <span class="callout-label">The honest status</span>
-        Exploratory, by design. The aim is not a finished vocabulary — it is to move authority over description closer to the people the data is about.
+        <span class="callout-label">Exploratory by design</span>
+        Not to create a finished vocabulary, but rather to give people more control over how it is described.
       </div>
       <aside class="notes">So what do we do? Our thinking here is genuinely exploratory, so I'll show a direction, not a solution. The first move is to shift authority work away from Library of Congress and toward Wikidata. Wikidata is open, multilingual, and editable — communities can add and correct entities, instead of waiting on one national library. We already reconcile people, places and institutions against it. The harder and more interesting part is creating the African entities and concepts that Wikidata itself still lacks, so that the right terms exist to be used at all. That's a great deal of careful work, and it's where AI earns a role — a narrow one. Language models are good at drafting: proposing a candidate entity, a label in several languages, a short definition, some links to check. They are not good at deciding what is true. So the model drafts at scale, and curators and the centres review and keep the final say. The goal isn't a perfect vocabulary. It's to move the authority over description closer to the people and places the data is actually about.</aside>
     </section>
 
-    <!-- ════════ 16 · THE AUTHORITY QUESTION (statement) ═══════════════════ -->
-    <section class="statement balance" data-toc="Who names the subject?" data-footer="light">
-      <p class="statement-body">Who holds authority over how knowledge is <span class="accent">described</span> — and therefore <span class="accent">found</span>?</p>
-      <p class="attribution">In an era of contested truth, that is what reimagining the archive has to confront.</p>
-      <aside class="notes">So I end where the conference begins, but through a side door. The post-truth worry is usually about forgery and denial: false things dressed up to look true. Underneath it sits something quieter and just as decisive, which is description. What gets a name, in whose language, decides what can be found at all. A record that can't be described in terms that fit it isn't argued with or refuted; it simply never surfaces. That's a soft erasure, and it long predates AI — the colonial library did it with catalogue cards. The atlas, with all its graphs and networks, makes the stakes legible, because every relationship it draws runs back through a keyword that someone chose, or didn't. Reimagining the archive, for me, means taking that single choice seriously, and moving the authority over it closer to the people the knowledge belongs to.</aside>
-    </section>
-
-    <!-- ════════ 17 · CLOSING / CONTACT ════════════════════════════════════ -->
-    <section class="closing" data-footer="dark">
+    <!-- ════════ 16 · CLOSING — the authority question + contact ════════════════ -->
+    <section class="closing final-question" data-footer="dark">
       <!-- flex-centred: reveal sets the present section to display:block, which would
            top-align this sparse slide; the wrapper re-centres it. -->
       <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
         <p class="kicker">Thank you · Enkosi</p>
-        <h2>Description is the first act of the archive.</h2>
-        <p class="lead">Before access, before discovery, before any network graph. Move the authority over it closer to the people the data is about — that's the work.</p>
+        <h2>Who holds authority over how knowledge is described — and therefore found?</h2>
+        <p class="lead">In an era of contested truth, that is what reimagining the archive has to confront.</p>
         <p><strong>Explore AMIRA:</strong> <a href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home">data.africamultiple.uni-bayreuth.de/s/amira</a></p>
         <div data-contact></div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       </div>
-      <aside class="notes">To close. The eye-catching part of this project is the visualisations, and they're genuinely useful. But the foundation is the unglamorous part: who describes the material, and in whose words. Description is the first act of the archive — it comes before access, before discovery, before any network graph. Get it wrong and everything downstream inherits the error, very persuasively. So the work I care about most is the quiet work: building the entities that don't yet exist, in vocabularies that fit, with the centres and the communities holding the pen. The atlas is online if you'd like to explore it afterwards, and, as I said at the start, a fair amount of your own institution's research is already in there. Thank you. [Note: "Enkosi" is isiXhosa for thank you — please confirm it reads well for this room, or swap it.]</aside>
+      <aside class="notes">To close, the question I want to leave you with. The post-truth worry is usually about forgery — false things dressed up as true. Underneath it sits something quieter and just as decisive: description. What gets a name, in whose language, decides what can be found at all — a record that can't be described in fitting terms is never refuted, it simply never surfaces. So reimagining the archive, for me, means taking that choice seriously and moving authority over it closer to the people the knowledge belongs to. The atlas is online if you'd like to explore it — and, as I said at the start, a good deal of Rhodes's own research is already in there. Thank you. [Note: "Enkosi" is isiXhosa for thank you — confirm it reads well for this room, or drop it.]</aside>
     </section>
 
   </div>
