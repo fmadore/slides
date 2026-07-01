@@ -70,8 +70,21 @@
       max-height: 300px; margin-inline: auto; }
 
     /* Africa Multiple cluster logo on the cluster slide (a wide ~4:1 lockup). */
-    .reveal .cluster-logo { display: block; width: 100%; max-width: 300px; height: auto;
-      margin: 0 0 var(--space-lg); }
+    .reveal .cluster-logo { display: block; width: 100%; max-width: 260px; height: auto;
+      margin: 0 0 var(--space-md); }
+
+    /* Cluster "in figures" ledger — single-column stat rows, a narrower echo of
+       the AMIRA stat-grid ledger (slide 4) — so the right column carries its own
+       weight beside the "three working concepts" list instead of trailing off
+       into whitespace under the logo. */
+    .reveal .cluster-figures { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: var(--space-xs); }
+    .reveal .cluster-figures .stat {
+      flex-direction: row; align-items: baseline; justify-content: space-between;
+      gap: var(--space-md); padding: 0.6em 0; border-bottom: var(--hair);
+    }
+    .reveal .cluster-figures .stat:first-child { border-top: 3px solid var(--rule); }
+    .reveal .cluster-figures .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); }
+    .reveal .cluster-figures .stat .stat-label { order: 1; max-width: none; align-self: center; }
 
     /* "Enter AMIRA" hero — the spelled-out atlas name as a quiet italic subtitle
        under the big gothic title, then a row of status / tech chips. */
@@ -151,11 +164,11 @@
 
     <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
     <section data-toc="The Cluster">
-      <p class="kicker">University of Bayreuth · German Excellence Strategy · since 2019</p>
-      <h2 class="slide-title">The Africa Multiple Cluster of Excellence</h2>
-      <p class="lead">A large African studies cluster, reconfiguring the field both conceptually and structurally to confront <span class="accent-navy">power imbalances in how knowledge is produced and transmitted</span>.</p>
       <div class="cols ratio-3-2">
         <div class="col">
+          <p class="kicker">University of Bayreuth · German Excellence Strategy · since 2019</p>
+          <h2 class="slide-title">The Africa Multiple Cluster of Excellence</h2>
+          <p class="lead">A large African studies cluster, reconfiguring the field both conceptually and structurally to confront <span class="accent-navy">power imbalances in how knowledge is produced and transmitted</span>.</p>
           <div class="col-head">Three working concepts</div>
           <ul>
             <li><strong>Multiplicity:</strong> relationships before fixed entities</li>
@@ -165,9 +178,15 @@
         </div>
         <div class="col">
           <img class="cluster-logo" src="../../shared/logo-africamultiple.png" alt="Africa Multiple Cluster of Excellence">
-          <div class="callout">
-            <span class="callout-label">In brief</span>
-            300+ researchers across five Research Centres in five countries — now in its second phase, 2026–2032.
+          <div class="col-head">In figures</div>
+          <div class="cluster-figures">
+            <div class="stat"><span class="stat-num" data-count="300" data-count-suffix="+">300+</span><span class="stat-label">Researchers, cluster-wide</span></div>
+            <div class="stat"><span class="stat-num" data-count="5">5</span><span class="stat-label">Research Centres, five countries</span></div>
+            <div class="stat"><span class="stat-num">2026–32</span><span class="stat-label">Second phase, under way</span></div>
+          </div>
+          <div class="callout navy">
+            <span class="callout-label">Known within the cluster as</span>
+            "Reconfiguring African Studies" — reworking the field's concepts and its structures at once.
           </div>
         </div>
       </div>
@@ -177,7 +196,7 @@
     <!-- ════════ 3 · THE AMRCs — the distributed network + map ═══════════════ -->
     <section data-toc="The Research Centres">
       <p class="kicker">About us · Africa Multiple Research Centres (AMRCs)</p>
-      <h2 class="slide-title">Five centres, one network</h2>
+      <h2 class="slide-title">A network of five centres</h2>
       <div class="cols ratio-3-2">
         <div class="col">
           <figure class="shot-fig amrc-embed">
@@ -194,7 +213,7 @@
             <li>University of Lagos (Nigeria)</li>
             <li>Rhodes University (South Africa)</li>
           </ul>
-          <p class="small muted">Horizontally connected · shared governance. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
+          <p class="small muted">Shown in green on the map. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
         </div>
       </div>
       <aside class="notes">Now, the cluster isn't one place; it's a network. There are five Africa Multiple Research Centres, in five countries: Ouagadougou, Bayreuth, Eldoret, Lagos, and Rhodes, here in Makhanda. The relationship between them has shifted over time, from a model with Bayreuth in the lead to a more horizontal one, with shared governance and a real emphasis on South–South cooperation. That matters for what follows, because the research, and the first description of the data, happen at the centres: each knows its own material best, and each describes it. The grey dots are partners: a privileged partner in Brazil, cooperation partners, and Centres of African Studies around the world. So the data is genuinely distributed. And that is the problem my team exists to solve: how do you connect five centres' worth of material without hauling it all onto one server, and without overwriting what each has said about its own? Hold that question about description; it runs through the whole talk.</aside>
