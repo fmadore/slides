@@ -246,6 +246,11 @@ def audit_assets(rep):
                     hashes.setdefault(file_md5(path), []).append(rel)
     for digest, paths in sorted(hashes.items()):
         if len(paths) > 1:
+            # the starter and the showcase legitimately share placeholder assets
+            if all(p.split(os.sep)[1].startswith("_") for p in paths
+                   if p.startswith("talks" + os.sep)) and \
+               all(p.startswith("talks" + os.sep) for p in paths):
+                continue
             rep.warn(paths[0], "exact duplicate files: " + " = ".join(paths)
                      + " (move one copy to shared/assets/)")
 
