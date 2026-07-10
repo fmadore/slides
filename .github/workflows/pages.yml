@@ -59,8 +59,11 @@ jobs:
         run: node tools/browser-check.mjs
 
   # Lightweight visual regression: only when the shared engine changed on a
-  # PR — capture the template from the merge-base and from the head, compare
-  # with a loose tolerance, and upload diff images as artifacts on failure.
+  # PR — capture the component catalogue from the merge-base and from the
+  # head, compare with a loose tolerance, and upload diff images as artifacts
+  # on failure. Skipped when the catalogue deck itself changed in the same
+  # PR: the baseline then shows different *content*, so a pixel comparison
+  # can only measure the intended edit, not engine drift.
   visual:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -70,14 +73,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check whether the shared engine changed
+      - name: Check whether the shared engine changed (and the catalogue did not)
         id: engine
         run: |
           BASE=$(git merge-base origin/${{ github.base_ref }} HEAD)
-          if git diff --name-only "$BASE" HEAD | grep -qE '^shared/(theme\.css|deck\.js|reveal/)'; then
+          CHANGED=$(git diff --name-only "$BASE" HEAD)
+          engine=false; catalogue=false
+          echo "$CHANGED" | grep -qE '^shared/(theme\.css|deck\.js|reveal/)' && engine=true
+          echo "$CHANGED" | grep -qE '^talks/(_showcase|_template)/' && catalogue=true
+          if [ "$engine" = true ] && [ "$catalogue" = false ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            [ "$engine" = true ] && echo "::notice::visual regression skipped — the catalogue deck changed in this PR, so the merge-base screenshots show different content"
           fi
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
 

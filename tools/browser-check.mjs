@@ -196,20 +196,23 @@ for (const deck of decks) {
 }
 
 // ---- representative screenshots (visual regression source) ----------------
+// Capture the component catalogue: talks/_showcase where it exists, falling
+// back to talks/_template for older trees (before the starter/catalogue split).
 if (SHOT_DIR) {
   mkdirSync(SHOT_DIR, { recursive: true });
+  const shotDeck = existsSync(join(ROOT, 'talks', '_showcase', 'index.html')) ? '_showcase' : '_template';
   const SLIDES = [0, 1, 2, 3, 19, 23]; // cover, index, divider, content, data-viz, closing
   for (const [w, h] of [[1280, 720], [844, 390], [390, 844]]) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h } });
-    const { page } = await openPage(ctx, `${BASE}/talks/_template/`);
+    const { page } = await openPage(ctx, `${BASE}/talks/${shotDeck}/`);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     for (const s of SLIDES) {
       await page.evaluate(i => Reveal.slide(i, 0), s);
       await page.waitForTimeout(1800); // let transitions, rule-draw and count-ups settle
-      await page.screenshot({ path: join(SHOT_DIR, `template-s${s}-${w}x${h}.png`) });
+      await page.screenshot({ path: join(SHOT_DIR, `catalogue-s${s}-${w}x${h}.png`) });
     }
     await ctx.close();
-    console.log(`ok    screenshots: template @ ${w}×${h} → ${SHOT_DIR}`);
+    console.log(`ok    screenshots: ${shotDeck} @ ${w}×${h} → ${SHOT_DIR}`);
   }
 }
 
