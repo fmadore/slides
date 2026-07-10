@@ -15,10 +15,7 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line — sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice (matches the template). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+    /* (.byline .role now lives in shared/theme.css.) */
 
     /* Slide 3 — "A live look": a clean, robust framed screenshot. Replaces the
        browser-chrome .site-frame, whose absolutely-positioned viewport collapsed
@@ -36,22 +33,7 @@
     /* (The 3-step semantic-search pipeline now uses the shared .flow component.) */
 
     /* Slide 14 — live-demo "saved runs". The two examples are vertical sub-slides
-       (press ↓). Each shows a Claude share framed in browser chrome, displayed
-       whole (no crop) and height-capped so the slide never overflows 720px. The
-       frame hugs the image width and centres in the leftover height. */
-    .reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: var(--space-md); }
-    .reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
-      display: flex; flex-direction: column; min-height: 0;
-      border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: var(--shadow-2); background: var(--paper); }
-    /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
-       (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
-    .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
-    .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
-    .reveal .demo-shot-view img { display: block; width: auto; height: auto;
-      max-height: 336px; max-width: 100%; }
-    .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+       (press ↓); the .demo-wrap/.demo-shot component lives in shared/theme.css. */
 
     /* Slide 13 — keep the repo URL in the scroll-hint as one unbroken, clickable link
        (don't let it break mid-string across two lines). */

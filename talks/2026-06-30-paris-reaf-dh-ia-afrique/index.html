@@ -11,15 +11,7 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line: sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice. */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
-    /* Co-presenter byline (.byline.authors): stack each author as a tight
-       name+role+affil block, with a larger gap between authors. */
-    .reveal .byline.authors { gap: var(--space-sm); }
-    .reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
+    /* (.byline .role and .byline.authors now live in shared/theme.css.) */
     /* The design formula: a centred gothic line set off as a displayed equation
        between two hairline rules — type and rules carry it, no box. */
     .reveal .formula { font-family: var(--font-label); font-weight: 700;
@@ -34,11 +26,9 @@
     /* This closing is content-rich (question + note + two bylines + logo), so the
        centred block fills the slide and the kicker lands flush on the gold plate-rule.
        Ease the oversized h2 (theme default fs-h1) to slide-title size to regain top slack. */
-    /* Per-author institution logos in the co-presenter byline. The KCL mark is a
-       white-on-red box (not a transparent monochrome wordmark like Bayreuth), so it
-       keeps its colour; only monochrome marks flip to white on the dark closing. */
-    .reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
-    .reveal section.closing .byline.authors .author-logo:not([src*="kcl"]) { filter: brightness(0) invert(1); opacity: 0.85; }
+    /* (.author-logo lives in shared/theme.css. The KCL mark is a white-on-red
+       box, so it carries class="keep-color" in the markup to keep its colour
+       on the dark closing; monochrome marks flip to white automatically.) */
     /* Slide 4 — the four-group index resolves into a single outcome. The
        index-list's own closing rule is the one divider (no second heavy rule,
        no italic source jammed between two rules): the result sits left and
@@ -91,7 +81,7 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
-          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
+          <img class="author-logo keep-color" src="../../shared/logo-kcl.png" alt="King's College London">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>
@@ -337,7 +327,7 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
-          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
+          <img class="author-logo keep-color" src="../../shared/logo-kcl.png" alt="King's College London">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>

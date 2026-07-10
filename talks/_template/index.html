@@ -9,18 +9,11 @@
   <link rel="stylesheet" href="../../shared/reveal/reveal.css">
   <link rel="stylesheet" href="../../shared/theme.css">
 
-  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched.
+       Stable, reusable components (.byline .role, .byline.authors, .demo-shot …)
+       live in shared/theme.css — only add rules here that are genuinely
+       specific to this one talk. -->
   <style>
-    /* Byline job-title line: sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice. Covers the light
-       cover and the dark closing (which lightens .affil the same way). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
-    /* Co-presenter byline (.byline.authors): stack each author as a tight
-       name+role+affil block, with a larger gap between authors. */
-    .reveal .byline.authors { gap: var(--space-sm); }
-    .reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
   </style>
 </head>
 <body>

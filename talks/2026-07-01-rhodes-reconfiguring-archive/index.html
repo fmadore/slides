@@ -15,28 +15,8 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line — sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice (matches the template). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-
-    /* Screenshot placeholders — the relational-view slides await real captures
-       from the live atlas. These dashed slots read as deliberate "to add" frames
-       (not broken images) and are height-capped so the slide never overflows 720px.
-       Swap each .shot-todo for <img class="shot" src="assets/…"> once captured. */
-    .reveal .shot-todo { display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: var(--space-sm); text-align: center;
-      border: 2px dashed var(--line-strong); border-radius: var(--radius-lg);
-      background: var(--sunken); padding: var(--space-lg) var(--space-md); min-height: 300px; }
-    .reveal .shot-todo.tall { min-height: 384px; }
-    .reveal .shot-todo .todo-frame { font-size: 2.4rem; line-height: 1; color: var(--ink-faint); }
-    .reveal .shot-todo .todo-label { font-family: var(--font-label); text-transform: uppercase;
-      letter-spacing: var(--track-label); font-size: var(--fs-footer); font-weight: 600;
-      color: var(--brown-deep); }
-    .reveal .shot-todo .todo-desc { font-family: var(--font-display); font-style: italic;
-      color: var(--ink-soft); font-size: var(--fs-small); max-width: 34ch; margin: 0; }
-    .reveal .shot-todo .todo-src { font-family: var(--font-mono); font-size: 0.76rem;
-      color: var(--ink-faint); }
+    /* (.byline .role now lives in shared/theme.css; the interim .shot-todo
+       placeholder component was removed once real captures replaced it.) */
     .reveal figure.shot-fig { margin: 0; display: flex; flex-direction: column; gap: 0; }
     .reveal figure.shot-fig figcaption { margin-top: var(--space-sm); font-size: var(--fs-caption);
       color: var(--ink-soft); font-style: italic; }

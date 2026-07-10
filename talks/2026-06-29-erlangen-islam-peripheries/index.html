@@ -11,15 +11,11 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line + co-presenter stack (two institutions). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+    /* Co-presenter byline: base component lives in shared/theme.css; this deck
+       widens the author gap and runs each institution mark a touch larger. */
     .reveal .byline.authors { gap: var(--space-md); }
-    .reveal .byline.authors .author { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1em; }
-    /* Each author's institution mark sits directly under their name + affiliation. */
-    .reveal .byline.authors .author .author-logo { height: 2rem; width: auto; margin-top: var(--space-xs); opacity: 0.92; }
-    .reveal section.closing .byline.authors .author-logo { filter: brightness(0) invert(1); opacity: 0.9; }
+    .reveal .byline.authors .author { align-items: flex-start; gap: 0.1em; }
+    .reveal .byline.authors .author .author-logo { height: 2rem; margin-top: var(--space-xs); opacity: 0.92; }
 
     /* Why-"peripheries": a filmstrip of three linked newspaper clippings. */
     .reveal .clip-row { display: flex; gap: var(--space-md); align-items: flex-end;
@@ -117,23 +113,9 @@
     .reveal section.osh .osh-cap { font-family: var(--font-label); font-size: var(--fs-footer);
       color: var(--ink-faint); letter-spacing: 0.02em; margin-top: var(--space-sm); }
 
-    /* Live-demo "saved runs" (offline fallback for the MCP demo). Each shows a Claude
-       share framed in browser chrome, displayed whole (no crop) and height-capped so
-       the slide never overflows 720px. The frame hugs the image and centres in the
-       leftover height. Lifted from the Luxembourg deck's demo section. */
-    .reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: var(--space-md); }
-    .reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
-      display: flex; flex-direction: column; min-height: 0;
-      border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
-      box-shadow: var(--shadow-2); background: var(--paper); }
-    /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
-       (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
-    .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
-    .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
-    .reveal .demo-shot-view img { display: block; width: auto; height: auto;
-      max-height: 360px; max-width: 100%; }
-    .reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+    /* Live-demo "saved runs": the .demo-wrap/.demo-shot component lives in
+       shared/theme.css; this deck lets the captures run a touch taller. */
+    .reveal .demo-shot-view img { max-height: 360px; }
     /* Keep share/repo URLs unbroken (no ugly mid-string wrap) in scroll-hints + callouts. */
     .reveal .scroll-hint a, .reveal .callout a { white-space: nowrap; }
     /* Demo intro: cap the Claude Desktop shot so the figure column never outgrows
