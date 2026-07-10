@@ -20,6 +20,7 @@ reminder printed.
 """
 import argparse
 import datetime
+import html as html_mod
 import json
 import re
 import shutil
@@ -31,6 +32,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "talks" / "_template"
 MANIFEST = ROOT / "talks" / "talks.json"
+
+
+def entry_tags(args):
+    return [t.strip() for t in args.tags.split(",") if t.strip()]
 
 
 def slugify(text, max_words=5):
@@ -101,6 +106,37 @@ def main(argv=None):
     }
     for old, new in replacements.items():
         html = html.replace(old, new)
+
+    # canonical URL, Open Graph and structured metadata (mirrors the published decks)
+    def esc(s):
+        return html_mod.escape(s, quote=True)
+    desc = args.desc or args.title
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "PresentationDigitalDocument",
+        "name": args.title, "description": desc, "url": url,
+        "inLanguage": args.lang, "datePublished": args.date,
+        "author": [{"@type": "Person", "name": p} for p in presenters],
+        "keywords": ", ".join(entry_tags(args)),
+        "publisher": {"@type": "Person", "name": "Frédérick Madore",
+                      "url": "https://www.frederickmadore.com/"},
+        "releasedEvent": {"@type": "Event", "name": event, "startDate": args.date},
+    }
+    meta_block = f'''  <link rel="canonical" href="{url}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="{esc(args.title)}">
+  <meta property="og:description" content="{esc(desc)}">
+  <meta property="og:url" content="{url}">
+  <meta property="og:image" content="{url}social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:locale" content="{'fr_FR' if args.lang == 'fr' else 'en_US'}">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+'''
+    m = re.search(r"^.*<title>.*</title>.*$\n", html, re.M)
+    html = html[:m.end()] + meta_block + html[m.end():]
     deck.write_text(html, encoding="utf-8")
 
     # 3 — register in the manifest (newest first) and rebuild the landing page
@@ -108,7 +144,7 @@ def main(argv=None):
         "slug": slug, "date": args.date, "language": args.lang,
         "event": event, "venue": venue, "title": args.title, "shortTitle": short,
         "description": args.desc or args.title, "presenters": presenters,
-        "tags": [t.strip() for t in args.tags.split(",") if t.strip()],
+        "tags": entry_tags(args),
     }
     manifest["talks"].insert(0, entry)
     manifest["talks"].sort(key=lambda t: t["date"], reverse=True)
