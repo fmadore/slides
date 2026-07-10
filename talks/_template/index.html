@@ -110,7 +110,7 @@
       <div data-contact></div>
       <!-- QR to these slides. Replace assets/qr-slides.png + the label; delete to omit. -->
       <div class="slides-qr">
-        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
       </div>
       <aside class="notes">Speaker notes for the cover — press S for the speaker view.</aside>
@@ -198,7 +198,7 @@
       <div class="figrow">
         <div class="fig-frame">
           <figure>
-            <img class="shot" src="assets/example-figure.png" alt="Describe the figure — this alt text shows in the lightbox">
+            <img class="shot" data-src="assets/example-figure.png" alt="Describe the figure — this alt text shows in the lightbox" width="1600" height="1200">
             <figcaption>A caption naming the source. Click the image to enlarge.</figcaption>
           </figure>
         </div>
@@ -314,7 +314,7 @@ print(f"{len(hits)} documents")</code></pre>
 
     <!-- ░░ FULL-BLEED MEDIA ░░ .media: image fills, scrim + caption sit over it ░░ -->
     <section class="media" data-toc="A place" data-footer="dark">
-      <div class="media-fill"><img src="assets/example-media.png" alt="Describe the scene"></div>
+      <div class="media-fill"><img data-src="assets/example-media.png" alt="Describe the scene" width="1920" height="1080"></div>
       <div class="media-scrim"></div>
       <div class="media-caption">
         <p class="kicker">On location</p>
@@ -345,12 +345,12 @@ print(f"{len(hits)} documents")</code></pre>
         </div>
         <div class="site-frame-view">
           <!-- SCREENSHOT (default, offline). Click to enlarge. -->
-          <img src="assets/example-site.png" alt="Describe the page — this alt text shows in the lightbox">
+          <img data-src="assets/example-site.png" alt="Describe the page — this alt text shows in the lightbox" width="1920" height="1180">
           <!-- LIVE PAGE alternative — delete the <img> above and uncomment this:
           <iframe src="https://example.com/" title="Live site" loading="lazy"></iframe>
           -->
           <!-- Optional "scan to explore" QR over the frame:
-          <div class="site-qr"><img src="assets/qr-slides.png" alt="QR to the site"><span>Scan to explore</span></div>
+          <div class="site-qr"><img data-src="assets/qr-slides.png" alt="QR to the site" width="444" height="444"><span>Scan to explore</span></div>
           -->
         </div>
       </div>
@@ -404,13 +404,13 @@ print(f"{len(hits)} documents")</code></pre>
       <h2 class="slide-title">Two image types, one system</h2>
       <div class="cols">
         <figure class="plate">
-          <div class="plate-img" style="height:280px"><img src="assets/example-figure.png" alt="A documentary photograph, rendered as a green duotone plate."></div>
+          <div class="plate-img" style="height:280px"><img data-src="assets/example-figure.png" alt="A documentary photograph, rendered as a green duotone plate." width="1600" height="1200"></div>
           <figcaption><span class="fig-no">Fig. 1</span><span class="fig-cap">Documentary photos get a green duotone and a ruled plate caption — every one belongs.</span></figcaption>
         </figure>
         <div class="col">
           <figure class="chrome">
             <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-url">islam.zmo.de/s/westafrica</span></div>
-            <div class="chrome-view" style="height:280px"><img src="assets/example-site.png" style="height:100%" alt="An application screenshot, shown in true colour inside browser chrome."></div>
+            <div class="chrome-view" style="height:280px"><img data-src="assets/example-site.png" style="height:100%" alt="An application screenshot, shown in true colour inside browser chrome." width="1920" height="1180"></div>
           </figure>
           <p class="small muted">App screenshots keep their true colour — but always inside the same chrome.</p>
         </div>
@@ -481,7 +481,7 @@ print(f"{len(hits)} documents")</code></pre>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
       <div class="slides-qr corner">
-        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <img data-src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">fmadore.github.io/slides</span></span>
       </div>
     </section>
@@ -492,15 +492,12 @@ print(f"{len(hits)} documents")</code></pre>
 <!-- reveal.js core + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
 
-<!-- SYNTAX HIGHLIGHTING — two options:
-     • Default below: the vendored reveal highlight plugin (bundles every
-       language, ~921 KB).
-     • Slim build (recommended): run  python tools/fetch-highlight.py  once to
-       generate shared/highlight.min.js (core + only the languages you use,
-       ~30-60 KB), then DELETE the plugin <script> below and replace it with:
-         <script src="../../shared/highlight.min.js"></script>
-       deck.js highlights every <pre><code> via window.hljs either way. -->
-<script src="../../shared/reveal/plugin/highlight.js"></script>
+<!-- SYNTAX HIGHLIGHTING — the slim vendored build (highlight.js core + only
+     the languages the decks use, ~40 KB; see shared/vendor-manifest.json).
+     deck.js highlights every <pre><code> via window.hljs. To add a language,
+     edit LANGUAGES in tools/fetch-highlight.py and re-run it. If your talk
+     has NO code slides and no scrollable file embed, delete this line. -->
+<script src="../../shared/highlight.min.js"></script>
 
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>

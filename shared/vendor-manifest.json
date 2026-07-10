@@ -1,0 +1,33 @@
+{
+  "highlight.js": {
+    "version": "11.11.1",
+    "languages": [
+      "bash",
+      "python",
+      "json",
+      "javascript",
+      "xml",
+      "markdown",
+      "yaml"
+    ],
+    "source": "https://raw.githubusercontent.com/highlightjs/cdn-release/11.11.1/build/es",
+    "file": "highlight.min.js",
+    "sha256": "3bd68a6fb00d988fb91ab5c49a4a536fee794a6db89888954eea13292ffd5cec"
+  },
+  "reveal.js": {
+    "version": "6.0.1",
+    "source": "https://github.com/hakimel/reveal.js (dist build, vendored)",
+    "files": [
+      "reveal/reveal.js",
+      "reveal/reveal.css",
+      "reveal/reset.css",
+      "reveal/plugin/notes.js",
+      "reveal/plugin/zoom.js",
+      "reveal/plugin/search.js"
+    ],
+    "license": "MIT",
+    "sha256": {
+      "reveal.js": "3fb84c30d2e610dd598843d75a123ef2c4dbc588847cda86cd8c7a61e18ddb6b"
+    }
+  }
+}
