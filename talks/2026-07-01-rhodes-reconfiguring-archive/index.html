@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reconfiguring the Archive — Frédérick Madore</title>
+  <meta name="description" content="Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA).">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="Reconfiguring the Archive">
+  <meta property="og:description" content="Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA).">
+  <meta property="og:url" content="https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/">
+  <meta property="og:image" content="https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "PresentationDigitalDocument", "name": "Reconfiguring the Archive", "description": "Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA).", "url": "https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/", "inLanguage": "en", "datePublished": "2026-07-01", "author": [{"@type": "Person", "name": "Frédérick Madore"}], "keywords": "digital humanities, archives, AMIRA", "publisher": {"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/"}, "releasedEvent": {"@type": "Event", "name": "Reimagining the Archive · Rhodes University", "startDate": "2026-07-01"}}</script>
   <meta name="author" content="Frédérick Madore">
   <link rel="icon" href="../../shared/logo-africamultiple.png">
 
@@ -15,28 +28,8 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line — sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice (matches the template). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-
-    /* Screenshot placeholders — the relational-view slides await real captures
-       from the live atlas. These dashed slots read as deliberate "to add" frames
-       (not broken images) and are height-capped so the slide never overflows 720px.
-       Swap each .shot-todo for <img class="shot" src="assets/…"> once captured. */
-    .reveal .shot-todo { display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: var(--space-sm); text-align: center;
-      border: 2px dashed var(--line-strong); border-radius: var(--radius-lg);
-      background: var(--sunken); padding: var(--space-lg) var(--space-md); min-height: 300px; }
-    .reveal .shot-todo.tall { min-height: 384px; }
-    .reveal .shot-todo .todo-frame { font-size: 2.4rem; line-height: 1; color: var(--ink-faint); }
-    .reveal .shot-todo .todo-label { font-family: var(--font-label); text-transform: uppercase;
-      letter-spacing: var(--track-label); font-size: var(--fs-footer); font-weight: 600;
-      color: var(--brown-deep); }
-    .reveal .shot-todo .todo-desc { font-family: var(--font-display); font-style: italic;
-      color: var(--ink-soft); font-size: var(--fs-small); max-width: 34ch; margin: 0; }
-    .reveal .shot-todo .todo-src { font-family: var(--font-mono); font-size: 0.76rem;
-      color: var(--ink-faint); }
+    /* (.byline .role now lives in shared/theme.css; the interim screenshot
+       placeholder component was removed once real captures replaced it.) */
     .reveal figure.shot-fig { margin: 0; display: flex; flex-direction: column; gap: 0; }
     .reveal figure.shot-fig figcaption { margin-top: var(--space-sm); font-size: var(--fs-caption);
       color: var(--ink-soft); font-style: italic; }
@@ -190,13 +183,15 @@
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
-      <!-- TODO: add assets/qr-slides.png (QR to the deployed deck) and restore the
-           .slides-qr block from talks/_template/index.html once the URL is live. -->
+      <div class="slides-qr">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="492" height="492">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
       <aside class="notes">Thank you to the conference organisers for inviting me. The title of my presentation is 'Reconfiguring the Archive: Relationality and Discovery in the Africa Multiple Interactive Research Atlas.</aside>
     </section>
 
     <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
-    <section data-toc="The Cluster">
+    <section data-toc="The Cluster" data-fit-allow>
       <div class="cols ratio-3-2">
         <div class="col">
           <p class="kicker">University of Bayreuth · German Excellence Strategy · since 2019</p>
@@ -210,7 +205,7 @@
           </ul>
         </div>
         <div class="col">
-          <img class="cluster-logo" src="../../shared/logo-africamultiple.png" alt="Africa Multiple Cluster of Excellence">
+          <img class="cluster-logo" src="../../shared/logo-africamultiple.png" alt="Africa Multiple Cluster of Excellence" width="1655" height="407">
           <div class="col-head">In figures</div>
           <div class="cluster-figures">
             <div class="stat"><span class="stat-num" data-count="300" data-count-suffix="+">300+</span><span class="stat-label">Researchers, cluster-wide</span></div>
@@ -234,7 +229,7 @@
         <div class="col">
           <figure class="shot-fig amrc-embed">
             <iframe class="amrc-iframe" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/collection-overview/clusterPartners" title="Africa Multiple Research Centres (AMRCs) and its partners" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
-            <img class="shot amrc-fallback" src="assets/amrc-map.png" alt="World map showing the five Africa Multiple Research Centres — Université Joseph Ki-Zerbo (Ouagadougou), University of Bayreuth, Moi University (Eldoret), University of Lagos and Rhodes University (Makhanda) — alongside a privileged partner, cooperation partners and global partner Centres of African Studies across the Americas, Europe, Asia and Australia." hidden>
+            <img class="shot amrc-fallback" data-src="assets/amrc-map.png" alt="World map showing the five Africa Multiple Research Centres — Université Joseph Ki-Zerbo (Ouagadougou), University of Bayreuth, Moi University (Eldoret), University of Lagos and Rhodes University (Makhanda) — alongside a privileged partner, cooperation partners and global partner Centres of African Studies across the Americas, Europe, Asia and Australia." hidden width="1640" height="659">
           </figure>
         </div>
         <div class="col">
@@ -253,7 +248,7 @@
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
-    <section data-toc="The DRE">
+    <section data-toc="The DRE" data-fit-allow>
       <p class="kicker">Digital Research Environment (DRE) — the cluster's digital infrastructure unit</p>
       <h2 class="slide-title">We build the cluster's data infrastructure</h2>
       <p class="lead">Four areas of work — one goal: research data that is <span class="accent">findable, reusable and presentable</span>.</p>
@@ -314,11 +309,11 @@
       </div>
       <div class="wisski-figs">
         <figure class="shot-fig">
-          <img class="shot" src="assets/wisski-1.png" alt="WissKI@UBT — searching and exploring the cluster's research data through a web interface.">
+          <img class="shot" data-src="assets/wisski-1.png" alt="WissKI@UBT — searching and exploring the cluster's research data through a web interface." width="1918" height="954">
           <figcaption>Searching and exploring research data across the centres.</figcaption>
         </figure>
         <figure class="shot-fig">
-          <img class="shot" src="assets/wisski-2.png" alt="A WissKI knowledge graph — entities connected to each other and to shared ontologies through typed relations.">
+          <img class="shot" data-src="assets/wisski-2.png" alt="A WissKI knowledge graph — entities connected to each other and to shared ontologies through typed relations." width="1177" height="988">
           <figcaption>Records as a knowledge graph: entities linked by typed relations.</figcaption>
         </figure>
       </div>
@@ -350,7 +345,7 @@
       </p>
       <!-- QR to the live AMIRA site — inline lockup under the chips. -->
       <div class="slides-qr">
-        <img src="assets/qr-amira.png" alt="QR code linking to the AMIRA website">
+        <img data-src="assets/qr-amira.png" alt="QR code linking to the AMIRA website" width="500" height="500">
         <span class="qr-label"><b>Scan to explore AMIRA</b><span class="qr-url">data.africamultiple.uni-bayreuth.de</span></span>
       </div>
       <aside class="notes">The DRE has recently launched AMIRA (the Africa Multiple Interactive Research Atlas), which is the cluster's new platform for exploring and visualising its research data, publications, and outputs. Built using Omeka S, it allows you to browse research items, publications, podcasts, YouTube videos, people and organisations, and features search, autocomplete and faceted filters. You can also visualise charts, maps, and network graphs showing who works with whom, where projects are located, and which themes cut across the collection. Everything is cross-linked: click on a person, project, subject or place to land on its detail page with its web of connections.</aside>
@@ -443,7 +438,7 @@
     </section>
 
     <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
-    <section data-toc="Spatial exploration">
+    <section data-toc="Spatial exploration" data-fit-allow>
       <p class="kicker">Custom Omeka S module · built in-house</p>
       <h2 class="slide-title">Spatial exploration</h2>
       <p class="lead">One of the DRE visualisation modules I build — every <span class="accent">georeferenced place</span> in the collection, on one map you can pan, zoom and open.</p>
@@ -577,7 +572,6 @@
 
 <!-- reveal.js + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
-<script src="../../shared/reveal/plugin/highlight.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>

@@ -25,10 +25,21 @@
      Add a language by extending I18N; decks opt in via <html lang="xx">. -------- */
   var LANG = (CFG.lang || document.documentElement.lang || "en").slice(0, 2).toLowerCase();
   var I18N = {
-    en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close" },
-    fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer" }
+    en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close",
+          imageViewer: "Image viewer", imageClose: "Close image", imageView: "View image full screen", imagePrev: "Previous image", imageNext: "Next image",
+          embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
+          frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
+    fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer",
+          imageViewer: "Visionneuse d’images", imageClose: "Fermer l’image", imageView: "Afficher l’image en plein écran", imagePrev: "Image précédente", imageNext: "Image suivante",
+          embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
+          frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
   };
   var STR = I18N[LANG] || I18N.en;
+
+  /* Dev-mode flags: ?check outlines overflow + shows fit scales; ?no-fit (or
+     ?audit) disables auto-fitting so authored overflow is visible raw. */
+  var CHECK_MODE = /[?&](check|audit)\b/.test(location.search);
+  var NO_FIT = /[?&](no-fit|audit)\b/.test(location.search);
 
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
@@ -137,19 +148,19 @@
     var entries = [];
     hSlides.forEach(function (sec, h) {
       var label = sec.getAttribute("data-toc");
-      if (label) entries.push({ h: h, label: label, part: sec.getAttribute("data-toc-part") || "" });
+      if (label) entries.push({ h: h, label: label });
     });
     if (!entries.length) return; // no TOC requested
 
     var rows = entries.map(function (e, i) {
       var n = String(i + 1).padStart(2, "0");
       var folio = String(e.h + 1).padStart(2, "0");
-      return '<button class="toc-item" data-h="' + e.h + '">' +
+      return '<li><button class="toc-item" data-h="' + e.h + '">' +
                '<span class="toc-num">' + n + "</span>" +
                '<span class="toc-label">' + e.label + "</span>" +
                '<span class="toc-dots" aria-hidden="true"></span>' +
                '<span class="toc-folio">' + folio + "</span>" +
-             "</button>";
+             "</button></li>";
     }).join("");
 
     overlay = elem(
@@ -176,25 +187,60 @@
     });
     overlay.querySelector(".toc-close").addEventListener("click", closeTOC);
     overlay.addEventListener("click", function (e) { if (e.target === overlay) closeTOC(); });
-    overlay.addEventListener("keydown", trapTOCFocus);
+    setDialogHidden(overlay, true);
+  }
+  /* Keep an overlay's accessibility state in sync with its visual state:
+     `inert` (with aria-hidden fallback) while closed, interactive while open. */
+  function setDialogHidden(dialog, hiddenState) {
+    if (!dialog) return;
+    if ("inert" in dialog) dialog.inert = hiddenState;
+    if (hiddenState) dialog.setAttribute("aria-hidden", "true");
+    else dialog.removeAttribute("aria-hidden");
+  }
+  /* Focus an element once its dialog is actually visible: the overlays fade in
+     via a visibility transition, and focus() is a no-op while the computed
+     visibility is still hidden (the first frame after the class flips). */
+  function focusWhenVisible(el) {
+    if (!el) return;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { el.focus(); }); });
   }
   var tocLastFocus = null;
   function openTOC()  {
     if (!overlay) return;
     tocLastFocus = document.activeElement;
     overlay.classList.add("open");
+    setDialogHidden(overlay, false);
     markCurrentTOC();
     // Move focus into the dialog (current entry if any, else the first).
-    var target = overlay.querySelector(".toc-item.current") || overlay.querySelector(".toc-item");
-    if (target) target.focus();
+    focusWhenVisible(overlay.querySelector(".toc-item.current") || overlay.querySelector(".toc-item"));
   }
   function closeTOC() {
     if (!overlay) return;
     overlay.classList.remove("open");
+    setDialogHidden(overlay, true);
     if (tocLastFocus && tocLastFocus.focus) tocLastFocus.focus(); // restore focus to the trigger
     tocLastFocus = null;
   }
   function toggleTOC(){ if (overlay) (overlay.classList.contains("open") ? closeTOC() : openTOC()); }
+  /* While the TOC is open, keys must act on the DIALOG, never on the deck
+     behind it: Tab is trapped inside, arrows move between entries, Escape
+     closes, and everything else is stopped before reveal's own key handler.
+     Runs in the capture phase on document so it wins over Reveal. */
+  function tocKeydown(e) {
+    if (!overlay || !overlay.classList.contains("open")) return;
+    if (e.key === "Tab") { trapTOCFocus(e); e.stopPropagation(); return; }
+    if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); closeTOC(); return; }
+    var f = Array.prototype.slice.call(
+      overlay.querySelectorAll(".toc-item")
+    ).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    var idx = f.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); if (f.length) f[(idx + 1 + f.length) % f.length].focus(); }
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); if (f.length) f[(idx - 1 + f.length) % f.length].focus(); }
+    else if (e.key === "Home") { e.preventDefault(); if (f.length) f[0].focus(); }
+    else if (e.key === "End") { e.preventDefault(); if (f.length) f[f.length - 1].focus(); }
+    // Whatever the key, never let it drive the presentation behind the dialog.
+    e.stopPropagation();
+  }
   /* Keep Tab inside the open dialog (simple focus trap). */
   function trapTOCFocus(e) {
     if (e.key !== "Tab" || !overlay || !overlay.classList.contains("open")) return;
@@ -204,7 +250,7 @@
     if (!f.length) return;
     var first = f[0], last = f[f.length - 1], a = document.activeElement;
     if (e.shiftKey && (a === first || !overlay.contains(a))) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+    else if (!e.shiftKey && (a === last || !overlay.contains(a))) { e.preventDefault(); first.focus(); }
   }
   function markCurrentTOC() {
     if (!overlay) return;
@@ -214,8 +260,9 @@
       var bh = parseInt(btn.getAttribute("data-h"), 10);
       if (bh <= h) active = btn;
       btn.classList.remove("current");
+      btn.removeAttribute("aria-current");
     });
-    if (active) active.classList.add("current");
+    if (active) { active.classList.add("current"); active.setAttribute("aria-current", "page"); }
   }
 
   /* ---- per-slide sync ----------------------------------------------------- */
@@ -251,13 +298,33 @@
      area (gold-rule clearance on hero slides; footer reserve below). Slides that
      already fit are never touched; an overflowing one is wrapped in an absolutely
      placed .fit box and scaled to fit. Runs once per slide, after webfonts settle
-     so the measurement is real. ------------------------------------------------ */
+     so the measurement is real — and again (forced) when delayed content such as
+     an image or a file embed resolves and changes the slide's height.
+
+     Fitting is VISIBLE, not silent: every fitted slide carries data-fit with the
+     applied scale; a scale below FIT_WARN logs a warning; below FIT_FAIL the
+     slide is stamped data-fit-fail (a validation failure) unless the author
+     explicitly allows it with a data-fit-allow attribute on the <section>.
+     ?no-fit / ?audit disables fitting entirely so raw overflow can be seen. --- */
+  var FIT_WARN = 0.95, FIT_FAIL = 0.90;
   var fitReady = !(document.fonts && document.fonts.ready);
   var FIT_SEEN = (typeof WeakSet === "function") ? new WeakSet() : null;
-  function fitSlide(sec) {
-    if (!sec || !fitReady) return;
-    if (FIT_SEEN && FIT_SEEN.has(sec)) return;
-    if (sec.querySelector(":scope > .fit")) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
+  /* Layouts that centre content vertically: their .fit box spans the whole safe
+     area and keeps the content centred while it scales. */
+  var CENTERED = ["cover", "section", "statement", "closing", "metric", "center", "balance"];
+  function unwrapFit(sec) {
+    var fit = sec.querySelector(":scope > .fit");
+    if (!fit) return;
+    while (fit.firstChild) sec.insertBefore(fit.firstChild, fit);
+    sec.removeChild(fit);
+    sec.removeAttribute("data-fit");
+    sec.removeAttribute("data-fit-fail");
+  }
+  function fitSlide(sec, force) {
+    if (!sec || !fitReady || NO_FIT) return;
+    if (!force && FIT_SEEN && FIT_SEEN.has(sec)) return;
+    if (force) unwrapFit(sec);
+    else if (sec.querySelector(":scope > .fit")) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
     var cs = getComputedStyle(sec);
     var padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
     var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
@@ -270,26 +337,55 @@
       return pos !== "absolute" && pos !== "fixed";
     });
     if (!kids.length) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
-    var topMost = Infinity, botMost = -Infinity;
+    var topMost = Infinity, botMost = -Infinity, leftMost = Infinity, rightMost = -Infinity;
     kids.forEach(function (c) {
       topMost = Math.min(topMost, c.offsetTop);
       botMost = Math.max(botMost, c.offsetTop + c.offsetHeight);
+      leftMost = Math.min(leftMost, c.offsetLeft);
+      rightMost = Math.max(rightMost, c.offsetLeft + c.offsetWidth);
     });
-    var H = botMost - topMost;
+    var H = botMost - topMost, W = rightMost - leftMost;
     var boxTop = padT + clearance;
     var safeH = sec.clientHeight - boxTop - padB;
-    var needFit = (H > safeH + 3) || (hasRule && topMost < boxTop - 3);
+    var safeW = sec.clientWidth - padL - padR;
+    var needFit = (H > safeH + 3) || (W > safeW + 3) || (hasRule && topMost < boxTop - 3);
     if (needFit && safeH > 40 && H > 0) {
-      var k = Math.max(0.55, Math.min(1, safeH / H));
+      var k = Math.max(0.55, Math.min(1, safeH / H, W > 0 ? safeW / W : 1));
+      var centered = CENTERED.some(function (c) { return sec.classList.contains(c); });
       var fit = document.createElement("div");
       fit.className = "fit";
       while (kids.length) fit.appendChild(kids.shift());
       sec.insertBefore(fit, sec.firstChild);
       fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
-        "px;margin:0;display:flex;flex-direction:column;transform-origin:top left;transform:scale(" + k.toFixed(4) + ");";
+        "px;margin:0;display:flex;flex-direction:column;" +
+        (centered
+          ? "bottom:" + padB + "px;justify-content:center;transform-origin:center center;"
+          : "transform-origin:top left;") +
+        "transform:scale(" + k.toFixed(4) + ");";
       sec.setAttribute("data-fit", k.toFixed(3));
+      if (k < FIT_FAIL && !sec.hasAttribute("data-fit-allow")) {
+        sec.setAttribute("data-fit-fail", k.toFixed(3));
+        console.error("deck: slide " + slideRef(sec) + " auto-fitted to ×" + k.toFixed(3) +
+          " (below the " + FIT_FAIL + " readability threshold). Trim the slide or add data-fit-allow.");
+      } else if (k < FIT_WARN) {
+        console.warn("deck: slide " + slideRef(sec) + " auto-fitted to ×" + k.toFixed(3) + " — consider trimming it.");
+      }
     }
     if (FIT_SEEN) FIT_SEEN.add(sec);
+    if (checkModeUpdate) checkModeUpdate();
+  }
+  function slideRef(sec) {
+    var hSlides = Reveal.getHorizontalSlides ? Reveal.getHorizontalSlides() : [];
+    var i = hSlides.indexOf(sec);
+    var title = sec.querySelector("h1, h2, h3");
+    return "#" + (i >= 0 ? i + 1 : "?") + (title ? " (“" + title.textContent.trim().slice(0, 40) + "”)" : "");
+  }
+  /* Re-fit a slide when late-loading content (images, embeds, iframes) changes
+     its measured height after the first pass. */
+  function refitAfterLoad(el) {
+    var sec = el && el.closest ? el.closest(".slides > section") : null;
+    if (!sec || !fitReady) return;
+    if ((FIT_SEEN && FIT_SEEN.has(sec)) || sec.querySelector(":scope > .fit")) fitSlide(sec, true);
   }
 
   /* ---- duotone filters (Move 2): inject the green/navy duotone SVG filters
@@ -373,12 +469,20 @@
     });
   }
 
-  /* Load any [data-skill-src] panel from its vendored file and syntax-highlight it. */
-  function loadSkillEmbeds() {
-    document.querySelectorAll("[data-skill-src]").forEach(function (panel) {
+  /* Load any [data-embed-src] / [data-skill-src] panel from its vendored file
+     and syntax-highlight it. Generic: optional data-error-message overrides the
+     failure text, optional data-source-url adds a link to the original.
+     Loading / success / failure states are exposed accessibly (aria-busy,
+     role=status/alert), and the slide is re-fitted once the embed resolves. */
+  function loadFileEmbeds() {
+    document.querySelectorAll("[data-embed-src], [data-skill-src]").forEach(function (panel) {
       var code = panel.querySelector("code");
       if (!code) return;
-      fetch(panel.getAttribute("data-skill-src"))
+      var src = panel.getAttribute("data-embed-src") || panel.getAttribute("data-skill-src");
+      panel.setAttribute("aria-busy", "true");
+      panel.setAttribute("role", "status");
+      code.textContent = STR.embedLoading;
+      fetch(src)
         .then(function (r) { if (!r.ok) throw r.status; return r.text(); })
         .then(function (text) {
           code.textContent = text;
@@ -389,14 +493,26 @@
             code.classList.remove("hljs");
             try { hl.highlightElement(code); } catch (e) {}
           }
+          panel.removeAttribute("aria-busy");
+          panel.removeAttribute("role");
+          refitAfterLoad(panel);
         })
         .catch(function () {
-          code.textContent = "Could not load the file — it's open source at github.com/fmadore/iwac-mcp-server";
+          var msg = panel.getAttribute("data-error-message") || STR.embedError;
+          var url = panel.getAttribute("data-source-url");
+          code.textContent = msg + (url ? " — " + STR.embedSource + ": " + url : "");
+          panel.removeAttribute("aria-busy");
+          panel.setAttribute("role", "alert");
+          refitAfterLoad(panel);
         });
     });
   }
 
-  /* ---- image lightbox: click a figure/screenshot to view it full-screen --- */
+  /* ---- image lightbox: view a figure/screenshot full-screen ----------------
+     Fully keyboard-operable: every zoomable image is a focusable control that
+     opens with Enter/Space; the dialog focuses its close button, traps Tab,
+     navigates with the arrow keys, closes with Escape, and returns focus to
+     the originating image. hidden/inert state mirrors the visual state. ------ */
   var lightbox, lbImg;
   function buildLightbox() {
     var imgs = document.querySelectorAll(
@@ -404,16 +520,18 @@
     );
     if (!imgs.length) return;
     lightbox = elem(
-      '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">' +
-        '<button class="lightbox-close" aria-label="Close image">' + ICON.close + "</button>" +
+      '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="' + STR.imageViewer + '">' +
+        '<button class="lightbox-close" aria-label="' + STR.imageClose + '">' + ICON.close + "</button>" +
         '<figure class="lightbox-figure"><img alt=""><figcaption></figcaption></figure>' +
       "</div>"
     );
     document.body.appendChild(lightbox);
+    setDialogHidden(lightbox, true);
     lbImg = lightbox.querySelector("img");
     var lbCap = lightbox.querySelector("figcaption");
+    var lbClose = lightbox.querySelector(".lightbox-close");
     var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
-    var curIdx = -1;
+    var curIdx = -1, lbLastFocus = null;
     function showAt(i) {
       curIdx = (i + list.length) % list.length;
       var img = list[curIdx];
@@ -422,24 +540,104 @@
       lbImg.setAttribute("alt", alt);
       lbCap.textContent = alt;
       lbCap.style.display = alt ? "" : "none";
-      lightbox.classList.add("open");
+      if (!lightbox.classList.contains("open")) {
+        lbLastFocus = document.activeElement;
+        lightbox.classList.add("open");
+        setDialogHidden(lightbox, false);
+        focusWhenVisible(lbClose);
+      }
     }
-    function closeLightbox() { lightbox.classList.remove("open"); lbImg.removeAttribute("src"); curIdx = -1; }
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      setDialogHidden(lightbox, true);
+      lbImg.removeAttribute("src");
+      curIdx = -1;
+      // Return focus to the image that opened the viewer.
+      if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
+      lbLastFocus = null;
+    }
     list.forEach(function (img, i) {
       img.classList.add("is-zoomable");
+      img.setAttribute("tabindex", "0");
+      img.setAttribute("role", "button");
+      var alt = img.getAttribute("alt") || "";
+      img.setAttribute("aria-label", STR.imageView + (alt ? ": " + alt : ""));
       img.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();
         showAt(i);
+      });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+          e.preventDefault(); e.stopPropagation();
+          showAt(i);
+        }
       });
     });
     lightbox.addEventListener("click", closeLightbox); // backdrop, image, or close button
     document.addEventListener("keydown", function (e) {
       if (!lightbox.classList.contains("open")) return;
-      e.stopPropagation(); e.preventDefault(); // never drive the deck behind the lightbox
-      if (e.key === "Escape") closeLightbox();
-      else if (e.key === "ArrowRight" || e.key === "ArrowDown") showAt(curIdx + 1);
-      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") showAt(curIdx - 1);
+      // Tab stays available so the dialog is keyboard-traversable — trap it inside.
+      if (e.key === "Tab") {
+        e.preventDefault(); e.stopPropagation();
+        lbClose.focus();
+        return;
+      }
+      e.stopPropagation(); // never drive the deck behind the lightbox
+      if (e.key === "Escape") { e.preventDefault(); closeLightbox(); }
+      else if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); showAt(curIdx + 1); }
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); showAt(curIdx - 1); }
     }, true);
+  }
+
+  /* ---- live iframes: lazy-load + offline fallback -------------------------
+     Every .site-frame-view iframe is converted to reveal's data-src form so it
+     loads only when its slide becomes visible (and unloads after). If a frame
+     has not loaded within a grace period of its slide becoming active — no
+     network, or the site refuses framing — a fallback note with the original
+     link appears instead of a silent white box. -------------------------------- */
+  function lazifyFrames() {
+    document.querySelectorAll(".reveal .slides .site-frame-view > iframe[src]").forEach(function (f) {
+      if (!f.hasAttribute("data-src")) f.setAttribute("data-src", f.getAttribute("src"));
+      f.removeAttribute("src");
+    });
+  }
+  function initFrameFallbacks() {
+    var frames = document.querySelectorAll(".reveal .slides .site-frame-view > iframe");
+    if (!frames.length) return;
+    frames.forEach(function (f) {
+      f.addEventListener("load", function () { f.setAttribute("data-frame-loaded", ""); hideFallback(f); });
+    });
+    function fallbackFor(f) {
+      var view = f.parentElement;
+      var fb = view.querySelector(".frame-fallback");
+      if (!fb) {
+        var openLink = f.closest(".site-frame") && f.closest(".site-frame").querySelector(".site-frame-open");
+        var href = f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || f.getAttribute("data-src") || "";
+        fb = elem('<div class="frame-fallback" role="status"><p>' + STR.frameUnavailable + "</p>" +
+          (href ? '<a href="' + href + '" target="_blank" rel="noopener">' + STR.frameOpen + " ↗</a>" : "") + "</div>");
+        fb.hidden = true;
+        view.appendChild(fb);
+      }
+      return fb;
+    }
+    function hideFallback(f) {
+      var fb = f.parentElement.querySelector(".frame-fallback");
+      if (fb) fb.hidden = true;
+    }
+    function watchCurrent() {
+      var cur = Reveal.getCurrentSlide();
+      if (!cur) return;
+      cur.querySelectorAll(".site-frame-view > iframe").forEach(function (f) {
+        if (f.hasAttribute("data-frame-loaded")) return;
+        setTimeout(function () {
+          if (!f.hasAttribute("data-frame-loaded") && Reveal.getCurrentSlide() === cur) {
+            fallbackFor(f).hidden = false;
+          }
+        }, 8000);
+      });
+    }
+    Reveal.on("slidechanged", watchCurrent);
+    watchCurrent();
   }
 
   /* ---- syntax highlighting (plugin-independent) --------------------------- */
@@ -458,20 +656,41 @@
     });
   }
 
-  /* ---- dev-only overflow guard (?check): outline any slide whose content
-     spills past the fixed 1280×720 canvas, so you catch it while authoring. */
-  function enableOverflowCheck() {
+  /* ---- dev-only slide check (?check): outline any slide whose content spills
+     past the fixed 1280×720 canvas, and make auto-fitting VISIBLE — the banner
+     shows the applied data-fit scale for the current slide, amber below the
+     warning threshold, red below the failure threshold. Combine with ?no-fit
+     (or use ?audit, which implies both) to see authored overflow before any
+     scaling is applied. ------------------------------------------------------- */
+  var checkModeUpdate = null;
+  function enableCheckMode() {
     var banner = elem('<div class="deck-overflow-banner" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:90;font:600 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:4px;background:#c0392b;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35);pointer-events:none">Slide overflows 1280×720</div>');
     banner.hidden = true;
     document.body.appendChild(banner);
     function check() {
       var s = Reveal.getCurrentSlide();
       if (!s) return;
-      var over = s.scrollHeight > s.clientHeight + 1 || s.scrollWidth > s.clientWidth + 1;
-      s.style.outline = over ? "3px solid #c0392b" : "";
-      s.style.outlineOffset = over ? "-3px" : "";
-      banner.hidden = !over;
+      var fitted = s.hasAttribute("data-fit");
+      var k = fitted ? parseFloat(s.getAttribute("data-fit")) : 1;
+      // A fitted slide's layout boxes are unscaled (transforms don't change
+      // scrollHeight), so the raw overflow test only applies to unfitted slides.
+      var over = !fitted && (s.scrollHeight > s.clientHeight + 1 || s.scrollWidth > s.clientWidth + 1);
+      var fail = s.hasAttribute("data-fit-fail") || (fitted && k < FIT_FAIL && !s.hasAttribute("data-fit-allow"));
+      var warn = fitted && k < FIT_WARN;
+      var msg = "", color = "#c0392b";
+      if (over) msg = NO_FIT ? "Authored overflow (fitting disabled)" : "Slide overflows 1280×720";
+      else if (fitted) {
+        msg = "Auto-fitted ×" + k.toFixed(3) + (fail ? " — below " + FIT_FAIL : warn ? " — below " + FIT_WARN : "");
+        color = fail ? "#c0392b" : warn ? "#b9770e" : "#1e8449";
+      }
+      var outline = over || fail ? "#c0392b" : warn ? "#b9770e" : "";
+      s.style.outline = outline ? "3px solid " + outline : "";
+      s.style.outlineOffset = outline ? "-3px" : "";
+      banner.textContent = msg;
+      banner.style.background = color;
+      banner.hidden = !msg;
     }
+    checkModeUpdate = check;
     Reveal.on("slidechanged", check);
     check();
   }
@@ -479,10 +698,15 @@
   function init() {
     var reveal = document.querySelector(".reveal");
     decorateChrome();
+    lazifyFrames();   // live iframes load only when their slide becomes visible
 
     Reveal.initialize({
       width: 1280, height: 720, margin: 0,
       minScale: 0.2, maxScale: 2.0,
+      // Never switch to reveal 6's scroll view on narrow screens: the theme is
+      // designed around a scaled 1280×720 canvas, and the automatic scroll mode
+      // (≤435 px wide) clips two-column slides on portrait phones.
+      scrollActivationWidth: null,
       center: false, hash: true,
       controls: false, progress: true, slideNumber: false,
       transition: CFG.transition || "fade",
@@ -500,10 +724,18 @@
       buildFooter(reveal);
       buildRunhead(reveal);
       buildTOC(reveal);
-      loadSkillEmbeds();
+      loadFileEmbeds();
       buildLightbox();
+      initFrameFallbacks();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)
       update();
+      // Late-loading media (lazy data-src images, embeds) can change a slide's
+      // height after the first fit pass — re-fit the slide when they arrive.
+      // Images only: iframes are reloaded by the browser whenever the fit
+      // wrapper reparents them, so refitting on iframe load would loop.
+      document.querySelector(".slides").addEventListener("load", function (e) {
+        if (e.target && e.target.nodeName === "IMG") refitAfterLoad(e.target);
+      }, true);
       // If the tab hides mid-roll, rAF freezes; snap any counting numeral to its
       // final value so none is ever left reading a partial count (or 0).
       document.addEventListener("visibilitychange", function () {
@@ -515,7 +747,7 @@
           if (done !== null) el.textContent = done;
         });
       });
-      if (/[?&]check\b/.test(location.search)) enableOverflowCheck();
+      if (CHECK_MODE) enableCheckMode();
 
       // Defensive relayout: recompute the scale once the window and webfonts
       // have settled, in case the deck initialised before it had real size.
@@ -523,12 +755,9 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
 
       Reveal.addKeyBinding({ keyCode: 84, key: "T", description: "Table of contents" }, toggleTOC);
-      // Esc closes the TOC before reveal's overview takes it
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && overlay && overlay.classList.contains("open")) {
-          e.stopPropagation(); e.preventDefault(); closeTOC();
-        }
-      }, true);
+      // While the TOC dialog is open, all keys act on the dialog (capture phase,
+      // before reveal's own handler): Esc closes, arrows move, Tab is trapped.
+      document.addEventListener("keydown", tocKeydown, true);
     });
 
     Reveal.on("slidechanged", update);

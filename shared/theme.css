@@ -501,6 +501,19 @@
 .reveal .byline { display: flex; flex-direction: column; gap: 0.12em; }
 .reveal .byline .name { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); letter-spacing: 0.01em; }
 .reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); font-style: italic; font-family: var(--font-serif); max-width: 46ch; }
+/* Job-title line — sits between the gothic name and the italic-serif
+   affiliation, in the quiet news-gothic "label" voice. */
+.reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+  font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+.reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+/* Co-presenter byline (.byline.authors): stack each author as a tight
+   name+role+affil block, with a larger gap between authors. */
+.reveal .byline.authors { gap: var(--space-sm); }
+.reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
+/* Per-author institution logo inside a stacked byline. Monochrome marks flip
+   to white on the dark closing; add .keep-color for full-colour box logos. */
+.reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
+.reveal section.closing .byline.authors .author-logo:not(.keep-color) { filter: brightness(0) invert(1); opacity: 0.85; }
 
 /* Contact row (built by deck.js from DECK_CONFIG.links) */
 .reveal .contact { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); }
@@ -903,14 +916,45 @@
 .reveal section.section .slides-qr .qr-label .qr-url,
 .reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), transparent 36%); }
 
+/* Fallback note injected by deck.js when a live iframe fails to load (offline,
+   or the site refuses framing): a quiet centred notice with the original link. */
+.reveal .frame-fallback {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-sm); text-align: center; padding: var(--space-lg);
+  background: var(--sunken);
+}
+.reveal .frame-fallback[hidden] { display: none; }
+.reveal .frame-fallback p { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); color: var(--ink-soft); max-width: 40ch; }
+.reveal .frame-fallback a { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); }
+
+/* Saved-demonstration frame — a captured app/chat run in browser chrome,
+   displayed whole (no crop) and height-capped so the slide never overflows.
+   The frame hugs the image width and centres in the leftover height. */
+.reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: var(--space-md); }
+.reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
+  display: flex; flex-direction: column; min-height: 0;
+  border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-2); background: var(--paper); }
+/* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
+   (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
+.reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
+.reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
+.reveal .demo-shot-view img { display: block; width: auto; height: auto;
+  max-height: 336px; max-width: 100%; }
+.reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+
 /* Framed screenshot inside a content column */
 .reveal .shot { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); box-shadow: none; }
 .reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
 .reveal .col-head .mcp-mark { display: inline-block; height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
 
-/* Image lightbox — click a figure/screenshot to view it full-screen. */
+/* Image lightbox — click a figure/screenshot (or focus it and press Enter)
+   to view it full-screen. Zoomable images are keyboard controls. */
 .reveal .slides .shot.is-zoomable,
 .reveal .slides .site-frame-view > img.is-zoomable { cursor: zoom-in; }
+.reveal .slides .is-zoomable:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
 .deck-lightbox {
   position: fixed; inset: 0; z-index: 80;
   display: flex; align-items: center; justify-content: center;
@@ -977,6 +1021,27 @@
   .deck-runhead { display: none !important; }
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 2rem; padding: 0; }
+}
+
+/* SHALLOW screens (a phone held landscape): the scaled canvas is height-limited
+   and would otherwise fill the viewport right down behind the persistent footer,
+   which then covers the last lines of content. Reserve a real strip for a
+   compact footer *outside* the area reveal scales into: the canvas scales to
+   (viewport − strip), the footer sits in the strip, and nothing overlaps.
+   Desktop (≥ 560px tall) is untouched. */
+@media screen and (max-height: 560px) {
+  :root { --footer-reserve: 2.4rem; }
+  .reveal { height: calc(100% - var(--footer-reserve)); }
+  .deck-footer {
+    height: var(--footer-reserve);
+    bottom: calc(-1 * var(--footer-reserve));
+  }
+  .deck-footer::before { left: 0; right: 0; }
+  .deck-footer .foot-title { display: none; }
+  .deck-runhead { display: none !important; }
+  .deck-btn { width: 1.8rem; height: 1.8rem; }
+  .deck-btn.toc-btn span { display: none; }
+  .deck-btn.toc-btn { width: 1.8rem; padding: 0; }
 }
 
 /* =============================================================================

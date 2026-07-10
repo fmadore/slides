@@ -14,3 +14,12 @@ __pycache__/
 
 # Claude Code (local preview dev-server config, not shared)
 .claude/launch.json
+
+# Local build previews + CI-installed browser-check dependencies
+_site/
+node_modules
+package.json
+package-lock.json
+
+# CI cache for generated PDFs/social cards
+.extras-cache/

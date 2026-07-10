@@ -1,8 +1,16 @@
-name: Deploy to GitHub Pages
+name: Validate and deploy
 
-# Publishes a copy of the deck with speaker notes stripped (see
-# tools/strip-notes.py), so the live site never exposes the S speaker view
-# notes. The repo keeps the notes; only the deployed artifact is stripped.
+# Validation runs on every pull request and push to main; deployment happens
+# only from main, and only after validation succeeds.
+#
+# build publishes an ALLOWLISTED, notes-free copy of the site (see
+# tools/strip-notes.py) plus generated extras: a slides.pdf, a social-card.png
+# and an offline.zip per deck. PDFs/cards are cached and regenerated only when
+# the deck or the shared engine changed (content-hash check inside
+# tools/export-pdf.mjs).
+#
+# All actions used here are first-party (actions/*), referenced by major
+# version tag. If supply-chain policy tightens, pin each to a full commit SHA.
 #
 # One-time setup: repo Settings → Pages → Build and deployment →
 # Source = "GitHub Actions" (instead of "Deploy from a branch").
@@ -10,6 +18,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -19,24 +28,158 @@ permissions:
 
 # Allow one concurrent deployment; let an in-progress run finish.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Static checks (audit, strip-notes tests, landing-page sync)
+        run: |
+          python3 tools/test_strip_notes.py
+          python3 tools/build-index.py --check
+          python3 tools/audit.py --strict
+          python3 tools/strip-notes.py /tmp/site-check
+          python3 tools/audit.py --site /tmp/site-check --strict
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Browser checks (1280×720, 844×390, 390×844)
+        run: node tools/browser-check.mjs
+
+  # Lightweight visual regression: only when the shared engine changed on a
+  # PR — capture the component catalogue from the merge-base and from the
+  # head, compare with a loose tolerance, and upload diff images as artifacts
+  # on failure. Skipped when the catalogue deck itself changed in the same
+  # PR: the baseline then shows different *content*, so a pixel comparison
+  # can only measure the intended edit, not engine drift.
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check whether the shared engine changed (and the catalogue did not)
+        id: engine
+        run: |
+          BASE=$(git merge-base origin/${{ github.base_ref }} HEAD)
+          CHANGED=$(git diff --name-only "$BASE" HEAD)
+          engine=false; catalogue=false
+          echo "$CHANGED" | grep -qE '^shared/(theme\.css|deck\.js|reveal/)' && engine=true
+          echo "$CHANGED" | grep -qE '^talks/(_showcase|_template)/' && catalogue=true
+          if [ "$engine" = true ] && [ "$catalogue" = false ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            [ "$engine" = true ] && echo "::notice::visual regression skipped — the catalogue deck changed in this PR, so the merge-base screenshots show different content"
+          fi
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v6
+        if: steps.engine.outputs.changed == 'true'
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        if: steps.engine.outputs.changed == 'true'
+        run: |
+          npm install --no-save playwright pixelmatch pngjs
+          npx playwright install --with-deps chromium
+
+      - name: Capture merge-base screenshots
+        if: steps.engine.outputs.changed == 'true'
+        run: |
+          git worktree add /tmp/base-tree ${{ steps.engine.outputs.base }}
+          node tools/browser-check.mjs --root /tmp/base-tree --decks _template --screenshots /tmp/shots-base || true
+
+      - name: Capture head screenshots
+        if: steps.engine.outputs.changed == 'true'
+        run: node tools/browser-check.mjs --decks _template --screenshots /tmp/shots-head
+
+      - name: Compare
+        if: steps.engine.outputs.changed == 'true'
+        run: node tools/visual-diff.mjs --before /tmp/shots-base --after /tmp/shots-head --out /tmp/visual-diff
+
+      - name: Upload diff images
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: visual-diff
+          path: |
+            /tmp/visual-diff
+            /tmp/shots-base
+            /tmp/shots-head
+          if-no-files-found: ignore
+
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - uses: actions/configure-pages@v6
-      - name: Strip speaker notes into ./_site
-        run: python3 tools/strip-notes.py _site
+
+      - name: Build the allowlisted, notes-free site
+        run: |
+          python3 tools/strip-notes.py _site
+          python3 tools/audit.py --site _site
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      # PDFs + social cards are expensive: restore the last run's outputs and
+      # let export-pdf's content-hash check skip every unchanged deck.
+      - name: Restore PDF/social-card cache
+        uses: actions/cache@v5
+        with:
+          path: .extras-cache
+          key: deck-extras-${{ hashFiles('talks/**', 'shared/**') }}
+          restore-keys: deck-extras-
+
+      - name: Export PDFs and social cards
+        run: |
+          if [ -d .extras-cache ]; then cp -r .extras-cache/talks/. _site/talks/ 2>/dev/null || true; fi
+          node tools/export-pdf.mjs --root _site
+          mkdir -p .extras-cache
+          rm -rf .extras-cache/talks
+          (cd _site && find talks -maxdepth 2 \
+             \( -name slides.pdf -o -name social-card.png -o -name .extras-hash \) \
+             -exec install -D {} ../.extras-cache/{} \;)
+
+      - name: Build offline bundles
+        run: |
+          python3 tools/build-offline.py --root _site
+          find _site -name .extras-hash -delete
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

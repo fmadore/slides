@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dormant Digital Collections, AI Triage — Frédérick Madore</title>
+  <meta name="description" content="Lessons from the Islam West Africa Collection and beyond.">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="Dormant Digital Collections, AI Triage">
+  <meta property="og:description" content="Lessons from the Islam West Africa Collection and beyond.">
+  <meta property="og:url" content="https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/">
+  <meta property="og:image" content="https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "PresentationDigitalDocument", "name": "Dormant Digital Collections, AI Triage", "description": "Lessons from the Islam West Africa Collection and beyond.", "url": "https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/", "inLanguage": "en", "datePublished": "2026-05-06", "author": [{"@type": "Person", "name": "Frédérick Madore"}], "keywords": "IWAC, AI, OCR, collections", "publisher": {"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/"}, "releasedEvent": {"@type": "Event", "name": "German Society of Asia Studies · Berlin", "startDate": "2026-05-06"}}</script>
   <meta name="author" content="Frédérick Madore">
   <link rel="icon" href="../../shared/logo-africamultiple.png">
 
@@ -15,10 +28,7 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line — sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice (matches the template). */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+    /* (.byline .role now lives in shared/theme.css.) */
 
     /* Slide 2 — a small framed strip of selected work (two book covers + the DH/AI hero).
        flex:0 0 auto + object-fit:contain stop the row from shrink-distorting the covers
@@ -155,7 +165,7 @@
   <div class="slides">
 
     <!-- ════════ 1 · COVER ═══════════════════════════════════════ -->
-    <section class="cover" data-footer="light">
+    <section class="cover" data-footer="light" data-fit-allow>
       <p class="eyebrow">Deutsche Gesellschaft für Asienforschung · Roundtable: DH &amp; KI in den Regionalwissenschaften</p>
       <h1>Dormant Digital Collections, AI Triage</h1>
       <p class="subtitle">Lessons from the Islam West Africa Collection and beyond</p>
@@ -168,7 +178,7 @@
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
       <div class="slides-qr">
-        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="656" height="656">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
       </div>
       <aside class="notes">I'll open on the hook, not the title. Arlette Farge wrote about the allure of the archive: the slow, physical encounter with a document. Most of us now work very differently. We come back from fieldwork with thousands of scans we will never read. My argument today is simple: AI won't replace close reading, but it can triage — it can tell us where close reading is worth our time. The examples come from a collection on Islam in West Africa, but the lessons travel to any region's archives, including Asia.</aside>
@@ -191,15 +201,15 @@
         <div class="col">
           <div class="bio-gallery">
             <figure>
-              <img src="assets/book-campuses.webp" alt="Book cover: Religious Activism on Campuses in Togo and Benin by Frédérick Madore (De Gruyter)">
+              <img data-src="assets/book-campuses.webp" alt="Book cover: Religious Activism on Campuses in Togo and Benin by Frédérick Madore (De Gruyter)" width="896" height="1331">
               <figcaption>Monograph · 2025</figcaption>
             </figure>
             <figure>
-              <img src="assets/book-religiosity.webp" alt="Book cover: Religiosity on University Campuses in Africa, edited by Sounaye and Madore (LIT)">
+              <img data-src="assets/book-religiosity.webp" alt="Book cover: Religiosity on University Campuses in Africa, edited by Sounaye and Madore (LIT)" width="896" height="1290">
               <figcaption>Co-edited · 2023</figcaption>
             </figure>
             <figure>
-              <img src="assets/dh-bielefeld-hero.webp" alt="Blog: Charting New Territory — Digital Humanities und Künstliche Intelligenz in den African Studies, by Frédérick Madore and Vincent Hiribarren">
+              <img data-src="assets/dh-bielefeld-hero.webp" alt="Blog: Charting New Territory — Digital Humanities und Künstliche Intelligenz in den African Studies, by Frédérick Madore and Vincent Hiribarren" width="1536" height="1536">
               <figcaption>DH &amp; AI initiative</figcaption>
             </figure>
           </div>
@@ -209,18 +219,18 @@
     </section>
 
     <!-- ════════ 3 · THE SCANNING PARTY (reading room vs backroom) ═ -->
-    <section data-toc="The scanning party" id="s-scan">
+    <section data-toc="The scanning party" id="s-scan" data-fit-allow>
       <p class="kicker warm">The allure of the archive</p>
       <h2 class="slide-title">From the reading room to the "scanning party"</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">The reading room</div>
-          <img class="shot tall" src="assets/farge-allure.jpg" alt="Book cover: The Allure of the Archives by Arlette Farge — a magnifying glass over an old handwritten manuscript">
+          <img class="shot tall" data-src="assets/farge-allure.jpg" alt="Book cover: The Allure of the Archives by Arlette Farge — a magnifying glass over an old handwritten manuscript" width="224" height="358">
           <p class="small muted">Farge (1989): the slow, tactile encounter — "touching the real".</p>
         </div>
         <div class="col">
           <div class="col-head alt">The scanning party</div>
-          <img class="shot tall" src="assets/scanning-party.jpg" alt="An unsorted backroom: stacks of old newspapers and bound volumes piled on tables, chairs and a sofa, with a scanner in the foreground — awaiting digitisation">
+          <img class="shot tall" data-src="assets/scanning-party.jpg" alt="An unsorted backroom: stacks of old newspapers and bound volumes piled on tables, chairs and a sofa, with a scanner in the foreground — awaiting digitisation" width="306" height="204">
           <p class="small muted">An unsorted backroom, photographed in three days.</p>
         </div>
       </div>
@@ -283,7 +293,7 @@
       <h2 class="slide-title">Multimodal LLMs read the page like a person</h2>
       <div class="cols ratio-2-3">
         <div class="col">
-          <img class="shot tall" src="assets/ocr-newspaper-annotated.jpg" alt="A multi-column Ivorian newspaper article, 'Les imams se battent', overlaid with red numbered markers showing the reading order that traditional OCR scrambles — labelled 'Layout recognition failure'">
+          <img class="shot tall" data-src="assets/ocr-newspaper-annotated.jpg" alt="A multi-column Ivorian newspaper article, 'Les imams se battent', overlaid with red numbered markers showing the reading order that traditional OCR scrambles — labelled 'Layout recognition failure'" width="1600" height="1397">
           <p class="small muted">Layout recognition failure: traditional OCR scrambles a multi-column page.</p>
         </div>
         <div class="col">
@@ -295,7 +305,7 @@
           </ul>
           <div class="callout navy">
             <span class="callout-label">Strongest so far</span>
-            <span class="model-tag"><img src="assets/logo-gemini-mark.svg" alt="">Google Gemini 3 Pro</span> — the best model I have tested for this.
+            <span class="model-tag"><img data-src="assets/logo-gemini-mark.svg" alt="">Google Gemini 3 Pro</span> — the best model I have tested for this.
           </div>
         </div>
       </div>
@@ -308,7 +318,7 @@
       <h2 class="slide-title">Reading printed Ewé</h2>
       <div class="cols ratio-1-2">
         <div class="col">
-          <img class="shot tall" src="assets/ocr-ewe-togopresse.jpg" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics">
+          <img class="shot tall" data-src="../../shared/assets/ocr-ewe-togopresse.jpg" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics" width="1149" height="973">
           <p class="small muted">Togo Presse, 31 July 1976.</p>
         </div>
         <div class="col">
@@ -316,7 +326,7 @@
                loaded + highlighted at runtime by deck.js (data-skill-src), exactly
                like the Luxembourg SKILL.md embed. Edit the text in that file. -->
           <div class="col-head">Extracted text · Ewé</div>
-          <div class="scroll-panel" data-skill-src="assets/ocr-ewe-togopresse.md" style="max-height: 18rem;">
+          <div class="scroll-panel" data-skill-src="../../shared/assets/ocr-ewe-togopresse.md" style="max-height: 18rem;">
             <pre><code class="language-markdown" style="font-size:1.05rem">Loading the extraction…</code></pre>
           </div>
           <p class="scroll-hint">Printed Ewé, diacritics and all — scroll for the full extraction.</p>
@@ -331,7 +341,7 @@
       <h2 class="slide-title">Reading cursive French</h2>
       <div class="cols ratio-1-2">
         <div class="col">
-          <img class="shot tall" src="assets/ocr-handwritten-burkina.jpg" alt="A handwritten 1991 letter in French from Muslim associations in Burkina Faso addressed to the Minister of Information and Culture">
+          <img class="shot tall" data-src="assets/ocr-handwritten-burkina.jpg" alt="A handwritten 1991 letter in French from Muslim associations in Burkina Faso addressed to the Minister of Information and Culture" width="636" height="883">
           <p class="small muted">Handwritten letter, Burkina Faso, 1991.</p>
         </div>
         <div class="col">
@@ -375,8 +385,8 @@
         </div>
         <div class="col">
           <figure style="margin:0">
-            <img class="shot" src="assets/av-demokuradiyyah.png" alt="A video still from the IWAC audiovisual corpus: a preacher delivering a sermon titled Demokuradiyyah">
-            <img class="shot" src="assets/av-transcript.png" alt="A timestamped, speaker-labelled transcript of a Hausa and Arabic sermon, generated with Google gemini-3-pro" style="margin-top:var(--space-sm)">
+            <img class="shot" data-src="assets/av-demokuradiyyah.png" alt="A video still from the IWAC audiovisual corpus: a preacher delivering a sermon titled Demokuradiyyah" width="395" height="259">
+            <img class="shot" data-src="assets/av-transcript.png" alt="A timestamped, speaker-labelled transcript of a Hausa and Arabic sermon, generated with Google gemini-3-pro" style="margin-top:var(--space-sm)" width="785" height="418">
             <figcaption class="small muted">A sermon and its machine transcript — timestamps, speaker labels.</figcaption>
           </figure>
         </div>
@@ -413,7 +423,7 @@
       <h2 class="slide-title">Entities and topics: who, where, what, about what</h2>
       <div class="cols ratio-2-3">
         <div class="col">
-          <img class="shot tall" src="assets/kb-network.png" alt="A network graph from the IWAC dashboard linking a central figure to the people, organisations and places that co-occur with him across the corpus">
+          <img class="shot tall" data-src="assets/kb-network.png" alt="A network graph from the IWAC dashboard linking a central figure to the people, organisations and places that co-occur with him across the corpus" width="1045" height="966">
           <p class="small muted">Entities linked across the corpus.</p>
         </div>
         <div class="col">
@@ -439,19 +449,19 @@
       <p class="lead">An explorable layer over the documents — built without hand-written code.</p>
       <div class="kb-grid">
         <figure>
-          <span class="shot"><img src="assets/kb-map-world.png" alt="A world map from the IWAC dashboard with article counts plotted by location, concentrated in West Africa"></span>
+          <span class="shot"><img data-src="assets/kb-map-world.png" alt="A world map from the IWAC dashboard with article counts plotted by location, concentrated in West Africa" width="857" height="593"></span>
           <figcaption><b>Mapped</b> · articles by place</figcaption>
         </figure>
         <figure>
-          <span class="shot"><img src="assets/kb-network.png" alt="A network graph linking people, organisations and places that co-occur across the IWAC corpus"></span>
+          <span class="shot"><img data-src="assets/kb-network.png" alt="A network graph linking people, organisations and places that co-occur across the IWAC corpus" width="1045" height="966"></span>
           <figcaption><b>Linked</b> · who appears with whom</figcaption>
         </figure>
         <figure>
-          <span class="shot"><img src="assets/kb-heatmap.png" alt="A heat-map matrix showing how themes such as radicalisation, extremism, terrorism and jihadism co-occur across articles"></span>
+          <span class="shot"><img data-src="assets/kb-heatmap.png" alt="A heat-map matrix showing how themes such as radicalisation, extremism, terrorism and jihadism co-occur across articles" width="626" height="312"></span>
           <figcaption><b>Co-occurrence</b> · themes that travel together</figcaption>
         </figure>
         <figure>
-          <span class="shot"><img src="assets/kb-wordcloud.png" alt="A word cloud of the most frequent terms across the corpus, led by musulmans, président and pays"></span>
+          <span class="shot"><img data-src="assets/kb-wordcloud.png" alt="A word cloud of the most frequent terms across the corpus, led by musulmans, président and pays" width="551" height="209"></span>
           <figcaption><b>Topics</b> · the corpus at a glance</figcaption>
         </figure>
       </div>
@@ -464,7 +474,7 @@
       <h2 class="slide-title">Sentiment analysis, without writing code</h2>
       <div class="cols ratio-2-3">
         <div class="col">
-          <img class="shot tall" src="assets/sentiment-dashboard.jpg" alt="The IWAC Sentiment Analysis dashboard comparing three AI models across 12,287 articles, with discrepancy counts and breakdowns by polarity and subjectivity">
+          <img class="shot tall" data-src="assets/sentiment-dashboard.jpg" alt="The IWAC Sentiment Analysis dashboard comparing three AI models across 12,287 articles, with discrepancy counts and breakdowns by polarity and subjectivity" width="1600" height="1076">
           <p class="small muted">Three models compared, article by article. <a href="https://fmadore.github.io/IWAC-sentiment-analysis/" target="_blank" rel="noopener">fmadore.github.io/IWAC-sentiment-analysis ↗</a></p>
         </div>
         <div class="col">
@@ -483,12 +493,12 @@
     </section>
 
     <!-- ════════ 14 · USE 6 · NOTEBOOKLM ═════════════════════════ -->
-    <section data-toc="6 · NotebookLM" id="s-nb">
+    <section data-toc="6 · NotebookLM" id="s-nb" data-fit-allow>
       <p class="kicker navy">Use 6 · Chat with your sources</p>
       <h2 class="slide-title">NotebookLM: the lowest-friction entry point</h2>
       <div class="cols ratio-3-2">
         <div class="col">
-          <img class="shot tall" src="assets/notebooklm-app.jpg" alt="The NotebookLM interface loaded with IWAC newspaper articles: uploaded sources on the left, an answer with inline citations in the centre">
+          <img class="shot tall" data-src="assets/notebooklm-app.jpg" alt="The NotebookLM interface loaded with IWAC newspaper articles: uploaded sources on the left, an answer with inline citations in the centre" width="1600" height="1067">
           <p class="small muted">NotebookLM over the IWAC newspaper corpus.</p>
         </div>
         <div class="col">
@@ -499,7 +509,7 @@
             <li>Multilingual: ask in your language, it searches sources in any of 80+</li>
           </ul>
           <div class="demo-qr">
-            <img src="assets/notebooklm-qr.png" alt="QR code to a shared NotebookLM notebook of the IWAC newspaper corpus">
+            <img data-src="assets/notebooklm-qr.png" alt="QR code to a shared NotebookLM notebook of the IWAC newspaper corpus" width="194" height="194">
             <span>Live demo · scan to query the corpus</span>
           </div>
         </div>
@@ -546,7 +556,7 @@
         </ul>
         <div data-contact></div>
         <div class="slides-qr corner">
-          <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+          <img data-src="assets/qr-slides.png" alt="QR code linking to these slides online" width="656" height="656">
           <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
         </div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
@@ -559,7 +569,7 @@
 
 <!-- reveal.js + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
-<script src="../../shared/reveal/plugin/highlight.js"></script>
+<script src="../../shared/highlight.min.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>

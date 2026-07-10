@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Humanités numériques, IA et études africaines — Hiribarren &amp; Madore</title>
+  <meta name="description" content="Retour sur une note de synthèse collective (Hanovre, février 2026).">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-06-30-paris-reaf-dh-ia-afrique/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="Humanités numériques, IA et études africaines">
+  <meta property="og:description" content="Retour sur une note de synthèse collective (Hanovre, février 2026).">
+  <meta property="og:url" content="https://slides.frederickmadore.com/talks/2026-06-30-paris-reaf-dh-ia-afrique/">
+  <meta property="og:image" content="https://slides.frederickmadore.com/talks/2026-06-30-paris-reaf-dh-ia-afrique/social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "PresentationDigitalDocument", "name": "Humanités numériques, IA et études africaines", "description": "Retour sur une note de synthèse collective (Hanovre, février 2026).", "url": "https://slides.frederickmadore.com/talks/2026-06-30-paris-reaf-dh-ia-afrique/", "inLanguage": "fr", "datePublished": "2026-06-30", "author": [{"@type": "Person", "name": "Vincent Hiribarren"}, {"@type": "Person", "name": "Frédérick Madore"}], "keywords": "digital humanities, AI, African studies", "publisher": {"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/"}, "releasedEvent": {"@type": "Event", "name": "Rencontres des études africaines en France · Paris", "startDate": "2026-06-30"}}</script>
   <link rel="icon" href="../../shared/logo-africamultiple.png">
   <link rel="stylesheet" href="../../shared/reveal/reset.css">
   <link rel="stylesheet" href="../../shared/reveal/reveal.css">
@@ -11,15 +24,7 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Byline job-title line: sits between the gothic name and the italic-serif
-       affiliation, in the quiet news-gothic "label" voice. */
-    .reveal .byline .role { font-family: var(--font-label); font-weight: 600;
-      font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
-    .reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
-    /* Co-presenter byline (.byline.authors): stack each author as a tight
-       name+role+affil block, with a larger gap between authors. */
-    .reveal .byline.authors { gap: var(--space-sm); }
-    .reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
+    /* (.byline .role and .byline.authors now live in shared/theme.css.) */
     /* The design formula: a centred gothic line set off as a displayed equation
        between two hairline rules — type and rules carry it, no box. */
     .reveal .formula { font-family: var(--font-label); font-weight: 700;
@@ -34,11 +39,9 @@
     /* This closing is content-rich (question + note + two bylines + logo), so the
        centred block fills the slide and the kicker lands flush on the gold plate-rule.
        Ease the oversized h2 (theme default fs-h1) to slide-title size to regain top slack. */
-    /* Per-author institution logos in the co-presenter byline. The KCL mark is a
-       white-on-red box (not a transparent monochrome wordmark like Bayreuth), so it
-       keeps its colour; only monochrome marks flip to white on the dark closing. */
-    .reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
-    .reveal section.closing .byline.authors .author-logo:not([src*="kcl"]) { filter: brightness(0) invert(1); opacity: 0.85; }
+    /* (.author-logo lives in shared/theme.css. The KCL mark is a white-on-red
+       box, so it carries class="keep-color" in the markup to keep its colour
+       on the dark closing; monochrome marks flip to white automatically.) */
     /* Slide 4 — the four-group index resolves into a single outcome. The
        index-list's own closing rule is the one divider (no second heavy rule,
        no italic source jammed between two rules): the result sits left and
@@ -91,7 +94,7 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
-          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
+          <img class="author-logo keep-color" src="../../shared/logo-kcl.png" alt="King's College London" width="1920" height="1463">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>
@@ -329,7 +332,7 @@
     </section>
 
     <!-- ░░ 17 · CLÔTURE ░░ -->
-    <section class="closing balance" data-footer="dark">
+    <section class="closing balance" data-footer="dark" data-fit-allow>
       <p class="kicker">Merci de votre attention</p>
       <h2>Pour qui, et dans quel but&nbsp;?</h2>
       <p class="lead">Note de synthèse à paraître — ZMO, <em>Programmatic Texts</em>. Prochain atelier&nbsp;: <a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/fr" target="_blank" rel="noopener">STIAS, Stellenbosch · septembre 2026</a>.</p>
@@ -337,7 +340,7 @@
         <div class="author">
           <span class="name">Vincent Hiribarren</span>
           <span class="affil">King's College London</span>
-          <img class="author-logo" src="../../shared/logo-kcl.png" alt="King's College London">
+          <img class="author-logo keep-color" src="../../shared/logo-kcl.png" alt="King's College London" width="1920" height="1463">
         </div>
         <div class="author">
           <span class="name">Frédérick Madore</span>
@@ -354,7 +357,6 @@
 
 <!-- reveal.js core + plugins (vendored), then the deck engine. -->
 <script src="../../shared/reveal/reveal.js"></script>
-<script src="../../shared/reveal/plugin/highlight.js"></script>
 <script src="../../shared/reveal/plugin/notes.js"></script>
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>
