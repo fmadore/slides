@@ -90,6 +90,17 @@ def build_block(manifest):
       {END}"""
 
 
+def build_sitemap(manifest):
+    site = manifest.get("site", "https://slides.frederickmadore.com").rstrip("/")
+    talks = sorted(manifest["talks"], key=lambda t: t["date"], reverse=True)
+    urls = [f"  <url><loc>{site}/</loc></url>"]
+    urls += [f"  <url><loc>{site}/talks/{esc(t['slug'])}/</loc><lastmod>{t['date']}</lastmod></url>"
+             for t in talks]
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + "\n".join(urls) + "\n</urlset>\n")
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true",
@@ -108,11 +119,18 @@ def main(argv=None):
     new_page = re.sub(re.escape(START) + r".*?" + re.escape(END), lambda _: block,
                       page, count=1, flags=re.DOTALL)
 
+    sitemap = build_sitemap(manifest)
+    sitemap_path = os.path.join(ROOT, "sitemap.xml")
+    old_sitemap = ""
+    if os.path.exists(sitemap_path):
+        with open(sitemap_path, encoding="utf-8") as fh:
+            old_sitemap = fh.read()
+
     if args.check:
-        if new_page != page:
-            print("index.html is OUT OF DATE — run: python3 tools/build-index.py")
+        if new_page != page or sitemap != old_sitemap:
+            print("index.html/sitemap.xml OUT OF DATE — run: python3 tools/build-index.py")
             return 1
-        print("index.html is in sync with talks/talks.json")
+        print("index.html and sitemap.xml are in sync with talks/talks.json")
         return 0
 
     if new_page != page:
@@ -122,6 +140,10 @@ def main(argv=None):
               f"({len(manifest['talks'])} talks)")
     else:
         print("index.html already up to date")
+    if sitemap != old_sitemap:
+        with open(sitemap_path, "w", encoding="utf-8") as fh:
+            fh.write(sitemap)
+        print("sitemap.xml regenerated")
     return 0
 
 

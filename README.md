@@ -44,21 +44,35 @@ iteration this theme grew out of — live in [`.impeccable.md`](.impeccable.md).
 
 ```
 slides/
-├── index.html            ← landing page (lists talks — edit the TALKS array)
+├── index.html            ← landing page (GENERATED from talks/talks.json)
 ├── shared/               ← the reusable ENGINE, one copy shared by every talk
 │   ├── theme.css deck.js     the “Broadsheet” theme + nav / chrome / TOC script
-│   ├── logo-*.{png,webp,svg} Africa Multiple, Bayreuth, KCL marks
+│   ├── highlight.min.js      slim vendored highlight.js (see vendor-manifest.json)
+│   ├── logo-*.{png,svg}      Africa Multiple, Bayreuth, KCL marks
+│   ├── assets/               images used by more than one talk
 │   ├── fonts/                self-hosted EB Garamond + Libre Franklin (offline)
 │   └── reveal/               vendored reveal.js v6 + plugins (offline)
 ├── talks/
-│   ├── _template/            ← copy this to start a new talk
+│   ├── talks.json            ← the TALK MANIFEST (one record per published talk)
+│   ├── _template/            minimal starter (tools/new-talk.py copies this)
+│   ├── _showcase/            the full layout catalogue (never published)
 │   └── YYYY-MM-DD-place-title/
 │       ├── index.html            (slides + DECK_CONFIG; points to ../../shared)
 │       └── assets/               (this talk's images / embedded files)
-├── tools/                    strip-notes.py · fetch-highlight.py (build helpers)
+├── tools/
+│   ├── new-talk.py           scaffold a talk (slug, metadata, manifest, QR)
+│   ├── build-index.py        render the landing page + sitemap from the manifest
+│   ├── audit.py              one-command repository audit (static checks)
+│   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
+│   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
+│   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png (CI)
+│   ├── build-offline.py      per-deck offline.zip bundles (CI)
+│   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
+│   └── fetch-highlight.py    regenerate the slim highlight.js bundle
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
-├── .github/workflows/        pages.yml — deploy to GitHub Pages (notes stripped)
-└── .nojekyll  CNAME  .impeccable.md  README.md
+├── .github/workflows/        pages.yml — validate, build and deploy
+└── .nojekyll  CNAME  404.html  robots.txt  sitemap.xml  LICENSE.md
+    THIRD_PARTY_NOTICES.md  .impeccable.md  README.md
 ```
 
 Each talk references the one shared engine via `../../shared/…`, so a fix to `theme.css`
@@ -70,14 +84,24 @@ redirects to `slides.frederickmadore.com`.
 
 ## Add a new talk
 
-1. **Copy the starter:** `talks/_template` → `talks/YYYY-MM-DD-place-short-title`.
-2. Edit the **`DECK_CONFIG`** block (presenter, title, venue, links) and the slides.
-3. Add one entry to the **`TALKS`** array in [`index.html`](index.html) (newest first):
+One command scaffolds everything:
 
-```js
-{ date: "2026-09-01", event: "Conference · City", title: "My talk",
-  desc: "One-line description.", slug: "2026-09-01-city-my-talk" }
+```bash
+python3 tools/new-talk.py \
+  --date 2026-09-01 --place bayreuth \
+  --title "My talk" --venue "Conference · Bayreuth · 1 Sept 2026" \
+  --event "Conference · Bayreuth" --desc "One-line description." --lang en
 ```
+
+It copies `talks/_template`, fills the metadata (DECK_CONFIG, cover, canonical
+URL + social metadata), registers the talk in [`talks/talks.json`](talks/talks.json),
+regenerates the landing page and writes a QR code pointing at the final URL
+(needs `pip install "qrcode[pil]"` once — everything else works without it).
+Then edit the slides; the full layout catalogue with copy-paste examples lives
+in `talks/_showcase/` (preview at `/talks/_showcase/`).
+
+Doing it by hand instead: copy `talks/_template`, edit `DECK_CONFIG` + slides,
+add an entry to `talks/talks.json` and run `python3 tools/build-index.py`.
 
 ---
 
@@ -89,8 +113,9 @@ Decks must be served over HTTP (not `file://`). From the repo root:
 python serve-deck.py          # no-cache server → http://localhost:8742
 ```
 
-Open `http://localhost:8742/` for the landing page, or a talk directly at
-`/talks/<slug>/`. The no-cache server guarantees reloads always show your latest edits.
+Open `http://localhost:8742/` for the landing page (rendered statically from
+`talks/talks.json`, with client-side search and language/year/topic filters
+whose state lives in the URL), or a talk directly at `/talks/<slug>/`. The no-cache server guarantees reloads always show your latest edits.
 (For just viewing, any static server works, e.g. `python -m http.server`.)
 
 ---
@@ -134,8 +159,10 @@ control and the markup carries no stray form elements. See `talks/_template/inde
 for a worked example of each layout.
 
 **Scrollable file embed** (e.g. a GitHub skill): a `<div class="scroll-panel"
-data-skill-src="assets/file.md">` loads and syntax-highlights a vendored file you can
-scroll on stage. GitHub pages can't be `<iframe>`d, so vendor the file (also keeps it
+data-embed-src="assets/file.md">` (the older `data-skill-src` still works) loads
+and syntax-highlights a vendored file you can scroll on stage. Optional
+`data-source-url` adds a link to the failure message and `data-error-message`
+replaces it; loading and failure states are announced to screen readers. GitHub pages can't be `<iframe>`d, so vendor the file (also keeps it
 offline). Refresh the IWAC skill snapshot with:
 
 ```bash
@@ -154,21 +181,27 @@ drop a screenshot into the talk's `assets/` and swap the `<iframe>` for an `<img
 `.site-frame-view` styling fits both). See the "A framed website" slide in `_template`
 (screenshot form) or "A live look" in the Luxembourg deck for the markup.
 
-**Export to PDF:** open a talk with `?print-pdf` appended, then print → Save as PDF
-(Landscape, margins None, background graphics on).
+**Export to PDF:** the deploy workflow generates a notes-free `slides.pdf` for
+every published deck (linked from the landing page), plus an `offline.zip`
+bundle that runs without any network. For a manual export, open a talk with
+`?print-pdf` appended, then print → Save as PDF (Landscape, margins None,
+background graphics on).
 
-**Check slides fit:** open a talk with `?check` appended. Any slide whose content
-spills past the fixed 1280×720 canvas is outlined in red with a banner, so you catch
-overflow while authoring instead of on stage. (Off in normal viewing and export.)
+**Check slides fit:** open a talk with `?check` appended. Overflowing slides are
+outlined in red with a banner, and the banner also shows the auto-fit scale the
+engine applied to a dense slide (green ≥ 0.95, amber below, red below 0.90 —
+a red slide fails validation unless you accept it explicitly with a
+`data-fit-allow` attribute on its `<section>`). Add `?no-fit` (or use `?audit`)
+to disable auto-fitting and see the raw authored overflow. (All off in normal
+viewing and export.)
 
-**Syntax highlighting — slim build.** By default a talk loads the vendored reveal
-highlight *plugin*, which bundles every language (~921 KB). For a much lighter deck,
-run `python tools/fetch-highlight.py` once: it fetches highlight.js core plus only the
-languages you list (edit `LANGUAGES` at the top of the script) and writes
-`shared/highlight.min.js` (~30–60 KB). Then in each talk, delete the
-`plugin/highlight.js` `<script>` and load `shared/highlight.min.js` instead — see the
-comment block at the foot of `talks/_template/index.html`. `deck.js` highlights every
-`<pre><code>` via `window.hljs`, so both setups work; this just drops the dead weight.
+**Syntax highlighting — slim build.** Talks load `shared/highlight.min.js` — a
+slim vendored highlight.js (core + only the grammars the decks use, ~40 KB
+instead of the 921 KB full plugin). `deck.js` highlights every `<pre><code>`
+via `window.hljs`. To add a language, edit `LANGUAGES` in
+[`tools/fetch-highlight.py`](tools/fetch-highlight.py) and re-run it (the
+version + checksum are recorded in `shared/vendor-manifest.json`). A talk with
+no code slides and no file embed can simply drop the `<script>` line.
 
 **Figures show whole.** `.figrow` images use `object-fit: contain`, so a map,
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
@@ -191,12 +224,33 @@ by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 
 ## Deploy (GitHub Pages)
 
-Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
-on every push to `main` it builds a copy of the site with **speaker notes stripped**
-(`tools/strip-notes.py` removes `<aside class="notes">` blocks) and
-publishes that — so the live site never exposes notes via the `S` speaker view or
-view-source. Your repo keeps the notes; only the deployed copy is stripped. Live at
+Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+On every pull request and push it first **validates**: the strip-notes tests,
+`tools/audit.py` (repo and built site, strict), the landing-page/manifest sync
+check, and Playwright browser checks of every deck at 1280×720, 844×390 and
+390×844 (console errors, auto-fit failures, footer overlap). Pull requests
+that touch the shared engine also get a screenshot-based visual regression
+check, with diff images uploaded as workflow artifacts.
+
+Only after validation passes does the **build** run: an allowlisted copy of
+the site with **speaker notes stripped** (`tools/strip-notes.py` — the repo
+keeps the notes, the artifact carries none and excludes all development
+files), plus a generated `slides.pdf`, `social-card.png` and `offline.zip`
+per deck (cached, regenerated only when the deck or shared engine changed).
+Deployment happens only from `main`. Live at
 **<https://slides.frederickmadore.com/>**.
+
+> The source repository is public, so notes remain readable on GitHub even
+> though they are absent from the live site. Truly confidential notes must
+> live outside this repository.
+
+Run the same validation locally:
+
+```bash
+python3 tools/audit.py            # static checks (add --strict in CI mode)
+node tools/browser-check.mjs      # needs playwright + a chromium
+python3 tools/test_strip_notes.py # publication-build unit tests
+```
 
 > **One-time setup:** repo *Settings → Pages → Build and deployment → Source* must be set to
 > **GitHub Actions** (not "Deploy from a branch"), or the workflow won't publish.
@@ -217,7 +271,10 @@ deployment; the DNS record itself lives in Cloudflare. `fmadore.github.io/slides
 
 ## Credits
 
-reveal.js (MIT, © Hakim El Hattab) · **EB Garamond** (Georg Duffner & Octavio Pardo) and
-**Libre Franklin** (Pablo Impallari / Impallari Type), SIL OFL · GitHub & ORCID marks ©
-their owners · logo and palette: Africa Multiple Cluster of Excellence / University of
-Bayreuth.
+reveal.js (MIT, © Hakim El Hattab) · highlight.js (BSD 3-Clause) ·
+**EB Garamond** (Georg Duffner & Octavio Pardo) and **Libre Franklin**
+(Pablo Impallari / Impallari Type), SIL OFL · GitHub & ORCID marks © their
+owners · logo and palette: Africa Multiple Cluster of Excellence / University
+of Bayreuth. Full licence texts: [`LICENSE.md`](LICENSE.md) and
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md); vendored versions and
+checksums: [`shared/vendor-manifest.json`](shared/vendor-manifest.json).

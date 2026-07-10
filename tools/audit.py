@@ -111,10 +111,12 @@ def is_local(url):
     return not p.scheme and not url.startswith(("#", "//", "mailto:", "data:"))
 
 
-def local_path(base_dir, url):
+def local_path(base_dir, url, root=None):
     path = unquote(urlparse(url).path)
     if not path:
         return None
+    if path.startswith("/"):   # root-absolute (e.g. the 404 page, served at any depth)
+        return os.path.normpath(os.path.join(root or ROOT, path.lstrip("/")))
     return os.path.normpath(os.path.join(base_dir, path))
 
 
@@ -138,7 +140,7 @@ def audit_html(path, rep, published_deck):
         if kind == "a" and os.path.basename(urlparse(url).path) in GENERATED:
             continue
         if is_local(url):
-            target = local_path(base, url)
+            target = local_path(base, url, root=ROOT)
             if target and not os.path.exists(target):
                 rep.error(rel, f"missing local {kind}: {url}")
 

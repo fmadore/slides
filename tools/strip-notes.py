@@ -32,7 +32,8 @@ import sys
 
 # What gets published (relative to the source root). Talk folders are added
 # dynamically: every talks/<dir>/ that does not start with "_".
-ALLOWLIST = ["index.html", "CNAME", ".nojekyll", "shared"]
+ALLOWLIST = ["index.html", "404.html", "robots.txt", "sitemap.xml",
+             "CNAME", ".nojekyll", "shared"]
 
 # Never copy these even inside allowlisted trees.
 SKIP_NAMES = {".gitkeep", "notes.js"}  # notes.js: the reveal speaker-notes plugin
