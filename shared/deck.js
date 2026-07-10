@@ -731,9 +731,10 @@
       update();
       // Late-loading media (lazy data-src images, embeds) can change a slide's
       // height after the first fit pass — re-fit the slide when they arrive.
+      // Images only: iframes are reloaded by the browser whenever the fit
+      // wrapper reparents them, so refitting on iframe load would loop.
       document.querySelector(".slides").addEventListener("load", function (e) {
-        var t = e.target;
-        if (t && (t.nodeName === "IMG" || t.nodeName === "IFRAME")) refitAfterLoad(t);
+        if (e.target && e.target.nodeName === "IMG") refitAfterLoad(e.target);
       }, true);
       // If the tab hides mid-roll, rAF freezes; snap any counting numeral to its
       // final value so none is ever left reading a partial count (or 0).

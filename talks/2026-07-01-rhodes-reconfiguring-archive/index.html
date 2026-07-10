@@ -15,7 +15,7 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* (.byline .role now lives in shared/theme.css; the interim .shot-todo
+    /* (.byline .role now lives in shared/theme.css; the interim screenshot
        placeholder component was removed once real captures replaced it.) */
     .reveal figure.shot-fig { margin: 0; display: flex; flex-direction: column; gap: 0; }
     .reveal figure.shot-fig figcaption { margin-top: var(--space-sm); font-size: var(--fs-caption);
@@ -170,13 +170,15 @@
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
-      <!-- TODO: add assets/qr-slides.png (QR to the deployed deck) and restore the
-           .slides-qr block from talks/_template/index.html once the URL is live. -->
+      <div class="slides-qr">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
       <aside class="notes">Thank you to the conference organisers for inviting me. The title of my presentation is 'Reconfiguring the Archive: Relationality and Discovery in the Africa Multiple Interactive Research Atlas.</aside>
     </section>
 
     <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
-    <section data-toc="The Cluster">
+    <section data-toc="The Cluster" data-fit-allow>
       <div class="cols ratio-3-2">
         <div class="col">
           <p class="kicker">University of Bayreuth · German Excellence Strategy · since 2019</p>
@@ -233,7 +235,7 @@
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
-    <section data-toc="The DRE">
+    <section data-toc="The DRE" data-fit-allow>
       <p class="kicker">Digital Research Environment (DRE) — the cluster's digital infrastructure unit</p>
       <h2 class="slide-title">We build the cluster's data infrastructure</h2>
       <p class="lead">Four areas of work — one goal: research data that is <span class="accent">findable, reusable and presentable</span>.</p>
@@ -423,7 +425,7 @@
     </section>
 
     <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
-    <section data-toc="Spatial exploration">
+    <section data-toc="Spatial exploration" data-fit-allow>
       <p class="kicker">Custom Omeka S module · built in-house</p>
       <h2 class="slide-title">Spatial exploration</h2>
       <p class="lead">One of the DRE visualisation modules I build — every <span class="accent">georeferenced place</span> in the collection, on one map you can pan, zoom and open.</p>

@@ -1,0 +1,66 @@
+{
+  "$comment": "Talk manifest — one structured record per published talk, newest first. The landing page's static list is generated from this file by tools/build-index.py (run it after editing), and tools/audit.py validates that every entry has a deck folder and every published deck has an entry. tools/new-talk.py appends entries automatically. Optional per-talk fields: video, pdf, eventUrl.",
+  "site": "https://slides.frederickmadore.com",
+  "talks": [
+    {
+      "slug": "2026-07-01-rhodes-reconfiguring-archive",
+      "date": "2026-07-01",
+      "language": "en",
+      "event": "Reimagining the Archive · Rhodes University",
+      "venue": "Reimagining the Archive · Rhodes University · 1 July 2026",
+      "title": "Reconfiguring the Archive",
+      "shortTitle": "Reconfiguring the Archive",
+      "description": "Relationality and discovery in the Africa Multiple Interactive Research Atlas (AMIRA).",
+      "presenters": ["Frédérick Madore"],
+      "tags": ["digital humanities", "archives", "AMIRA"]
+    },
+    {
+      "slug": "2026-06-30-paris-reaf-dh-ia-afrique",
+      "date": "2026-06-30",
+      "language": "fr",
+      "event": "Rencontres des études africaines en France · Paris",
+      "venue": "9es REAF · Paris · 30 juin 2026",
+      "title": "Humanités numériques, IA et études africaines",
+      "shortTitle": "DH, IA & études africaines",
+      "description": "Retour sur une note de synthèse collective (Hanovre, février 2026).",
+      "presenters": ["Vincent Hiribarren", "Frédérick Madore"],
+      "tags": ["digital humanities", "AI", "African studies"]
+    },
+    {
+      "slug": "2026-06-29-erlangen-islam-peripheries",
+      "date": "2026-06-29",
+      "language": "en",
+      "event": "Digital History in/of Central Asia · FAU Erlangen-Nürnberg",
+      "venue": "Digital History in/of Central Asia · FAU Erlangen-Nürnberg · 29 June 2026",
+      "title": "Islam's “Peripheries”",
+      "shortTitle": "Islam's “Peripheries”",
+      "description": "Comparing two locked multilingual archives — West Africa and Central Asia — with AI-driven DH.",
+      "presenters": ["Aksana Ismailbekova", "Frédérick Madore"],
+      "tags": ["Islam", "AI", "archives", "Central Asia", "West Africa"]
+    },
+    {
+      "slug": "2026-06-15-luxembourg-beyond-keywords",
+      "date": "2026-06-15",
+      "language": "en",
+      "event": "Digital Humanities & History · C²DH, Luxembourg",
+      "venue": "C²DH · Luxembourg · 15 June 2026",
+      "title": "Beyond Keywords",
+      "shortTitle": "Beyond Keywords",
+      "description": "Opening the Islam West Africa Collection to AI on its own terms.",
+      "presenters": ["Frédérick Madore"],
+      "tags": ["IWAC", "AI", "semantic search", "MCP"]
+    },
+    {
+      "slug": "2026-05-06-dga-dormant-collections",
+      "date": "2026-05-06",
+      "language": "en",
+      "event": "German Society of Asia Studies · Berlin",
+      "venue": "Deutsche Gesellschaft für Asienforschung · 6 May 2026",
+      "title": "Dormant Digital Collections, AI Triage",
+      "shortTitle": "Dormant Collections · AI Triage",
+      "description": "Lessons from the Islam West Africa Collection and beyond.",
+      "presenters": ["Frédérick Madore"],
+      "tags": ["IWAC", "AI", "OCR", "collections"]
+    }
+  ]
+}
