@@ -140,8 +140,12 @@
     a.talk-row:hover .talk-go { opacity: 1; transform: none; }
     a.talk-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 3px; }
 
-    /* per-talk extras row (presenters · PDF · offline copy) */
+    /* per-talk extras row (presenters · PDF · offline copy).
+       The negative margin tucks it into a.talk-row's bottom padding, and the
+       talk-row is position:relative — so this row must be positioned too, or
+       the row link paints (and click-targets) ON TOP of the PDF/offline links. */
     .talk-extras {
+      position: relative;
       margin: -1rem 0 0; padding: 0 0 clamp(1.2rem, 2.5vw, 1.8rem)
         calc(4rem + clamp(1rem, 3vw, 2.4rem));
       font-family: var(--display); font-size: 0.82rem; color: var(--ink-faint);
