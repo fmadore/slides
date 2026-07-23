@@ -58,7 +58,7 @@ function hashTree(dir, h) {
   for (const e of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
     const p = join(dir, e.name);
     if (e.isDirectory()) hashTree(p, h);
-    else if (!['slides.pdf', 'social-card.png', '.extras-hash', 'offline.zip'].includes(e.name)) {
+    else if (!['slides.pdf', 'social-card.png', '.extras-hash'].includes(e.name)) {
       h.update(e.name); h.update(readFileSync(p));
     }
   }

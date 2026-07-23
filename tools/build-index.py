@@ -52,8 +52,7 @@ def render_talk(t):
     lang_label = {"en": "English", "fr": "Français"}.get(t["language"], t["language"])
     extras = [f'<span class="talk-presenters">{esc(" · ".join(t.get("presenters", [])))}</span>',
               f'<span class="talk-lang" title="{esc(lang_label)}">{esc(t["language"].upper())}</span>',
-              f'<a href="talks/{slug}/slides.pdf">PDF</a>',
-              f'<a href="talks/{slug}/offline.zip" download>Offline copy</a>']
+              f'<a href="talks/{slug}/slides.pdf">PDF</a>']
     if t.get("video"):
         extras.append(f'<a href="{esc(t["video"])}" target="_blank" rel="noopener">Video</a>')
     if t.get("eventUrl"):
