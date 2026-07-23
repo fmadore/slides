@@ -40,6 +40,7 @@
      ?audit) disables auto-fitting so authored overflow is visible raw. */
   var CHECK_MODE = /[?&](check|audit)\b/.test(location.search);
   var NO_FIT = /[?&](no-fit|audit)\b/.test(location.search);
+  var PRINT = /[?&]print-pdf\b/.test(location.search);
 
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
@@ -420,7 +421,7 @@
     // Hold the final value (no roll) when motion is unwanted or frames won't run:
     // reduced-motion, the PDF export, or a hidden tab (rAF is paused there, so a
     // rolling numeral would otherwise stick at 0).
-    var still = REDUCE || document.hidden || /[?&]print-pdf\b/.test(location.search);
+    var still = REDUCE || document.hidden || PRINT;
     slide.querySelectorAll("[data-count]").forEach(function (el) {
       var target = parseFloat(el.getAttribute("data-count"));
       if (isNaN(target)) return;
@@ -753,6 +754,19 @@
       // have settled, in case the deck initialised before it had real size.
       window.addEventListener("load", function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
+
+      // PDF export (?print-pdf): every slide prints, so every slide needs the
+      // overflow fit — not just the current one. Re-fit them all (force: the
+      // pass may re-run once fonts settle or after reveal builds its
+      // .pdf-page layout, whichever lands last).
+      if (PRINT) {
+        var fitAllPages = function () {
+          if (!fitReady || !document.querySelector(".reveal .pdf-page")) return;
+          document.querySelectorAll(".reveal .pdf-page > section").forEach(function (s) { fitSlide(s, true); });
+        };
+        Reveal.on("pdf-ready", fitAllPages);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllPages);
+      }
 
       Reveal.addKeyBinding({ keyCode: 84, key: "T", description: "Table of contents" }, toggleTOC);
       // While the TOC dialog is open, all keys act on the dialog (capture phase,

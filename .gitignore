@@ -23,3 +23,8 @@ package-lock.json
 
 # CI cache for generated PDFs/social cards
 .extras-cache/
+
+# Locally generated deck extras (CI builds these into _site)
+talks/*/slides.pdf
+talks/*/social-card.png
+talks/*/.extras-hash

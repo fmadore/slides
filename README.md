@@ -66,7 +66,6 @@ slides/
 │   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
 │   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
 │   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png (CI)
-│   ├── build-offline.py      per-deck offline.zip bundles (CI)
 │   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
 │   └── fetch-highlight.py    regenerate the slim highlight.js bundle
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
@@ -182,10 +181,9 @@ drop a screenshot into the talk's `assets/` and swap the `<iframe>` for an `<img
 (screenshot form) or "A live look" in the Luxembourg deck for the markup.
 
 **Export to PDF:** the deploy workflow generates a notes-free `slides.pdf` for
-every published deck (linked from the landing page), plus an `offline.zip`
-bundle that runs without any network. For a manual export, open a talk with
-`?print-pdf` appended, then print → Save as PDF (Landscape, margins None,
-background graphics on).
+every published deck (linked from the landing page). For a manual export, open
+a talk with `?print-pdf` appended, then print → Save as PDF (Landscape,
+margins None, background graphics on).
 
 **Check slides fit:** open a talk with `?check` appended. Overflowing slides are
 outlined in red with a banner, and the banner also shows the auto-fit scale the
@@ -235,8 +233,8 @@ check, with diff images uploaded as workflow artifacts.
 Only after validation passes does the **build** run: an allowlisted copy of
 the site with **speaker notes stripped** (`tools/strip-notes.py` — the repo
 keeps the notes, the artifact carries none and excludes all development
-files), plus a generated `slides.pdf`, `social-card.png` and `offline.zip`
-per deck (cached, regenerated only when the deck or shared engine changed).
+files), plus a generated `slides.pdf` and `social-card.png` per deck (cached,
+regenerated only when the deck or shared engine changed).
 Deployment happens only from `main`. Live at
 **<https://slides.frederickmadore.com/>**.
 

@@ -4,8 +4,8 @@ name: Validate and deploy
 # only from main, and only after validation succeeds.
 #
 # build publishes an ALLOWLISTED, notes-free copy of the site (see
-# tools/strip-notes.py) plus generated extras: a slides.pdf, a social-card.png
-# and an offline.zip per deck. PDFs/cards are cached and regenerated only when
+# tools/strip-notes.py) plus generated extras: a slides.pdf and a
+# social-card.png per deck. PDFs/cards are cached and regenerated only when
 # the deck or the shared engine changed (content-hash check inside
 # tools/export-pdf.mjs).
 #
@@ -166,10 +166,8 @@ jobs:
              \( -name slides.pdf -o -name social-card.png -o -name .extras-hash \) \
              -exec install -D {} ../.extras-cache/{} \;)
 
-      - name: Build offline bundles
-        run: |
-          python3 tools/build-offline.py --root _site
-          find _site -name .extras-hash -delete
+      - name: Drop build-internal hash files
+        run: find _site -name .extras-hash -delete
 
       - uses: actions/upload-pages-artifact@v5
         with:

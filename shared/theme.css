@@ -201,6 +201,25 @@
   overflow: visible;
 }
 
+/* PDF export (?print-pdf): reveal's print view re-parents every slide into a
+   .pdf-page wrapper and hard-resets it (padding: 0 !important, display: block
+   !important — see the html.reveal-print rules in reveal.css), expecting the
+   theme to restate its slide layout for print. Without this restatement the
+   rule above no longer matches, so every PDF page rendered flush against the
+   page edge with a collapsed height — trimmed slides. justify-content is left
+   alone so the centred layouts (.cover, .section, .statement, …) keep their
+   own value. */
+html.reveal-print .reveal .slides .pdf-page > section {
+  height: 100% !important;
+  padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md)) !important;
+  display: flex !important;
+  flex-direction: column;
+  overflow: visible;
+}
+/* .balance centres via a .present-scoped rule that reveal's print re-parenting
+   also defeats — restate it for pdf pages. */
+html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
+
 /* Headings — GOTHIC display, heavy weight, tight optical letterfit */
 .reveal h1, .reveal h2, .reveal h3 {
   font-family: var(--font-display);

@@ -38,7 +38,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Landing-page links that are generated at build time (they exist on the live
 # site, not in the repo).
-GENERATED = {"slides.pdf", "offline.zip", "social-card.png"}
+GENERATED = {"slides.pdf", "social-card.png"}
 
 # Files that must never appear in a publication build (see the allowlist in
 # tools/strip-notes.py).
