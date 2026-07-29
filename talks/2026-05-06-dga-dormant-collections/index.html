@@ -108,6 +108,12 @@
     .reveal .demo-qr span { font-family: var(--font-label); font-size: var(--fs-footer);
       font-weight: 600; letter-spacing: .04em; color: var(--ink-soft); }
 
+    /* Slide 15 — the Colab notebooks. Reuses the slide-5 .roadmap ledger so the three
+       notebooks read as uses 1–3 of the six, packaged; one column, not two. */
+    .reveal #s-colab .roadmap { grid-template-columns: 1fr; }
+    .reveal #s-colab .demo-qr { margin-top: var(--space-md); }
+    .reveal #s-colab .demo-qr img { width: 116px; height: 116px; }
+
     /* ---- Per-slide height fits (keep every slide inside the 1280×720 canvas) ---- */
     /* 3 · scanning party — two framed covers + a callout below */
     .reveal #s-scan .shot.tall { max-height: 292px; }
@@ -517,7 +523,34 @@
       <aside class="notes">If you take one practical thing away, start here. NotebookLM only knows what you upload, and it cites the exact passage for every answer, so hallucination drops sharply. Your sources aren't used to train the model. The free tier takes fifty sources per notebook — PDFs, web pages, YouTube, audio. And it's multilingual: ask in your language, it searches the sources in any of eighty-plus. There's a QR here, so you can query the IWAC newspaper corpus yourself. [Live demo cue: open the shared notebook, ask one question, show the citation.]</aside>
     </section>
 
-    <!-- ════════ 15 · THE STAKES (costs vs what it opens) ═════════ -->
+    <!-- ════════ 15 · HANDS-ON · THE COLAB NOTEBOOKS ═════════════ -->
+    <section data-toc="Try it yourself" id="s-colab">
+      <p class="kicker navy">Hands-on</p>
+      <h2 class="slide-title">The same workflows, in your browser</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="roadmap">
+            <div class="ruse"><span class="n">1</span><span><b>OCR &amp; HTR</b><span class="d">PDFs and images, printed or handwritten</span></span></div>
+            <div class="ruse"><span class="n">2</span><span><b>Audio &amp; video transcription</b><span class="d">interviews and lectures, with speaker labels</span></span></div>
+            <div class="ruse"><span class="n">3</span><span><b>Summaries &amp; keywords</b><span class="d">batch a whole spreadsheet of texts</span></span></div>
+          </div>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Google Colab notebooks — nothing to install</li>
+            <li>A free Gemini API key; results save to your Drive</li>
+            <li>Open to anyone; written for researchers, not developers</li>
+          </ul>
+          <div class="demo-qr">
+            <img data-src="assets/colab-qr.png" alt="QR code linking to the ZMO AI Pipelines repository of Google Colab notebooks" width="492" height="492">
+            <span><a href="https://github.com/fmadore/zmo-ai-pipelines" target="_blank" rel="noopener">github.com/fmadore/zmo-ai-pipelines ↗</a></span>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">If NotebookLM is the way in, this is the next step along. I've packaged three of these workflows as Google Colab notebooks: OCR and handwriting recognition, audio and video transcription, and summaries with keywords. They run in the browser, so there's nothing to install. You need a free Gemini key, and you can point them at a folder in your Drive and let them work through it. I wrote them for colleagues who don't code, and they're public, so please take them and try to break them. The rule from a few slides back still holds: check the output against the original before you quote it. [Cue: the QR opens the repository; each notebook is one click from there.]</aside>
+    </section>
+
+    <!-- ════════ 16 · THE STAKES (costs vs what it opens) ═════════ -->
     <section data-toc="The stakes">
       <p class="kicker warm">The stakes</p>
       <h2 class="slide-title">Western tools, non-Western sources</h2>
@@ -543,7 +576,7 @@
       <aside class="notes">I don't want to sell this without the costs. The training data is overwhelmingly Western, so these models read other societies through European categories. The labour behind them is real and badly paid: Kenyan annotators on about five dollars a day, and similar conditions elsewhere. The infrastructure is concentrated — the strongest models sit in a handful of US firms, with only China credible as an alternative. And the systems are opaque and non-reproducible: the same input can give different answers. I hold all of that against the other side of the ledger. AI makes research possible at scales, and with documents, that simply weren't reachable before. The honest position is to use the tools and disclose what they cost.</aside>
     </section>
 
-    <!-- ════════ 16 · CLOSING / TAKEAWAY ═════════════════════════ -->
+    <!-- ════════ 17 · CLOSING / TAKEAWAY ═════════════════════════ -->
     <section class="closing" data-footer="dark" data-toc="Takeaway" id="s-close">
       <div style="min-height:100%; display:flex; flex-direction:column; justify-content:center;">
         <p class="kicker">In closing</p>
