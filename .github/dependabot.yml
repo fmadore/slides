@@ -1,0 +1,26 @@
+version: 2
+
+# The repository vendors its runtime dependencies (reveal.js, highlight.js and
+# the fonts all live under shared/, with checksums in vendor-manifest.json), so
+# there is no package.json or requirements.txt for Dependabot to read. The one
+# thing that does float is the GitHub Actions used by the workflows: they are
+# pinned to major tags, which silently move.
+#
+# Everything is grouped into a single pull request so an actions bump arrives
+# as one review, not five. CI runs on it like any other PR — the audit, the
+# unit tests and the Playwright checks all have to pass before it merges.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:00"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci
+    labels:
+      - dependencies

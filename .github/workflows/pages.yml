@@ -10,7 +10,12 @@ name: Validate and deploy
 # tools/export-pdf.mjs).
 #
 # All actions used here are first-party (actions/*), referenced by major
-# version tag. If supply-chain policy tightens, pin each to a full commit SHA.
+# version tag; .github/dependabot.yml proposes the bumps. If supply-chain
+# policy tightens, pin each to a full commit SHA instead.
+#
+# External links are deliberately NOT checked here — see
+# .github/workflows/link-check.yml, which does that weekly and off the merge
+# path so a slow third-party host can never make a pull request flaky.
 #
 # One-time setup: repo Settings → Pages → Build and deployment →
 # Source = "GitHub Actions" (instead of "Deploy from a branch").
@@ -38,9 +43,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Static checks (audit, strip-notes tests, landing-page sync)
+      - name: Unit tests (strip-notes, audit)
         run: |
           python3 tools/test_strip_notes.py
+          python3 tools/test_audit.py
+
+      - name: Static checks (audit, vendored checksums, landing-page sync)
+        run: |
           python3 tools/build-index.py --check
           python3 tools/audit.py --strict
           python3 tools/strip-notes.py /tmp/site-check

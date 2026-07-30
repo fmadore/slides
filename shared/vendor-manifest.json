@@ -27,7 +27,12 @@
     ],
     "license": "MIT",
     "sha256": {
-      "reveal.js": "3fb84c30d2e610dd598843d75a123ef2c4dbc588847cda86cd8c7a61e18ddb6b"
+      "reveal/reveal.js": "3fb84c30d2e610dd598843d75a123ef2c4dbc588847cda86cd8c7a61e18ddb6b",
+      "reveal/reveal.css": "64e6203ee2048665c9f49c368f345fb3d7f936c404934162c70369a7682f388f",
+      "reveal/reset.css": "39413c3490fdcf826427c26ff4c1ee59ea961a0aa8507c18454e0c6dc96c12d8",
+      "reveal/plugin/notes.js": "946159680c70354c665dbf4f3c9023a737d8b14b48c6c9af452553717a046729",
+      "reveal/plugin/zoom.js": "3e00750e0991ca91435fe1c7d0b3ef5494bb398c40b3d9946dd5a66c4260af70",
+      "reveal/plugin/search.js": "887591079bebb965a8d07300b323339ed98d9f4504987713379174f2480d2eb0"
     }
   }
 }

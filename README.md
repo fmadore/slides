@@ -62,14 +62,16 @@ slides/
 ├── tools/
 │   ├── new-talk.py           scaffold a talk (slug, metadata, manifest, QR)
 │   ├── build-index.py        render the landing page + sitemap from the manifest
-│   ├── audit.py              one-command repository audit (static checks)
+│   ├── audit.py              one-command repository audit (static checks + tests)
 │   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
 │   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
 │   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png (CI)
+│   ├── check-links.py        external links in published decks (weekly, not CI)
 │   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
 │   └── fetch-highlight.py    regenerate the slim highlight.js bundle
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
 ├── .github/workflows/        pages.yml — validate, build and deploy
+│                             link-check.yml — weekly link rot check
 └── .nojekyll  CNAME  404.html  robots.txt  sitemap.xml  LICENSE.md
     THIRD_PARTY_NOTICES.md  .impeccable.md  README.md
 ```
@@ -223,9 +225,12 @@ by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 ## Deploy (GitHub Pages)
 
 Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
-On every pull request and push it first **validates**: the strip-notes tests,
-`tools/audit.py` (repo and built site, strict), the landing-page/manifest sync
-check, and Playwright browser checks of every deck at 1280×720, 844×390 and
+On every pull request and push it first **validates**: the unit tests for
+`strip-notes.py` and `audit.py`, then `tools/audit.py` itself (repo and built
+site, strict) — dead local references, duplicate ids, missing `alt`/`title`,
+stale placeholders, the landing-page/manifest sync check and the **vendored
+checksums** in [`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
+and finally Playwright browser checks of every deck at 1280×720, 844×390 and
 390×844 (console errors, auto-fit failures, footer overlap). Pull requests
 that touch the shared engine also get a screenshot-based visual regression
 check, with diff images uploaded as workflow artifacts.
@@ -248,7 +253,27 @@ Run the same validation locally:
 python3 tools/audit.py            # static checks (add --strict in CI mode)
 node tools/browser-check.mjs      # needs playwright + a chromium
 python3 tools/test_strip_notes.py # publication-build unit tests
+python3 tools/test_audit.py       # one test per audit rule
 ```
+
+**Link rot** is checked separately by
+[`.github/workflows/link-check.yml`](.github/workflows/link-check.yml), on a
+weekly schedule rather than on pull requests: keeping CI hermetic means a slow
+or unreachable third-party host can never make a PR flaky, but it also means
+nothing would otherwise notice a link in a published deck going dead. The
+weekly job probes every external URL and, when one is genuinely gone (404/410,
+an unresolvable host, a refused connection), opens or updates a single
+`link-rot` issue — and closes it again once the links resolve. Bot walls and
+rate limits (403, 429, LinkedIn's 999) are reported as *could not verify* and
+never raise an issue on their own. Run it yourself with:
+
+```bash
+python3 tools/check-links.py
+```
+
+Action versions are kept current by
+[`.github/dependabot.yml`](.github/dependabot.yml), which proposes one grouped
+pull request a week when any `actions/*` release lands.
 
 > **One-time setup:** repo *Settings → Pages → Build and deployment → Source* must be set to
 > **GitHub Actions** (not "Deploy from a branch"), or the workflow won't publish.

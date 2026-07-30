@@ -6,6 +6,7 @@ Static checks (no browser, stdlib only):
   • duplicate HTML ids
   • <img> without alt, <iframe> without title
   • target="_blank" links without rel="noopener"
+  • vendored third-party files still match shared/vendor-manifest.json
   • manifest sync: talks/talks.json ↔ talks/ folders ↔ the landing page
   • stale placeholders (TODO/FIXME/lorem) and placeholder QR codes in
     published decks
@@ -107,7 +108,10 @@ class DeckParser(HTMLParser):
 
 
 def is_local(url):
-    p = urlparse(url)
+    try:
+        p = urlparse(url)
+    except ValueError:      # malformed (e.g. an unclosed IPv6 literal)
+        return False        # not ours to resolve; check-links.py reports it
     return not p.scheme and not url.startswith(("#", "//", "mailto:", "data:"))
 
 
@@ -137,12 +141,13 @@ def audit_html(path, rep, published_deck):
 
     base = os.path.dirname(path)
     for kind, url in p.refs:
+        if not is_local(url):
+            continue
         if kind == "a" and os.path.basename(urlparse(url).path) in GENERATED:
             continue
-        if is_local(url):
-            target = local_path(base, url, root=ROOT)
-            if target and not os.path.exists(target):
-                rep.error(rel, f"missing local {kind}: {url}")
+        target = local_path(base, url, root=ROOT)
+        if target and not os.path.exists(target):
+            rep.error(rel, f"missing local {kind}: {url}")
 
     seen, dups = set(), set()
     for i in p.ids:
@@ -165,8 +170,8 @@ def audit_html(path, rep, published_deck):
             rep.error(rel, f"stale placeholder {m.group(0)!r} (line {line})")
 
 
-def file_md5(path):
-    h = hashlib.md5()
+def file_digest(path, algorithm="md5"):
+    h = hashlib.new(algorithm)
     with open(path, "rb") as fh:
         for chunk in iter(lambda: fh.read(65536), b""):
             h.update(chunk)
@@ -212,11 +217,68 @@ def audit_placeholder_qr(rep, published):
     tpl = os.path.join(ROOT, "talks", "_template", "assets", "qr-slides.png")
     if not os.path.exists(tpl):
         return
-    tpl_md5 = file_md5(tpl)
+    tpl_md5 = file_digest(tpl)
     for slug in published:
         qr = os.path.join(ROOT, "talks", slug, "assets", "qr-slides.png")
-        if os.path.exists(qr) and file_md5(qr) == tpl_md5:
+        if os.path.exists(qr) and file_digest(qr) == tpl_md5:
             rep.error(f"talks/{slug}", "qr-slides.png is the template's placeholder QR")
+
+
+def audit_vendor(rep):
+    """Vendored third-party files must still match the digests we recorded.
+
+    Two manifest shapes are in use: a single `file` with a bare `sha256`
+    string (what tools/fetch-highlight.py writes), or a list of `files` with
+    a `sha256` map. Map keys may be the path under shared/ or just a
+    basename, as long as it resolves to exactly one listed file.
+    """
+    rel_manifest = os.path.join("shared", "vendor-manifest.json")
+    path = os.path.join(ROOT, rel_manifest)
+    if not os.path.exists(path):
+        rep.error(rel_manifest, "vendor manifest missing")
+        return
+    try:
+        with open(path, encoding="utf-8") as fh:
+            manifest = json.load(fh)
+    except json.JSONDecodeError as e:
+        rep.error(rel_manifest, f"unreadable vendor manifest: {e}")
+        return
+
+    for package, entry in sorted(manifest.items()):
+        listed = list(entry.get("files") or ([entry["file"]] if entry.get("file") else []))
+        if not listed:
+            rep.warn(rel_manifest, f"{package}: no vendored file recorded")
+            continue
+
+        recorded = entry.get("sha256")
+        if isinstance(recorded, str):
+            recorded = {listed[0]: recorded}
+        elif not isinstance(recorded, dict):
+            recorded = {}
+
+        wanted = {}
+        for key, digest in recorded.items():
+            matches = [key] if key in listed else [f for f in listed if os.path.basename(f) == key]
+            if len(matches) != 1:
+                rep.error(rel_manifest,
+                          f"{package}: sha256 key {key!r} does not name one listed file")
+                continue
+            wanted[matches[0]] = digest
+
+        for rel in listed:
+            target = os.path.join(ROOT, "shared", rel)
+            if not os.path.exists(target):
+                rep.error(rel_manifest, f"{package}: vendored file missing: shared/{rel}")
+                continue
+            if rel not in wanted:
+                rep.warn(rel_manifest, f"{package}: no sha256 recorded for shared/{rel}")
+                continue
+            got = file_digest(target, "sha256")
+            if got != wanted[rel]:
+                rep.error(os.path.join("shared", rel),
+                          f"{package}: vendored file no longer matches the manifest — "
+                          f"sha256 is {got}, manifest says {wanted[rel]} (restore the "
+                          f"vendored build, or record the new digest deliberately)")
 
 
 def audit_assets(rep):
@@ -245,7 +307,7 @@ def audit_assets(rep):
                 if n not in corpus:
                     rep.warn(rel, "asset is not referenced anywhere (orphan?)")
                 if ext in {".png", ".jpg", ".jpeg", ".webp", ".svg", ".md", ".pdf"}:
-                    hashes.setdefault(file_md5(path), []).append(rel)
+                    hashes.setdefault(file_digest(path), []).append(rel)
     for digest, paths in sorted(hashes.items()):
         if len(paths) > 1:
             # the starter and the showcase legitimately share placeholder assets
@@ -300,6 +362,7 @@ def main(argv=None):
         underscore = in_talks and rel.split(os.sep)[1].startswith("_")
         audit_html(path, rep, published_deck=in_talks and not underscore)
     audit_placeholder_qr(rep, published)
+    audit_vendor(rep)
     audit_assets(rep)
     if args.site:
         audit_site(rep, args.site)
