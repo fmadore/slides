@@ -55,7 +55,7 @@ jobs:
           python3 tools/strip-notes.py /tmp/site-check
           python3 tools/audit.py --site /tmp/site-check --strict
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 
@@ -98,7 +98,7 @@ jobs:
           fi
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         if: steps.engine.outputs.changed == 'true'
         with:
           node-version: 22
@@ -125,7 +125,7 @@ jobs:
 
       - name: Upload diff images
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: visual-diff
           path: |
@@ -147,7 +147,7 @@ jobs:
           python3 tools/strip-notes.py _site
           python3 tools/audit.py --site _site
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
 
@@ -159,7 +159,7 @@ jobs:
       # PDFs + social cards are expensive: restore the last run's outputs and
       # let export-pdf's content-hash check skip every unchanged deck.
       - name: Restore PDF/social-card cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .extras-cache
           key: deck-extras-${{ hashFiles('talks/**', 'shared/**') }}
