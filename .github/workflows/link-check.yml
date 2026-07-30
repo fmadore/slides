@@ -52,7 +52,7 @@ jobs:
           echo "fingerprint=$(sed -n 's/.*fingerprint=\([0-9a-z]*\).*/\1/p' report.md | head -1)" >> "$GITHUB_OUTPUT"
 
       - name: Upload the report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: link-check-report
           path: |
