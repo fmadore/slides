@@ -235,7 +235,7 @@
           </div>
         </div>
       </div>
-      <aside class="notes">I want the collection open to researchers, but also to the general public — especially Muslims from these countries tracing their communities' history. So I built the best search engine I could: facets, autocomplete, authority files that pull the many spellings of a name together. But some problems with keyword search run deeper than any tool can reach. Take "hadj": it returns two unrelated things at once — articles about the pilgrimage, and the men who carry "El Hadj" as an honorific. No facet untangles that. The interaction model is a barrier too: a keyword box assumes you can already name what you want, then judge a ranked list from an algorithm you never see. I've worked with this corpus since 2015; I know how it's tagged, and new users don't — several have told me they find it intimidating. So I went looking for another way in, and a chatbot was the obvious candidate: more and more people ask in plain language, not in keywords and filters.</aside>
+      <aside class="notes">I want the collection open to researchers, but also to the general public — especially Muslims from these countries tracing their communities' history. So I built the best search engine I could: facets, autocomplete, authority files that pull the many spellings of a name together. But some problems with keyword search run deeper than any tool can reach. Take "hadj": it returns two unrelated things at once — articles about the pilgrimage, and the men who carry "El Hadj" as an honorific. No facet untangles that. The interaction model is a barrier too: a keyword box assumes you can already name what you want, then judge a ranked list from an algorithm you never see. I've worked with this corpus since 2015; I know how it's tagged, and new users don't — several have told me they find it intimidating. So I went looking for another way in, and a chatbot was the obvious candidate: more and more people now ask in plain language.</aside>
     </section>
 
     <!-- ════════ 4 · WHY NOT JUST ASK AI? (Gemini evidence + nuanced critique) ═ -->
@@ -256,7 +256,7 @@
           </ul>
         </div>
       </div>
-      <aside class="notes">More and more people skip the search box and just ask an AI. A bare chatbot is frozen at its training data and cut off from the sources, so it invents plausible-looking citations — worse for Africa, thinly represented to begin with. The commercial chatbots now search the web, which does cut the hallucinations. But the sourcing is erratic: they lean heavily on Wikipedia, which has very little on Islam in West Africa specifically. Now and then one pulls a record from the IWAC, but never systematically. What you get is fluent, confident, and generic. Here's Gemini on Islam in Kpalimé in the nineties: a long, polished answer, sourced to "The Christian Chronicle" and a Turkish foundation. And here's the irony: my collection is crawled constantly by their bots, yet ask it precisely about Kpalimé and it has no real grounding in the archive. It can scrape the collection; it can't use it well.</aside>
+      <aside class="notes">More and more people skip the search box and just ask an AI. A bare chatbot is frozen at its training data and cut off from the sources, so it invents plausible-looking citations — worse for Africa, thinly represented to begin with. The commercial chatbots now search the web, which does cut the hallucinations. But the sourcing is erratic: they lean heavily on Wikipedia, which has very little on Islam in West Africa specifically. Now and then one pulls a record from the IWAC, but never systematically. What you get is fluent, confident, and generic. Here's Gemini on Islam in Kpalimé in the nineties: a long, polished answer, sourced to "The Christian Chronicle" and a Turkish foundation. The irony is that my collection is crawled constantly by their bots, yet ask precisely about Kpalimé and none of it has grounded the answer. It can scrape the collection; it can't use it well.</aside>
     </section>
 
     <!-- ════════ 5 · TWO LAYERS (two-column) ══════════════════════════════ -->
@@ -283,7 +283,7 @@
     <!-- ════════ 6 · WHAT IS MCP (comparison + callout) ═══════════════════ -->
     <section class="balance">
       <p class="kicker navy">Model Context Protocol · open standard, Nov 2024</p>
-      <h2 class="slide-title">Why a server, not just a chatbot?</h2>
+      <h2 class="slide-title">Why build a server at all?</h2>
       <p class="mcp-intro">An MCP server connects an AI assistant to one outside system. Like an app to your accounts:</p>
       <div class="mcp-uses">
         <span class="chip">Gmail</span>
@@ -319,7 +319,7 @@
         <div class="col">
           <p>A skill is a <strong>methods handbook for a machine reader</strong> — loaded only when a request matches its purpose.</p>
           <ul>
-            <li>Competence by <strong>reading, not retraining</strong></li>
+            <li>Competence gained by <strong>reading</strong>, with no retraining</li>
             <li>Versioned, reviewed, refined — a prompt is typed once and lost</li>
             <li>An open standard across agents — no vendor lock-in, like MCP</li>
             <li><strong>Born in coding agents</strong> — the format fits any domain</li>
@@ -335,7 +335,7 @@
           <p class="small muted">The standard layout of an agent skill — SKILL.md is the only required file.</p>
         </div>
       </div>
-      <aside class="notes">So what is a skill? A methods handbook, written in plain language, that the agent reads into context when a request matches its purpose. The model gains a specific competence by reading, not by retraining. The difference from a prompt is durability and accountability: a prompt is typed once and lost, whereas a skill file is versioned, reviewed, published, and refined over time. It turns tacit expertise into an explicit, inspectable artefact: how I search this collection, and which biases I have to disclose. Like MCP, skills are an open standard across agents, so none of this locks you to one vendor. They were born in coding — telling an agent how to run a routine or format output — but the format works just as well for the social sciences: how to behave like a historian, how to read a corpus critically, what to know about a particular collection.</aside>
+      <aside class="notes">So what is a skill? A methods handbook, written in plain language, that the agent reads into context when a request matches its purpose. The model gains a specific competence just by reading the file. The difference from a prompt is durability and accountability: a prompt is typed once and lost, whereas a skill file is versioned, reviewed, published, and refined over time. It turns tacit expertise into an explicit, inspectable artefact: how I search this collection, and which biases I have to disclose. Like MCP, skills are an open standard across agents, so none of this locks you to one vendor. They were born in coding — telling an agent how to run a routine or format output — but the format works just as well for the social sciences: how to behave like a historian, how to read a corpus critically, what to know about a particular collection.</aside>
     </section>
 
     <!-- ════════ 8 · THE IWAC MCP SERVER (query mix + design) ═════════════ -->
@@ -370,7 +370,7 @@
           </ul>
         </div>
       </div>
-      <aside class="notes">Now, what you can actually ask it. You put the question in plain language: newspaper articles on Islam in Abidjan in the nineties; Islamic publications on secularism in Togo and Benin; academic references on Muslim women in Burkina Faso. Each mixes a different part of the collection with different filters — place, period, subject, country — and the model works out which tools to call and how to combine them. You say what you want; the server handles how. Underneath there are twenty-two tools across six subsets. The principle behind all of them is verifiability: every call is a lookup, not a generation, and every result returns a URL straight to the canonical record, so the model can cite only what the collection holds. There are now two ways in. Claude Desktop is a one-click install — free, the full toolset, plus the research skill. The server is now hosted at a fixed web address too, so ChatGPT can reach the same tools as a custom connector: you paste a URL, no install and no API key, though that path needs a paid ChatGPT plan. The skill still rides with Claude; ChatGPT gets the plumbing. A new AI-access page on the collection's own website walks through both. Let me show you.</aside>
+      <aside class="notes">Now, what you can actually ask it. You put the question in plain language: newspaper articles on Islam in Abidjan in the nineties; Islamic publications on secularism in Togo and Benin; academic references on Muslim women in Burkina Faso. Each mixes a different part of the collection with different filters — place, period, subject, country — and the model works out which tools to call and how to combine them. You say what you want; the server handles how. Underneath there are twenty-two tools across six subsets. The principle behind all of them is verifiability: every call is a lookup against the database, and every result returns a URL straight to the canonical record, so the model can cite only what the collection holds. There are now two ways in. Claude Desktop is a one-click install — free, the full toolset, plus the research skill. The server is now hosted at a fixed web address too, so ChatGPT can reach the same tools as a custom connector: you paste a URL, no install and no API key, though that path needs a paid ChatGPT plan. The skill still rides with Claude; ChatGPT gets the plumbing. A new AI-access page on the collection's own website walks through both. Let me show you.</aside>
     </section>
 
     <!-- ════════ 8b · SEARCH BY MEANING (semantic search · how it works) ══════ -->
@@ -396,7 +396,7 @@
         <div class="flow-step">
           <span class="step-n">3 · Match</span>
           <span class="step-h">Nearest points win</span>
-          <p>Cosine similarity ranks all <strong>12,000+</strong> articles by how close they sit — closest in meaning, not in wording.</p>
+          <p>Cosine similarity ranks all <strong>12,000+</strong> articles by how close they sit in that space.</p>
         </div>
       </div>
       <div class="callout navy">
@@ -490,7 +490,7 @@
           </div>
         </div>
       </div>
-      <aside class="notes">The server has the data, but none of the judgement. I wanted the model to carry my own knowledge of the collection as a historian working with primary sources. Twenty-two tools give reach, not judgement, and that judgement has to live somewhere — it lives in the skill. Before any research, the skill asks how deep to go: a quick Brief pass for an overview, or a full Extended analysis; it defaults to Brief. The Extended path is a five-phase workflow modelled on real archival research. Scoping first: what's even here for this question, before a single keyword. Then systematic searching, in French, every search logged, including the ones that come back empty. Deep reading of the strongest articles. Triangulation across articles, publications, references and index entries. And synthesis: findings with explicit sources and a confidence grade — strong, moderate, or weak.</aside>
+      <aside class="notes">The server has the data, but none of the judgement. I wanted the model to carry my own knowledge of the collection as a historian working with primary sources. Twenty-two tools give reach. The judgement has to live somewhere, and it lives in the skill. Before any research, the skill asks how deep to go: a quick Brief pass for an overview, or a full Extended analysis; it defaults to Brief. The Extended path is a five-phase workflow modelled on real archival research. Scoping first: what's even here for this question, before a single keyword. Then systematic searching, in French, every search logged, including the ones that come back empty. Deep reading of the strongest articles. Triangulation across articles, publications, references and index entries. And synthesis: findings with explicit sources and a confidence grade — strong, moderate, or weak.</aside>
     </section>
 
     <!-- ════════ 10 · WHAT THE SKILL ENCODES (list + callout) ═ -->
@@ -519,7 +519,7 @@
         <pre><code class="language-markdown">Loading the skill file…</code></pre>
       </div>
       <p class="scroll-hint"><span>Scroll to read the whole file — 190 lines, open source at <a href="https://github.com/fmadore/iwac-mcp-server" target="_blank" rel="noopener">github.com/fmadore/iwac-mcp-server</a></span></p>
-      <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the search-in-French rule, the bias-disclosure and confidence-grading requirements. We won't read it line by line, but it's open online. The point is that the method is explicit and reviewable, not a black box.</aside>
+      <aside class="notes">This is the actual artefact the agent reads — plain markdown, versioned on GitHub: the five-phase workflow, the search-in-French rule, the bias-disclosure and confidence-grading requirements. We won't read it line by line, but it's open online. The point is that the method is explicit and open to review.</aside>
     </section>
 
     <!-- ════════ 14 · LIVE DEMO — vertical stack: intro → Brief run → Extended run.
@@ -568,7 +568,7 @@
           </figure>
           <p class="small muted">Claude Sonnet 4.6 · high effort</p>
         </div>
-        <aside class="notes">Here's one I prepared earlier, in case we need it. I asked, in English, what the collection says about secularism in Côte d'Ivoire. Watch what happens before any searching: the skill reads its own method file, then stops to ask how deep I want to go — a quick Brief or the full Extended pass, with Brief the default. That pause is the skill doing its job — it sets the terms before it answers, rather than dumping a reply. The full report, with every source cited, is one tap away at the top of the frame.</aside>
+        <aside class="notes">Here's one I prepared earlier, in case we need it. I asked, in English, what the collection says about secularism in Côte d'Ivoire. Watch what happens before any searching: the skill reads its own method file, then stops to ask how deep I want to go — a quick Brief or the full Extended pass, with Brief the default. That pause is the skill doing its job — it sets the terms before it answers. The full report, with every source cited, is one tap away at the top of the frame.</aside>
       </section>
 
       <!-- 14.2 — saved run: EXTENDED (Islam in Kpalimé — the question Gemini fumbled on slide 5) -->
@@ -588,7 +588,7 @@
           </figure>
           <p class="small muted">The same question we put to Gemini earlier, now answered from the IWAC.</p>
         </div>
-        <aside class="notes">The second saved run is the very question I showed Gemini fumbling at the start — Islam in Kpalimé, in Togo — but put to the collection itself. Here I answer "extended", and the five-phase method kicks off: Phase one is scoping, before a single keyword. Set this beside the Gemini answer from earlier and you can see what grounding buys you — same question, but every claim here traces back to a record in the archive, not to a guess.</aside>
+        <aside class="notes">The second saved run is the very question I showed Gemini fumbling at the start — Islam in Kpalimé, in Togo — but put to the collection itself. Here I answer "extended", and the five-phase method kicks off: Phase one is scoping, before a single keyword. Set this beside the Gemini answer from earlier and you can see what grounding buys you — same question, but every claim here traces back to a record in the archive.</aside>
       </section>
 
     </section>
@@ -613,7 +613,7 @@
           </div>
         </div>
       </div>
-      <aside class="notes">Step back from the tooling: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 heritage institutions hit by AI-bot traffic spikes that ignore robots.txt; Wikimedia reports 65% of its costliest traffic is bots, not people. I've seen a big spike on the IWAC myself, out of the US and China — thousands a day, a lot for a database on Islam in West Africa. Underfunded institutions and unpaid labour are subsidising commercial AI — digital colonialism in its newest form. The stakes are sharper for African collections. Yékú names the paradox: un-digitised, an African archive is invisible to the models, absent from the training data; digitise it, and you expose it to extractive scraping. The incomplete corpus then risks becoming the definitive account, in one uniform authority. MCP offers a third path: the collection stays put, and the institution decides what the AI can see.</aside>
+      <aside class="notes">Step back from the tooling: who is this for, and who pays? The default today is extraction. A 2025 GLAM-E Lab survey found 39 of 43 heritage institutions hit by AI-bot traffic spikes that ignore robots.txt; Wikimedia reports that 65% of its costliest traffic comes from bots. I've seen a big spike on the IWAC myself, out of the US and China — thousands a day, a lot for a database on Islam in West Africa. Underfunded institutions and unpaid labour are subsidising commercial AI — digital colonialism in its newest form. The stakes are sharper for African collections. Yékú names the paradox: un-digitised, an African archive is invisible to the models, absent from the training data; digitise it, and you expose it to extractive scraping. The incomplete corpus then risks becoming the definitive account, in one uniform authority. MCP offers a third path: the collection stays put, and the institution decides what the AI can see.</aside>
     </section>
 
     <!-- ════════ 14 · CONCLUSION / CONTACT (HTML; flex-centred — reveal sets the
@@ -629,7 +629,7 @@
           <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
         </div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
-      <aside class="notes">A few honest caveats to close. I'm not claiming the MCP server solves the problems I've raised; it raises others. And it's genuinely convincing — knowing this collection, I'm amazed by the answers, which is exactly the risk: that we take them for granted. There's a subtler loss too: in the archive the old way you get serendipity, the thing you weren't looking for, and this method gives you only what you ask for. So it's a promising avenue for public access, not a replacement for archival research. The answers are also only as good as the metadata underneath — the unglamorous work of cleaning, standardising and reconciling spellings is the real foundation. And the question the protocol can't settle: CARE asks what FAIR doesn't — not just who controls the data, but who benefits. A West African collection hosted at a German institute: for whom are we doing this? If you'd like to try it, there's now an AI-access page on the collection's own website with connection instructions for both Claude and ChatGPT — the server already runs as a hosted endpoint on the IWAC's domain. What's next: a small open-source model on that server, answering on the website itself, with no install and no account. Thank you.</aside>
+      <aside class="notes">A few honest caveats to close. I'm not claiming the MCP server solves the problems I've raised; it raises others. And it's genuinely convincing — knowing this collection, I'm amazed by the answers, which is exactly the risk: that we take them for granted. There's a subtler loss too: in the archive the old way you get serendipity, the thing you weren't looking for, and this method gives you only what you ask for. So it's a promising avenue for public access, and I'd put it no higher than that. The answers are also only as good as the metadata underneath — the unglamorous work of cleaning, standardising and reconciling spellings is the real foundation. And the question the protocol can't settle is the one CARE puts to FAIR: who benefits? A West African collection hosted at a German institute: for whom are we doing this? If you'd like to try it, there's now an AI-access page on the collection's own website with connection instructions for both Claude and ChatGPT — the server already runs as a hosted endpoint on the IWAC's domain. What's next: a small open-source model on that server, answering on the website itself, with no install and no account. Thank you.</aside>
     </section>
 
   </div>

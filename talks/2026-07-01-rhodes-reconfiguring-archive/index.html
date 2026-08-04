@@ -187,7 +187,7 @@
         <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="492" height="492">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
       </div>
-      <aside class="notes">Thank you to the conference organisers for inviting me. The title of my presentation is 'Reconfiguring the Archive: Relationality and Discovery in the Africa Multiple Interactive Research Atlas.</aside>
+      <aside class="notes">Thank you to the organisers for the invitation. I want to open on a question that sits underneath this whole conference: who decides how a thing gets described, and therefore whether anyone can find it at all? I'll come back to it at the end. Everything in between is how one infrastructure has tried to answer it.</aside>
     </section>
 
     <!-- ════════ 2 · THE CLUSTER ═════════════════════════════════════════════ -->
@@ -209,7 +209,7 @@
           <div class="col-head">In figures</div>
           <div class="cluster-figures">
             <div class="stat"><span class="stat-num" data-count="300" data-count-suffix="+">300+</span><span class="stat-label">Researchers, cluster-wide</span></div>
-            <div class="stat"><span class="stat-num" data-count="5">5</span><span class="stat-label">Research Centres, five countries</span></div>
+            <div class="stat"><span class="stat-num" data-count="5">5</span><span class="stat-label">Research Centres, in five countries</span></div>
             <div class="stat"><span class="stat-num">2026–32</span><span class="stat-label">Second phase, under way</span></div>
           </div>
           <div class="callout navy">
@@ -218,7 +218,7 @@
           </div>
         </div>
       </div>
-      <aside class="notes">To provide some context for this talk, I need to say a word about the Africa Multiple Cluster of Excellence. It is a major African studies cluster based at the University of Bayreuth. It has been funded by the German Research Foundation since 2019 and is now in its second phase, which runs until 2032. It comprises over three hundred researchers organised through five research centres in five countries. The overarching theme is an agenda called 'Reconfiguring African Studies': reworking the field in terms of both its concepts and its structures, and confronting the power imbalances in how knowledge about Africa is produced and disseminated. Three concepts developed by the cluster are particularly relevant to this presentation: 'multiplicity', which prioritises relationships over fixed entities; 'relationality', which considers the creation, dissolution and silencing of worlds; and 'reflexivity', which involves examining our own positions and the power behind them.</aside>
+      <aside class="notes">First, some context. The Africa Multiple Cluster of Excellence is a large African studies cluster based at the University of Bayreuth, funded by the German Research Foundation since 2019. We're now in a second phase that runs to 2032. Over three hundred researchers work through five research centres in five countries. The overarching agenda is called 'Reconfiguring African Studies': reworking the field's concepts and its structures at the same time, and confronting the power imbalances in how knowledge about Africa gets produced and passed on. Three of the cluster's concepts matter for today. Multiplicity puts relationships ahead of fixed entities. Relationality looks at how worlds are made, unmade, and silenced. And reflexivity turns that same lens on us — our own positions, and the power behind them.</aside>
     </section>
 
     <!-- ════════ 3 · THE AMRCs — the distributed network + map ═══════════════ -->
@@ -244,7 +244,7 @@
           <p class="small muted">Shown in green on the map. <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener">africamultiple…/centres</a></p>
         </div>
       </div>
-      <aside class="notes">There are five Africa Multiple Research Centres: Université Joseph Ki-Zerbo in Burkina Faso, the University of Bayreuth in Germany, Moi University in Kenya, the University of Lagos in Nigeria and Rhodes University in South Africa. These are represented by the green dots on the map. The cluster also has a privileged partner in Brazil and other partners around the world. My team and I are trying to solve the problem of how to connect the research material from the five centres.</aside>
+      <aside class="notes">There are five Africa Multiple Research Centres: Université Joseph Ki-Zerbo in Burkina Faso, the University of Bayreuth in Germany, Moi University in Kenya, the University of Lagos in Nigeria, and Rhodes University here in Makhanda. Those are the green dots on the map. There's also a privileged partner in Brazil, and cooperation partners further afield. The problem my team and I work on is the one this map poses: how do you connect research material held in five different places?</aside>
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
@@ -271,7 +271,7 @@
         </div>
       </div>
       <p class="small muted">Grounded in FAIR &amp; CARE and multiple knowledge systems. Full range: <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener">africamultiple…/digital-solutions</a></p>
-      <aside class="notes">My team is the Digital Research Environment (DRE). Our role is to make the cluster's research data findable, reusable and presentable. Our work falls into four categories. Firstly, we manage and curate data, including metadata schemas, designing ontologies and taxonomies, and archiving datasets. Secondly, we do data science, including text mining, network analysis and scraping. Thirdly, we are experimenting with using local open-source AI models to perform OCR, transcription, entity extraction and tagging. Fourthly, we focus on dissemination through dashboards, maps, Omeka S databases and websites. </aside>
+      <aside class="notes">My team is the Digital Research Environment, the DRE. Our job is to make the cluster's research data findable, reusable and presentable, and the work falls into four areas. We curate: metadata schemas, ontologies and taxonomies, archiving datasets. We do data science: text mining, network analysis, scraping. We're experimenting with local open-source AI models for OCR, transcription, entity extraction and tagging. And we handle dissemination, through dashboards, maps, Omeka S databases and websites.</aside>
     </section>
 
     <!-- ════════ 5 · TWO PRINCIPLES — how the DRE works ═════════════════════ -->
@@ -289,10 +289,10 @@
         </div>
       </div>
       <div class="callout navy">
-        <span class="callout-label">Not an extractive model</span>
+        <span class="callout-label">Distributed by design</span>
         A considered response to debates on <strong>data colonialism and extractivism</strong>: the field's material is not drawn from Africa onto a server in Germany.
       </div>
-      <aside class="notes">Two principles guide our work. Firstly, description is a joint effort. We don't describe other people's material for them; curation and description are shared with our partner centres. Each centre and its researchers describe the data they know best, and the DRE runs the shared infrastructure that connects these descriptions. Secondly, storage remains distributed by default. We don't transfer all the data to one server in Germany. The data remains in its local repository. Bayreuth holds the metadata layer — the descriptions and links pointing back to it. This is how we attempt to address debates on data colonialism and extraction. Research data becomes findable without being relocated. Now, let me explain how we built that, starting with the system we began with.</aside>
+      <aside class="notes">Two principles guide our work. The first is that description is a joint effort: curation and description are shared with our partner centres, so each centre describes the data it knows best, and the DRE runs the shared infrastructure that connects those descriptions. The second is that storage stays distributed by default. The data stays in its local repository, and Bayreuth holds only the metadata layer — the descriptions and the links pointing back to it. That's our attempt to answer the debates on data colonialism and extraction: research data becomes findable without being relocated. Now, how we built that, starting with the system we began with.</aside>
     </section>
 
     <!-- ════════ 6 · FIRST PHASE — WissKI ═══════════════════════════════════ -->
@@ -317,7 +317,7 @@
           <figcaption>Records as a knowledge graph: entities linked by typed relations.</figcaption>
         </figure>
       </div>
-      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI. The aim was to enable the cluster's research data to be searched and explored. This system was built on knowledge graphs, which represent entities and the typed relations between them — subject, relation and object — tying those entities to shared ontologies and open data on the web. However, we were faced with various limitations and wanted to develop a more user-friendly system for researchers.</aside>
+      <aside class="notes">In the first phase, the connecting infrastructure was a system called WissKI. The aim was to enable the cluster's research data to be searched and explored. It's built on knowledge graphs, which represent entities and the typed relations between them — subject, relation, object — and tie those entities to shared ontologies and open data on the web. It did the semantic work well. But researchers found it hard to use, so we set out to build something friendlier.</aside>
     </section>
 
     <!-- ════════ 7 · AMIRA — the new platform ═══════════════════════════════ -->
@@ -332,7 +332,7 @@
         </div>
         <div class="col">
           <div class="col-head alt">Visualise</div>
-          <p class="small">Maps, network graphs and charts across the whole collection — not one record at a time.</p>
+          <p class="small">Maps, network graphs and charts across the whole collection at once.</p>
         </div>
         <div class="col">
           <div class="col-head">Cross-linked</div>
@@ -348,7 +348,7 @@
         <img data-src="assets/qr-amira.png" alt="QR code linking to the AMIRA website" width="500" height="500">
         <span class="qr-label"><b>Scan to explore AMIRA</b><span class="qr-url">data.africamultiple.uni-bayreuth.de</span></span>
       </div>
-      <aside class="notes">The DRE has recently launched AMIRA (the Africa Multiple Interactive Research Atlas), which is the cluster's new platform for exploring and visualising its research data, publications, and outputs. Built using Omeka S, it allows you to browse research items, publications, podcasts, YouTube videos, people and organisations, and features search, autocomplete and faceted filters. You can also visualise charts, maps, and network graphs showing who works with whom, where projects are located, and which themes cut across the collection. Everything is cross-linked: click on a person, project, subject or place to land on its detail page with its web of connections.</aside>
+      <aside class="notes">So we've recently launched AMIRA, the Africa Multiple Interactive Research Atlas — the cluster's new platform for exploring and visualising its research data, publications and outputs. It's built on Omeka S. You can browse research items, publications, podcasts, YouTube videos, people and organisations, with search, autocomplete and faceted filters. You can also pull up charts, maps and network graphs: who works with whom, where projects sit, which themes cut across the collection. And everything is cross-linked. Click a person, project, subject or place, and you land on its detail page with its own web of connections.</aside>
     </section>
 
     <!-- ════════ 8 · A LIVE LOOK — AMIRA home page (live iframe) ═════════════ -->
@@ -382,7 +382,7 @@
         </div>
       </figure>
       <p class="small muted ilam-caption">An external collection from <strong>ILAM</strong> at Rhodes — its catalogue is described in AMIRA</p>
-      <aside class="notes">This is the International Library of African Music, based right here at Rhodes University, and the foremost repository of African music on the continent. Although it is an external collection and the material stays with ILAM, its catalogue is described and discoverable inside AMIRA.</aside>
+      <aside class="notes">This is the International Library of African Music, based right here at Rhodes, and one of the foremost repositories of African music on the continent. It's an external collection: the material stays with ILAM. But its catalogue is described inside AMIRA, and so it becomes discoverable there.</aside>
     </section>
 
     <!-- ════════ 10 · SEARCH — Typesense facets/filters/autocomplete (live) ══ -->
@@ -401,14 +401,14 @@
       <aside class="notes">I developed a custom search module using Typesense, a fast open-source engine, on our own server. It provides instant autocomplete and deep faceted filtering. Research items can be filtered by year, type, place of origin, country, language, subject and more, while people can be filtered by affiliation and role, and projects by funder and section.</aside>
     </section>
 
-    <!-- ════════ 10 · BUILT ON RELATIONALITY (statement) ════════════════════ -->
+    <!-- ════════ 11 · BUILT ON RELATIONALITY (statement) ════════════════════ -->
     <section class="statement balance" data-toc="Built on relationality" data-footer="light">
       <p class="statement-body">Here an entity is the sum of its <span class="accent">relationships</span>, rather than a standalone record.</p>
       <p class="attribution"><em>Relationality</em>, one of the cluster's three concepts, treats phenomena as formed through their relationships — and attends to the worlds those relationships leave <em>unmade or silenced</em>.</p>
       <aside class="notes">Here, I focus on one of the cluster's three concepts: relationality. It proposes that a person, project or publication is formed through their relationships, and asks what those relationships leave out. So the question is whether the archive can demonstrate these relationships — and Omeka S, the platform AMIRA runs on, turns out to be genuinely helpful for showing those connections.</aside>
     </section>
 
-    <!-- ════════ 11 · A RECORD AS A JUNCTION — live AMIRA item (Ute Fendler) ═══ -->
+    <!-- ════════ 12 · A RECORD AS A JUNCTION — live AMIRA item (Ute Fendler) ═══ -->
     <section class="record-slide" data-toc="From records to relations">
       <p class="kicker navy">Relationality, made visible</p>
       <h2 class="slide-title">Connections, not records</h2>
@@ -434,10 +434,10 @@
           <p class="small muted">Projects, publications, co-authors, places and subjects — each its own page, and each link naming the relationship.</p>
         </div>
       </div>
-      <aside class="notes">This is a single record — the page for Ute Fendler, a colleague in the cluster. Instead of a name and a flat list, it shows the resources linked to her and the nature of each connection: the projects she leads or belongs to, her publications, co-authors, places and subjects — seventy-one links in all, each a page you can open. Scroll down and the record also draws its own knowledge graph.</aside>
+      <aside class="notes">This is a single record — the page for Ute Fendler, a colleague in the cluster. It shows every resource linked to her, and it names the nature of each connection: the projects she leads or belongs to, her publications, co-authors, places and subjects. Seventy-one links in all, each one a page you can open. Scroll down and the record draws its own knowledge graph.</aside>
     </section>
 
-    <!-- ════════ 12 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
+    <!-- ════════ 13 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
     <section data-toc="Spatial exploration" data-fit-allow>
       <p class="kicker">Custom Omeka S module · built in-house</p>
       <h2 class="slide-title">Spatial exploration</h2>
@@ -456,10 +456,10 @@
           </div>
         </div>
       </figure>
-      <aside class="notes">I mentioned that Amira provides an extensive range of data visualisations. I developed a custom Omeka S module tailored to our needs. I don't have time to show you everything, but here's a spatial exploration on the slide. Every place in the collection that we have georeferenced appears on the map, based on the original location and the current location of the research items.</aside>
+      <aside class="notes">I said AMIRA carries a wide range of visualisations. I built a custom Omeka S module for them, tailored to what we needed. There isn't time to show you everything, so here's the spatial one. Every place in the collection we've georeferenced appears on this map, plotted by both the original location of a research item and where it sits now.</aside>
     </section>
 
-    <!-- ════════ 13 · THE NETWORK VIEW — custom DRE module (entity network) ══════ -->
+    <!-- ════════ 14 · THE NETWORK VIEW — custom DRE module (entity network) ══════ -->
     <section data-toc="The network view">
       <p class="kicker">Custom Omeka S module · knowledge-graph links</p>
       <h2 class="slide-title">Entities and their links</h2>
@@ -484,21 +484,21 @@
           <p>The whole collection as one network — entities such as people, projects, subjects and places, drawn together by the <strong>links recorded between them</strong> in the knowledge graph.</p>
           <div class="callout warm">
             <span class="callout-label">The catch, already visible</span>
-            Every link here was described by someone. The network is only ever as good as that description — and subject description is the thinnest of it.
+            Every link here was described by someone — and subject description is the thinnest part of that.
           </div>
         </div>
       </div>
-      <aside class="notes">This is the entire collection viewed as a network of entities — such as people, projects, subjects and places — and the connections recorded between them in the knowledge graph. This is the most eye-catching view, but also the most fragile, because every link was described by someone. The network is only ever as good as its metadata.</aside>
+      <aside class="notes">This is the entire collection seen as one network of entities — people, projects, subjects, places — drawn together by the connections recorded between them in the knowledge graph. It's the most eye-catching view I can show you, and also the most fragile, because a human being sat down and described every one of those links. Which brings me to the hard part.</aside>
     </section>
 
-    <!-- ════════ 13 · THE TURN (statement) ══════════════════════════════════ -->
+    <!-- ════════ 15 · THE TURN (statement) ══════════════════════════════════ -->
     <section class="statement balance" data-toc="Where it's hardest" data-footer="light">
       <p class="statement-body">An atlas of relations is only as strong as its <span class="accent">weakest metadata</span>.</p>
       <p class="attribution">The weakest part is almost always subject description — the part that researchers supply the least of all.</p>
-      <aside class="notes">Everything I've shown relies on metadata, which is supplied by researchers who would rather be conducting research or working on papers. While information such as names, dates and places is provided fairly well, subject descriptions tend to be much less comprehensive. This isn't a criticism of my colleagues; metadata intake is rarely researchers' favourite part of the job.</aside>
+      <aside class="notes">Everything I've shown you rests on metadata, and metadata comes from researchers who would rather be doing their research. Names, dates and places come in reasonably well. Subject descriptions come in thin. I say that with sympathy — filling in metadata is nobody's favourite part of the job.</aside>
     </section>
 
-    <!-- ════════ 14 · LCSH AND ITS LIMITS ══════════════════════════════════ -->
+    <!-- ════════ 16 · LCSH AND ITS LIMITS ══════════════════════════════════ -->
     <section data-toc="The limits of description">
       <p class="kicker warm">When terms do exist</p>
       <h2 class="slide-title">Whose subject headings?</h2>
@@ -515,7 +515,7 @@
         <div class="col">
           <div class="callout navy">
             <span class="callout-label">The vocabulary problem</span>
-            Two people pick the same term for the same thing under a fifth of the time (Furnas et al., 1987). One imposed vocabulary makes that worse, not better.
+            Two people pick the same term for the same thing under a fifth of the time (Furnas et al., 1987). One imposed vocabulary makes that worse.
           </div>
           <p class="small muted">Risam (2018): standard schemas can carry epistemic violence — categories that erase as they describe.</p>
         </div>
@@ -523,13 +523,13 @@
       <aside class="notes">Where do subject terms come from when they do exist? Mostly from the Library of Congress Subject Headings, the major American controlled vocabulary. Our own pipeline does this automatically: it takes a subject term and reconciles it against the LCSH authority. This is convenient and interoperable, but it also imports a problem. LCSH was developed elsewhere, for different collections and based on different assumptions about what is important. African concepts, African language terms and African knowledge systems often have no real suitable place in it. You either force a near-match or drop the term, and either way, the description bends towards what the vocabulary already knows. Roopika Risam argues that standard schemas can commit a kind of epistemic violence — the category that describes also erases when it has no room for the thing in front of it.</aside>
     </section>
 
-    <!-- ════════ 15 · A WAY FORWARD — Wikidata + AI ════════════════════════ -->
+    <!-- ════════ 17 · A WAY FORWARD — Wikidata + AI ════════════════════════ -->
     <section data-toc="A way forward">
       <p class="kicker">Still exploratory</p>
       <h2 class="slide-title">Building the entities the vocabulary lacks</h2>
       <div class="cols">
         <div class="col">
-          <div class="col-head">Wikidata, not only Library of Congress</div>
+          <div class="col-head">Moving authority work to Wikidata</div>
           <p>Open, multilingual, editable by communities rather than one national library.</p>
           <ul>
             <li>Reconcile people, places, institutions to Wikidata</li>
@@ -549,10 +549,10 @@
         <span class="callout-label">Exploratory by design</span>
         To move authority over description closer to the people the data is about.
       </div>
-      <aside class="notes">So, what should we do? Our approach here is exploratory. The first step is to transfer the responsibility for authority work from the Library of Congress to Wikidata. Wikidata is open, multilingual and editable, so communities can add and correct entities instead of waiting for one national library to do so. We have started reconciling people, places, and institutions against it. The more challenging aspect is creating the African entities and concepts that are still lacking on Wikidata, so that the correct terminology exists. This requires a great deal of careful work. Somewhat related to this, but also raising all sorts of potential issues, we are experimenting with using open-source local LLMs to extract entities, since researchers often provide so few, as I mentioned earlier. The AI would produce drafts at scale, which curators and researchers would then review and approve. </aside>
+      <aside class="notes">So what do we do? Our approach here is exploratory, and I want to be clear that it's unfinished. The first move is to shift authority work from the Library of Congress to Wikidata. Wikidata is open, multilingual and editable, so communities can add and correct entities themselves instead of petitioning one national library. We've started reconciling people, places and institutions against it. The harder half is creating the African entities and concepts Wikidata still lacks, so that the right terminology exists at all — and that is slow, deliberate work. Alongside it, and with its own set of problems, we're experimenting with open-source local LLMs to extract entities, given how few researchers supply. The model drafts at scale; curators and researchers review and approve.</aside>
     </section>
 
-    <!-- ════════ 16 · CLOSING — the authority question + contact ════════════════ -->
+    <!-- ════════ 18 · CLOSING — the authority question + contact ════════════════ -->
     <section class="closing final-question" data-footer="dark">
       <!-- flex-centred: reveal sets the present section to display:block, which would
            top-align this sparse slide; the wrapper re-centres it. -->
@@ -564,7 +564,7 @@
         <div data-contact></div>
         <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       </div>
-      <aside class="notes">In conclusion, concerns about post-truth are usually related to forgery. Beneath this sits something quieter yet equally decisive: description. The ability to name and describe something in a particular language determines what can be found at all. For me, reimagining the archive means taking this issue seriously and shifting the authority over it closer to the people to whom the knowledge belongs.  Thank you.</aside>
+      <aside class="notes">When we worry about post-truth, we usually mean forgery. Underneath that sits something less dramatic and just as decisive: description. What you can name, and in which language, decides what can be found at all. So for me, reimagining the archive means treating description as a question of power, and moving authority over it closer to the people the knowledge belongs to. Thank you.</aside>
     </section>
 
   </div>
