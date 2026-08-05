@@ -12,6 +12,10 @@
  *   social-card.png  — a 1280×720 screenshot of the cover slide (the
  *                      og:image each deck's metadata points to)
  *
+ * It also writes <root>/social-card.png, the same 1280×720 shot of the
+ * landing page, which is the og:image for the site root and doubles as the
+ * repository's GitHub social preview.
+ *
  * Incremental: a content hash of the deck folder + shared/ is stored in
  * .extras-hash; decks whose hash is unchanged are skipped, so cached
  * artifacts are reused unless the deck or the shared engine changed.
@@ -124,6 +128,22 @@ for (const slug of decks) {
 
   writeFileSync(hashFile, hash);
   console.log(`ok    ${slug}: slides.pdf (${slideCount} pages, ${(pdf.length / 1024 / 1024).toFixed(1)} MB) + social-card.png`);
+  await ctx.close();
+}
+
+// ---- landing-page social card ---------------------------------------------
+// Deliberately outside the .extras-hash cache: one screenshot costs a couple
+// of seconds against minutes of PDF export, and leaving it uncached keeps the
+// workflow's cache glob scoped to talks/, where the expensive artifacts live.
+// Skipped under --decks, which asks for a restricted set.
+if (!ONLY) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  const page = await ctx.newPage();
+  await page.goto(`${BASE}/`, { waitUntil: 'load', timeout: 60000 });
+  await page.evaluate(() => document.fonts ? document.fonts.ready : null);
+  await page.waitForTimeout(1500); // let the masthead rules draw + webfonts paint
+  await page.screenshot({ path: join(ROOT, 'social-card.png') });
+  console.log('ok    landing page: social-card.png');
   await ctx.close();
 }
 

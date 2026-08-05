@@ -28,3 +28,4 @@ package-lock.json
 talks/*/slides.pdf
 talks/*/social-card.png
 talks/*/.extras-hash
+/social-card.png

@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: >-
+  If you cite or reuse these slides, please cite them as below. Individual
+  talks carry their own event and date on the deck's cover slide — cite those
+  when referring to one talk rather than to the collection.
+title: Slides — Frédérick Madore
+abstract: >-
+  Conference talks, lectures and keynotes on Islam in West Africa, digital
+  humanities and artificial intelligence, published as offline-capable
+  reveal.js decks on a shared "Broadsheet" theme. Includes the reusable deck
+  engine and the build, audit and validation tooling behind the site.
+type: software
+authors:
+  - family-names: Madore
+    given-names: Frédérick
+    orcid: https://orcid.org/0000-0003-0959-2092
+    affiliation: Africa Multiple Cluster of Excellence, University of Bayreuth
+repository-code: https://github.com/fmadore/slides
+url: https://slides.frederickmadore.com/
+# Mixed on purpose, and narrower than it looks: MIT covers the engine and the
+# tooling, CC BY 4.0 the slide text and original figures. Vendored software,
+# fonts, institutional logos and externally sourced images are excluded from
+# both — see LICENSE.md and THIRD_PARTY_NOTICES.md.
+license:
+  - MIT
+  - CC-BY-4.0
+keywords:
+  - Islam in West Africa
+  - African studies
+  - digital humanities
+  - artificial intelligence
+  - conference presentations
+  - reveal.js

@@ -65,7 +65,8 @@ slides/
 │   ├── audit.py              one-command repository audit (static checks + tests)
 │   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
 │   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
-│   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png (CI)
+│   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png, and the
+│   │                         landing page's own card (CI)
 │   ├── check-links.py        external links in published decks (weekly, not CI)
 │   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
 │   └── fetch-highlight.py    regenerate the slim highlight.js bundle
@@ -73,7 +74,7 @@ slides/
 ├── .github/workflows/        pages.yml — validate, build and deploy
 │                             link-check.yml — weekly link rot check
 └── .nojekyll  CNAME  404.html  robots.txt  sitemap.xml  LICENSE.md
-    THIRD_PARTY_NOTICES.md  .impeccable.md  README.md
+    THIRD_PARTY_NOTICES.md  CITATION.cff  .impeccable.md  README.md
 ```
 
 Each talk references the one shared engine via `../../shared/…`, so a fix to `theme.css`
