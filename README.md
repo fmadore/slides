@@ -46,7 +46,10 @@ iteration this theme grew out of — live in [`.impeccable.md`](.impeccable.md).
 slides/
 ├── index.html            ← landing page (GENERATED from talks/talks.json)
 ├── shared/               ← the reusable ENGINE, one copy shared by every talk
-│   ├── theme.css deck.js     the “Broadsheet” theme + nav / chrome / TOC script
+│   ├── theme.css deck.js     GENERATED public bundles (stable deck URLs)
+│   ├── src/
+│   │   ├── theme/            focused CSS partials: foundations, layouts, chrome…
+│   │   └── deck/             focused JS partials: TOC, fitting, embeds, diagnostics…
 │   ├── highlight.min.js      slim vendored highlight.js (see vendor-manifest.json)
 │   ├── logo-*.{png,svg}      Africa Multiple, Bayreuth, KCL marks
 │   ├── assets/               images used by more than one talk
@@ -65,11 +68,17 @@ slides/
 │   ├── audit.py              one-command repository audit (static checks + tests)
 │   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
 │   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
+│   ├── build-shared.mjs      assemble/check the stable shared bundles
 │   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png, and the
 │   │                         landing page's own card (CI)
 │   ├── check-links.py        external links in published decks (weekly, not CI)
 │   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
-│   └── fetch-highlight.py    regenerate the slim highlight.js bundle
+│   ├── fetch-highlight.py    regenerate the slim highlight.js bundle
+│   ├── fetch-fonts.py        transactionally re-vendor fonts + checksums
+│   ├── lib/                  shared Node runtime/server/cache helpers
+│   └── slideslib/            validated manifest + generated deck metadata
+├── package.json lock         pinned browser/visual tooling and local scripts
+├── requirements-dev.txt      pinned QR-generation dependency
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
 ├── .github/workflows/        pages.yml — validate, build and deploy
 │                             link-check.yml — weekly link rot check
@@ -98,12 +107,18 @@ python3 tools/new-talk.py \
 It copies `talks/_template`, fills the metadata (DECK_CONFIG, cover, canonical
 URL + social metadata), registers the talk in [`talks/talks.json`](talks/talks.json),
 regenerates the landing page and writes a QR code pointing at the final URL
-(needs `pip install "qrcode[pil]"` once — everything else works without it).
+(install once with `python -m pip install -r requirements-dev.txt`). The entire
+deck is staged first; if generation fails, the manifest and generated site files
+are rolled back. `--dry-run` validates without writing, and `--no-qr` deliberately
+removes the QR markup and avoids the Python dependency.
 Then edit the slides; the full layout catalogue with copy-paste examples lives
 in `talks/_showcase/` (preview at `/talks/_showcase/`).
 
-Doing it by hand instead: copy `talks/_template`, edit `DECK_CONFIG` + slides,
-add an entry to `talks/talks.json` and run `python3 tools/build-index.py`.
+Doing it by hand instead: copy `talks/_template`, add an entry to
+`talks/talks.json`, and run `python3 tools/build-index.py`. The marked SEO and
+DECK_CONFIG metadata blocks are generated from the manifest; use optional
+`deckTitle` when the in-deck title should be longer than the landing-page title.
+Edit slide content outside those generated markers.
 
 ---
 
@@ -192,7 +207,8 @@ margins None, background graphics on).
 outlined in red with a banner, and the banner also shows the auto-fit scale the
 engine applied to a dense slide (green ≥ 0.95, amber below, red below 0.90 —
 a red slide fails validation unless you accept it explicitly with a
-`data-fit-allow` attribute on its `<section>`). Add `?no-fit` (or use `?audit`)
+`data-fit-allow="reason for the deliberate exception"` attribute on its
+`<section>`). Add `?no-fit` (or use `?audit`)
 to disable auto-fitting and see the raw authored overflow. (All off in normal
 viewing and export.)
 
@@ -208,9 +224,12 @@ no code slides and no file embed can simply drop the `<script>` line.
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
 for a photo you genuinely want to bleed/fill.
 
-**Customise the look:** all design tokens are at the top of `shared/theme.css` (`:root`) —
-the six Bayreuth colours, the EB Garamond / Libre Franklin type, spacing. Change a font there, then
-re-run `shared/fonts/fetch-fonts.py` to re-vendor it for offline use.
+**Customise the look:** edit the focused files under `shared/src/`, then run
+`npm run build:shared`. The public `shared/theme.css` and `shared/deck.js` names
+stay unchanged so every deck keeps working; `npm test` fails if either generated
+bundle is stale. Design tokens live in `shared/src/theme/01-foundations.css`.
+After changing the type choices, run `python3 tools/fetch-fonts.py` to download
+all font responses before replacing anything and to refresh their recorded hashes.
 
 **Responsive design.** The deck is responsive by reveal.js's design: a fixed 1280×720
 canvas is uniformly scaled to fit any screen (`width/height/minScale/maxScale` in
@@ -226,8 +245,8 @@ by the `@media (max-width: 640px)` block and `clamp()` sizing in the overlay.
 ## Deploy (GitHub Pages)
 
 Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
-On every pull request and push it first **validates**: the unit tests for
-`strip-notes.py` and `audit.py`, then `tools/audit.py` itself (repo and built
+On every pull request and push it first **validates**: the Python and Node unit
+tests, generated bundle/metadata checks, then `tools/audit.py` itself (repo and built
 site, strict) — dead local references, duplicate ids, missing `alt`/`title`,
 stale placeholders, the landing-page/manifest sync check and the **vendored
 checksums** in [`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
@@ -251,10 +270,12 @@ Deployment happens only from `main`. Live at
 Run the same validation locally:
 
 ```bash
-python3 tools/audit.py            # static checks (add --strict in CI mode)
-node tools/browser-check.mjs      # needs playwright + a chromium
-python3 tools/test_strip_notes.py # publication-build unit tests
-python3 tools/test_audit.py       # one test per audit rule
+npm ci
+npm test
+python3 -m unittest discover -s tools -p 'test_*.py' -v
+python3 tools/build-index.py --check
+python3 tools/audit.py --strict
+npm run check:browser             # Playwright; uses installed Chrome/Edge as fallback
 ```
 
 **Link rot** is checked separately by
@@ -272,9 +293,9 @@ never raise an issue on their own. Run it yourself with:
 python3 tools/check-links.py
 ```
 
-Action versions are kept current by
-[`.github/dependabot.yml`](.github/dependabot.yml), which proposes one grouped
-pull request a week when any `actions/*` release lands.
+Node tooling and Action versions are kept current by
+[`.github/dependabot.yml`](.github/dependabot.yml), which proposes grouped
+weekly dependency pull requests.
 
 > **One-time setup:** repo *Settings → Pages → Build and deployment → Source* must be set to
 > **GitHub Actions** (not "Deploy from a branch"), or the workflow won't publish.

@@ -43,10 +43,18 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Unit tests (strip-notes, audit)
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install pinned Node tooling
+        run: npm ci
+
+      - name: Unit tests (Python and Node)
         run: |
-          python3 tools/test_strip_notes.py
-          python3 tools/test_audit.py
+          python3 -m unittest discover -s tools -p 'test_*.py' -v
+          npm test
 
       - name: Static checks (audit, vendored checksums, landing-page sync)
         run: |
@@ -55,14 +63,8 @@ jobs:
           python3 tools/strip-notes.py /tmp/site-check
           python3 tools/audit.py --site /tmp/site-check --strict
 
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-
-      - name: Install Playwright
-        run: |
-          npm install --no-save playwright
-          npx playwright install --with-deps chromium
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
 
       - name: Browser checks (1280×720, 844×390, 390×844)
         run: node tools/browser-check.mjs
@@ -88,7 +90,7 @@ jobs:
           BASE=$(git merge-base origin/${{ github.base_ref }} HEAD)
           CHANGED=$(git diff --name-only "$BASE" HEAD)
           engine=false; catalogue=false
-          echo "$CHANGED" | grep -qE '^shared/(theme\.css|deck\.js|reveal/)' && engine=true
+          echo "$CHANGED" | grep -qE '^(shared/(src/|theme\.css|deck\.js|reveal/)|tools/build-shared\.mjs)' && engine=true
           echo "$CHANGED" | grep -qE '^talks/(_showcase|_template)/' && catalogue=true
           if [ "$engine" = true ] && [ "$catalogue" = false ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -102,11 +104,12 @@ jobs:
         if: steps.engine.outputs.changed == 'true'
         with:
           node-version: 22
+          cache: npm
 
-      - name: Install Playwright
+      - name: Install pinned tooling and Playwright browser
         if: steps.engine.outputs.changed == 'true'
         run: |
-          npm install --no-save playwright pixelmatch pngjs
+          npm ci
           npx playwright install --with-deps chromium
 
       - name: Capture merge-base screenshots
@@ -150,10 +153,11 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
 
-      - name: Install Playwright
+      - name: Install pinned tooling and Playwright browser
         run: |
-          npm install --no-save playwright
+          npm ci
           npx playwright install --with-deps chromium
 
       # PDFs + social cards are expensive: restore the last run's outputs and
@@ -162,7 +166,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .extras-cache
-          key: deck-extras-${{ hashFiles('talks/**', 'shared/**') }}
+          key: deck-extras-${{ hashFiles('talks/**', 'shared/**', 'package-lock.json', 'tools/export-pdf.mjs', 'tools/lib/export-cache.mjs', 'tools/lib/runtime.mjs') }}
           restore-keys: deck-extras-
 
       - name: Export PDFs and social cards

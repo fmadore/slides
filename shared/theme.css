@@ -705,7 +705,6 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   height: 2px; background: var(--rule);
 }
 .deck-runhead .rh-sec { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; color: var(--ink-bold); }
-.deck-runhead .rh-mark { color: var(--green-deep); flex: none; }
 .deck-runhead[hidden] { display: none; }
 
 /* Persistent footer (imprint + navigation) */

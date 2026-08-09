@@ -1,0 +1,142 @@
+/* ----------------------------------------------------------------------------
+   4. EDITORIAL COMPONENTS
+   ---------------------------------------------------------------------------- */
+/* Overline / eyebrow — a heavy gothic small-caps label, green by spirit.
+   Neutral by default; warm/navy/green variants tint when categorising. */
+.reveal .kicker {
+  display: inline-flex; align-items: center; gap: 0.55em;
+  font-family: var(--font-label); font-weight: 700;
+  font-size: var(--fs-kicker); text-transform: uppercase;
+  letter-spacing: var(--track-label); color: var(--ink-soft);
+  margin: 0 0 var(--space-sm);
+}
+.reveal .kicker::before {
+  content: ""; width: 1.4em; height: 3px; border-radius: 1px; background: var(--green); flex: none;
+}
+.reveal .kicker.warm { color: var(--brown-deep); }
+.reveal .kicker.warm::before { background: var(--brown); }
+.reveal .kicker.navy { color: var(--navy); }
+.reveal .kicker.navy::before { background: var(--navy); }
+.reveal .kicker.green { color: var(--green-deep); }
+
+/* Editorial note — a ruled aside marked by a heavy top rule + gothic label. */
+.reveal .callout {
+  border-top: 3px solid var(--rule);
+  padding: var(--space-sm) 0 0;
+  margin: var(--space-lg) 0 var(--space-md);
+  font-size: var(--fs-small); max-width: 60ch;
+}
+.reveal .callout .callout-label {
+  display: block; font-family: var(--font-label); font-weight: 700;
+  font-size: var(--fs-footer); text-transform: uppercase; letter-spacing: var(--track-label);
+  color: var(--ink-bold); margin-bottom: 0.3em;
+}
+.reveal .callout.warm { border-top-color: var(--brown); }
+.reveal .callout.warm .callout-label { color: var(--brown-deep); }
+.reveal .callout.navy { border-top-color: var(--navy); }
+.reveal .callout.navy .callout-label { color: var(--navy); }
+.reveal .callout.green { border-top-color: var(--green); }
+.reveal .callout.green .callout-label { color: var(--green-deep); }
+
+/* Stat — an editorial figure. Big gothic numeral, gothic label. */
+.reveal .stat { display: flex; flex-direction: column; gap: 0.05em; }
+.reveal .stat .stat-num {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h2);
+  line-height: 0.92; color: var(--ink-bold); letter-spacing: var(--track-tight);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.reveal .stat .stat-label {
+  font-family: var(--font-label); font-size: var(--fs-footer); color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; max-width: 22ch;
+}
+
+/* Figure ledger — "in figures" as a ruled index: label left, figure right,
+   a heavy top rule, hairlines between. Reads like a colophon, not a card grid. */
+.reveal .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-3xl); margin-top: var(--space-md); }
+.reveal .stat-grid .stat {
+  flex-direction: row; align-items: baseline; justify-content: space-between; gap: var(--space-md);
+  padding: 0.55em 0; border-bottom: var(--hair);
+}
+.reveal .stat-grid .stat:nth-child(1), .reveal .stat-grid .stat:nth-child(2) { border-top: 3px solid var(--rule); }
+.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); }
+.reveal .stat-grid .stat .stat-label { order: 1; max-width: none; align-self: center; }
+
+/* Citation line / source */
+.reveal .cite, .reveal .source {
+  font-size: var(--fs-caption); color: var(--ink-faint); font-style: italic; font-family: var(--font-serif);
+}
+
+/* Chips / tags — heavy gothic small-caps, solid hairline outline */
+.reveal .chip {
+  display: inline-block; font-family: var(--font-label); font-size: var(--fs-footer);
+  font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.22em 0.6em; border-radius: var(--radius-sm);
+  background: transparent; border: 1.5px solid var(--line-strong); color: var(--ink-soft);
+}
+.reveal .chip.green { border-color: var(--green); color: var(--green-deep); }
+.reveal .chip.solid { background: var(--green); border-color: var(--green); color: var(--paper); }
+
+/* Query-mix list — plain-language asks, divided by hairlines (no per-item card). */
+.reveal .query-list { list-style: none; margin: 0 0 var(--space-md); padding: 0; max-width: none; display: grid; gap: 0; }
+.reveal .query-list > li {
+  margin: 0; padding: var(--space-sm) 0;
+  display: grid; gap: 0.28em;
+  border-bottom: var(--hair);
+}
+.reveal .query-list > li:first-child { border-top: 3px solid var(--rule); }
+.reveal .query-list > li::before { content: none; }
+.reveal .query-list .q {
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-body); line-height: 1.24; color: var(--ink);
+}
+.reveal .query-list .q strong { font-style: normal; font-weight: 700; }
+.reveal .query-list .q-map {
+  display: flex; align-items: center; gap: 0.6em;
+  font-family: var(--font-label); font-size: var(--fs-footer); text-transform: uppercase;
+  letter-spacing: 0.08em; font-weight: 600; color: var(--ink-faint);
+}
+
+/* Two-depth chooser — Brief / Extended as a pair of hairline-bordered blocks.
+   The active path is marked by a heavy green left bar + green label. */
+.reveal .depths { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); max-width: none; margin: 0 0 var(--space-md); }
+.reveal .depth {
+  display: flex; flex-direction: column; gap: 0.1em;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent; border: 1px solid var(--line);
+  border-left: var(--bar) solid var(--line-strong);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.reveal .depth.is-full { border-color: var(--line); border-left-color: var(--green); background: var(--green-wash); }
+.reveal .depth .depth-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
+.reveal .depth.is-full .depth-name { color: var(--green-deep); }
+.reveal .depth .depth-tag {
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-faint); margin-left: 0.5em; vertical-align: 0.08em;
+}
+.reveal .depth .depth-desc { font-size: var(--fs-caption); color: var(--ink-soft); font-family: var(--font-serif); }
+
+/* Numbered index — a bold contents/agenda grid (new layout helper).
+   Big gothic folio, serif label, heavy rule between rows. */
+.reveal .index-list { list-style: none; margin: var(--space-md) 0 0; padding: 0; max-width: none; display: grid; gap: 0; counter-reset: idx; }
+.reveal .index-list > li {
+  counter-increment: idx; margin: 0; padding: var(--space-md) 0 var(--space-md);
+  padding-left: 0;   /* override the generic .reveal ol > li padding */
+  display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline; gap: 0.2em var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.reveal .index-list > li:first-child { border-top: 3px solid var(--rule); }
+.reveal .index-list > li:last-child { border-bottom: 3px solid var(--rule); }
+.reveal .index-list > li::before {
+  content: counter(idx, decimal-leading-zero);
+  position: static;   /* stay an in-flow grid item (the generic ol rule absolutes it) */
+  grid-column: 1; grid-row: 1; top: auto; left: auto;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.9rem;
+  color: var(--green-deep); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.reveal .index-list .idx-title { grid-column: 2; grid-row: 1; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); color: var(--ink-bold); letter-spacing: -0.012em; line-height: 1.04; }
+.reveal .index-list .idx-desc { grid-column: 2; grid-row: 2; font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink-soft); margin-top: 0.2em; }
+
+/* A heavy full-width rule / divider */
+.reveal hr, .reveal .rule { border: none; height: 3px; background: var(--rule); margin: var(--space-lg) 0; }

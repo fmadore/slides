@@ -1,0 +1,58 @@
+/* =============================================================================
+   11. DATA AS DESIGN — native, on-brand charts        (direction-board · Move 1)
+   A corpus has a shape, so the system must be able to DRAW it: bars, a timeline,
+   a share breakdown — set in the green/navy fields with gothic labels, tabular
+   figures and a single heavy editorial baseline. Not a chart library; the
+   broadsheet's own type and rules, holding numbers.
+   ============================================================================= */
+/* A captioned chart block: gothic over-label, the plot, an italic source line. */
+.reveal .chart { margin: var(--space-md) 0; max-width: none; display: flex; flex-direction: column; }
+.reveal .chart-head {
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-md);
+}
+.reveal .chart-src { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-faint); margin: var(--space-sm) 0 0; }
+
+/* COLUMN CHART — a row of bars on a heavy baseline. Height per bar via --h (a %).
+   Bars grow up on slide entry; values can count up (data-count, see deck.js). */
+.reveal .barchart {
+  display: flex; align-items: flex-end; gap: var(--space-md);
+  height: var(--chart-h, 14rem); border-bottom: 3px solid var(--rule); margin: 0;
+}
+.reveal .barchart .bar {
+  flex: 1 1 0; min-width: 0; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+}
+.reveal .barchart .bar-v {
+  font-family: var(--font-label); font-weight: 800; font-size: var(--fs-caption);
+  color: var(--ink-faint); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 0.45em;
+}
+.reveal .barchart .bar::after {
+  content: ""; display: block; width: 100%; max-width: 3.4rem;
+  height: var(--h, 0%); background: var(--green); border-radius: 1px 1px 0 0;
+}
+.reveal .barchart .bar.is-peak .bar-v { color: var(--ink-bold); }
+.reveal .barchart .bar.is-peak::after { background: var(--green-field); }
+.reveal .barchart .bar.is-mute::after { opacity: 0.45; }
+.reveal .barchart.navy .bar::after { background: var(--navy); }
+.reveal .barchart.navy .bar.is-peak::after { background: var(--navy-field); }
+/* the x-axis tick labels — a matching flex row beneath the baseline */
+.reveal .bar-axis { display: flex; gap: var(--space-md); margin-top: 0.55em; max-width: none; list-style: none; padding: 0; }
+.reveal .bar-axis > * { flex: 1 1 0; text-align: center; margin: 0;
+  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.04em; color: var(--ink-faint); }
+.reveal .bar-axis > *::before { content: none; }   /* kill the generic ul/ol marker */
+
+/* SHARE BARS — horizontal breakdown. Width per row via --p (a %). Navy by default
+   (data's structural deep); .green tips it to the lead colour. Fills draw in. */
+.reveal .share-bars { list-style: none; margin: 0; padding: 0; max-width: none; display: flex; flex-direction: column; gap: var(--space-md); }
+.reveal .share-bars > li { margin: 0; padding: 0; }
+.reveal .share-bars > li::before { content: none; }
+.reveal .share-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); margin-bottom: 0.34em; }
+.reveal .share-head > span { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); }
+.reveal .share-head > b { font-family: var(--font-label); font-weight: 800; font-size: var(--fs-caption); color: var(--navy); font-variant-numeric: tabular-nums; }
+.reveal .share-track { height: 9px; background: var(--sunken); border-radius: 1px; overflow: hidden; }
+.reveal .share-track::before { content: ""; display: block; height: 100%; width: var(--p, 0%); background: var(--navy); }
+.reveal .share-bars.green .share-head > b { color: var(--green-deep); }
+.reveal .share-bars.green .share-track::before { background: var(--green); }
+.reveal .share-bars > li.is-mute .share-head > b { color: var(--ink-faint); }
+.reveal .share-bars > li.is-mute .share-track::before { opacity: 0.5; }

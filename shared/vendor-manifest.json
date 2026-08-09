@@ -34,5 +34,33 @@
       "reveal/plugin/zoom.js": "3e00750e0991ca91435fe1c7d0b3ef5494bb398c40b3d9946dd5a66c4260af70",
       "reveal/plugin/search.js": "887591079bebb965a8d07300b323339ed98d9f4504987713379174f2480d2eb0"
     }
+  },
+  "google-fonts": {
+    "source": [
+      "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap",
+      "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap"
+    ],
+    "files": [
+      "fonts/fonts.css",
+      "fonts/ebgaramond-italic-latin-ext.woff2",
+      "fonts/ebgaramond-italic-latin.woff2",
+      "fonts/ebgaramond-normal-latin-ext.woff2",
+      "fonts/ebgaramond-normal-latin.woff2",
+      "fonts/librefranklin-italic-latin-ext.woff2",
+      "fonts/librefranklin-italic-latin.woff2",
+      "fonts/librefranklin-normal-latin-ext.woff2",
+      "fonts/librefranklin-normal-latin.woff2"
+    ],
+    "sha256": {
+      "fonts/fonts.css": "38f28136e1b1f5bf57b54657e0eab2465a32c3d0373bc33d42d786ab3e003f28",
+      "fonts/ebgaramond-italic-latin-ext.woff2": "1a0cc9def6e10ce327bece0049548d317017969165493f2dbc8b7cffec3f2c3d",
+      "fonts/ebgaramond-italic-latin.woff2": "ba958a191633f8f16f842a8c00555c16953ff2156c706f80f1f61a8a577a85a6",
+      "fonts/ebgaramond-normal-latin-ext.woff2": "15754d0efd6ca82bdb8ac0a0670ed0c26c6f1e5dbb6d08f83f0ae497eb5b9588",
+      "fonts/ebgaramond-normal-latin.woff2": "3f8ca84f05bced330495146be20610b04bcccbe7c4f7d03a786804881f694e8f",
+      "fonts/librefranklin-italic-latin-ext.woff2": "f405e6460d254f7b46ff7155a0cb1b91acdacb82312807c688fb37f1856eb370",
+      "fonts/librefranklin-italic-latin.woff2": "c9fb9170f00060c83306219df8357a81a56c5ad142e25b3e3d9c21d2d47e2009",
+      "fonts/librefranklin-normal-latin-ext.woff2": "61216d8e3efe8c5a26861f8b92dc9a922645c662da95c37bf787a4a774a5c8d5",
+      "fonts/librefranklin-normal-latin.woff2": "52e605852c72cc2df1473df1fb7f26a3a0be58e31835bc8f33f29b1918c82cbd"
+    }
   }
 }

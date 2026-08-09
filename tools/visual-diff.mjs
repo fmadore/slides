@@ -13,21 +13,18 @@
  *   node tools/visual-diff.mjs --before DIR --after DIR [--out DIR]
  *                              [--max-diff-pct 1.0] [--threshold 0.12]
  *
- * Requires pixelmatch + pngjs (CI: npm install --no-save pixelmatch pngjs).
+ * Requires the pinned development dependencies (`npm ci`).
  */
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { valueArg } from './lib/runtime.mjs';
 
 const args = process.argv.slice(2);
-function opt(name, dflt) {
-  const i = args.indexOf(name);
-  return i >= 0 ? args[i + 1] : dflt;
-}
-const BEFORE = opt('--before');
-const AFTER = opt('--after');
-const OUT = opt('--out', 'visual-diff');
-const MAX_PCT = parseFloat(opt('--max-diff-pct', '1.0'));
-const THRESHOLD = parseFloat(opt('--threshold', '0.12'));
+const BEFORE = valueArg(args, '--before');
+const AFTER = valueArg(args, '--after');
+const OUT = valueArg(args, '--out', 'visual-diff');
+const MAX_PCT = parseFloat(valueArg(args, '--max-diff-pct', '1.0'));
+const THRESHOLD = parseFloat(valueArg(args, '--threshold', '0.12'));
 if (!BEFORE || !AFTER) {
   console.error('usage: node tools/visual-diff.mjs --before DIR --after DIR [--out DIR]');
   process.exit(2);
@@ -38,7 +35,7 @@ try {
   ({ PNG } = await import('pngjs'));
   pixelmatch = (await import('pixelmatch')).default;
 } catch {
-  console.error('missing dependencies — run: npm install --no-save pixelmatch pngjs');
+  console.error('missing dependencies — run: npm ci');
   process.exit(2);
 }
 

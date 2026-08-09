@@ -1,0 +1,3 @@
+# Optional authoring dependency used by tools/new-talk.py to generate the
+# canonical slides QR code. Runtime, validation and publication use stdlib only.
+qrcode[pil]==8.2

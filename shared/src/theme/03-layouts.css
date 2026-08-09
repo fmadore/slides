@@ -1,0 +1,199 @@
+/* ----------------------------------------------------------------------------
+   5. LAYOUT CLASSES
+   ---------------------------------------------------------------------------- */
+/* Vertically centre content on hero-style slides */
+.reveal section.cover, .reveal section.section,
+.reveal section.statement, .reveal section.closing,
+.reveal section.center { justify-content: center; }
+
+/* `.balance` — opt-in helper to vertically centre a sparse content slide. */
+.reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
+.reveal section.balance .cols { flex: 0 0 auto; }
+
+/* --- COVER --- a broadsheet masthead: heavy rule, gothic event line, giant
+   gothic title, serif italic subtitle ---------------------------------------- */
+.reveal section.cover { padding-right: 6rem; }
+.reveal section.cover .eyebrow {
+  font-family: var(--font-label); font-weight: 700; text-transform: uppercase;
+  letter-spacing: var(--track-label); font-size: var(--fs-kicker); color: var(--ink-bold);
+  max-width: 60ch; margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md); border-bottom: 3px solid var(--rule);
+}
+.reveal section.cover h1 {
+  font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em;
+  color: var(--ink-bold); max-width: 17ch; margin-bottom: var(--space-md); line-height: 0.96;
+}
+.reveal section.cover .subtitle {
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-lead); color: var(--ink-soft); max-width: 40ch; margin-bottom: var(--space-xl);
+}
+.reveal .byline { display: flex; flex-direction: column; gap: 0.12em; }
+.reveal .byline .name { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); letter-spacing: 0.01em; }
+.reveal .byline .affil { font-size: var(--fs-caption); color: var(--ink-soft); font-style: italic; font-family: var(--font-serif); max-width: 46ch; }
+/* Job-title line — sits between the gothic name and the italic-serif
+   affiliation, in the quiet news-gothic "label" voice. */
+.reveal .byline .role { font-family: var(--font-label); font-weight: 600;
+  font-size: var(--fs-caption); letter-spacing: 0.02em; color: var(--ink-soft); }
+.reveal section.closing .byline .role { color: color-mix(in oklch, var(--paper), transparent 25%); }
+/* Co-presenter byline (.byline.authors): stack each author as a tight
+   name+role+affil block, with a larger gap between authors. */
+.reveal .byline.authors { gap: var(--space-sm); }
+.reveal .byline.authors .author { display: flex; flex-direction: column; gap: 0.12em; }
+/* Per-author institution logo inside a stacked byline. Monochrome marks flip
+   to white on the dark closing; add .keep-color for full-colour box logos. */
+.reveal .byline.authors .author-logo { height: 1.5rem; width: auto; align-self: flex-start; margin-top: 0.45rem; opacity: 0.95; }
+.reveal section.closing .byline.authors .author-logo:not(.keep-color) { filter: brightness(0) invert(1); opacity: 0.85; }
+
+/* Contact row (built by deck.js from DECK_CONFIG.links) */
+.reveal .contact { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); }
+.reveal .contact a {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft); font-weight: 500;
+  text-decoration: none;
+}
+.reveal .contact a:hover { color: var(--green-deep); }
+.reveal .contact a svg, .reveal .contact a img { width: 1.1em; height: 1.1em; flex: none; }
+.reveal .contact a .ico { color: var(--ink-faint); display: inline-flex; }
+.reveal .contact a:hover .ico { color: var(--green-deep); }
+
+/* --- Institution wordmark on hero slides (cover + closing) ------------------ */
+.reveal section.cover .org-logo,
+.reveal section.closing .org-logo {
+  display: block; align-self: flex-start;
+  height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
+}
+.reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
+
+/* --- SECTION DIVIDER --- a full-bleed saturated GREEN field, gold folio,
+   giant gothic title. Navy variant for the structural deep. ------------------ */
+.reveal section.section {
+  --r-main-color: var(--paper);
+  color: var(--paper);
+  background: var(--green-field);
+}
+/* a thick gold plate rule across the top of the field */
+.reveal section.section::before {
+  content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
+}
+.reveal section.section .sec-no {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
+  letter-spacing: -0.03em; line-height: 0.82; color: color-mix(in oklch, var(--paper), transparent 76%);
+  margin-bottom: var(--space-sm); font-variant-numeric: tabular-nums;
+}
+.reveal section.section h2 {
+  color: var(--paper); font-family: var(--font-display); font-size: var(--fs-section); font-weight: 800;
+  letter-spacing: -0.03em; max-width: 16ch; margin: 0; line-height: 0.94;
+}
+.reveal section.section .sec-sub {
+  color: color-mix(in oklch, var(--paper), transparent 22%);
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
+  margin-top: var(--space-lg); max-width: 38ch; font-weight: 500;
+}
+
+/* Navy variant of the divider (the structural deep). `.green` kept as an alias
+   so existing `.section.green` decks render as the lead green field. */
+.reveal section.section.navy { background: var(--navy-field); }
+.reveal section.section.navy::before { background: var(--gold-bright); }
+.reveal section.section.green { background: var(--green-field); }
+
+/* --- STATEMENT (big claim / quote) ----------------------------------------- */
+/* Default: a GOTHIC claim — heavy, huge, tight. One green accent phrase. */
+.reveal section.statement .statement-body {
+  font-family: var(--font-display); font-weight: 800; font-style: normal;
+  font-size: var(--fs-display); line-height: 0.98; letter-spacing: -0.03em;
+  color: var(--ink-bold); max-width: 18ch; text-wrap: balance;
+}
+.reveal section.statement .statement-body .accent { color: var(--green-deep); }
+.reveal section.statement .attribution {
+  margin-top: var(--space-xl); font-family: var(--font-label); font-style: normal;
+  font-size: var(--fs-small); color: var(--ink-soft); font-weight: 600;
+}
+/* Quote variant: the human voice returns to the serif italic, with a gold mark. */
+.reveal section.statement.quote .statement-body {
+  font-family: var(--font-serif); font-style: italic; font-weight: 500;
+  font-size: var(--fs-display); line-height: 1.08; letter-spacing: -0.01em; color: var(--ink); max-width: 22ch;
+}
+.reveal section.statement.quote .statement-body::before {
+  content: "\201C"; font-family: var(--font-serif); font-size: 1.1em; color: var(--gold); line-height: 0;
+  margin-right: 0.06em; vertical-align: -0.18em;
+}
+
+/* --- BIG METRIC --- an oversized single figure (new layout helper) ---------- */
+.reveal section.metric { justify-content: center; }
+.reveal section.metric .metric-num {
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
+  line-height: 0.86; letter-spacing: -0.035em; color: var(--green-deep);
+  font-variant-numeric: lining-nums tabular-nums; margin: 0;
+}
+.reveal section.metric .metric-label {
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
+  color: var(--ink-soft); max-width: 32ch; margin-top: var(--space-md);
+}
+
+/* --- COLUMNS / COMPARISON --------------------------------------------------- */
+.reveal .cols { display: grid; grid-template-columns: repeat(var(--cols, 2), 1fr); gap: var(--space-3xl); align-items: start; flex: 1; min-height: 0; }
+.reveal .cols.ratio-3-2 { grid-template-columns: 3fr 2fr; }
+.reveal .cols.ratio-2-3 { grid-template-columns: 2fr 3fr; }
+.reveal .cols.ratio-1-2 { grid-template-columns: 1fr 2fr; }
+.reveal .col { min-width: 0; }
+.reveal .col > h3 { margin-bottom: var(--space-sm); }
+.reveal .col-head {
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker);
+  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-bold);
+  padding-bottom: var(--space-xs); margin-bottom: var(--space-md);
+  border-bottom: 3px solid var(--rule);
+}
+.reveal .col-head.alt { color: var(--brown-deep); border-bottom-color: var(--brown); }
+
+/* Panel — a ruled sidebar for grouping (a heavy top rule, not a card) */
+.reveal .panel {
+  background: transparent; border: none; border-top: var(--bar) solid var(--rule);
+  border-radius: 0; padding: var(--space-md) 0 0;
+}
+.reveal .panel.sunken { background: var(--sunken); border-top: none; border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
+.reveal .panel.green { border-top-color: var(--green); }
+
+/* --- MEDIA / FULL-BLEED IMAGE ---------------------------------------------- */
+.reveal section.media { padding: 0; }
+.reveal section.media .media-fill { position: absolute; inset: 0; overflow: hidden; }
+.reveal section.media .media-fill img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: none; }
+.reveal section.media .media-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, oklch(0.14 0.02 258 / 0.92) 0%, oklch(0.14 0.02 258 / 0.55) 42%, transparent 74%);
+}
+.reveal section.media .media-caption {
+  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 34ch;
+}
+.reveal section.media .media-caption h2 { color: var(--paper); }
+.reveal section.media .media-caption .kicker { color: var(--gold-bright); }
+.reveal section.media .media-caption .kicker::before { background: var(--gold); }
+
+/* Image + caption side layout */
+.reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
+.reveal .figrow.flip { grid-template-columns: 1fr 1.1fr; }
+/* Documentary figures show whole by default; .crop bleeds true photos. */
+.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: contain; border: 1px solid var(--line-strong); }
+.reveal .figrow.crop .fig-frame img { object-fit: cover; }
+
+/* --- CLOSING / CONTACT --- a deep navy field, gold spark ---------------------- */
+.reveal section.closing {
+  --r-main-color: var(--paper); color: var(--paper);
+  background: var(--navy-field);
+}
+.reveal section.closing::before {
+  content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
+}
+.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 16ch; letter-spacing: -0.028em; line-height: 0.96; }
+.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), transparent 18%); }
+.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), transparent 18%); }
+.reveal section.closing .contact a:hover { color: var(--paper); }
+.reveal section.closing .contact a .ico { color: var(--gold); }
+.reveal section.closing .kicker { color: var(--gold-bright); }
+.reveal section.closing .kicker::before { background: var(--gold); }
+.reveal section.closing p a { color: var(--gold-bright); text-decoration-color: color-mix(in oklch, var(--gold), transparent 50%); }
+.reveal section.closing p a:hover { color: var(--paper); text-decoration-color: var(--paper); }
+.reveal section.closing .byline .name { color: var(--paper); }
+.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), transparent 30%); }

@@ -1,0 +1,48 @@
+/* ----------------------------------------------------------------------------
+   10. PRINT TO PDF · REDUCED MOTION · SMALL SCREENS
+   ---------------------------------------------------------------------------- */
+@media print {
+  .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
+  .toc-overlay, .deck-btn { display: none !important; }
+  .reveal section.section, .reveal section.closing,
+  .reveal section.media .media-scrim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .reveal .slides section.section,
+  .reveal .slides section.closing,
+  .reveal .slides section.media { height: 100% !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  .toc-close:hover { transform: none; }
+}
+
+/* The reveal canvas is scaled to fit, so chrome (runhead/footer/toc) is what
+   needs small-screen care when viewed on a phone. */
+@media (max-width: 640px) {
+  :root { --slide-pad-x: 1.6rem; --footer-h: 2.6rem; }
+  .deck-footer .foot-title { display: none; }
+  .deck-runhead { display: none !important; }
+  .deck-btn.toc-btn span { display: none; }
+  .deck-btn.toc-btn { width: 2rem; padding: 0; }
+}
+
+/* SHALLOW screens (a phone held landscape): the scaled canvas is height-limited
+   and would otherwise fill the viewport right down behind the persistent footer,
+   which then covers the last lines of content. Reserve a real strip for a
+   compact footer *outside* the area reveal scales into: the canvas scales to
+   (viewport − strip), the footer sits in the strip, and nothing overlaps.
+   Desktop (≥ 560px tall) is untouched. */
+@media screen and (max-height: 560px) {
+  :root { --footer-reserve: 2.4rem; }
+  .reveal { height: calc(100% - var(--footer-reserve)); }
+  .deck-footer {
+    height: var(--footer-reserve);
+    bottom: calc(-1 * var(--footer-reserve));
+  }
+  .deck-footer::before { left: 0; right: 0; }
+  .deck-footer .foot-title { display: none; }
+  .deck-runhead { display: none !important; }
+  .deck-btn { width: 1.8rem; height: 1.8rem; }
+  .deck-btn.toc-btn span { display: none; }
+  .deck-btn.toc-btn { width: 1.8rem; padding: 0; }
+}

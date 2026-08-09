@@ -1,0 +1,346 @@
+/* =============================================================================
+   AFRICA MULTIPLE · UNIVERSITÄT BAYREUTH — reveal.js deck theme
+   "BROADSHEET" — a bold scholarly broadsheet, not a slide template.
+
+   The type hierarchy is INVERTED from a conventional academic deck: the
+   newspaper-gothic (Libre Franklin, pushed to its black weights) is the loud
+   display voice — set big, tight, confident — and the humanist book serif
+   (EB Garamond) is the quiet counter-voice for prose, leads and quotations.
+   Colour is spent as flat structural FIELDS and heavy rules, not as a timid
+   accent: the Bayreuth green leads, navy is the deep pole, gold the spark.
+   Near-black ink on a cool, crisp near-white. High contrast, real punch.
+
+   Contents
+     1.  Design tokens (palette, neutrals, type scale, space, motion)
+     2.  reveal.js variable contract + viewport frame
+     3.  Slide canvas, typography & prose primitives
+     4.  Editorial components (overline, note, ledger, figure, cite, index)
+     5.  Layout classes (.cover .section .statement .cols .media .closing …)
+     6.  Brand chrome injected by deck.js (running head, footer, progress)
+     7.  Table-of-contents overlay
+     8.  Code (light highlight.js token theme)
+     9.  Fragments, transitions, motion
+     10. Print to PDF · reduced motion · small screens
+   ============================================================================= */
+
+@import "fonts/fonts.css";
+
+/* ----------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   The six Bayreuth corporate colours, then a cool near-white / near-black
+   neutral ramp. Colour here is a confident plane and a heavy rule — the
+   green leads, navy is the structural deep, gold the single spark.
+   ---------------------------------------------------------------------------- */
+:root {
+  /* — Bayreuth corporate palette (exact, as supplied) — */
+  --green:  #009260;   /* Uni-Grün   · lead colour            */
+  --amber:  #f59c08;   /* Gelb                                 */
+  --brown:  #d57912;   /* Braun                                */
+  --gold:   #cca352;   /* Gold                                 */
+  --sky:    #44b8f2;   /* Hellblau                             */
+  --navy:   #00268a;   /* Dunkelblau · structural deep colour  */
+
+  /* derived, perceptually in OKLCH so the steps look even */
+  --green-deep:   color-mix(in oklch, var(--green), #06140d 26%); /* AA green for text/links on light */
+  --green-field:  color-mix(in oklch, var(--green), #04140d 14%); /* the saturated green plane         */
+  --green-bright: color-mix(in oklch, var(--green), white 8%);
+  --navy-field:   color-mix(in oklch, var(--navy),  #03081c 8%);  /* the saturated navy plane          */
+  --navy-deep:    color-mix(in oklch, var(--navy),  #04060f 30%);
+  --brown-deep:   color-mix(in oklch, var(--brown), #140a02 44%); /* AA brown for small text on light  */
+  --gold-bright:  color-mix(in oklch, var(--gold),  white 24%);   /* AA gold on dark fields            */
+  --green-wash:   color-mix(in oklch, var(--green), var(--paper) 90%);
+  --navy-wash:    color-mix(in oklch, var(--navy),  var(--paper) 92%);
+  --amber-wash:   color-mix(in oklch, var(--amber), var(--paper) 88%);
+  --warm-field:   color-mix(in oklch, var(--brown), #160b02 30%); /* the warm "stakes" field    */
+  --duo-ground:   #04140d;                                        /* duotone plate backing      */
+
+  /* — Neutrals: a cool, crisp near-white; a cool near-black ink. High contrast. — */
+  --paper:       oklch(0.991 0.001 250);   /* page / slide background       */
+  --panel:       oklch(0.972 0.002 250);   /* faintly raised surfaces       */
+  --sunken:      oklch(0.945 0.004 250);   /* insets, code, table stripes   */
+  --line:        oklch(0.872 0.005 250);   /* hairlines                     */
+  --line-strong: oklch(0.700 0.010 256);   /* stronger rules                */
+  --rule:        oklch(0.165 0.014 258);   /* heavy editorial rule (near-black) */
+  --ink:         oklch(0.205 0.016 258);   /* primary text                  */
+  --ink-bold:    oklch(0.150 0.016 262);   /* big display headlines         */
+  --ink-soft:    oklch(0.405 0.018 258);   /* secondary text                */
+  --ink-faint:   oklch(0.560 0.016 256);   /* tertiary, captions, chrome    */
+
+  /* — Semantic roles — */
+  --accent:        var(--green);
+  --accent-ink:    var(--green-deep);
+  --accent-2:      var(--navy);
+  --accent-warm:   var(--brown);
+  --highlight:     var(--amber);
+
+  /* — Type — news gothic LEADS (display), book serif is the counter-voice — */
+  --font-display: "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-label:   "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif:   "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "Cascadia Code", "SF Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+  --font-body:    var(--font-serif);   /* compatibility alias */
+
+  /* Modular scale (rem @ 16px root; reveal's transform scales the canvas to fit).
+     The gothic display runs large and tight; the serif body sits a touch big
+     because EB Garamond's small x-height reads small in a hall. */
+  --fs-footer:  0.80rem;   /*  ~13px  footer / fine print     */
+  --fs-kicker:  0.82rem;   /*  ~13px  overline labels         */
+  --fs-caption: 1.00rem;   /*  ~16px  captions, citations     */
+  --fs-small:   1.18rem;   /*  ~19px  asides                  */
+  --fs-body:    1.52rem;   /*  ~24px  body (serif)            */
+  --fs-lead:    2.00rem;   /*  ~32px  lead paragraph (serif)  */
+  --fs-h3:      2.20rem;   /*  ~35px  sub-heading (gothic)    */
+  --fs-h2:      3.50rem;   /*  ~56px  slide title (gothic)    */
+  --fs-h1:      5.30rem;   /*  ~85px  cover title (gothic)    */
+  --fs-section: 6.10rem;   /*  ~98px  section title (gothic)  */
+  --fs-display: 5.60rem;   /*  ~90px  statement / big number  */
+  --fs-mega:    9.50rem;   /* ~152px  oversized folio / metric */
+
+  --lh-tight: 0.98;
+  --lh-snug:  1.12;
+  --lh-body:  1.46;
+  --track-label: 0.18em;   /* letter-spacing for uppercase labels */
+  --track-tight: -0.022em; /* negative tracking for big gothic display */
+
+  /* — Space (4pt scale, semantic) — */
+  --space-2xs: 0.25rem;  --space-xs: 0.5rem;  --space-sm: 0.75rem;
+  --space-md: 1rem;      --space-lg: 1.5rem;  --space-xl: 2rem;
+  --space-2xl: 3rem;     --space-3xl: 4rem;
+
+  /* — Geometry — sharp by default; the broadsheet leans on rules, not cards — */
+  --radius-sm: 3px;  --radius-md: 5px;  --radius-lg: 8px;
+  --hair: 1px solid var(--line);
+  --bar:  4px;   /* the green title-marker thickness */
+
+  /* — Shadows: tight, neutral; used only for true overlays (lightbox, QR) — */
+  --shadow-1: 0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05);
+  --shadow-2: 0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12);
+  --shadow-pop: 0 22px 60px oklch(0.16 0.03 258 / 0.30);
+
+  /* — Motion — */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 220ms;
+  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw, bars grow, figures count */
+
+  /* — Slide geometry — */
+  --slide-pad-x: 4.8rem;
+  --slide-pad-y: 3.8rem;
+  --footer-h: 3rem;
+
+  /* ----- reveal.js variable contract (replaces stock theme) ----- */
+  --r-background: oklch(0.165 0.012 258);                 /* graphite frame around the slide */
+  --r-background-color: var(--paper);
+  --r-main-font: var(--font-serif);
+  --r-main-font-size: var(--fs-body);
+  --r-main-color: var(--ink);
+  --r-block-margin: 0.8em;
+  --r-heading-margin: 0 0 0.5em 0;
+  --r-heading-font: var(--font-display);
+  --r-heading-color: var(--ink-bold);
+  --r-heading-line-height: var(--lh-tight);
+  --r-heading-letter-spacing: var(--track-tight);
+  --r-heading-text-transform: none;
+  --r-heading-text-shadow: none;
+  --r-heading-font-weight: 800;
+  --r-heading1-text-shadow: none;
+  --r-heading1-size: var(--fs-h1);
+  --r-heading2-size: var(--fs-h2);
+  --r-heading3-size: var(--fs-h3);
+  --r-heading4-size: var(--fs-lead);
+  --r-code-font: var(--font-mono);
+  --r-link-color: var(--green-deep);
+  --r-link-color-dark: var(--navy);
+  --r-link-color-hover: var(--green);
+  --r-selection-background-color: color-mix(in oklch, var(--green), transparent 68%);
+  --r-selection-color: var(--ink);
+  --r-overlay-element-bg-color: 18 26 22;
+  --r-overlay-element-fg-color: 244 243 238;
+}
+
+/* ----------------------------------------------------------------------------
+   2. VIEWPORT FRAME
+   ---------------------------------------------------------------------------- */
+/* Light slides are transparent, so the VIEWPORT colour is the slide colour.
+   Keep it paper by default; deck.js flips it to a deep graphite frame on dark
+   slides (section / closing / media) so the framing stays consistent either way. */
+.reveal-viewport {
+  background-color: var(--paper);
+  transition: background-color 360ms var(--ease);
+}
+.reveal-viewport.deck-dark { background-color: oklch(0.165 0.012 258); }
+::selection { background: var(--r-selection-background-color); color: var(--r-selection-color); }
+
+/* ----------------------------------------------------------------------------
+   3. CANVAS, TYPOGRAPHY & PROSE
+   ---------------------------------------------------------------------------- */
+.reveal {
+  font-family: var(--font-serif);
+  font-size: var(--r-main-font-size);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern", "liga", "calt";
+  letter-spacing: 0;
+}
+.reveal .slides { text-align: left; }
+
+/* Each top-level slide is a padded editorial column, content from the top. */
+.reveal .slides > section,
+.reveal .slides > section > section {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* PDF export (?print-pdf): reveal's print view re-parents every slide into a
+   .pdf-page wrapper and hard-resets it (padding: 0 !important, display: block
+   !important — see the html.reveal-print rules in reveal.css), expecting the
+   theme to restate its slide layout for print. Without this restatement the
+   rule above no longer matches, so every PDF page rendered flush against the
+   page edge with a collapsed height — trimmed slides. justify-content is left
+   alone so the centred layouts (.cover, .section, .statement, …) keep their
+   own value. */
+html.reveal-print .reveal .slides .pdf-page > section {
+  height: 100% !important;
+  padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md)) !important;
+  display: flex !important;
+  flex-direction: column;
+  overflow: visible;
+}
+/* .balance centres via a .present-scoped rule that reveal's print re-parenting
+   also defeats — restate it for pdf pages. */
+html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
+
+/* Headings — GOTHIC display, heavy weight, tight optical letterfit */
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: var(--font-display);
+  color: var(--ink-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-tight);
+  font-weight: 800;
+  margin: 0 0 0.5em;
+  text-transform: none;
+  text-wrap: balance;
+}
+/* h4 stays in the serif register — it reads as an emphatic lead, not a label */
+.reveal h4 {
+  font-family: var(--font-serif); font-weight: 600; font-style: normal;
+  color: var(--ink); line-height: var(--lh-snug); letter-spacing: 0;
+  margin: 0 0 0.5em; text-wrap: balance;
+}
+.reveal h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.028em; }
+.reveal h2 { font-size: var(--fs-h2); font-weight: 800; }
+.reveal h3 { font-size: var(--fs-h3); font-weight: 700; letter-spacing: -0.014em; }
+.reveal h4 { font-size: var(--fs-lead); }
+
+/* The standard slide title — gothic, with the signature heavy green marker
+   above it. (.no-rule kept as a harmless no-op so existing decks stay valid.) */
+.reveal .slide-title {
+  position: relative;
+  margin-bottom: var(--space-lg); max-width: 22ch;
+  padding-top: calc(var(--bar) + var(--space-md));
+}
+.reveal .slide-title::before {
+  content: ""; position: absolute; top: 0; left: 0;
+  width: 2.6rem; height: var(--bar); border-radius: 1px;
+  background: var(--green);
+}
+.reveal .slide-title.no-rule::before { display: none; }
+.reveal .slide-title.no-rule { padding-top: 0; }
+
+/* Prose — the serif counter-voice */
+.reveal p { margin: 0 0 var(--r-block-margin); max-width: 62ch; text-wrap: pretty; }
+.reveal .lead {
+  font-family: var(--font-serif); font-size: var(--fs-lead); line-height: 1.26; color: var(--ink);
+  max-width: 30ch; font-weight: 500; letter-spacing: -0.002em;
+}
+.reveal .muted { color: var(--ink-soft); }
+.reveal small, .reveal .small { font-size: var(--fs-small); }
+
+.reveal strong, .reveal b { font-weight: 700; color: var(--ink-bold); }
+/* On the dark layouts the default ink <strong> is illegible — lift it to paper. */
+.reveal section.section strong, .reveal section.section b,
+.reveal section.closing strong, .reveal section.closing b,
+.reveal section.media strong, .reveal section.media b { color: var(--paper); }
+.reveal em, .reveal i { font-style: italic; }
+/* Inline highlight — a solid gold underline-block behind a phrase */
+.reveal mark, .reveal .hl {
+  background: linear-gradient(transparent 58%, color-mix(in oklch, var(--gold), white 18%) 58%);
+  color: inherit; padding: 0 0.06em; border-radius: 0;
+}
+.reveal .accent { color: var(--green-deep); }
+.reveal .accent-navy { color: var(--navy); }
+
+/* Links — green is functional wayfinding, bolder underline */
+.reveal a {
+  color: var(--green-deep);
+  text-decoration: none;
+  text-underline-offset: 0.16em;
+  text-decoration-color: color-mix(in oklch, var(--green), transparent 50%);
+  text-decoration-thickness: 1.5px;
+  transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
+}
+.reveal a:hover { color: var(--green); text-decoration-line: underline; text-decoration-color: var(--green); }
+
+/* Lists — hanging green tick markers (the colour earns a small structural role) */
+.reveal ul, .reveal ol { display: block; margin: 0 0 var(--r-block-margin); padding: 0; max-width: 56ch; }
+.reveal ul { list-style: none; }
+.reveal ul > li { position: relative; padding-left: 1.5em; margin: 0 0 0.5em; }
+.reveal ul > li::before {
+  content: ""; position: absolute; left: 0; top: 0.58em;
+  width: 0.7em; height: 3px; border-radius: 1px; background: var(--green);
+}
+/* Use the native `list-item` counter so the HTML start="" attribute is honoured. */
+.reveal ol { list-style: none; }
+.reveal ol > li { position: relative; padding-left: 2.1em; margin: 0 0 0.5em; }
+.reveal ol > li::before {
+  content: counter(list-item, decimal-leading-zero);
+  position: absolute; left: 0; top: 0.30em;
+  font-family: var(--font-label); font-size: 0.6em; font-weight: 800;
+  color: var(--green-deep); letter-spacing: 0.02em; font-variant-numeric: tabular-nums;
+}
+.reveal li::marker { content: none; }
+.reveal li ul, .reveal li ol { margin: 0.45em 0 0; }
+.reveal li ul > li::before { background: var(--ink-faint); }   /* nested: neutral tick */
+
+/* dark fields: ticks lift to gold for legibility */
+.reveal section.section ul > li::before,
+.reveal section.closing ul > li::before { background: var(--gold); }
+
+/* Blockquote / pull quote — the serif's italic is the whole effect */
+.reveal blockquote {
+  border: none; box-shadow: none; background: none;
+  font-family: var(--font-serif); font-style: italic;
+  font-size: var(--fs-lead); line-height: 1.28; color: var(--ink);
+  margin: var(--space-md) 0; padding: 0; max-width: 32ch; font-weight: 500;
+}
+.reveal blockquote p { max-width: none; margin: 0; }
+
+/* Tables — heavy gothic small-caps headers, ruled, neutral zebra */
+.reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-caption); width: 100%; }
+.reveal table th, .reveal table td { text-align: left; padding: 0.55em 0.9em; border: none; border-bottom: var(--hair); }
+.reveal table th {
+  font-family: var(--font-label); font-weight: 700; color: var(--ink-bold);
+  text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72em;
+  border-bottom: 3px solid var(--rule);
+}
+.reveal table tbody tr:nth-child(even) { background: color-mix(in oklch, var(--sunken), transparent 30%); }
+.reveal table td.num, .reveal table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Images / figures — a defined plate border, sharp */
+.reveal img { max-width: 100%; height: auto; display: block; }
+.reveal figure { margin: 0; }
+.reveal figure img { border-radius: var(--radius-sm); border: 1px solid var(--line-strong); }
+.reveal figcaption {
+  font-size: var(--fs-caption); color: var(--ink-soft); margin-top: var(--space-sm);
+  line-height: 1.4; max-width: 52ch; font-style: italic; font-family: var(--font-serif);
+}

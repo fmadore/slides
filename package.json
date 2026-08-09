@@ -1,0 +1,24 @@
+{
+  "name": "frederick-madore-slides",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline-capable reveal.js talks and their validation/export tooling.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build:shared": "node tools/build-shared.mjs",
+    "check:shared": "node tools/build-shared.mjs --check",
+    "check:browser": "node tools/browser-check.mjs",
+    "check:visual": "node tools/visual-diff.mjs",
+    "export": "node tools/export-pdf.mjs",
+    "test:node": "node --test tools/test-*.mjs",
+    "test": "npm run check:shared && npm run test:node"
+  },
+  "devDependencies": {
+    "pixelmatch": "7.2.0",
+    "playwright": "1.62.0",
+    "pngjs": "7.0.0"
+  }
+}

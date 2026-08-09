@@ -20,6 +20,13 @@ import os
 import re
 import sys
 
+TOOLS = os.path.dirname(os.path.abspath(__file__))
+if TOOLS not in sys.path:
+    sys.path.insert(0, TOOLS)
+
+from slideslib.deck_metadata import sync_deck_html
+from slideslib.manifest import ManifestValidationError, atomic_write, load_manifest
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX = os.path.join(ROOT, "index.html")
 MANIFEST = os.path.join(ROOT, "talks", "talks.json")
@@ -106,8 +113,13 @@ def main(argv=None):
                     help="verify index.html is in sync with talks/talks.json")
     args = ap.parse_args(argv)
 
-    with open(MANIFEST, encoding="utf-8") as fh:
-        manifest = json.load(fh)
+    try:
+        manifest_model = load_manifest(MANIFEST)
+    except ManifestValidationError as exc:
+        for error in exc.errors:
+            print(f"error: talks/talks.json: {error}")
+        return 2
+    manifest = manifest_model.to_dict()
     with open(INDEX, encoding="utf-8") as fh:
         page = fh.read()
 
@@ -125,24 +137,44 @@ def main(argv=None):
         with open(sitemap_path, encoding="utf-8") as fh:
             old_sitemap = fh.read()
 
+    deck_updates = []
+    for talk in manifest_model.talks:
+        path = os.path.join(ROOT, "talks", talk.slug, "index.html")
+        if not os.path.exists(path):
+            continue  # tools/audit.py reports the missing deck more precisely
+        with open(path, encoding="utf-8") as fh:
+            original = fh.read()
+        try:
+            rendered = sync_deck_html(original, talk, manifest_model.site, adopt_legacy=True)
+        except ValueError as exc:
+            print(f"error: talks/{talk.slug}/index.html: {exc}")
+            return 2
+        if rendered != original:
+            deck_updates.append((path, rendered))
+
     if args.check:
-        if new_page != page or sitemap != old_sitemap:
-            print("index.html/sitemap.xml OUT OF DATE — run: python3 tools/build-index.py")
+        if new_page != page or sitemap != old_sitemap or deck_updates:
+            stale = ["index.html/sitemap.xml"] if new_page != page or sitemap != old_sitemap else []
+            stale.extend(os.path.relpath(path, ROOT) for path, _ in deck_updates)
+            print("generated files OUT OF DATE — run: python3 tools/build-index.py")
+            for path in stale:
+                print(f"  {path}")
             return 1
-        print("index.html and sitemap.xml are in sync with talks/talks.json")
+        print("index.html, sitemap.xml and deck metadata are in sync with talks/talks.json")
         return 0
 
     if new_page != page:
-        with open(INDEX, "w", encoding="utf-8") as fh:
-            fh.write(new_page)
+        atomic_write(INDEX, new_page)
         print(f"index.html regenerated from {os.path.relpath(MANIFEST, ROOT)} "
               f"({len(manifest['talks'])} talks)")
     else:
         print("index.html already up to date")
     if sitemap != old_sitemap:
-        with open(sitemap_path, "w", encoding="utf-8") as fh:
-            fh.write(sitemap)
+        atomic_write(sitemap_path, sitemap)
         print("sitemap.xml regenerated")
+    for path, rendered in deck_updates:
+        atomic_write(path, rendered)
+        print(f"{os.path.relpath(path, ROOT)} metadata regenerated")
     return 0
 
 

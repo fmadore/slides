@@ -36,7 +36,12 @@ ALLOWLIST = ["index.html", "404.html", "robots.txt", "sitemap.xml",
              "CNAME", ".nojekyll", "shared"]
 
 # Never copy these even inside allowlisted trees.
-SKIP_NAMES = {".gitkeep", "notes.js"}  # notes.js: the reveal speaker-notes plugin
+SKIP_NAMES = {
+    ".gitkeep",
+    "notes.js",             # reveal speaker-notes plugin
+    "src",                  # source partials; generated theme.css/deck.js ship
+    "vendor-manifest.json", # development-time integrity metadata
+}
 
 # <aside … class="…notes…" …> — matches any attribute order and spacing,
 # single or double quotes, extra classes before/after, and uppercase markup.

@@ -19,65 +19,43 @@
  *
  * Exit status: 1 if any check failed, else 0.
  */
-import { createServer } from 'node:http';
-import { readFileSync, readdirSync, existsSync, statSync, mkdirSync } from 'node:fs';
-import { join, extname, dirname, resolve } from 'node:path';
+import { existsSync, mkdirSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  intArg,
+  launchChromium,
+  listDecks,
+  mapLimit,
+  startStaticServer,
+  valueArg,
+} from './lib/runtime.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-function opt(name, dflt) {
-  const i = args.indexOf(name);
-  return i >= 0 ? args[i + 1] : dflt;
-}
-const ROOT = resolve(opt('--root', REPO));
-const SHOT_DIR = opt('--screenshots', null);
-const ONLY = opt('--decks', null)?.split(',');
+const ROOT = resolve(valueArg(args, '--root', REPO));
+const SHOT_DIR = valueArg(args, '--screenshots', null);
+const ONLY = valueArg(args, '--decks', null)?.split(',');
+const CONCURRENCY = intArg(args, '--concurrency', 2);
+const EXECUTABLE_PATH = valueArg(args, '--executable-path', null);
+const BROWSER_CHANNEL = valueArg(args, '--browser-channel', null);
 
 const { chromium } = await import('playwright');
 
-const MIME = {
-  '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
-  '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml',
-  '.woff2': 'font/woff2', '.md': 'text/markdown', '.pdf': 'application/pdf',
-};
-const server = createServer((req, res) => {
-  let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (path.endsWith('/')) path += 'index.html';
-  const file = join(ROOT, path);
-  if (!file.startsWith(ROOT) || !existsSync(file) || statSync(file).isDirectory()) {
-    res.writeHead(404); res.end('not found'); return;
-  }
-  res.writeHead(200, {
-    'content-type': MIME[extname(file)] || 'application/octet-stream',
-    'cache-control': 'no-store',
-  });
-  res.end(readFileSync(file));
-});
-await new Promise(r => server.listen(0, '127.0.0.1', r));
-const BASE = `http://127.0.0.1:${server.address().port}`;
+const staticSite = await startStaticServer(ROOT, { noStore: true });
+const BASE = staticSite.base;
 
 // Every deck in talks/ (published and underscore-prefixed alike).
-let decks = readdirSync(join(ROOT, 'talks'), { withFileTypes: true })
-  .filter(d => d.isDirectory() && existsSync(join(ROOT, 'talks', d.name, 'index.html')))
-  .map(d => d.name);
-if (ONLY) decks = decks.filter(d => ONLY.includes(d));
+const decks = listDecks(ROOT, { includeDrafts: true, only: ONLY });
 
 const failures = [];
 function fail(where, msg) { failures.push({ where, msg }); console.log(`FAIL  ${where}: ${msg}`); }
 function ok(where, msg) { console.log(`ok    ${where}: ${msg}`); }
 
-async function launch() {
-  try { return await chromium.launch(); }
-  catch {
-    for (const p of ['/opt/pw-browsers/chromium-1194/chrome-linux/chrome']) {
-      if (existsSync(p)) return chromium.launch({ executablePath: p });
-    }
-    throw new Error('no chromium found — run: npx playwright install chromium');
-  }
-}
-const browser = await launch();
+const browser = await launchChromium(chromium, {
+  executablePath: EXECUTABLE_PATH,
+  channel: BROWSER_CHANNEL,
+});
 
 async function openPage(ctx, url) {
   const page = await ctx.newPage();
@@ -104,7 +82,7 @@ async function openPage(ctx, url) {
 
 const isDeckReady = () => typeof window.Reveal !== 'undefined' && Reveal.isReady && Reveal.isReady();
 
-for (const deck of decks) {
+async function checkDeck(deck) {
   const url = `${BASE}/talks/${deck}/`;
   const where = `talks/${deck}`;
 
@@ -184,6 +162,8 @@ for (const deck of decks) {
   }
 }
 
+await mapLimit(decks, CONCURRENCY, checkDeck);
+
 // ---- landing page ---------------------------------------------------------
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
@@ -201,15 +181,33 @@ for (const deck of decks) {
 if (SHOT_DIR) {
   mkdirSync(SHOT_DIR, { recursive: true });
   const shotDeck = existsSync(join(ROOT, 'talks', '_showcase', 'index.html')) ? '_showcase' : '_template';
-  const SLIDES = [0, 1, 2, 3, 19, 23]; // cover, index, divider, content, data-viz, closing
+  const fallbackShots = [
+    { name: 'cover', index: 0 },
+    { name: 'index', index: 1 },
+    { name: 'divider', index: 2 },
+    { name: 'content', index: 3 },
+    { name: 'data-viz', index: 19 },
+    { name: 'closing', index: 23 },
+  ];
   for (const [w, h] of [[1280, 720], [844, 390], [390, 844]]) {
     const ctx = await browser.newContext({ viewport: { width: w, height: h } });
     const { page } = await openPage(ctx, `${BASE}/talks/${shotDeck}/`);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
-    for (const s of SLIDES) {
-      await page.evaluate(i => Reveal.slide(i, 0), s);
+    const markedShots = await page.evaluate(() => Reveal.getHorizontalSlides()
+      .map((slide, index) => ({ name: slide.dataset.visualTest, index }))
+      .filter(shot => shot.name));
+    const shots = markedShots.length ? markedShots : fallbackShots;
+    for (const shot of shots) {
+      const current = await page.evaluate(i => {
+        Reveal.slide(i, 0);
+        return Reveal.getIndices().h;
+      }, shot.index);
+      if (current !== shot.index) {
+        fail('screenshots', `${shotDeck}: could not select visual-test slide ${shot.name} (#${shot.index + 1})`);
+        continue;
+      }
       await page.waitForTimeout(1800); // let transitions, rule-draw and count-ups settle
-      await page.screenshot({ path: join(SHOT_DIR, `catalogue-s${s}-${w}x${h}.png`) });
+      await page.screenshot({ path: join(SHOT_DIR, `catalogue-${shot.name}-${w}x${h}.png`) });
     }
     await ctx.close();
     console.log(`ok    screenshots: ${shotDeck} @ ${w}×${h} → ${SHOT_DIR}`);
@@ -217,7 +215,7 @@ if (SHOT_DIR) {
 }
 
 await browser.close();
-server.close();
+await staticSite.close();
 console.log(failures.length
   ? `\nbrowser-check: ${failures.length} failure(s)`
   : '\nbrowser-check: all checks passed');

@@ -90,7 +90,7 @@
   <div class="slides">
 
     <!-- ░░ COVER ░░ a journal masthead: event line, big serif title, byline ░░ -->
-    <section class="cover" data-footer="light">
+    <section class="cover" data-footer="light" data-visual-test="cover">
       <p class="eyebrow">Event · Place, DD Month YYYY</p>
       <h1>Talk title</h1>
       <p class="subtitle">A one-line description of the talk.</p>
@@ -127,7 +127,7 @@
     </section>
 
     <!-- ░░ NUMBERED INDEX ░░ a bold agenda/contents grid (.index-list) ░░ -->
-    <section data-toc="Outline">
+    <section data-toc="Outline" data-visual-test="index">
       <p class="kicker">In four movements</p>
       <h2 class="slide-title">What this talk covers</h2>
       <ol class="index-list">
@@ -139,14 +139,14 @@
     </section>
 
     <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field (add "navy" for the deep variant) ░░ -->
-    <section class="section balance" data-toc="First section">
+    <section class="section balance" data-toc="First section" data-visual-test="divider">
       <p class="sec-no">01</p>
       <h2>The first section</h2>
       <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
     <!-- ░░ STANDARD CONTENT ░░ the everyday slide: kicker, title, lead, list ░░ -->
-    <section data-toc="A key point">
+    <section data-toc="A key point" data-visual-test="content">
       <p class="kicker">Optional eyebrow</p>
       <h2 class="slide-title">A slide title</h2>
       <p class="lead">A larger opening line that sets up the slide.</p>
@@ -369,7 +369,7 @@ print(f"{len(hits)} documents")</code></pre>
     <!-- ░░ DATA AS DESIGN ░░ native house charts: .barchart on a heavy baseline
          (height per bar via --h) + .share-bars (width via --p). Values count up
          with data-count; the bars grow in on slide entry. ░░ -->
-    <section data-toc="Data as design">
+    <section data-toc="Data as design" data-visual-test="data-viz">
       <p class="kicker">Make the data the design</p>
       <h2 class="slide-title">A corpus has a shape — so draw it</h2>
       <div class="cols ratio-3-2">
@@ -476,7 +476,7 @@ print(f"{len(hits)} documents")</code></pre>
     </section>
 
     <!-- ░░ CLOSING / CONTACT ░░ -->
-    <section class="closing balance" data-footer="dark">
+    <section class="closing balance" data-footer="dark" data-visual-test="closing">
       <p class="kicker">Thank you · Merci</p>
       <h2>A closing line.</h2>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>

@@ -74,7 +74,7 @@ class StripHtmlNotes(unittest.TestCase):
 class BuildTree(unittest.TestCase):
     def make_repo(self, tmp):
         src = os.path.join(tmp, "repo")
-        for d in ("shared", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github"):
+        for d in ("shared/src/theme", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github"):
             os.makedirs(os.path.join(src, d), exist_ok=True)
         deck = ('<html><body><aside class="notes">secret</aside>'
                 '<script src="../../shared/reveal/plugin/notes.js"></script></body></html>')
@@ -88,6 +88,8 @@ class BuildTree(unittest.TestCase):
             ".impeccable.md": "design brief",
             "serve-deck.py": "print()",
             "shared/theme.css": "css",
+            "shared/src/theme/01.css": "source css",
+            "shared/vendor-manifest.json": "{}",
             "shared/notes.js": "plugin",
             "talks/2026-01-01-demo/index.html": deck,
             "talks/_template/index.html": "<html>template</html>",
@@ -110,7 +112,7 @@ class BuildTree(unittest.TestCase):
             # excluded
             for gone in ("README.md", ".gitignore", ".gitattributes", ".impeccable.md",
                          "serve-deck.py", "tools", ".github", "talks/_template",
-                         "shared/notes.js"):
+                         "shared/notes.js", "shared/src", "shared/vendor-manifest.json"):
                 self.assertFalse(os.path.exists(os.path.join(dest, gone)), gone)
             with open(os.path.join(dest, "talks/2026-01-01-demo/index.html")) as fh:
                 html = fh.read()

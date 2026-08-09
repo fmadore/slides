@@ -21,80 +21,49 @@
  * artifacts are reused unless the deck or the shared engine changed.
  * --force regenerates everything; --decks a,b restricts the set.
  */
-import { createServer } from 'node:http';
-import { createHash } from 'node:crypto';
-import { readFileSync, readdirSync, existsSync, statSync, writeFileSync } from 'node:fs';
-import { join, extname, dirname, resolve } from 'node:path';
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { deckExtrasHash, treeDigest } from './lib/export-cache.mjs';
+import { launchChromium, listDecks, startStaticServer, valueArg } from './lib/runtime.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-function opt(name, dflt) {
-  const i = args.indexOf(name);
-  return i >= 0 ? args[i + 1] : dflt;
-}
-const ROOT = resolve(opt('--root', REPO));
+const ROOT = resolve(valueArg(args, '--root', REPO));
 const FORCE = args.includes('--force');
-const ONLY = opt('--decks', null)?.split(',');
+const ONLY = valueArg(args, '--decks', null)?.split(',');
+const EXECUTABLE_PATH = valueArg(args, '--executable-path', null);
+const BROWSER_CHANNEL = valueArg(args, '--browser-channel', null);
 
 const { chromium } = await import('playwright');
 
-const MIME = {
-  '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript',
-  '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2',
-  '.md': 'text/markdown',
-};
-const server = createServer((req, res) => {
-  let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  if (path.endsWith('/')) path += 'index.html';
-  const file = join(ROOT, path);
-  if (!file.startsWith(ROOT) || !existsSync(file) || statSync(file).isDirectory()) {
-    res.writeHead(404); res.end(); return;
-  }
-  res.writeHead(200, { 'content-type': MIME[extname(file)] || 'application/octet-stream' });
-  res.end(readFileSync(file));
+const staticSite = await startStaticServer(ROOT);
+const BASE = staticSite.base;
+const sharedDigest = treeDigest(join(ROOT, 'shared'));
+const CACHE_DEPENDENCIES = [
+  'package-lock.json',
+  'tools/export-pdf.mjs',
+  'tools/lib/export-cache.mjs',
+  'tools/lib/runtime.mjs',
+];
+
+const decks = listDecks(ROOT, { includeDrafts: false, only: ONLY });
+const browser = await launchChromium(chromium, {
+  executablePath: EXECUTABLE_PATH,
+  channel: BROWSER_CHANNEL,
 });
-await new Promise(r => server.listen(0, '127.0.0.1', r));
-const BASE = `http://127.0.0.1:${server.address().port}`;
-
-function hashTree(dir, h) {
-  for (const e of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
-    const p = join(dir, e.name);
-    if (e.isDirectory()) hashTree(p, h);
-    else if (!['slides.pdf', 'social-card.png', '.extras-hash'].includes(e.name)) {
-      h.update(e.name); h.update(readFileSync(p));
-    }
-  }
-}
-function deckHash(slug) {
-  const h = createHash('sha256');
-  hashTree(join(ROOT, 'talks', slug), h);
-  hashTree(join(ROOT, 'shared'), h);
-  return h.digest('hex');
-}
-
-let decks = readdirSync(join(ROOT, 'talks'), { withFileTypes: true })
-  .filter(d => d.isDirectory() && !d.name.startsWith('_') &&
-               existsSync(join(ROOT, 'talks', d.name, 'index.html')))
-  .map(d => d.name);
-if (ONLY) decks = decks.filter(d => ONLY.includes(d));
-
-async function launch() {
-  try { return await chromium.launch(); }
-  catch {
-    const p = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
-    if (existsSync(p)) return chromium.launch({ executablePath: p });
-    throw new Error('no chromium found — run: npx playwright install chromium');
-  }
-}
-const browser = await launch();
 let failures = 0;
 
 for (const slug of decks) {
   const deckDir = join(ROOT, 'talks', slug);
   const hashFile = join(deckDir, '.extras-hash');
-  const hash = deckHash(slug);
+  const hash = deckExtrasHash({
+    root: ROOT,
+    repo: REPO,
+    slug,
+    sharedDigest,
+    dependencyFiles: CACHE_DEPENDENCIES,
+  });
   if (!FORCE && existsSync(hashFile) && readFileSync(hashFile, 'utf8') === hash &&
       existsSync(join(deckDir, 'slides.pdf')) && existsSync(join(deckDir, 'social-card.png'))) {
     console.log(`ok    ${slug}: unchanged — reusing cached slides.pdf + social-card.png`);
@@ -148,6 +117,6 @@ if (!ONLY) {
 }
 
 await browser.close();
-server.close();
+await staticSite.close();
 console.log(failures ? `\nexport-pdf: ${failures} failure(s)` : '\nexport-pdf: done');
 process.exit(failures ? 1 : 0);

@@ -69,7 +69,10 @@ class AuditCase(unittest.TestCase):
     def make_repo(self, talks=(TALK,), landing=None):
         """A minimal repo that audits clean, ready to be broken per test."""
         slugs = [t["slug"] for t in talks]
-        self.write("talks/talks.json", json.dumps({"talks": list(talks)}))
+        self.write("talks/talks.json", json.dumps({
+            "site": "https://slides.example.test",
+            "talks": list(talks),
+        }))
         for slug in slugs:
             self.write(f"talks/{slug}/index.html", "<html><body>deck</body></html>")
         if landing is None:
@@ -115,6 +118,16 @@ class HtmlChecks(AuditCase):
         self.assertReports("missing local link:")
         self.assertReports("missing local iframe:")
 
+    def test_missing_srcset_video_poster_and_object_references(self):
+        self.audit('<img srcset="one.png 1x, two.png 2x" alt="x">'
+                   '<video poster="poster.jpg"></video><object data="file.pdf"></object>')
+        for reference in ("one.png", "two.png", "poster.jpg", "file.pdf"):
+            self.assertReports(reference)
+
+    def test_missing_inline_css_url(self):
+        self.audit('<style>.cover{background:url("assets/missing.jpg")}</style>')
+        self.assertReports("missing local inline CSS reference")
+
     def test_missing_data_embed_sources(self):
         self.audit('<div data-skill-src="a.md"></div><div data-embed-src="b.md"></div>')
         self.assertReports("missing local embed: a.md")
@@ -126,6 +139,10 @@ class HtmlChecks(AuditCase):
         self.assertSilent()
         self.audit('<img src="/shared/absent.svg" alt="logo">')
         self.assertReports("missing local img: /shared/absent.svg")
+
+    def test_local_reference_cannot_escape_repository(self):
+        self.audit('<img src="../../../../outside.png" alt="x">')
+        self.assertReports("escapes the repository")
 
     def test_remote_and_anchor_references_are_not_checked(self):
         self.audit('<img src="https://example.org/a.png" alt="x">'
@@ -191,6 +208,36 @@ class HtmlChecks(AuditCase):
     def test_placeholder_error_carries_a_line_number(self):
         self.audit("<p>one</p>\n<p>two</p>\n<p>TODO</p>")
         self.assertReports("(line 3)")
+
+    def test_fit_override_requires_a_reason(self):
+        self.audit('<section data-fit-allow></section>')
+        self.assertReports("data-fit-allow needs a non-empty reason")
+
+    def test_fit_override_with_reason_is_silent(self):
+        self.audit('<section data-fit-allow="full-bleed map"></section>')
+        self.assertSilent()
+
+
+class CssChecks(AuditCase):
+    def test_missing_css_url_is_an_error(self):
+        path = self.write("shared/theme.css", ".x { background: url('./missing.png'); }")
+        audit.audit_css(path, self.rep)
+        self.assertReports("missing local CSS reference")
+
+    def test_present_css_url_and_remote_url_are_silent(self):
+        self.write("shared/image.png", b"png")
+        path = self.write(
+            "shared/theme.css",
+            "@import 'other.css'; .a{background:url(image.png)} .b{background:url(https://example.org/x.png)}",
+        )
+        self.write("shared/other.css", "")
+        audit.audit_css(path, self.rep)
+        self.assertSilent()
+
+    def test_css_reference_cannot_escape_repository(self):
+        path = self.write("shared/theme.css", ".x{background:url('../../outside.png')}")
+        audit.audit_css(path, self.rep)
+        self.assertReports("escapes the repository")
 
 
 class ManifestSync(AuditCase):
@@ -422,7 +469,7 @@ class AssetHygiene(AuditCase):
         self.make_repo()
         self.write("shared/assets/nobody-uses-this.png", b"bytes")
         audit.audit_assets(self.rep)
-        self.assertReports("asset is not referenced anywhere", "warnings")
+        self.assertReports("asset has no path-resolved reference", "warnings")
 
     def test_referenced_asset_is_silent(self):
         self.make_repo()
@@ -431,6 +478,17 @@ class AssetHygiene(AuditCase):
                    '<img src="../../shared/assets/in-use.png" alt="x">')
         audit.audit_assets(self.rep)
         self.assertSilent("warnings")
+
+    def test_same_basename_in_another_folder_does_not_hide_an_orphan(self):
+        self.make_repo()
+        self.write("shared/used/logo.png", b"used")
+        self.write("shared/orphan/logo.png", b"orphan")
+        self.write(f"talks/{TALK['slug']}/index.html",
+                   '<img src="../../shared/used/logo.png" alt="x">')
+        audit.audit_assets(self.rep)
+        warned_paths = [where for where, _ in self.rep.warnings]
+        self.assertIn(os.path.join("shared", "orphan", "logo.png"), warned_paths)
+        self.assertNotIn(os.path.join("shared", "used", "logo.png"), warned_paths)
 
     def test_duplicate_files_warn(self):
         self.make_repo()
@@ -444,7 +502,10 @@ class AssetHygiene(AuditCase):
 
     def test_starter_and_showcase_may_share_placeholders(self):
         self.make_repo()
-        self.write("index.html", "<html>shared-placeholder.png</html>")
+        self.write("talks/_template/index.html",
+                   '<img src="assets/shared-placeholder.png" alt="starter">')
+        self.write("talks/_showcase/index.html",
+                   '<img src="assets/shared-placeholder.png" alt="showcase">')
         self.write("talks/_template/assets/shared-placeholder.png", b"identical")
         self.write("talks/_showcase/assets/shared-placeholder.png", b"identical")
         audit.audit_assets(self.rep)
@@ -459,10 +520,10 @@ class EndToEnd(AuditCase):
         self.make_repo()
         body = "window.hljs={};\n"
         self.write("shared/highlight.min.js", body)
-        # named in the landing page so the orphan check stays quiet
+        # loaded by the landing page so the path-aware orphan check stays quiet
         self.write("index.html",
                    f'<html><a href="talks/{TALK["slug"]}/">t</a>'
-                   "<!-- highlight.min.js, vendor-manifest.json --></html>")
+                   '<script src="shared/highlight.min.js"></script></html>')
         self.write("shared/vendor-manifest.json", json.dumps(
             {"highlight.js": {"file": "highlight.min.js",
                               "sha256": VendorIntegrity.sha256(body)}}))

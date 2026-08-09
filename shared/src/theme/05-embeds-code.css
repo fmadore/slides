@@ -1,0 +1,186 @@
+/* ----------------------------------------------------------------------------
+   8. CODE — light highlight.js token theme
+   ---------------------------------------------------------------------------- */
+.reveal pre {
+  width: 100%; margin: var(--space-md) 0; font-size: 0.6em; line-height: 1.5;
+  box-shadow: none; border-radius: var(--radius-md); background: var(--sunken);
+  border: 1px solid var(--line);
+}
+.reveal pre code {
+  font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: 0;
+  background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
+  font-feature-settings: "liga" 0;
+}
+.reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 3px; color: var(--green-deep); }
+.reveal pre code.hljs { padding: 1.1em 1.3em; }
+.hljs-comment, .hljs-quote { color: var(--ink-soft); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name, .hljs-tag { color: var(--navy); font-weight: 700; }
+.hljs-string, .hljs-title.class_, .hljs-section, .hljs-attribute { color: var(--green-deep); }
+.hljs-number, .hljs-literal, .hljs-bullet, .hljs-link { color: var(--brown-deep); }
+.hljs-title, .hljs-title.function_, .hljs-function .hljs-title { color: color-mix(in oklch, var(--navy), var(--sky) 18%); font-weight: 700; }
+.hljs-attr, .hljs-variable, .hljs-template-variable, .hljs-property { color: var(--brown-deep); }
+.hljs-meta { color: var(--ink-soft); }
+.hljs-type, .hljs-class .hljs-title { color: var(--navy); }
+.hljs-emphasis { font-style: italic; } .hljs-strong { font-weight: 700; }
+.reveal .hljs-ln-numbers { color: var(--ink-faint); }
+.reveal pre .hljs-line-highlight, .reveal .highlight-line { background: var(--green-wash); }
+
+/* Scrollable file embed — e.g. the live SKILL.md; the presenter scrolls it. */
+.reveal .scroll-panel {
+  flex: 1 1 auto; min-height: 0; max-height: 25rem; width: 100%; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--sunken); border: 1px solid var(--line); border-radius: var(--radius-md);
+  box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5);
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+.reveal .scroll-panel::-webkit-scrollbar { width: 11px; }
+.reveal .scroll-panel::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--green), var(--paper) 18%);
+  border-radius: 999px; border: 3px solid var(--sunken);
+}
+.reveal .scroll-panel::-webkit-scrollbar-thumb:hover { background: var(--green); }
+.reveal .scroll-panel pre { margin: 0; border: none; border-radius: 0; box-shadow: none; background: transparent; width: 100%; }
+.reveal .scroll-panel pre code { display: block; padding: 1.2em 1.5em; font-size: 0.72em; line-height: 1.62; max-height: none; white-space: pre-wrap; word-break: break-word; color: var(--ink); }
+.reveal .scroll-hint {
+  margin: var(--space-sm) 0 0; font-family: var(--font-label); font-size: var(--fs-caption); color: var(--ink-soft); font-weight: 500;
+  display: inline-flex; align-items: center; gap: 0.55em;
+}
+.reveal .scroll-hint::before {
+  content: ""; width: 0.95em; height: 0.95em; flex: none;
+  background: var(--green-deep);
+  -webkit-mask: no-repeat center/contain; mask: no-repeat center/contain;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Framed live embed — a browser-style chrome bar over a fitted viewport. */
+.reveal .site-frame {
+  flex: 1 1 auto; min-height: 0; width: 100%;
+  display: flex; flex-direction: column;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-2);
+}
+.reveal .site-frame-bar {
+  flex: none; display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
+  /* The bar must span the frame. If authored as a <figcaption>, it would otherwise
+     inherit `.reveal figcaption { max-width: 52ch }` and clamp to ~413px, truncating
+     the URL — so pin it open regardless of the element used. */
+  max-width: none;
+}
+.reveal .site-frame-bar .dot {
+  width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
+  background: color-mix(in oklch, var(--ink-faint), var(--paper) 25%);
+}
+.reveal .site-frame-url {
+  margin-left: 0.5rem; font-family: var(--font-mono); font-size: var(--fs-footer);
+  color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.reveal .site-frame-open { margin-left: auto; flex: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700; }
+.reveal .site-frame-view { position: relative; flex: 1 1 auto; min-height: 0; background: var(--paper); }
+.reveal .site-frame-view > iframe,
+.reveal .site-frame-view > img {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
+  object-fit: cover; object-position: top center;
+}
+/* "Scan to explore" QR overlay on the live-site frame */
+.reveal .site-qr {
+  position: absolute; right: 0.9rem; bottom: 0.9rem; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  background: #fff; padding: 0.6rem; border-radius: 8px; box-shadow: var(--shadow-2);
+}
+.reveal .site-qr img { width: 116px; height: 116px; display: block; }
+.reveal .site-qr span { font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
+
+/* "Scan for these slides" QR — a small labelled code for the cover/closing. */
+.reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 6px; border: 1px solid var(--line-strong); }
+.reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
+.reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
+.reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
+.reveal .slides-qr.corner { position: absolute !important; top: calc(var(--slide-pad-y) + var(--space-md)); right: var(--slide-pad-x); margin: 0; z-index: 3;
+  flex-direction: column; align-items: center; gap: 0.4rem; }
+.reveal .slides-qr.corner .qr-label { text-align: center; align-items: center; }
+/* dark fields (section divider / closing): lift the label to paper */
+.reveal section.section .slides-qr .qr-label b, .reveal section.closing .slides-qr .qr-label b { color: var(--paper); }
+.reveal section.section .slides-qr .qr-label .qr-url,
+.reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), transparent 36%); }
+
+/* Fallback note injected by deck.js when a live iframe fails to load (offline,
+   or the site refuses framing): a quiet centred notice with the original link. */
+.reveal .frame-fallback {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-sm); text-align: center; padding: var(--space-lg);
+  background: var(--sunken);
+}
+.reveal .frame-fallback[hidden] { display: none; }
+.reveal .frame-fallback p { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); color: var(--ink-soft); max-width: 40ch; }
+.reveal .frame-fallback a { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); }
+
+/* Saved-demonstration frame — a captured app/chat run in browser chrome,
+   displayed whole (no crop) and height-capped so the slide never overflows.
+   The frame hugs the image width and centres in the leftover height. */
+.reveal .demo-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: var(--space-md); }
+.reveal .demo-shot { width: fit-content; max-width: 100%; margin: 0;
+  display: flex; flex-direction: column; min-height: 0;
+  border: var(--hair); border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-2); background: var(--paper); }
+/* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
+   (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
+.reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
+.reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
+.reveal .demo-shot-view img { display: block; width: auto; height: auto;
+  max-height: 336px; max-width: 100%; }
+.reveal .demo-wrap .small.muted { max-width: 64ch; text-align: center; margin: 0; }
+
+/* Framed screenshot inside a content column */
+.reveal .shot { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); box-shadow: none; }
+.reveal .shot.tall { width: auto; max-width: 100%; max-height: 348px; margin-inline: auto; }
+.reveal .col-head .mcp-mark { display: inline-block; height: 1.4em; width: auto; vertical-align: -0.32em; margin-right: 0.4em; }
+
+/* Image lightbox — click a figure/screenshot (or focus it and press Enter)
+   to view it full-screen. Zoomable images are keyboard controls. */
+.reveal .slides .shot.is-zoomable,
+.reveal .slides .site-frame-view > img.is-zoomable { cursor: zoom-in; }
+.reveal .slides .is-zoomable:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.deck-lightbox {
+  position: fixed; inset: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  background: color-mix(in oklch, oklch(0.14 0.012 258), #02060f 40%);
+  opacity: 0; visibility: hidden; cursor: zoom-out;
+  transition: opacity 260ms var(--ease), visibility 260ms;
+}
+.deck-lightbox.open { opacity: 1; visibility: visible; }
+.deck-lightbox .lightbox-figure {
+  margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--space-md);
+  max-width: 92vw; max-height: 88vh;
+  transform: scale(0.985); transition: transform 300ms var(--ease);
+}
+.deck-lightbox.open .lightbox-figure { transform: none; }
+.deck-lightbox img {
+  max-width: 92vw; max-height: 80vh; width: auto; height: auto;
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-pop); background: var(--paper);
+}
+.deck-lightbox figcaption {
+  font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption);
+  color: color-mix(in oklch, var(--paper), transparent 26%); max-width: 60ch; text-align: center; line-height: 1.4;
+}
+.deck-lightbox .lightbox-close {
+  position: absolute; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem);
+  width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
+  background: color-mix(in oklch, var(--paper), transparent 86%);
+  border: 1px solid color-mix(in oklch, var(--paper), transparent 74%);
+  color: var(--paper); transition: all var(--dur) var(--ease);
+}
+.deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
+.deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
+
+/* ----------------------------------------------------------------------------
+   9. FRAGMENTS & TRANSITIONS
+   ---------------------------------------------------------------------------- */
+.reveal .fragment.fade-up { transform: translateY(14px); transition: all 420ms var(--ease); }
+.reveal .fragment.fade-up.visible { transform: none; }
+.reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }

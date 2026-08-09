@@ -36,6 +36,12 @@ from html.parser import HTMLParser
 from urllib.parse import unquote, urlparse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TOOLS = os.path.dirname(os.path.abspath(__file__))
+if TOOLS not in sys.path:
+    sys.path.insert(0, TOOLS)
+
+from slideslib.deck_metadata import CONFIG_START, HEAD_START, sync_deck_html
+from slideslib.manifest import ManifestValidationError, load_manifest
 
 # Landing-page links that are generated at build time (they exist on the live
 # site, not in the repo).
@@ -45,10 +51,17 @@ GENERATED = {"slides.pdf", "social-card.png"}
 # tools/strip-notes.py).
 DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", ".impeccable.md",
             "serve-deck.py", "tools", ".github", "roadmap.md",
-            os.path.join("talks", "_template"), os.path.join("talks", "_showcase")]
+            os.path.join("talks", "_template"), os.path.join("talks", "_showcase"),
+            os.path.join("shared", "src"),
+            os.path.join("shared", "vendor-manifest.json")]
 
 PLACEHOLDER_RE = re.compile(r"\b(TODO|FIXME|XXX|lorem ipsum)\b", re.IGNORECASE)
 TEXT_EXT = {".html", ".css", ".js", ".json", ".md", ".svg", ".txt", ".py", ".yml"}
+MARKDOWN_REF_RE = re.compile(r"!?\[[^\]]*\]\(\s*(?P<url>[^\s)]+)")
+QUOTED_ASSET_RE = re.compile(
+    r"(?P<q>['\"])(?P<url>[^'\"\n]+\.(?:png|jpe?g|webp|svg|woff2?|md|pdf|css|m?js))(?P=q)",
+    re.IGNORECASE,
+)
 
 
 class Report:
@@ -72,18 +85,22 @@ class DeckParser(HTMLParser):
         self.imgs_without_alt = []
         self.iframes_without_title = []
         self.blank_without_noopener = []
+        self.fit_allow_without_reason = []
         self.notes = 0
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if "id" in a:
             self.ids.append(a["id"])
+        if tag == "section" and "data-fit-allow" in a and not (a.get("data-fit-allow") or "").strip():
+            self.fit_allow_without_reason.append(a.get("id") or a.get("data-toc") or "<section>")
         if tag == "img":
             src = a.get("src") or a.get("data-src")
             if src:
                 self.refs.append(("img", src))
             if "alt" not in a:
                 self.imgs_without_alt.append(src or "<inline>")
+            self._add_srcset("img", a.get("srcset") or a.get("data-srcset"))
         elif tag == "script" and a.get("src"):
             self.refs.append(("script", a["src"]))
         elif tag == "link" and a.get("href"):
@@ -94,8 +111,17 @@ class DeckParser(HTMLParser):
                 self.refs.append(("iframe", src))
             if not (a.get("title") or "").strip():
                 self.iframes_without_title.append(src or "<inline>")
-        elif tag == "source" and a.get("src"):
-            self.refs.append(("source", a["src"]))
+        elif tag == "source":
+            if a.get("src"):
+                self.refs.append(("source", a["src"]))
+            self._add_srcset("source", a.get("srcset"))
+        elif tag in {"audio", "video"}:
+            if a.get("src"):
+                self.refs.append((tag, a["src"]))
+            if tag == "video" and a.get("poster"):
+                self.refs.append(("poster", a["poster"]))
+        elif tag == "object" and a.get("data"):
+            self.refs.append(("object", a["data"]))
         elif tag == "a" and a.get("href"):
             self.refs.append(("a", a["href"]))
             if a.get("target") == "_blank" and "noopener" not in (a.get("rel") or ""):
@@ -105,6 +131,14 @@ class DeckParser(HTMLParser):
         for key in ("data-skill-src", "data-embed-src"):
             if a.get(key):
                 self.refs.append(("embed", a[key]))
+
+    def _add_srcset(self, kind, value):
+        if not value:
+            return
+        for candidate in value.split(","):
+            url = candidate.strip().split(maxsplit=1)[0]
+            if url:
+                self.refs.append((kind, url))
 
 
 def is_local(url):
@@ -122,6 +156,13 @@ def local_path(base_dir, url, root=None):
     if path.startswith("/"):   # root-absolute (e.g. the 404 page, served at any depth)
         return os.path.normpath(os.path.join(root or ROOT, path.lstrip("/")))
     return os.path.normpath(os.path.join(base_dir, path))
+
+
+def is_within(path, root):
+    try:
+        return os.path.commonpath((os.path.abspath(path), os.path.abspath(root))) == os.path.abspath(root)
+    except ValueError:  # different drives on Windows
+        return False
 
 
 def iter_html(root):
@@ -146,8 +187,18 @@ def audit_html(path, rep, published_deck):
         if kind == "a" and os.path.basename(urlparse(url).path) in GENERATED:
             continue
         target = local_path(base, url, root=ROOT)
-        if target and not os.path.exists(target):
+        if target and not is_within(target, ROOT):
+            rep.error(rel, f"local {kind} escapes the repository: {url}")
+        elif target and not os.path.exists(target):
             rep.error(rel, f"missing local {kind}: {url}")
+    for url in css_references(html):
+        if not is_local(url):
+            continue
+        target = local_path(base, url, root=ROOT)
+        if target and not is_within(target, ROOT):
+            rep.error(rel, f"inline CSS reference escapes the repository: {url}")
+        elif target and not os.path.exists(target):
+            rep.error(rel, f"missing local inline CSS reference: {url}")
 
     seen, dups = set(), set()
     for i in p.ids:
@@ -168,6 +219,35 @@ def audit_html(path, rep, published_deck):
         for m in PLACEHOLDER_RE.finditer(html):
             line = html.count("\n", 0, m.start()) + 1
             rep.error(rel, f"stale placeholder {m.group(0)!r} (line {line})")
+        for section in p.fit_allow_without_reason:
+            rep.error(rel, f"data-fit-allow needs a non-empty reason: {section}")
+
+
+CSS_REF_RE = re.compile(
+    r"url\(\s*(?P<uq>[^)'\"\s][^)]*?)\s*\)"
+    r"|url\(\s*(?P<q>['\"])(?P<quoted>.*?)(?P=q)\s*\)"
+    r"|@import\s+(?P<iq>['\"])(?P<imported>.*?)(?P=iq)",
+    re.IGNORECASE,
+)
+
+
+def css_references(source):
+    for match in CSS_REF_RE.finditer(source):
+        yield match.group("uq") or match.group("quoted") or match.group("imported")
+
+
+def audit_css(path, rep):
+    rel = os.path.relpath(path, ROOT)
+    with open(path, encoding="utf-8") as handle:
+        source = handle.read()
+    for url in css_references(source):
+        if not is_local(url):
+            continue
+        target = local_path(os.path.dirname(path), url, root=ROOT)
+        if target and not is_within(target, ROOT):
+            rep.error(rel, f"local CSS reference escapes the repository: {url}")
+        elif target and not os.path.exists(target):
+            rep.error(rel, f"missing local CSS reference: {url}")
 
 
 def file_digest(path, algorithm="md5"):
@@ -184,17 +264,29 @@ def audit_manifest(rep):
     if not os.path.exists(manifest_path):
         rep.error("talks/talks.json", "manifest missing")
         return []
-    with open(manifest_path, encoding="utf-8") as fh:
-        manifest = json.load(fh)
-    slugs = [t["slug"] for t in manifest.get("talks", [])]
-    for t in manifest.get("talks", []):
-        for field in ("slug", "date", "language", "event", "venue", "title",
-                      "shortTitle", "description", "presenters"):
-            if not t.get(field):
-                rep.error("talks/talks.json", f"{t.get('slug', '?')}: missing field {field!r}")
-        deck = os.path.join(ROOT, "talks", t["slug"], "index.html")
+    try:
+        manifest = load_manifest(manifest_path)
+    except ManifestValidationError as exc:
+        for message in exc.errors:
+            rep.error("talks/talks.json", message)
+        return []
+    slugs = [talk.slug for talk in manifest.talks]
+    for talk in manifest.talks:
+        deck = os.path.join(ROOT, "talks", talk.slug, "index.html")
         if not os.path.exists(deck):
-            rep.error("talks/talks.json", f"manifest entry without a deck: {t['slug']}")
+            rep.error("talks/talks.json", f"manifest entry without a deck: {talk.slug}")
+            continue
+        with open(deck, encoding="utf-8") as handle:
+            source = handle.read()
+        if HEAD_START in source or CONFIG_START in source:
+            try:
+                expected = sync_deck_html(source, talk, manifest.site)
+            except ValueError as exc:
+                rep.error(os.path.relpath(deck, ROOT), f"generated metadata markers are incomplete: {exc}")
+            else:
+                if expected != source:
+                    rep.error(os.path.relpath(deck, ROOT),
+                              "generated metadata differs from talks/talks.json; run tools/build-index.py")
     published = sorted(
         d for d in os.listdir(os.path.join(ROOT, "talks"))
         if os.path.isdir(os.path.join(ROOT, "talks", d)) and not d.startswith("_")
@@ -202,10 +294,11 @@ def audit_manifest(rep):
     for d in published:
         if d not in slugs:
             rep.error("talks/", f"published deck missing from talks/talks.json: {d}")
-    if sorted(slugs) != sorted(set(slugs)):
-        rep.error("talks/talks.json", "duplicate slugs in manifest")
-
-    with open(os.path.join(ROOT, "index.html"), encoding="utf-8") as fh:
+    landing_path = os.path.join(ROOT, "index.html")
+    if not os.path.exists(landing_path):
+        rep.error("index.html", "landing page missing")
+        return published
+    with open(landing_path, encoding="utf-8") as fh:
         landing = fh.read()
     for slug in slugs:
         if f"talks/{slug}/" not in landing:
@@ -281,19 +374,46 @@ def audit_vendor(rep):
                           f"vendored build, or record the new digest deliberately)")
 
 
-def audit_assets(rep):
-    """Orphaned assets and exact duplicate files (warnings)."""
-    corpus = []
+def reference_targets():
+    """Resolve local references to exact files, avoiding basename collisions."""
+    targets = set()
     for dirpath, dirnames, filenames in os.walk(ROOT):
         dirnames[:] = [d for d in dirnames if d not in {".git", "node_modules", "_site"}]
-        for n in filenames:
-            if os.path.splitext(n)[1] in TEXT_EXT:
-                try:
-                    with open(os.path.join(dirpath, n), encoding="utf-8") as fh:
-                        corpus.append(fh.read())
-                except UnicodeDecodeError:
-                    pass
-    corpus = "\n".join(corpus)
+        for name in filenames:
+            path = os.path.join(dirpath, name)
+            ext = os.path.splitext(name)[1].lower()
+            if ext not in TEXT_EXT:
+                continue
+            try:
+                with open(path, encoding="utf-8") as handle:
+                    source = handle.read()
+            except UnicodeDecodeError:
+                continue
+            urls = []
+            if ext == ".html":
+                parser = DeckParser()
+                parser.feed(source)
+                urls.extend(url for _, url in parser.refs)
+                urls.extend(css_references(source))  # inline style blocks/attributes
+            elif ext == ".css" and not os.path.relpath(path, ROOT).startswith(
+                    os.path.join("shared", "src") + os.sep):
+                urls.extend(css_references(source))
+            elif ext == ".md":
+                urls.extend(match.group("url") for match in MARKDOWN_REF_RE.finditer(source))
+            elif ext in {".js", ".mjs", ".json"}:
+                urls.extend(match.group("url") for match in QUOTED_ASSET_RE.finditer(source))
+            for url in urls:
+                if not is_local(url):
+                    continue
+                target = local_path(dirpath, url, root=ROOT)
+                if target and is_within(target, ROOT):
+                    targets.add(os.path.normcase(os.path.abspath(target)))
+    return targets
+
+
+def audit_assets(rep):
+    """Path-aware orphan detection and exact duplicate files (warnings)."""
+    referenced = reference_targets()
 
     hashes = {}
     for sub in ("talks", "shared"):
@@ -302,10 +422,12 @@ def audit_assets(rep):
                 path = os.path.join(dirpath, n)
                 rel = os.path.relpath(path, ROOT)
                 ext = os.path.splitext(n)[1]
-                if n in {".gitkeep", "talks.json"} or ext in {".html", ".py"}:
+                if n in {".gitkeep", "talks.json", "vendor-manifest.json"} or ext in {".html", ".py"}:
                     continue
-                if n not in corpus:
-                    rep.warn(rel, "asset is not referenced anywhere (orphan?)")
+                if rel.startswith(os.path.join("shared", "src") + os.sep):
+                    continue  # build-shared.mjs accounts for every source partial
+                if os.path.normcase(os.path.abspath(path)) not in referenced:
+                    rep.warn(rel, "asset has no path-resolved reference (orphan?)")
                 if ext in {".png", ".jpg", ".jpeg", ".webp", ".svg", ".md", ".pdf"}:
                     hashes.setdefault(file_digest(path), []).append(rel)
     for digest, paths in sorted(hashes.items()):
@@ -361,6 +483,13 @@ def main(argv=None):
         in_talks = rel.startswith("talks" + os.sep)
         underscore = in_talks and rel.split(os.sep)[1].startswith("_")
         audit_html(path, rep, published_deck=in_talks and not underscore)
+    for dirpath, dirnames, filenames in os.walk(ROOT):
+        dirnames[:] = [d for d in dirnames if d not in {".git", "node_modules", "_site"}]
+        for name in filenames:
+            if name.endswith(".css"):
+                path = os.path.join(dirpath, name)
+                if not os.path.relpath(path, ROOT).startswith(os.path.join("shared", "src") + os.sep):
+                    audit_css(path, rep)
     audit_placeholder_qr(rep, published)
     audit_vendor(rep)
     audit_assets(rep)
