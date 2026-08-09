@@ -166,7 +166,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .extras-cache
-          key: deck-extras-${{ hashFiles('talks/**', 'shared/**', 'package-lock.json', 'tools/export-pdf.mjs', 'tools/lib/export-cache.mjs', 'tools/lib/runtime.mjs') }}
+          key: deck-extras-${{ hashFiles('talks/**', 'shared/**', 'package-lock.json', 'tools/export-pdf.mjs', 'tools/lib/export-cache.mjs', 'tools/lib/pdf-frames.mjs', 'tools/lib/runtime.mjs') }}
           restore-keys: deck-extras-
 
       - name: Export PDFs and social cards

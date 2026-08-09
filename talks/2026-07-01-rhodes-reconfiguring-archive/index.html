@@ -97,6 +97,21 @@
     .reveal .cluster-figures .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); }
     .reveal .cluster-figures .stat .stat-label { order: 1; max-width: none; align-self: center; }
 
+    /* DRE areas — a true compact 2×2 matrix. The shared .cols helper grows to
+       consume spare height, which made the second row and source line collide
+       after reveal re-parented the slide for print. Keep this grid content-sized
+       and use an explicit row gap so screen and PDF share the same geometry. */
+    .reveal section.dre-areas-slide .lead { margin-bottom: var(--space-lg); }
+    .reveal section.dre-areas-slide .dre-areas-grid {
+      flex: 0 0 auto; grid-auto-rows: auto; align-content: start;
+      column-gap: var(--space-3xl); row-gap: var(--space-lg);
+    }
+    .reveal section.dre-areas-slide .dre-areas-grid .col-head {
+      margin-bottom: var(--space-xs); padding-bottom: var(--space-xs);
+    }
+    .reveal section.dre-areas-slide .dre-areas-grid .col p { margin-bottom: 0; line-height: 1.32; }
+    .reveal section.dre-areas-slide .dre-areas-source { margin: var(--space-lg) 0 0; }
+
     /* "Enter AMIRA" hero — the spelled-out atlas name as a quiet italic subtitle
        under the big gothic title, then a row of status / tech chips. */
     .reveal .amira-full { font-family: var(--font-display); font-style: italic;
@@ -252,11 +267,11 @@
     </section>
 
     <!-- ════════ 4 · THE DRE — WHAT WE DO ════════════════════════════════════ -->
-    <section data-toc="The DRE" data-fit-allow="architecture diagram is intentionally canvas-filling">
+    <section class="dre-areas-slide" data-toc="The DRE">
       <p class="kicker">Digital Research Environment (DRE) — the cluster's digital infrastructure unit</p>
       <h2 class="slide-title">We build the cluster's data infrastructure</h2>
       <p class="lead">Four areas of work — one goal: research data that is <span class="accent">findable, reusable and presentable</span>.</p>
-      <div class="cols" style="--cols:2">
+      <div class="cols dre-areas-grid" style="--cols:2">
         <div class="col">
           <div class="col-head">Data management &amp; curation</div>
           <p class="small">Metadata and ontologies, Wikidata reconciliation, African-language taxonomies, DOIs and archiving.</p>
@@ -274,7 +289,7 @@
           <p class="small">Dashboards, maps, network graphs, Omeka S databases, websites.</p>
         </div>
       </div>
-      <p class="small muted">Grounded in FAIR &amp; CARE and multiple knowledge systems. Full range: <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener">africamultiple…/digital-solutions</a></p>
+      <p class="small muted dre-areas-source">Grounded in FAIR &amp; CARE and multiple knowledge systems. Full range: <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener">africamultiple…/digital-solutions</a></p>
       <aside class="notes">My team is the Digital Research Environment, the DRE. Our job is to make the cluster's research data findable, reusable and presentable, and the work falls into four areas. We curate: metadata schemas, ontologies and taxonomies, archiving datasets. We do data science: text mining, network analysis, scraping. We're experimenting with local open-source AI models for OCR, transcription, entity extraction and tagging. And we handle dissemination, through dashboards, maps, Omeka S databases and websites.</aside>
     </section>
 

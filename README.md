@@ -201,7 +201,13 @@ drop a screenshot into the talk's `assets/` and swap the `<iframe>` for an `<img
 **Export to PDF:** the deploy workflow generates a notes-free `slides.pdf` for
 every published deck (linked from the landing page). For a manual export, open
 a talk with `?print-pdf` appended, then print → Save as PDF (Landscape,
-margins None, background graphics on).
+margins None, background graphics on). The automated exporter first visits
+each live iframe in presentation mode and substitutes a screenshot into the
+PDF. If framing is blocked, it retries the URL as a temporary top-level page;
+if the site is still unavailable, it prints a labelled live-content placeholder
+instead of an empty white box. Run it locally with
+`npm run export -- --root _site --force`; `--no-frame-snapshots` restores the old behavior and
+`--frame-timeout-ms N` changes the per-frame timeout.
 
 **Check slides fit:** open a talk with `?check` appended. Overflowing slides are
 outlined in red with a banner, and the banner also shows the auto-fit scale the
