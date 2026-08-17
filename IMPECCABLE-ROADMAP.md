@@ -99,6 +99,24 @@ the reference.
 
 ## Phase 1 — Baseline evaluation (before changing anything)
 
+*Status: ✅ COMPLETE 2026-08-17. Critique 28/36 · Audit 12/20 · Integrity FAIL.
+Snapshot: `.impeccable/critique/2026-08-17T10-48-34Z__talks-showcase-index-html.md`.
+Working notes: `scratchpad/baseline-fit-scales.md`, `scratchpad/phase1-verification.md`.*
+
+**Headline result.** The Broadsheet system is genuinely authored — the retired
+anti-references are all still retired, the dark-field register and the quote
+slide are excellent, and follow-through (alt text, reduced motion, the TOC
+modal, contrast on in-slide text) is real rather than claimed. The defects
+cluster in two places: **the label tier is print-scaled while the hall is the
+primary reader**, and **the dark-field flip was tuned for navy and never
+re-checked against green**.
+
+One correction to this roadmap came out of it: `colorize` had been listed as
+deliberately excluded on the grounds that "the colour strategy is already
+committed." That was wrong. The strategy is committed; its *execution* on the
+green and warm fields fails WCAG AA, and the highest-confidence finding of the
+whole phase is exactly that. `colorize` is now Pass 2.
+
 Produce one prioritized findings list; change nothing yet.
 
 1. **`/impeccable critique talks/_showcase/index.html`** — heuristic design
@@ -109,9 +127,13 @@ Produce one prioritized findings list; change nothing yet.
 3. **Mechanical detector** over the theme modules and the showcase (the
    `detect.mjs` invocation is printed at session start; don't hardcode the
    versioned plugin path).
-4. **Capture the "before" screenshots** for all five talks plus showcase and
-   template: `node tools/browser-check.mjs --screenshots <dir>`. This is the
-   baseline arm for every visual-diff in Phase 2.
+4. **Capture the "before" screenshots**:
+   `node tools/browser-check.mjs --screenshots <dir>`. Corrected 2026-08-17 —
+   the flag captures the `_showcase` catalogue only (8 representative slides ×
+   1280×720 / 844×390 / 390×844 = 24 PNGs), not every deck. That is the right
+   baseline: it is exactly the set CI's visual-regression job compares, and the
+   catalogue exercises the full layout vocabulary. The same run also validates
+   all seven decks and reports each slide's auto-fit scale.
 
 Triage the combined findings into: system fixes (theme modules), showcase/
 template fixes, and per-deck fixes. That triage decides which Phase 2 passes
@@ -124,22 +146,27 @@ One command per session, each mapped to the theme modules it touches. These
 are *refinements*: Broadsheet is the committed world; every pass preserves its
 identity.
 
-| Pass | Command | Primary modules | What it hunts |
+Ordering revised 2026-08-17 from Phase 1's evidence. Each pass now carries the
+specific findings it must close.
+
+| Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
-| 1 | `typeset` | `01-foundations` | The type system is the core of Broadsheet: scale and optical letterfit at hall distance, EB Garamond's small x-height, tabular figures, French/German diacritics in the black-weight gothic |
-| 2 | `layout` | `03-layouts` | Spacing rhythm and alignment across `.cols`, `.figrow`, the index/ledger components; consistent optical margins |
-| 3 | `polish` | `02-components`, `04-chrome` | Consistency of rules, ticks, chips, kickers; dark-field legibility; running head/footer detail |
-| 4 | `animate` | `09-flow-motion` | Extend the "ink-on-paper" signature (`--draw`: rules draw, bars grow, figures count) purposefully; keep `prefers-reduced-motion` honest |
-| 5 | `harden` | `06-responsive-print` + all | Long titles, overflow, weak-beamer contrast, PDF export edge cases, very long affiliation lines |
+| 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |
+| 2 | `colorize` | `01-foundations`, `04-chrome` | **[P1]** The dark-field flip was tuned for navy and never re-checked: `.on-dark` footer text 3.0–3.5:1 and `.foot-title` 2.7–3.2:1 on `--green-field` (need 4.5:1); focus ring `var(--green)` at 1.28:1 on the same field with no `.on-dark` counterpart; in-slide links get no themed ring at all (~1.5:1 browser default on navy). Also the weak-beamer hairline problem: `--line` is ~1.15:1 against paper and vanishes on a hazy projector, so "ruled, not boxed" degrades to floating text. Derive on-dark values per field rather than one blanket mix |
+| 3 | `harden` | `06-responsive-print`, `03-layouts`, `05-embeds-code` | **[P1]** Two catalogue recipes break on copy (`fragment highlight-green` shows at index 0; `.metric`/`.cover` never centre because reveal forces `display:block` on `.present`). **[P1]** `62vh` inside the canvas at `03-layouts.css:177` and `05-embeds-code.css:11` breaks the Fixed Canvas Rule. PDF export carries no per-page imprint and one stray wrong folio. `.reveal pre code` lacks `display:block`, so padding lands on first/last line boxes only. Review the eight `data-fit-allow` waivers for export pagination |
+| 4 | `layout` | `03-layouts`, `08-image-editorial` | The `.closing` layout does not fit a 720px canvas at authored size — waived in three decks with identical boilerplate, rendering the contact/QR slide at 84–89%. **[P2]** `.marginnote` has no `margin-top`, so its 3px rule reads as an unlabelled data bar under the chart. `.toc-close` overlaps `.toc-head`. Three different right edges in one region on the ledger slide. The 250–350px of unclaimed space below 18 of 24 white slides |
+| 5 | `polish` | `02-components`, `04-chrome`, `09-flow-motion` | `.flow-step` and `.reveal pre` are bordered radiused cards against the system's own Ruled-Not-Boxed rule. `transition: all` on four interactive elements fades the focus ring in over 220ms. Trailing letter-space on right-aligned tracked headers. The identical green kicker+bar opener on 9 of 24 slides |
+| 6 | `animate` | `09-flow-motion` | The signature animates `height`/`width` (layout properties) for 560ms — the one animation that will drop frames on a weak conference laptop; `transform: scaleY/scaleX` is a drop-in. `.no-draw` opt-out covers a smaller set than the print stiller. Progressive disclosure is the largest unused lever: 1 of 24 slides uses fragments, and that one is the broken recipe |
 
-Deferred until a concrete need appears: `delight` (only if a pass surfaces a
-genuine opportunity), a data-viz pass on `07-data-viz.css` (when a talk next
-needs charts), `extract` (only if components outgrow the theme file).
+Deferred until a concrete need appears: `delight`, a data-viz pass on
+`07-data-viz.css`, `extract`, `distill` (dead affordances: `.chrome-open`,
+`.panel.sunken`, `.no-draw`, the duplicated `.site-frame`/`.chrome` component
+family), `optimize` (the 132 KB logo painted at 18px on every slide; the
+11.4 MB PDF).
 
-**Deliberately not on the roadmap:** `colorize` (the colour strategy is
-already committed), `bolder`/`quieter` (Broadsheet's register is calibrated;
-changing it is a new-work decision, not a dial), `overdrive`, `onboard`,
-`distill`, `optimize` (no performance problem), `craft` (deprecated alias).
+**Deliberately not on the roadmap:** `bolder`/`quieter` (Broadsheet's register
+is calibrated; changing it is a new-work decision, not a dial), `overdrive`,
+`onboard`, `craft` (deprecated alias).
 
 **The verify loop for every pass** (bounded, per the skill's own rule — one
 batched inspection round, one fix batch, at most one confirm round, stop):
