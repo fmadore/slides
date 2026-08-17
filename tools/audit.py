@@ -49,7 +49,8 @@ GENERATED = {"slides.pdf", "social-card.png"}
 
 # Files that must never appear in a publication build (see the allowlist in
 # tools/strip-notes.py).
-DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", ".impeccable.md",
+DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
+            "DESIGN.md", ".impeccable",
             "serve-deck.py", "tools", ".github", "roadmap.md",
             os.path.join("talks", "_template"), os.path.join("talks", "_showcase"),
             os.path.join("shared", "src"),

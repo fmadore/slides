@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-17T00:00:00Z",
+  "title": "Design System: Broadsheet",
+  "extensions": {
+    "colorMeta": {
+      "lead-green": {
+        "role": "primary",
+        "displayName": "Lead Green",
+        "canonical": "#009260",
+        "tonalRamp": ["oklch(0.20 0.08 160)", "oklch(0.32 0.11 160)", "oklch(0.44 0.13 160)", "oklch(0.57 0.15 160)", "oklch(0.67 0.13 160)", "oklch(0.77 0.10 160)", "oklch(0.87 0.06 160)", "oklch(0.95 0.03 160)"]
+      },
+      "structural-navy": {
+        "role": "secondary",
+        "displayName": "Structural Navy",
+        "canonical": "#00268a",
+        "tonalRamp": ["oklch(0.16 0.10 265)", "oklch(0.24 0.15 265)", "oklch(0.31 0.20 265)", "oklch(0.42 0.19 265)", "oklch(0.54 0.16 265)", "oklch(0.68 0.11 265)", "oklch(0.82 0.06 265)", "oklch(0.94 0.02 265)"]
+      },
+      "gold-spark": {
+        "role": "secondary",
+        "displayName": "Gold Spark",
+        "canonical": "#cca352",
+        "tonalRamp": ["oklch(0.22 0.05 84)", "oklch(0.34 0.07 84)", "oklch(0.47 0.09 84)", "oklch(0.60 0.10 84)", "oklch(0.72 0.10 84)", "oklch(0.81 0.08 84)", "oklch(0.89 0.06 84)", "oklch(0.95 0.03 84)"]
+      },
+      "amber-highlight": {
+        "role": "tertiary",
+        "displayName": "Amber Highlight",
+        "canonical": "#f59c08",
+        "tonalRamp": ["oklch(0.24 0.08 72)", "oklch(0.36 0.11 72)", "oklch(0.49 0.14 72)", "oklch(0.62 0.16 72)", "oklch(0.75 0.16 72)", "oklch(0.83 0.12 72)", "oklch(0.90 0.08 72)", "oklch(0.96 0.04 72)"]
+      },
+      "warm-brown": {
+        "role": "tertiary",
+        "displayName": "Warm Brown",
+        "canonical": "#d57912",
+        "tonalRamp": ["oklch(0.22 0.07 62)", "oklch(0.33 0.10 62)", "oklch(0.44 0.13 62)", "oklch(0.55 0.15 62)", "oklch(0.66 0.15 62)", "oklch(0.77 0.11 62)", "oklch(0.87 0.07 62)", "oklch(0.95 0.03 62)"]
+      },
+      "sky": {
+        "role": "tertiary",
+        "displayName": "Sky",
+        "canonical": "#44b8f2",
+        "tonalRamp": ["oklch(0.22 0.07 235)", "oklch(0.34 0.10 235)", "oklch(0.46 0.12 235)", "oklch(0.58 0.13 235)", "oklch(0.72 0.13 235)", "oklch(0.81 0.10 235)", "oklch(0.89 0.06 235)", "oklch(0.96 0.03 235)"]
+      },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(0.991 0.001 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "oklch(0.972 0.002 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "sunken": { "role": "neutral", "displayName": "Sunken", "canonical": "oklch(0.945 0.004 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "line": { "role": "neutral", "displayName": "Line (hairline)", "canonical": "oklch(0.872 0.005 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "line-strong": { "role": "neutral", "displayName": "Line Strong", "canonical": "oklch(0.700 0.010 256)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "rule": { "role": "neutral", "displayName": "Rule (heavy editorial)", "canonical": "oklch(0.165 0.014 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(0.205 0.016 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "ink-bold": { "role": "neutral", "displayName": "Ink Bold", "canonical": "oklch(0.150 0.016 262)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(0.405 0.018 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
+      "ink-faint": { "role": "neutral", "displayName": "Ink Faint", "canonical": "oklch(0.560 0.016 256)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (gothic)", "purpose": "Cover titles (5.30rem), section-divider titles (6.10rem), statements (5.60rem), mega folios/metrics (9.50rem). Libre Franklin at 800, tight and negative-tracked. The LOUD voice." },
+      "headline": { "displayName": "Headline (slide title)", "purpose": "The standard h2.slide-title under the 4px green marker bar; max-width 22ch." },
+      "title": { "displayName": "Title (h3)", "purpose": "Sub-headings and column heads; Libre Franklin 700." },
+      "lead": { "displayName": "Lead (serif)", "purpose": "The serif lead paragraph, max-width 30ch; also h4, which deliberately stays in the serif register." },
+      "body": { "displayName": "Body (serif)", "purpose": "EB Garamond prose at 1.52rem — deliberately large for hall projection; max-width 62ch. The QUIET counter-voice." },
+      "label": { "displayName": "Label (gothic small-caps)", "purpose": "Kickers, callout labels, table headers, chips, deck chrome; uppercase, 0.18em tracking." }
+    },
+    "shadows": [
+      { "name": "shadow-1", "value": "0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05)", "purpose": "Smallest overlay affordance; rarely used. Never on in-flow slide content." },
+      { "name": "shadow-2", "value": "0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)", "purpose": "The browser-chrome screenshot frame (.chrome) — a captured artifact floating above the page." },
+      { "name": "shadow-pop", "value": "0 22px 60px oklch(0.16 0.03 258 / 0.30)", "purpose": "True modal overlays only: TOC panel, lightbox, QR pop. The Overlay-Only Shadow Rule." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Ease-out-quint; the default easing for all transitions and the draw animations." },
+      { "name": "ease-soft", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Softer secondary easing." },
+      { "name": "dur", "value": "220ms", "purpose": "Default state-transition duration (links, buttons, TOC items)." },
+      { "name": "draw", "value": "560ms", "purpose": "The ink-on-paper signature: marker bars and rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Stilled under print, prefers-reduced-motion, and hidden tabs; .no-draw opts out." }
+    ],
+    "breakpoints": [
+      { "name": "chrome-compact", "value": "640px", "purpose": "max-width: chrome outside the scaled canvas compacts (runhead hidden, footer title dropped). Slide content itself never responds — the 1280x720 canvas scales uniformly." },
+      { "name": "shallow-screen", "value": "560px", "purpose": "max-height: a real footer strip is reserved outside the area reveal scales into, so the footer never covers content on landscape phones." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Slide Title with Marker Bar",
+      "kind": "custom",
+      "refersTo": "slide-title",
+      "description": "The signature device: gothic headline with a heavy 4px Lead Green marker bar above it; the bar draws in from the left on slide entry.",
+      "html": "<h2 class=\"ds-slide-title\">The archive as a broadsheet</h2>",
+      "css": ".ds-slide-title { position: relative; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 3.5rem; line-height: 0.98; letter-spacing: -0.022em; color: oklch(0.150 0.016 262); max-width: 22ch; margin: 0; padding-top: calc(4px + 1rem); text-wrap: balance; } .ds-slide-title::before { content: \"\"; position: absolute; top: 0; left: 0; width: 2.6rem; height: 4px; border-radius: 1px; background: #009260; transform-origin: left center; animation: ds-rule-draw 560ms cubic-bezier(0.22, 1, 0.36, 1) both; } @keyframes ds-rule-draw { from { transform: scaleX(0); } }"
+    },
+    {
+      "name": "Kicker",
+      "kind": "custom",
+      "refersTo": "kicker",
+      "description": "Gothic overline label with a green tick; warm/navy variants tint when categorising; lifts to gold on dark fields.",
+      "html": "<p class=\"ds-kicker\">Part Two &middot; The Corpus</p>",
+      "css": ".ds-kicker { display: inline-flex; align-items: center; gap: 0.55em; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.18em; color: oklch(0.405 0.018 258); margin: 0; } .ds-kicker::before { content: \"\"; width: 1.4em; height: 3px; border-radius: 1px; background: #009260; flex: none; }"
+    },
+    {
+      "name": "Callout",
+      "kind": "card",
+      "refersTo": "callout",
+      "description": "A ruled editorial aside — a heavy near-black top rule and a gothic label, never a tinted box.",
+      "html": "<aside class=\"ds-callout\"><span class=\"ds-callout-label\">Method note</span>Every figure on this slide is drawn live from the collection&rsquo;s API &mdash; nothing is a mock-up.</aside>",
+      "css": ".ds-callout { display: block; border-top: 3px solid oklch(0.165 0.014 258); padding: 0.75rem 0 0; font-family: 'EB Garamond', Georgia, serif; font-weight: 500; font-size: 1.18rem; line-height: 1.46; color: oklch(0.205 0.016 258); max-width: 60ch; } .ds-callout-label { display: block; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.18em; color: oklch(0.150 0.016 262); margin-bottom: 0.3em; }"
+    },
+    {
+      "name": "Stat Ledger",
+      "kind": "custom",
+      "refersTo": "stat-grid",
+      "description": "The figure ledger: label left, green figure right, heavy top rule, hairlines between. Reads like a colophon, not a card grid; figures count up on entry.",
+      "html": "<div class=\"ds-ledger\"><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Newspaper articles</span><span class=\"ds-ledger-num\">14,520</span></div><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Countries covered</span><span class=\"ds-ledger-num\">6</span></div><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Years of coverage</span><span class=\"ds-ledger-num\">64</span></div></div>",
+      "css": ".ds-ledger { border-top: 3px solid oklch(0.165 0.014 258); max-width: 34rem; } .ds-ledger-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.55em 0; border-bottom: 1px solid oklch(0.872 0.005 250); } .ds-ledger-label { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: oklch(0.405 0.018 258); } .ds-ledger-num { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 0.92; letter-spacing: -0.022em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: lining-nums tabular-nums; }"
+    },
+    {
+      "name": "Index List",
+      "kind": "nav",
+      "refersTo": "index-list",
+      "description": "The contents/agenda grid: big green gothic folio, gothic title, serif description; ruled top and bottom with hairlines between.",
+      "html": "<ol class=\"ds-index\"><li><span class=\"ds-idx-no\">01</span><span class=\"ds-idx-title\">The collection</span><span class=\"ds-idx-desc\">What sixty years of West African print holds.</span></li><li><span class=\"ds-idx-no\">02</span><span class=\"ds-idx-title\">The method</span><span class=\"ds-idx-desc\">Reading at scale without losing the page.</span></li></ol>",
+      "css": ".ds-index { list-style: none; margin: 0; padding: 0; max-width: 40rem; } .ds-index > li { display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline; gap: 0.2em 1.5rem; padding: 1rem 0; border-top: 1px solid oklch(0.872 0.005 250); } .ds-index > li:first-child { border-top: 3px solid oklch(0.165 0.014 258); } .ds-index > li:last-child { border-bottom: 3px solid oklch(0.165 0.014 258); } .ds-idx-no { grid-column: 1; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1; letter-spacing: -0.02em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: tabular-nums; } .ds-idx-title { grid-column: 2; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1.04; letter-spacing: -0.012em; color: oklch(0.150 0.016 262); } .ds-idx-desc { grid-column: 2; grid-row: 2; font-family: 'EB Garamond', Georgia, serif; font-size: 1.18rem; color: oklch(0.405 0.018 258); margin-top: 0.2em; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip-outline",
+      "description": "Gothic small-caps tag: hairline outline by default; .ds-chip-green tints; .ds-chip-solid fills with Lead Green.",
+      "html": "<span class=\"ds-chip\">Archive</span> <span class=\"ds-chip ds-chip-green\">Open access</span> <span class=\"ds-chip ds-chip-solid\">Live demo</span>",
+      "css": ".ds-chip { display: inline-block; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.22em 0.6em; border-radius: 3px; background: transparent; border: 1.5px solid oklch(0.700 0.010 256); color: oklch(0.405 0.018 258); } .ds-chip-green { border-color: #009260; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-chip-solid { background: #009260; border-color: #009260; color: oklch(0.991 0.001 250); }"
+    },
+    {
+      "name": "Section Divider Field",
+      "kind": "custom",
+      "refersTo": "section-divider",
+      "description": "The full-bleed saturated green field: gold plate rule at top, ghosted mega folio, giant gothic title, italic serif subtitle. Navy and warm variants exist.",
+      "html": "<div class=\"ds-section\"><div class=\"ds-sec-rule\"></div><div class=\"ds-sec-no\">02</div><h2 class=\"ds-sec-title\">The corpus has a shape</h2><p class=\"ds-sec-sub\">What sixty years of West African print looks like from above.</p></div>",
+      "css": ".ds-section { position: relative; background: color-mix(in oklch, #009260, #04140d 14%); color: oklch(0.991 0.001 250); padding: 3.8rem 4.8rem; min-height: 22rem; box-sizing: border-box; } .ds-sec-rule { position: absolute; left: 4.8rem; right: 4.8rem; top: 3.8rem; height: 4px; background: #cca352; } .ds-sec-no { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 6rem; line-height: 0.82; letter-spacing: -0.03em; color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 76%); margin: 2rem 0 0.75rem; font-variant-numeric: tabular-nums; } .ds-sec-title { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 3.8rem; font-weight: 800; letter-spacing: -0.03em; line-height: 0.94; color: oklch(0.991 0.001 250); max-width: 16ch; margin: 0; } .ds-sec-sub { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-weight: 500; font-size: 1.6rem; color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 22%); margin: 1.5rem 0 0; max-width: 38ch; }"
+    },
+    {
+      "name": "Statement",
+      "kind": "custom",
+      "refersTo": "section-divider",
+      "description": "A huge gothic claim with one green accent phrase; the quote variant returns to serif italic with a gold mark.",
+      "html": "<p class=\"ds-statement\">The archive is not a source. <span class=\"ds-statement-accent\">It is an argument.</span></p>",
+      "css": ".ds-statement { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 0.98; letter-spacing: -0.03em; color: oklch(0.150 0.016 262); max-width: 18ch; margin: 0; text-wrap: balance; } .ds-statement-accent { color: color-mix(in oklch, #009260, #06140d 26%); }"
+    },
+    {
+      "name": "Deck Nav Button",
+      "kind": "button",
+      "refersTo": "nav-button",
+      "description": "Footer chrome navigation: outlined square that fills Lead Green on hover; gold treatment on dark fields.",
+      "html": "<button class=\"ds-nav-btn\" aria-label=\"Next slide\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18l6-6-6-6\"/></svg></button>",
+      "css": ".ds-nav-btn { appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.700 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid #009260; outline-offset: 2px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.872 0.005 250); color: oklch(0.560 0.016 256); }"
+    },
+    {
+      "name": "Plate Caption (documentary figure)",
+      "kind": "custom",
+      "refersTo": "slide-title",
+      "description": "The ruled plate caption under a duotone documentary photograph: 2px rule, gothic Fig. mark in deep green, italic serif gloss. (In the deck the image itself takes the injected #duo-green SVG duotone filter on an ink ground.)",
+      "html": "<figure class=\"ds-plate\"><div class=\"ds-plate-img\"></div><figcaption class=\"ds-plate-cap\"><span class=\"ds-fig-no\">Fig. 03</span><span class=\"ds-fig-cap\">Friday prayer outside the Grande Mosqu&eacute;e, Ouagadougou, 1998.</span></figcaption></figure>",
+      "css": ".ds-plate { margin: 0; max-width: 30rem; } .ds-plate-img { height: 11rem; background: #04140d; border: 1px solid oklch(0.700 0.010 256); background-image: linear-gradient(135deg, #04140d 0%, color-mix(in oklch, #009260, #04140d 40%) 60%, color-mix(in oklch, #009260, #04140d 14%) 100%); } .ds-plate-cap { display: flex; gap: 0.7em; margin-top: 0.55em; padding-top: 0.5em; border-top: 2px solid oklch(0.165 0.014 258); } .ds-fig-no { flex: none; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-fig-cap { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1rem; line-height: 1.34; color: oklch(0.405 0.018 258); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Scholarly Broadsheet",
+    "overview": "Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on three rules the author wrote into the theme itself. First, an inverted type hierarchy: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, colour is a field, not a sprinkle: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a crisp, high-contrast page: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration. The voice is authored-by-a-historian and must never read as template-made or AI-generated. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision.",
+    "keyCharacteristics": [
+      "Inverted type hierarchy: loud gothic display, quiet serif prose",
+      "Colour as full-bleed structural fields (green leads, navy is the deep pole, gold is the single spark)",
+      "Signature device: a heavy 4px green marker bar above every standard slide title",
+      "Ruled, not boxed: hairlines and heavy editorial rules instead of cards",
+      "Flat by default; shadows only on true overlays",
+      "\"Ink on paper\" motion: rules draw in, bars grow, figures count up"
+    ],
+    "rules": [
+      { "name": "The Field, Not Sprinkle Rule", "body": "Colour arrives as a flat structural plane (a full-bleed divider field, a heavy marker bar, a solid fill) or not at all. Never as a timid tint, gradient wash, or decorative accent scattered across a light slide.", "section": "colors" },
+      { "name": "The One Gold Spark Rule", "body": "Gold appears on dark fields only — the plate rule, dark-field ticks and kickers, the quote mark. On paper it exists solely as the mark highlight wash. It is never a second accent competing with green on light slides.", "section": "colors" },
+      { "name": "The Dark-Field Flip Rule", "body": "On .section, .closing and .media, strong text lifts to Paper, list ticks and kickers lift to Gold Spark, and the footer chrome inverts (.on-dark). Never leave ink-coloured emphasis sitting on a dark field.", "section": "colors" },
+      { "name": "The Inverted Hierarchy Rule", "body": "Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.", "section": "typography" },
+      { "name": "The Serif h4 Rule", "body": "h4 deliberately stays in the serif register (EB Garamond 600, 2.00rem) — it reads as an emphatic lead, not a gothic label. Do not \"fix\" it to match h1–h3.", "section": "typography" },
+      { "name": "The Fixed Canvas Rule", "body": "All sizing inside .reveal .slides is rem on a 16px root, scaled as a whole by reveal's transform on a fixed 1280×720 canvas. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only.", "section": "layout" },
+      { "name": "The Overlay-Only Shadow Rule", "body": "Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.", "section": "elevation" },
+      { "name": "The Ruled, Not Boxed Rule", "body": "Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat Sunken inset — no border, no shadow.", "section": "shapes" },
+      { "name": "The Ink-on-Paper Motion Rule", "body": "One motion idea, repeated and restrained (--draw: 560ms, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Everything stills under print, prefers-reduced-motion, and hidden tabs; .no-draw opts a deck or slide out.", "section": "components" },
+      { "name": "The Two Image Treatments Rule", "body": "Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.", "section": "components" }
+    ],
+    "dos": [
+      "Do put the 4px green marker bar above every standard slide title; use .no-rule only when a layout genuinely replaces it (cover, section, statement).",
+      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.",
+      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on dark. WCAG 2.2 AA is binding.",
+      "Do keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave h4 in the serif.",
+      "Do size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
+      "Do structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers."
+    ],
+    "donts": [
+      "Don't resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.",
+      "Don't put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.",
+      "Don't use viewport units or fluid clamp() type inside the slide canvas; it fights the uniform canvas transform.",
+      "Don't use gold as a second accent on light slides, set small text in raw #009260, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper, ticks to gold).",
+      "Don't box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.",
+      "Don't convert the OKLCH neutrals to hex or \"correct\" the hex corporate palette; each format is normative where it stands."
+    ]
+  }
+}

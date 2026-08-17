@@ -35,8 +35,9 @@ A bold scholarly broadsheet, not a slide template. Three rules carry the whole s
 **Signature device:** a heavy green marker bar sits above every standard slide title
 (add `.no-rule` to drop it). Section numbers and metrics run oversized.
 
-The full design brief and rationale — including the earlier serif-led *editorial-archive*
-iteration this theme grew out of — live in [`.impeccable.md`](.impeccable.md).
+The design system is recorded in [`DESIGN.md`](DESIGN.md) — tokens, named rules and
+component specs derived from the shipped theme (machine-readable sidecar in
+`.impeccable/design.json`) — and the durable product context in [`PRODUCT.md`](PRODUCT.md).
 
 ---
 
@@ -83,7 +84,7 @@ slides/
 ├── .github/workflows/        pages.yml — validate, build and deploy
 │                             link-check.yml — weekly link rot check
 └── .nojekyll  CNAME  404.html  robots.txt  sitemap.xml  LICENSE.md
-    THIRD_PARTY_NOTICES.md  CITATION.cff  .impeccable.md  README.md
+    THIRD_PARTY_NOTICES.md  CITATION.cff  PRODUCT.md  DESIGN.md  README.md
 ```
 
 Each talk references the one shared engine via `../../shared/…`, so a fix to `theme.css`

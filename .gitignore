@@ -27,3 +27,6 @@ talks/*/slides.pdf
 talks/*/social-card.png
 talks/*/.extras-hash
 /social-card.png
+
+# Impeccable design skill: machine-local hook consent (shared config .impeccable/config.json IS committed)
+.impeccable/config.local.json

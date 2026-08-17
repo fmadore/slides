@@ -74,7 +74,7 @@ class StripHtmlNotes(unittest.TestCase):
 class BuildTree(unittest.TestCase):
     def make_repo(self, tmp):
         src = os.path.join(tmp, "repo")
-        for d in ("shared/src/theme", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github"):
+        for d in ("shared/src/theme", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github", ".impeccable"):
             os.makedirs(os.path.join(src, d), exist_ok=True)
         deck = ('<html><body><aside class="notes">secret</aside>'
                 '<script src="../../shared/reveal/plugin/notes.js"></script></body></html>')
@@ -85,7 +85,9 @@ class BuildTree(unittest.TestCase):
             "README.md": "dev docs",
             ".gitignore": "x",
             ".gitattributes": "x",
-            ".impeccable.md": "design brief",
+            "PRODUCT.md": "product truth",
+            "DESIGN.md": "design system",
+            ".impeccable/config.json": "{}",
             "serve-deck.py": "print()",
             "shared/theme.css": "css",
             "shared/src/theme/01.css": "source css",
@@ -110,7 +112,8 @@ class BuildTree(unittest.TestCase):
                          "talks/2026-01-01-demo/index.html"):
                 self.assertTrue(os.path.exists(os.path.join(dest, keep)), keep)
             # excluded
-            for gone in ("README.md", ".gitignore", ".gitattributes", ".impeccable.md",
+            for gone in ("README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
+                         "DESIGN.md", ".impeccable",
                          "serve-deck.py", "tools", ".github", "talks/_template",
                          "shared/notes.js", "shared/src", "shared/vendor-manifest.json"):
                 self.assertFalse(os.path.exists(os.path.join(dest, gone)), gone)
