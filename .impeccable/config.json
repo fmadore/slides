@@ -5,5 +5,32 @@
       "maxFindings": 5,
       "maxChars": 8000
     }
+  },
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-17T10:52:13.058Z",
+        "reason": "User confirmed 2026-08-17: static engine cannot resolve theme var() tokens and falls back to reveal.css .reveal-viewport{color:#000;background-color:#fff}. Reports 1.6:1 for paper-on-navy where the detector's own contrastRatio computes 13.05:1. Real contrast work tracked in the colorize pass."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "1px",
+        "createdAt": "2026-08-17T10:55:08.052Z",
+        "reason": "Agent: DESIGN.md line 196 documents it — 'Bars and ticks take a 1px radius so they read as printed rules, not pills'. Flagged lines are the .slide-title marker bar and the ul list tick; the frontmatter rounded scale (3/5/8px) covers surfaces, not rule details."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "999px",
+        "createdAt": "2026-08-17T10:58:14.258Z",
+        "reason": "Agent: .scroll-panel::-webkit-scrollbar-thumb (05-embeds-code.css:43). A pill radius is the conventional scrollbar-thumb treatment and the craft floor asks for custom scrollbars to be themed; the DESIGN.md rounded scale (3/5/8px) governs surfaces, not scrollbar furniture."
+      }
+    ]
   }
 }

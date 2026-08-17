@@ -83,8 +83,16 @@
   /* Modular scale (rem @ 16px root; reveal's transform scales the canvas to fit).
      The gothic display runs large and tight; the serif body sits a touch big
      because EB Garamond's small x-height reads small in a hall. */
-  --fs-footer:  0.80rem;   /*  ~13px  footer / fine print     */
-  --fs-kicker:  0.82rem;   /*  ~13px  overline labels         */
+  /* The label voice splits in two. A label printed on paper is read at 40cm;
+     a label projected in a hall is read at 20m, and the hall is the primary
+     reader. --fs-footer stays print-small and is now reserved for TRUE CHROME
+     (the deck footer and runhead, which sit outside the scaled canvas, plus
+     the browser-frame simulations that are representational rather than read).
+     Any label INSIDE the canvas that carries meaning — what a figure counts,
+     which decade a bar sits in, what a column holds — takes --fs-label. */
+  --fs-footer:  0.80rem;   /*  ~13px  chrome + fine print only  */
+  --fs-label:   1.05rem;   /*  ~17px  in-slide labels (hall)    */
+  --fs-kicker:  var(--fs-label);  /* alias: every kicker is in-slide */
   --fs-caption: 1.00rem;   /*  ~16px  captions, citations     */
   --fs-small:   1.18rem;   /*  ~19px  asides                  */
   --fs-body:    1.52rem;   /*  ~24px  body (serif)            */
@@ -95,11 +103,15 @@
   --fs-section: 6.10rem;   /*  ~98px  section title (gothic)  */
   --fs-display: 5.60rem;   /*  ~90px  statement / big number  */
   --fs-mega:    9.50rem;   /* ~152px  oversized folio / metric */
+  --fs-watermark: 14rem;   /* ~224px  the ghosted folio behind content — a
+                              decorative role, deliberately past --fs-mega */
 
   --lh-tight: 0.98;
   --lh-snug:  1.12;
   --lh-body:  1.46;
-  --track-label: 0.18em;   /* letter-spacing for uppercase labels */
+  --track-label: 0.18em;   /* uppercase labels at the small chrome size */
+  --track-hall:  0.10em;   /* eased tracking for --fs-label: the larger the
+                              cap, the less air it needs between letters */
   --track-tight: -0.022em; /* negative tracking for big gothic display */
 
   /* — Space (4pt scale, semantic) — */
@@ -326,11 +338,11 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 .reveal blockquote p { max-width: none; margin: 0; }
 
 /* Tables — heavy gothic small-caps headers, ruled, neutral zebra */
-.reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-caption); width: 100%; }
+.reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-small); width: 100%; }
 .reveal table th, .reveal table td { text-align: left; padding: 0.55em 0.9em; border: none; border-bottom: var(--hair); }
 .reveal table th {
   font-family: var(--font-label); font-weight: 700; color: var(--ink-bold);
-  text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72em;
+  text-transform: uppercase; letter-spacing: var(--track-hall); font-size: 0.82em;
   border-bottom: 3px solid var(--rule);
 }
 .reveal table tbody tr:nth-child(even) { background: color-mix(in oklch, var(--sunken), transparent 30%); }

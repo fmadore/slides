@@ -15,7 +15,7 @@
 .reveal section.cover { padding-right: 6rem; }
 .reveal section.cover .eyebrow {
   font-family: var(--font-label); font-weight: 700; text-transform: uppercase;
-  letter-spacing: var(--track-label); font-size: var(--fs-kicker); color: var(--ink-bold);
+  letter-spacing: var(--track-hall); font-size: var(--fs-kicker); color: var(--ink-bold);
   max-width: 60ch; margin-bottom: var(--space-md);
   padding-bottom: var(--space-md); border-bottom: 3px solid var(--rule);
 }
@@ -140,7 +140,7 @@
 .reveal .col > h3 { margin-bottom: var(--space-sm); }
 .reveal .col-head {
   font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker);
-  text-transform: uppercase; letter-spacing: var(--track-label); color: var(--ink-bold);
+  text-transform: uppercase; letter-spacing: var(--track-hall); color: var(--ink-bold);
   padding-bottom: var(--space-xs); margin-bottom: var(--space-md);
   border-bottom: 3px solid var(--rule);
 }

@@ -8,71 +8,323 @@
         "role": "primary",
         "displayName": "Lead Green",
         "canonical": "#009260",
-        "tonalRamp": ["oklch(0.20 0.08 160)", "oklch(0.32 0.11 160)", "oklch(0.44 0.13 160)", "oklch(0.57 0.15 160)", "oklch(0.67 0.13 160)", "oklch(0.77 0.10 160)", "oklch(0.87 0.06 160)", "oklch(0.95 0.03 160)"]
+        "tonalRamp": [
+          "oklch(0.20 0.08 160)",
+          "oklch(0.32 0.11 160)",
+          "oklch(0.44 0.13 160)",
+          "oklch(0.57 0.15 160)",
+          "oklch(0.67 0.13 160)",
+          "oklch(0.77 0.10 160)",
+          "oklch(0.87 0.06 160)",
+          "oklch(0.95 0.03 160)"
+        ]
       },
       "structural-navy": {
         "role": "secondary",
         "displayName": "Structural Navy",
         "canonical": "#00268a",
-        "tonalRamp": ["oklch(0.16 0.10 265)", "oklch(0.24 0.15 265)", "oklch(0.31 0.20 265)", "oklch(0.42 0.19 265)", "oklch(0.54 0.16 265)", "oklch(0.68 0.11 265)", "oklch(0.82 0.06 265)", "oklch(0.94 0.02 265)"]
+        "tonalRamp": [
+          "oklch(0.16 0.10 265)",
+          "oklch(0.24 0.15 265)",
+          "oklch(0.31 0.20 265)",
+          "oklch(0.42 0.19 265)",
+          "oklch(0.54 0.16 265)",
+          "oklch(0.68 0.11 265)",
+          "oklch(0.82 0.06 265)",
+          "oklch(0.94 0.02 265)"
+        ]
       },
       "gold-spark": {
         "role": "secondary",
         "displayName": "Gold Spark",
         "canonical": "#cca352",
-        "tonalRamp": ["oklch(0.22 0.05 84)", "oklch(0.34 0.07 84)", "oklch(0.47 0.09 84)", "oklch(0.60 0.10 84)", "oklch(0.72 0.10 84)", "oklch(0.81 0.08 84)", "oklch(0.89 0.06 84)", "oklch(0.95 0.03 84)"]
+        "tonalRamp": [
+          "oklch(0.22 0.05 84)",
+          "oklch(0.34 0.07 84)",
+          "oklch(0.47 0.09 84)",
+          "oklch(0.60 0.10 84)",
+          "oklch(0.72 0.10 84)",
+          "oklch(0.81 0.08 84)",
+          "oklch(0.89 0.06 84)",
+          "oklch(0.95 0.03 84)"
+        ]
       },
       "amber-highlight": {
         "role": "tertiary",
         "displayName": "Amber Highlight",
         "canonical": "#f59c08",
-        "tonalRamp": ["oklch(0.24 0.08 72)", "oklch(0.36 0.11 72)", "oklch(0.49 0.14 72)", "oklch(0.62 0.16 72)", "oklch(0.75 0.16 72)", "oklch(0.83 0.12 72)", "oklch(0.90 0.08 72)", "oklch(0.96 0.04 72)"]
+        "tonalRamp": [
+          "oklch(0.24 0.08 72)",
+          "oklch(0.36 0.11 72)",
+          "oklch(0.49 0.14 72)",
+          "oklch(0.62 0.16 72)",
+          "oklch(0.75 0.16 72)",
+          "oklch(0.83 0.12 72)",
+          "oklch(0.90 0.08 72)",
+          "oklch(0.96 0.04 72)"
+        ]
       },
       "warm-brown": {
         "role": "tertiary",
         "displayName": "Warm Brown",
         "canonical": "#d57912",
-        "tonalRamp": ["oklch(0.22 0.07 62)", "oklch(0.33 0.10 62)", "oklch(0.44 0.13 62)", "oklch(0.55 0.15 62)", "oklch(0.66 0.15 62)", "oklch(0.77 0.11 62)", "oklch(0.87 0.07 62)", "oklch(0.95 0.03 62)"]
+        "tonalRamp": [
+          "oklch(0.22 0.07 62)",
+          "oklch(0.33 0.10 62)",
+          "oklch(0.44 0.13 62)",
+          "oklch(0.55 0.15 62)",
+          "oklch(0.66 0.15 62)",
+          "oklch(0.77 0.11 62)",
+          "oklch(0.87 0.07 62)",
+          "oklch(0.95 0.03 62)"
+        ]
       },
       "sky": {
         "role": "tertiary",
         "displayName": "Sky",
         "canonical": "#44b8f2",
-        "tonalRamp": ["oklch(0.22 0.07 235)", "oklch(0.34 0.10 235)", "oklch(0.46 0.12 235)", "oklch(0.58 0.13 235)", "oklch(0.72 0.13 235)", "oklch(0.81 0.10 235)", "oklch(0.89 0.06 235)", "oklch(0.96 0.03 235)"]
+        "tonalRamp": [
+          "oklch(0.22 0.07 235)",
+          "oklch(0.34 0.10 235)",
+          "oklch(0.46 0.12 235)",
+          "oklch(0.58 0.13 235)",
+          "oklch(0.72 0.13 235)",
+          "oklch(0.81 0.10 235)",
+          "oklch(0.89 0.06 235)",
+          "oklch(0.96 0.03 235)"
+        ]
       },
-      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(0.991 0.001 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "oklch(0.972 0.002 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "sunken": { "role": "neutral", "displayName": "Sunken", "canonical": "oklch(0.945 0.004 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "line": { "role": "neutral", "displayName": "Line (hairline)", "canonical": "oklch(0.872 0.005 250)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "line-strong": { "role": "neutral", "displayName": "Line Strong", "canonical": "oklch(0.700 0.010 256)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "rule": { "role": "neutral", "displayName": "Rule (heavy editorial)", "canonical": "oklch(0.165 0.014 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(0.205 0.016 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "ink-bold": { "role": "neutral", "displayName": "Ink Bold", "canonical": "oklch(0.150 0.016 262)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(0.405 0.018 258)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] },
-      "ink-faint": { "role": "neutral", "displayName": "Ink Faint", "canonical": "oklch(0.560 0.016 256)", "tonalRamp": ["oklch(0.15 0.014 254)", "oklch(0.27 0.014 254)", "oklch(0.40 0.014 254)", "oklch(0.56 0.012 254)", "oklch(0.70 0.010 254)", "oklch(0.87 0.005 252)", "oklch(0.95 0.003 250)", "oklch(0.99 0.001 250)"] }
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(0.991 0.001 250)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel",
+        "canonical": "oklch(0.972 0.002 250)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "sunken": {
+        "role": "neutral",
+        "displayName": "Sunken",
+        "canonical": "oklch(0.945 0.004 250)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line (hairline)",
+        "canonical": "oklch(0.872 0.005 250)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Line Strong",
+        "canonical": "oklch(0.700 0.010 256)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule (heavy editorial)",
+        "canonical": "oklch(0.165 0.014 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(0.205 0.016 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "ink-bold": {
+        "role": "neutral",
+        "displayName": "Ink Bold",
+        "canonical": "oklch(0.150 0.016 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "oklch(0.405 0.018 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "Ink Faint",
+        "canonical": "oklch(0.560 0.016 256)",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display (gothic)", "purpose": "Cover titles (5.30rem), section-divider titles (6.10rem), statements (5.60rem), mega folios/metrics (9.50rem). Libre Franklin at 800, tight and negative-tracked. The LOUD voice." },
-      "headline": { "displayName": "Headline (slide title)", "purpose": "The standard h2.slide-title under the 4px green marker bar; max-width 22ch." },
-      "title": { "displayName": "Title (h3)", "purpose": "Sub-headings and column heads; Libre Franklin 700." },
-      "lead": { "displayName": "Lead (serif)", "purpose": "The serif lead paragraph, max-width 30ch; also h4, which deliberately stays in the serif register." },
-      "body": { "displayName": "Body (serif)", "purpose": "EB Garamond prose at 1.52rem — deliberately large for hall projection; max-width 62ch. The QUIET counter-voice." },
-      "label": { "displayName": "Label (gothic small-caps)", "purpose": "Kickers, callout labels, table headers, chips, deck chrome; uppercase, 0.18em tracking." }
+      "display": {
+        "displayName": "Display (gothic)",
+        "purpose": "Cover titles (5.30rem), section-divider titles (6.10rem), statements (5.60rem), mega folios/metrics (9.50rem). Libre Franklin at 800, tight and negative-tracked. The LOUD voice."
+      },
+      "headline": {
+        "displayName": "Headline (slide title)",
+        "purpose": "The standard h2.slide-title under the 4px green marker bar; max-width 22ch."
+      },
+      "title": {
+        "displayName": "Title (h3)",
+        "purpose": "Sub-headings and column heads; Libre Franklin 700."
+      },
+      "lead": {
+        "displayName": "Lead (serif)",
+        "purpose": "The serif lead paragraph, max-width 30ch; also h4, which deliberately stays in the serif register."
+      },
+      "body": {
+        "displayName": "Body (serif)",
+        "purpose": "EB Garamond prose at 1.52rem — deliberately large for hall projection; max-width 62ch. The QUIET counter-voice."
+      },
+      "label": {
+        "displayName": "Label (hall, gothic small-caps)",
+        "purpose": "Every in-canvas label that carries meaning: kickers, callout labels, stat labels, column heads, chart heads, bar-axis ticks, table headers, chips, figure numbers, step numbers. 1.05rem, 0.10em tracking — sized for reading at 20m, not 40cm."
+      },
+      "chrome": {
+        "displayName": "Chrome (gothic small-caps)",
+        "purpose": "The deck footer and running head, which sit outside the scaled canvas, plus browser-frame simulations and QR URLs that are representational rather than read. 0.80rem, 0.18em tracking."
+      }
     },
     "shadows": [
-      { "name": "shadow-1", "value": "0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05)", "purpose": "Smallest overlay affordance; rarely used. Never on in-flow slide content." },
-      { "name": "shadow-2", "value": "0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)", "purpose": "The browser-chrome screenshot frame (.chrome) — a captured artifact floating above the page." },
-      { "name": "shadow-pop", "value": "0 22px 60px oklch(0.16 0.03 258 / 0.30)", "purpose": "True modal overlays only: TOC panel, lightbox, QR pop. The Overlay-Only Shadow Rule." }
+      {
+        "name": "shadow-1",
+        "value": "0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05)",
+        "purpose": "Smallest overlay affordance; rarely used. Never on in-flow slide content."
+      },
+      {
+        "name": "shadow-2",
+        "value": "0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)",
+        "purpose": "The browser-chrome screenshot frame (.chrome) — a captured artifact floating above the page."
+      },
+      {
+        "name": "shadow-pop",
+        "value": "0 22px 60px oklch(0.16 0.03 258 / 0.30)",
+        "purpose": "True modal overlays only: TOC panel, lightbox, QR pop. The Overlay-Only Shadow Rule."
+      }
     ],
     "motion": [
-      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Ease-out-quint; the default easing for all transitions and the draw animations." },
-      { "name": "ease-soft", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Softer secondary easing." },
-      { "name": "dur", "value": "220ms", "purpose": "Default state-transition duration (links, buttons, TOC items)." },
-      { "name": "draw", "value": "560ms", "purpose": "The ink-on-paper signature: marker bars and rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Stilled under print, prefers-reduced-motion, and hidden tabs; .no-draw opts out." }
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Ease-out-quint; the default easing for all transitions and the draw animations."
+      },
+      {
+        "name": "ease-soft",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Softer secondary easing."
+      },
+      {
+        "name": "dur",
+        "value": "220ms",
+        "purpose": "Default state-transition duration (links, buttons, TOC items)."
+      },
+      {
+        "name": "draw",
+        "value": "560ms",
+        "purpose": "The ink-on-paper signature: marker bars and rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Stilled under print, prefers-reduced-motion, and hidden tabs; .no-draw opts out."
+      }
     ],
     "breakpoints": [
-      { "name": "chrome-compact", "value": "640px", "purpose": "max-width: chrome outside the scaled canvas compacts (runhead hidden, footer title dropped). Slide content itself never responds — the 1280x720 canvas scales uniformly." },
-      { "name": "shallow-screen", "value": "560px", "purpose": "max-height: a real footer strip is reserved outside the area reveal scales into, so the footer never covers content on landscape phones." }
+      {
+        "name": "chrome-compact",
+        "value": "640px",
+        "purpose": "max-width: chrome outside the scaled canvas compacts (runhead hidden, footer title dropped). Slide content itself never responds — the 1280x720 canvas scales uniformly."
+      },
+      {
+        "name": "shallow-screen",
+        "value": "560px",
+        "purpose": "max-height: a real footer strip is reserved outside the area reveal scales into, so the footer never covers content on landscape phones."
+      }
     ]
   },
   "components": [
@@ -169,16 +421,61 @@
       "\"Ink on paper\" motion: rules draw in, bars grow, figures count up"
     ],
     "rules": [
-      { "name": "The Field, Not Sprinkle Rule", "body": "Colour arrives as a flat structural plane (a full-bleed divider field, a heavy marker bar, a solid fill) or not at all. Never as a timid tint, gradient wash, or decorative accent scattered across a light slide.", "section": "colors" },
-      { "name": "The One Gold Spark Rule", "body": "Gold appears on dark fields only — the plate rule, dark-field ticks and kickers, the quote mark. On paper it exists solely as the mark highlight wash. It is never a second accent competing with green on light slides.", "section": "colors" },
-      { "name": "The Dark-Field Flip Rule", "body": "On .section, .closing and .media, strong text lifts to Paper, list ticks and kickers lift to Gold Spark, and the footer chrome inverts (.on-dark). Never leave ink-coloured emphasis sitting on a dark field.", "section": "colors" },
-      { "name": "The Inverted Hierarchy Rule", "body": "Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.", "section": "typography" },
-      { "name": "The Serif h4 Rule", "body": "h4 deliberately stays in the serif register (EB Garamond 600, 2.00rem) — it reads as an emphatic lead, not a gothic label. Do not \"fix\" it to match h1–h3.", "section": "typography" },
-      { "name": "The Fixed Canvas Rule", "body": "All sizing inside .reveal .slides is rem on a 16px root, scaled as a whole by reveal's transform on a fixed 1280×720 canvas. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only.", "section": "layout" },
-      { "name": "The Overlay-Only Shadow Rule", "body": "Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.", "section": "elevation" },
-      { "name": "The Ruled, Not Boxed Rule", "body": "Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat Sunken inset — no border, no shadow.", "section": "shapes" },
-      { "name": "The Ink-on-Paper Motion Rule", "body": "One motion idea, repeated and restrained (--draw: 560ms, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Everything stills under print, prefers-reduced-motion, and hidden tabs; .no-draw opts a deck or slide out.", "section": "components" },
-      { "name": "The Two Image Treatments Rule", "body": "Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.", "section": "components" }
+      {
+        "name": "The Field, Not Sprinkle Rule",
+        "body": "Colour arrives as a flat structural plane (a full-bleed divider field, a heavy marker bar, a solid fill) or not at all. Never as a timid tint, gradient wash, or decorative accent scattered across a light slide.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Gold Spark Rule",
+        "body": "Gold appears on dark fields only — the plate rule, dark-field ticks and kickers, the quote mark. On paper it exists solely as the mark highlight wash. It is never a second accent competing with green on light slides.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark-Field Flip Rule",
+        "body": "On .section, .closing and .media, strong text lifts to Paper, list ticks and kickers lift to Gold Spark, and the footer chrome inverts (.on-dark). Never leave ink-coloured emphasis sitting on a dark field.",
+        "section": "colors"
+      },
+      {
+        "name": "The Inverted Hierarchy Rule",
+        "body": "Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif h4 Rule",
+        "body": "h4 deliberately stays in the serif register (EB Garamond 600, 2.00rem) — it reads as an emphatic lead, not a gothic label. Do not \"fix\" it to match h1–h3.",
+        "section": "typography"
+      },
+      {
+        "name": "The Fixed Canvas Rule",
+        "body": "All sizing inside .reveal .slides is rem on a 16px root, scaled as a whole by reveal's transform on a fixed 1280×720 canvas. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only.",
+        "section": "layout"
+      },
+      {
+        "name": "The Overlay-Only Shadow Rule",
+        "body": "Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Ruled, Not Boxed Rule",
+        "body": "Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat Sunken inset — no border, no shadow.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Ink-on-Paper Motion Rule",
+        "body": "One motion idea, repeated and restrained (--draw: 560ms, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Everything stills under print, prefers-reduced-motion, and hidden tabs; .no-draw opts a deck or slide out.",
+        "section": "components"
+      },
+      {
+        "name": "The Two Image Treatments Rule",
+        "body": "Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.",
+        "section": "components"
+      },
+      {
+        "name": "The Hall Label Rule",
+        "body": "The label voice splits by distance, not by component. A label printed on paper is read at 40cm; a label projected in a hall is read at 20m, and the hall is the primary reader. A label that tells the audience what a figure counts, which decade a bar sits in, or what a column holds takes --fs-label (1.05rem), never the chrome size. Tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes less space beneath it, so net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.",
+        "section": "typography"
+      }
     ],
     "dos": [
       "Do put the 4px green marker bar above every standard slide title; use .no-rule only when a layout genuinely replaces it (cover, section, statement).",

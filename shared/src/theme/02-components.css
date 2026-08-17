@@ -7,8 +7,12 @@
   display: inline-flex; align-items: center; gap: 0.55em;
   font-family: var(--font-label); font-weight: 700;
   font-size: var(--fs-kicker); text-transform: uppercase;
-  letter-spacing: var(--track-label); color: var(--ink-soft);
-  margin: 0 0 var(--space-sm);
+  letter-spacing: var(--track-hall); color: var(--ink-soft);
+  /* The label grew for the hall, so its trailing space shrinks to match:
+     a bigger cap needs proportionally less air beneath it, and the tighter
+     gap binds the kicker to the title it introduces. Net height is unchanged,
+     which keeps dense archived slides on the right side of the fit threshold. */
+  margin: 0 0 var(--space-xs);
 }
 .reveal .kicker::before {
   content: ""; width: 1.4em; height: 3px; border-radius: 1px; background: var(--green); flex: none;
@@ -28,7 +32,7 @@
 }
 .reveal .callout .callout-label {
   display: block; font-family: var(--font-label); font-weight: 700;
-  font-size: var(--fs-footer); text-transform: uppercase; letter-spacing: var(--track-label);
+  font-size: var(--fs-label); text-transform: uppercase; letter-spacing: var(--track-hall);
   color: var(--ink-bold); margin-bottom: 0.3em;
 }
 .reveal .callout.warm { border-top-color: var(--brown); }
@@ -46,8 +50,8 @@
   font-variant-numeric: lining-nums tabular-nums;
 }
 .reveal .stat .stat-label {
-  font-family: var(--font-label); font-size: var(--fs-footer); color: var(--ink-soft);
-  text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; max-width: 22ch;
+  font-family: var(--font-label); font-size: var(--fs-label); color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: var(--track-hall); font-weight: 600; max-width: 22ch;
 }
 
 /* Figure ledger — "in figures" as a ruled index: label left, figure right,
@@ -68,7 +72,7 @@
 
 /* Chips / tags — heavy gothic small-caps, solid hairline outline */
 .reveal .chip {
-  display: inline-block; font-family: var(--font-label); font-size: var(--fs-footer);
+  display: inline-block; font-family: var(--font-label); font-size: var(--fs-label);
   font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
   padding: 0.22em 0.6em; border-radius: var(--radius-sm);
   background: transparent; border: 1.5px solid var(--line-strong); color: var(--ink-soft);
@@ -92,7 +96,7 @@
 .reveal .query-list .q strong { font-style: normal; font-weight: 700; }
 .reveal .query-list .q-map {
   display: flex; align-items: center; gap: 0.6em;
-  font-family: var(--font-label); font-size: var(--fs-footer); text-transform: uppercase;
+  font-family: var(--font-label); font-size: var(--fs-label); text-transform: uppercase;
   letter-spacing: 0.08em; font-weight: 600; color: var(--ink-faint);
 }
 
@@ -110,7 +114,7 @@
 .reveal .depth .depth-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
 .reveal .depth.is-full .depth-name { color: var(--green-deep); }
 .reveal .depth .depth-tag {
-  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
+  font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--ink-faint); margin-left: 0.5em; vertical-align: 0.08em;
 }
@@ -131,7 +135,7 @@
   content: counter(idx, decimal-leading-zero);
   position: static;   /* stay an in-flow grid item (the generic ol rule absolutes it) */
   grid-column: 1; grid-row: 1; top: auto; left: auto;
-  font-family: var(--font-display); font-weight: 800; font-size: 1.9rem;
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lead);
   color: var(--green-deep); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
   line-height: 1;
 }

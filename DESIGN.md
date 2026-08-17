@@ -51,7 +51,13 @@ typography:
     letterSpacing: "0"
   label:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.82rem"
+    fontSize: "1.05rem"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "0.10em"
+  chrome:
+    fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "0.80rem"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "0.18em"
@@ -164,7 +170,10 @@ The exact six-colour University of Bayreuth corporate palette (binding, hex-norm
 - **Title** (700, 2.20rem, tracking −0.014em): sub-headings (`h3`), column heads.
 - **Lead** (serif 500, 2.00rem, line-height 1.26): the serif lead paragraph, max-width 30ch.
 - **Body** (serif 500, 1.52rem, line-height 1.46): prose, max-width 62ch — set a touch big because EB Garamond's small x-height reads small in a hall.
-- **Label** (700, 0.82rem, letter-spacing 0.18em, UPPERCASE): kickers, callout labels, table headers, chips, chrome.
+- **Label** (700, 1.05rem `--fs-label`, letter-spacing 0.10em `--track-hall`, UPPERCASE): every label *inside* the canvas that carries meaning — kickers, callout labels, stat labels, column heads, chart heads, bar-axis ticks, table headers, chips, figure numbers, step numbers.
+- **Chrome** (700, 0.80rem `--fs-footer`, letter-spacing 0.18em, UPPERCASE): the deck footer and running head, which sit outside the scaled canvas, plus the browser-frame simulations and QR URLs that are representational rather than read.
+
+**The Hall Label Rule.** The label voice splits in two, and the split is by *distance*, not by component. A label printed on paper is read at 40cm; a label projected in a lecture hall is read at 20m, and the hall is the primary reader. If a label tells the audience what a figure counts, which decade a bar sits in, or what a column holds, it takes `--fs-label` — never the chrome size. The tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes *less* space beneath it, so the net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.
 
 ### Named Rules
 **The Inverted Hierarchy Rule.** Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.
@@ -206,7 +215,7 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Opt-out:** `.no-rule` drops the bar and its padding.
 
 ### Kicker
-- **Style:** gothic overline label — Libre Franklin 700, 0.82rem, uppercase, letter-spacing 0.18em, `Ink Soft` — preceded by a 1.4em × 3px green tick.
+- **Style:** gothic overline label — Libre Franklin 700, 1.05rem (`--fs-label`), uppercase, letter-spacing 0.10em (`--track-hall`), `Ink Soft` — preceded by a 1.4em × 3px green tick, and set tight to the title it introduces (`--space-xs` beneath).
 - **Variants:** `.warm` (brown-deep text, brown tick), `.navy`, `.green`; on dark fields the kicker lifts to `Gold Spark`/gold-bright.
 
 ### Callout

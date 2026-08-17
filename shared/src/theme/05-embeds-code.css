@@ -2,11 +2,15 @@
    8. CODE — light highlight.js token theme
    ---------------------------------------------------------------------------- */
 .reveal pre {
-  width: 100%; margin: var(--space-md) 0; font-size: 0.6em; line-height: 1.5;
+  width: 100%; margin: var(--space-md) 0; font-size: 0.78em; line-height: 1.5;
   box-shadow: none; border-radius: var(--radius-md); background: var(--sunken);
   border: 1px solid var(--line);
 }
 .reveal pre code {
+  /* display:block is load-bearing: as an inline box the horizontal padding
+     lands on the first and last line boxes only, leaving the middle lines
+     flush against the panel edge. The .scroll-panel variant already had it. */
+  display: block;
   font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: 0;
   background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
   font-feature-settings: "liga" 0;

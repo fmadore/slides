@@ -8,8 +8,8 @@
 /* A captioned chart block: gothic over-label, the plot, an italic source line. */
 .reveal .chart { margin: var(--space-md) 0; max-width: none; display: flex; flex-direction: column; }
 .reveal .chart-head {
-  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer);
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-md);
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-label);
+  letter-spacing: var(--track-hall); text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-md);
 }
 .reveal .chart-src { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-faint); margin: var(--space-sm) 0 0; }
 
@@ -39,7 +39,7 @@
 /* the x-axis tick labels — a matching flex row beneath the baseline */
 .reveal .bar-axis { display: flex; gap: var(--space-md); margin-top: 0.55em; max-width: none; list-style: none; padding: 0; }
 .reveal .bar-axis > * { flex: 1 1 0; text-align: center; margin: 0;
-  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.04em; color: var(--ink-faint); }
+  font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label); letter-spacing: 0.04em; color: var(--ink-faint); }
 .reveal .bar-axis > *::before { content: none; }   /* kill the generic ul/ol marker */
 
 /* SHARE BARS — horizontal breakdown. Width per row via --p (a %). Navy by default

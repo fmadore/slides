@@ -149,6 +149,19 @@ identity.
 Ordering revised 2026-08-17 from Phase 1's evidence. Each pass now carries the
 specific findings it must close.
 
+*Pass 1 (`typeset`) ✅ COMPLETE 2026-08-17.* The label voice was split in two by
+distance rather than by component: `--fs-label` (1.05rem, tracking eased to
+0.10em) for every in-canvas label that carries meaning, `--fs-footer` (0.80rem)
+reserved for true chrome outside the scaled canvas. Table headers went from
+11.5px to ~15.5px, code from 0.6em to 0.78em, and four off-ramp literals were
+tokenised (including a `0.78rem` that sat *below* the chrome floor). Verifying
+caught a real regression — the taller kicker pushed Erlangen #14 from ×0.905 to
+×0.898, under the readability threshold — fixed at the source by tightening the
+kicker's trailing margin, which is also the better typography: a bigger cap
+needs less air beneath it, and the tighter gap binds the label to its title.
+Net height is now roughly neutral while labels are ~30% larger. Recorded in
+DESIGN.md as **The Hall Label Rule**.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |
