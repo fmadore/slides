@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-18T06:39:51Z",
+  "generatedAt": "2026-08-18T07:33:03Z",
   "title": "Design System: Broadsheet",
   "extensions": {
     "colorMeta": {
@@ -393,6 +393,14 @@
       "css": ".ds-statement { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 3.4rem; line-height: 0.98; letter-spacing: -0.03em; color: oklch(0.150 0.016 262); max-width: 18ch; margin: 0; text-wrap: balance; } .ds-statement-accent { color: color-mix(in oklch, #009260, #06140d 26%); }"
     },
     {
+      "name": "Closing Colophon",
+      "kind": "custom",
+      "refersTo": "closing-field",
+      "description": "The sign-off slide: deep-navy field, gold plate rule, wide type measures, contributor byline reading across as a masthead colophon.",
+      "html": "<section class=\"ds-closing\"><p class=\"ds-closing-kicker\">Thank you</p><h2>Reconfiguring the archive from West Africa</h2><p class=\"ds-closing-lead\">Slides, data and the collection itself remain open; the questions above are the ones I would most like to argue about.</p><div class=\"ds-closing-byline\"><div class=\"ds-author\"><span class=\"ds-name\">Frederick Madore</span><span class=\"ds-affil\">Leibniz-Zentrum Moderner Orient</span></div><div class=\"ds-author\"><span class=\"ds-name\">Co-presenter</span><span class=\"ds-affil\">Rhodes University, Makhanda</span></div></div></section>",
+      "css": ".ds-closing { position: relative; background: var(--navy-field, #001a5e); color: var(--paper, #fdfdfe); padding: 3.8rem 4.8rem; } .ds-closing::before { content: \"\"; position: absolute; left: 4.8rem; right: 4.8rem; top: 3.8rem; height: 4px; background: var(--ond-mark, #dcbc7e); } .ds-closing-kicker { font-family: var(--font-label, \"Libre Franklin\", system-ui, sans-serif); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ond-mark, #dcbc7e); margin: 0 0 0.5rem; } .ds-closing h2 { font-family: var(--font-display, \"Libre Franklin\", system-ui, sans-serif); font-weight: 800; font-size: 5.30rem; line-height: 0.96; letter-spacing: -0.028em; max-width: 22ch; color: var(--paper, #fdfdfe); margin: 0 0 1rem; } .ds-closing-lead { font-family: var(--font-serif, \"EB Garamond\", Georgia, serif); font-weight: 500; font-size: 2.00rem; line-height: 1.26; max-width: 46ch; color: var(--ond-quiet, rgba(253,253,254,0.82)); margin: 0 0 1.5rem; } .ds-closing-byline { display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 2rem; } .ds-closing-byline .ds-author { display: flex; flex-direction: column; gap: 0.12em; flex: 0 1 auto; max-width: 34ch; } .ds-closing-byline .ds-name { font-family: var(--font-label, \"Libre Franklin\", system-ui, sans-serif); font-weight: 700; font-size: 1.30rem; letter-spacing: 0.01em; color: var(--ond-text, #fdfdfe); } .ds-closing-byline .ds-affil { font-family: var(--font-serif, \"EB Garamond\", Georgia, serif); font-style: italic; font-size: 1.16rem; max-width: 46ch; color: var(--ond-quiet, rgba(253,253,254,0.82)); } .ds-closing a { color: var(--ond-mark, #dcbc7e); } .ds-closing a:hover { color: var(--ond-text, #fdfdfe); } .ds-closing a:focus-visible { outline: 2px solid var(--focus-ring, #fdfdfe); outline-offset: 2px; border-radius: 3px; }"
+    },
+    {
       "name": "Deck Nav Button",
       "kind": "button",
       "refersTo": "nav-button",
@@ -469,6 +477,11 @@
         "section": "layout"
       },
       {
+        "name": "The Floating Control Clearance Rule",
+        "body": "A control that floats over a panel insets the panel's own text by the control's box plus a gap, and the rule beneath that text still spans the full width. `.toc-head` carries `padding-right: calc(2.4rem + var(--space-sm))` for exactly this: the 2.4rem `.toc-close` button overlapped the head's box at every viewport tested (1280×720, 844×390, 390×844, 1920×1080), and only the word \"Contents\" being short kept the collision off the screen. Clearance is now 20–34px. Padding insets the text, never the border.",
+        "section": "layout"
+      },
+      {
         "name": "The Overlay-Only Shadow Rule",
         "body": "Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.",
         "section": "elevation"
@@ -476,6 +489,16 @@
       {
         "name": "The Ruled, Not Boxed Rule",
         "body": "Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat Sunken inset — no border, no shadow.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Rule Opens From Above Rule",
+        "body": "A heavy rule that opens a block must have visible air above it, or it stops reading as an opening. `.marginnote` therefore takes `margin-top: var(--space-lg)` (reset to 0 when it is the first child): set flush under a chart, its 3px rule read as one more unlabelled near-black bar in the series rather than as the start of an aside.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Rules Line Up Or Clearly Don't Rule",
+        "body": "Two instances of the same device sitting adjacent either end at the same x or differ obviously; a near-miss reads as a mistake where a clear difference would have read as a decision. `.stat-grid + .callout` therefore takes the ledger's own column (`max-width: calc((100% - var(--space-3xl)) / 2)`) in place of the callout's 60ch prose measure — at 60ch the note's rule stopped 32px past the stat column above it. Scoped to that one adjacency: a standalone callout keeps its 60ch.",
         "section": "shapes"
       },
       {
@@ -505,29 +528,35 @@
       }
     ],
     "dos": [
-      "Do put the 4px green marker bar above every standard slide title; use .no-rule only when a layout genuinely replaces it (cover, section, statement).",
-      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.",
-      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on dark. WCAG 2.2 AA is binding.",
-      "Do keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave h4 in the serif.",
-      "Do size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
-      "Do structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.",
-      "Do colour dark fields through the on-dark tokens (--ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.",
-      "Do centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to both the .present list in 03-layouts.css and the .pdf-page list in 01-foundations.css.",
-      "Do cap a figure or code block with --block-max-h (28rem), and give print its own per-page .pdf-imprint rather than expecting the live footer to travel.",
-      "Do ask fieldOf() which register a surface sits in — it is the one answer the live chrome and the printed imprint share.",
-      "Do theme every focus state with --focus-ring and a var(--radius-sm) corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field."
+      "**Do** put the 4px green marker bar above every standard slide title; use `.no-rule` only when a layout genuinely replaces it (cover, section, statement).",
+      "**Do** spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.",
+      "**Do** use the AA-derived depths for text: `--green-deep` for green text/links on light, `--brown-deep` for brown, `--gold-bright` for gold on dark. WCAG 2.2 AA is binding.",
+      "**Do** keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave `h4` in the serif.",
+      "**Do** size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
+      "**Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.",
+      "**Do** colour dark fields through the on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.",
+      "**Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to *both* the `.present` list in `03-layouts.css` and the `.pdf-page` list in `01-foundations.css`.",
+      "**Do** cap a figure or code block with `--block-max-h` (28rem), and give print its own per-page `.pdf-imprint` rather than expecting the live footer to travel.",
+      "**Do** ask `fieldOf()` which register a surface sits in — it is the one answer the live chrome and the printed imprint share.",
+      "**Do** let the closing take its own measures (22ch title, 46ch lead, byline in a row) — it is all type, and it is the only place those overrides apply.",
+      "**Do** give an opening rule air above it and land adjacent rules at the same x; a near-miss between two copies of the same device reads as a mistake.",
+      "**Do** inset a panel's own header text past any control floating over it (`calc(2.4rem + var(--space-sm))` on `.toc-head`) while leaving the rule full-width.",
+      "**Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field."
     ],
     "donts": [
-      "Don't resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.",
-      "Don't put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.",
-      "Don't use viewport units or fluid clamp() type inside the slide canvas — including vh height caps, which measure the window rather than the 1280×720 stage. The only sanctioned viewport units are the three on true overlays (TOC panel, lightbox).",
-      "Don't treat .balance as the way to centre a hero; the hero classes centre themselves, and .balance is for non-hero sparse slides.",
-      "Don't interpolate a deck title, venue or any author string into chrome markup without escapeHTML().",
-      "Don't use gold as a second accent on light slides, set small text in raw #009260, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).",
-      "Don't put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.",
-      "Don't rely on a low-opacity fill to carry a large form; outline it instead, as .sec-no does with a 3px Paper stroke.",
-      "Don't box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.",
-      "Don't convert the OKLCH neutrals to hex or \"correct\" the hex corporate palette; each format is normative where it stands."
+      "**Don't** resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.",
+      "**Don't** put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.",
+      "**Don't** use viewport units or fluid clamp() type inside the slide canvas — including `vh` height caps, which measure the window rather than the 1280×720 stage. The only sanctioned viewport units are the three on true overlays (TOC panel, lightbox).",
+      "**Don't** treat `.balance` as the way to centre a hero; the hero classes centre themselves, and `.balance` is for non-hero sparse slides.",
+      "**Don't** interpolate a deck title, venue or any author string into chrome markup without `escapeHTML()`.",
+      "**Don't** use gold as a second accent on light slides, set small text in raw `#009260`, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).",
+      "**Don't** put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.",
+      "**Don't** rely on a low-opacity fill to carry a large form; outline it instead, as `.sec-no` does with a 3px Paper stroke.",
+      "**Don't** box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.",
+      "**Don't** waive the fit check with boilerplate when the real fault is a measure drawn for a different composition — fix the measure, as `.closing` now does.",
+      "**Don't** widen `.lead` past 30ch outside `.closing`, or push the closing's row byline onto covers and other slides.",
+      "**Don't** read the showcase deck's slack as a measurement of the system; its copy is placeholder by design.",
+      "**Don't** convert the OKLCH neutrals to hex or \"correct\" the hex corporate palette; each format is normative where it stands."
     ]
   }
 }

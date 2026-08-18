@@ -465,6 +465,11 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   font-size: var(--fs-label); text-transform: uppercase; letter-spacing: var(--track-hall);
   color: var(--ink-bold); margin-bottom: 0.3em;
 }
+/* A note closing a ledger takes the ledger's column, not its own prose measure.
+   Both are opened by the same 3px rule, and at 60ch the note's rule stopped 32px
+   past the column above it — two identical devices that almost line up read as a
+   mistake, where a clear difference would have read as a decision. */
+.reveal .stat-grid + .callout { max-width: calc((100% - var(--space-3xl)) / 2); }
 .reveal .callout.warm { border-top-color: var(--brown); }
 .reveal .callout.warm .callout-label { color: var(--brown-deep); }
 .reveal .callout.navy { border-top-color: var(--navy); }
@@ -802,8 +807,24 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
   top: var(--slide-pad-y); height: var(--bar); background: var(--ond-mark);
 }
-.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 16ch; letter-spacing: -0.028em; line-height: 0.96; }
-.reveal section.closing .lead { color: var(--ond-quiet); }
+/* The colophon takes its own measures. A 16ch title and a 30ch lead were drawn
+   for slides that carry a figure beside the type; the closing carries nothing
+   but type, so those measures stacked a narrow column down the left third and
+   left the field empty — which is why three decks waived the fit check with
+   identical boilerplate rather than fixing the composition. Wider measures let
+   the sign-off span the page it actually has. */
+.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 22ch; letter-spacing: -0.028em; line-height: 0.96; }
+.reveal section.closing .lead { color: var(--ond-quiet); max-width: 46ch; }
+/* Contributors read across on a colophon, the way a masthead lists them —
+   stacked is right under a cover title, where the byline is a caption, but here
+   it is the credit line itself. */
+.reveal section.closing .byline.authors { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: var(--space-xl); }
+.reveal section.closing .byline.authors .author { flex: 0 1 auto; max-width: 34ch; }
+/* Contributors carry different numbers of lines (a role, a second affiliation),
+   so left alone their institution marks land at different heights. Pushing the
+   mark down to the block's foot sits them all on one line, which is the only
+   reason a row reads as a colophon rather than as two stacked cards. */
+.reveal section.closing .byline.authors .author-logo { margin-top: auto; padding-top: var(--space-sm); }
 .reveal section.closing .contact a { color: var(--ond-quiet); }
 .reveal section.closing .contact a:hover { color: var(--ond-text); }
 .reveal section.closing .contact a .ico { color: var(--ond-mark); }
@@ -926,7 +947,12 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   transform: translateY(14px) scale(0.99); opacity: 0; transition: transform 380ms var(--ease), opacity 380ms var(--ease);
 }
 .toc-overlay.open .toc-panel { transform: none; opacity: 1; }
-.toc-head { margin-bottom: clamp(1.1rem, 3vw, 1.8rem); border-bottom: 3px solid var(--rule); padding-bottom: 0.9rem; }
+/* The close button floats over the panel's top-right corner, so the head keeps
+   out from under it — the box overlapped at every viewport, and only the word
+   "Contents" being short kept the collision off the screen. The rule itself
+   still spans the full width: padding insets the text, not the border. */
+.toc-head { margin-bottom: clamp(1.1rem, 3vw, 1.8rem); border-bottom: 3px solid var(--rule); padding-bottom: 0.9rem;
+  padding-right: calc(2.4rem + var(--space-sm)); }
 .toc-head .toc-eyebrow { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--green-deep); }
 .toc-head .toc-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 800; color: var(--ink-bold); margin: 0.2rem 0 0; letter-spacing: -0.02em; }
 .toc-list { list-style: none; margin: 0; padding: 0; }
@@ -1347,6 +1373,12 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
 
 /* MARGIN NOTE — the serif counter-voice as true marginalia: a heavy rule, a
    gothic label, an italic gloss. Sits in the narrow column of a ratio split. */
+/* The rule needs air above it. With none, a marginnote set under a chart put a
+   heavy full-width rule directly beneath the last bar, where it read as one
+   more — unlabelled, near-black — bar in the series rather than as the opening
+   of an aside. A rule that opens a block has to be clearly above that block. */
+.reveal .marginnote { margin-top: var(--space-lg); }
+.reveal .marginnote:first-child { margin-top: 0; }
 .reveal .marginnote { border-top: 3px solid var(--rule); padding-top: 0.55em; max-width: 34ch;
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); line-height: 1.4; color: var(--ink-soft); }
 .reveal .marginnote .mn-label { display: block; font-family: var(--font-label); font-style: normal; font-weight: 800;

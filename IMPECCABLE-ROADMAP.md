@@ -257,6 +257,47 @@ and the authored `.scroll-hint` line still tells the reader to scroll. Fixing
 it properly means either expanding the panel in print or rewording per-deck
 copy.
 
+*Pass 4 (`layout`) ✅ COMPLETE 2026-08-18.* The `.closing` finding turned out to
+be one diagnosis, not five symptoms: the colophon had inherited hero measures
+— a 16ch title and a 30ch lead — that were drawn for slides carrying a figure
+beside the type. The closing carries nothing but type, so those measures stacked
+a narrow column down the left third and left more than half the field empty,
+*and* overflowed vertically. Widening them to 22ch/46ch and setting
+`.byline.authors` as a row (contributors read across on a colophon; stacked is
+right only under a cover title, where the byline is a caption) fixed both faces
+at once. Erlangen went 658→384px of stack against 595 available, Paris
+639→377, Luxembourg 671→590. All three `data-fit-allow="deliberate full-bleed
+closing composition"` waivers are deleted; four of the five closings now render
+at scale 1.0 and Luxembourg's at 0.960.
+
+Two published decks were carrying an inline-styled wrapper
+(`min-height:100%; display:flex; justify-content:center`) that hand-patched
+reveal's `display:block` on `.present` — rhodes even documented it in a comment.
+Pass 3 fixed that in the theme, so both wrappers came out; their closings left
+the auto-fit list entirely.
+
+The three smaller findings were each a near-miss rather than a gross error, and
+that is what made them read as mistakes. `.marginnote` had no `margin-top`, so
+under a chart its 3px rule sat flush against the last share-bar and read as a
+seventh, unlabelled, near-black bar. `.toc-close` overlapped `.toc-head`'s box
+at every viewport measured (1280×720, 844×390, 390×844, 1920×1080) — only the
+word "Contents" being short kept the collision off the screen; the head now
+keeps out from under the button while the rule still spans full width. And the
+ledger's note sized itself by its own 60ch prose measure while the grid above it
+sized by column, so two identical 3px rules stopped 32px apart; the note now
+takes the ledger's column and the two edges are exact.
+
+**One Phase 1 finding was withdrawn, not fixed.** "250–350px of unclaimed space
+below 18 of 24 white slides" measured `_showcase`, whose slides carry
+deliberately minimal placeholder copy to demonstrate layouts — slide 5's two
+columns say "A point on the left" and "Another point". Measured on the real
+published decks the figure is 1/17, 0/17, 4/22 and 0/18 slides with more than
+120px of slack. Top-aligned content with a ragged bottom is the contract
+(`.balance` is the opt-in for genuinely sparse slides), and it holds the slide
+title in a constant position across a deck, which is worth more than a filled
+canvas. Centring everything would have been the wrong fix to a measurement
+artefact.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |

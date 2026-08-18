@@ -225,8 +225,24 @@
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
   top: var(--slide-pad-y); height: var(--bar); background: var(--ond-mark);
 }
-.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 16ch; letter-spacing: -0.028em; line-height: 0.96; }
-.reveal section.closing .lead { color: var(--ond-quiet); }
+/* The colophon takes its own measures. A 16ch title and a 30ch lead were drawn
+   for slides that carry a figure beside the type; the closing carries nothing
+   but type, so those measures stacked a narrow column down the left third and
+   left the field empty — which is why three decks waived the fit check with
+   identical boilerplate rather than fixing the composition. Wider measures let
+   the sign-off span the page it actually has. */
+.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 22ch; letter-spacing: -0.028em; line-height: 0.96; }
+.reveal section.closing .lead { color: var(--ond-quiet); max-width: 46ch; }
+/* Contributors read across on a colophon, the way a masthead lists them —
+   stacked is right under a cover title, where the byline is a caption, but here
+   it is the credit line itself. */
+.reveal section.closing .byline.authors { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: var(--space-xl); }
+.reveal section.closing .byline.authors .author { flex: 0 1 auto; max-width: 34ch; }
+/* Contributors carry different numbers of lines (a role, a second affiliation),
+   so left alone their institution marks land at different heights. Pushing the
+   mark down to the block's foot sits them all on one line, which is the only
+   reason a row reads as a colophon rather than as two stacked cards. */
+.reveal section.closing .byline.authors .author-logo { margin-top: auto; padding-top: var(--space-sm); }
 .reveal section.closing .contact a { color: var(--ond-quiet); }
 .reveal section.closing .contact a:hover { color: var(--ond-text); }
 .reveal section.closing .contact a .ico { color: var(--ond-mark); }

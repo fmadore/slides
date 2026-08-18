@@ -203,6 +203,12 @@ The canvas is a **fixed 1280×720 reveal.js stage, uniformly scaled** by reveal'
 
 Each slide is a padded editorial column (padding 3.8rem top, 4.8rem sides, footer clearance below), content flowing from the top. **Hero layouts centre themselves; centring is not opt-in.** One rule at `.present` specificity gives `.cover`, `.section`, `.statement`, `.closing`, `.metric`, `.center` and `.balance` `display: flex !important` with `flex-direction: column; justify-content: center`. The `!important` and the `.present` qualifier are both load-bearing: reveal hard-sets `display: block` on the active slide, so a bare `justify-content` on the unqualified selector was inert, and for a period only `.balance` actually centred. `.balance` is now the opt-in for *non-hero* sparse slides only — on a hero it is redundant, not load-bearing. The same seven-selector list is restated as `html.reveal-print .reveal .slides .pdf-page > section.… { justify-content: center; }` in `01-foundations.css`, because reveal's print view re-parents each slide into a `.pdf-page` wrapper and the wrapper, not the section, is what carries `.present`. **The screen list and the print list must be edited together**; a hero class added to one and not the other centres on screen and top-aligns on paper. Multi-column content uses `.cols` (equal or 3:2 / 2:3 / 1:2 ratios, 4rem gutters). Spacing follows a 4pt-derived semantic scale (0.25rem–4rem). Prose measures are enforced: 62ch body, 56ch lists, 30ch leads, 22ch slide titles.
 
+**The closing is the one documented exception to those measures.** The hero measures were drawn for slides that carry a figure beside the type; the closing carries nothing but type, so at 16ch/30ch it stacked a narrow column down the left third and left the rest of the navy field empty — which is why three decks had waived the fit check with identical `data-fit-allow="deliberate full-bleed closing composition"` boilerplate instead of fixing the composition. `.closing h2` now runs to 22ch and `.closing .lead` to 46ch, overriding the global 30ch lead. The three waivers are deleted and those closings render at scale 1.0 (Luxembourg's at 0.960). Widen a measure only where the composition is all type and the fit check proves the result; do not generalize 46ch back onto `.lead`.
+
+Content flows from the top and the bottom is allowed to run ragged. That is the contract, not a defect: a slide title in a constant position across a deck is worth more than a vertically balanced one, and `.balance` is the opt-in for genuinely sparse *non-hero* slides. Measured on the published decks, slides carrying more than 120px of slack run 1/17, 0/17, 4/22 and 0/18. (A far larger figure reported earlier measured `talks/_showcase/`, whose slides carry deliberately minimal placeholder copy to demonstrate layouts; it is not evidence about real decks.)
+
+**The Floating Control Clearance Rule.** A control that floats over a panel insets the panel's own text by the control's box plus a gap, and the rule beneath that text still spans the full width. `.toc-head` carries `padding-right: calc(2.4rem + var(--space-sm))` for exactly this: the 2.4rem `.toc-close` button overlapped the head's box at every viewport tested (1280×720, 844×390, 390×844, 1920×1080), and only the word "Contents" being short kept the collision off the screen. Clearance is now 20–34px. Padding insets the text, never the border.
+
 **The Fixed Canvas Rule.** All sizing inside `.reveal .slides` is rem on a 16px root, scaled as a whole. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only. This binds *caps* as much as type: the tallest a figure or code block may stand is `{spacing.block-max}` (`--block-max-h`), which replaced two `62vh` literals — the `.figrow` figure image and the `pre code` block. A vh cap measures the *window*, not the scaled 1280×720 stage, so the same slide held a different amount of image on a laptop, a hall projector and a phone; 28rem is that 62vh taken once at the 720px reference height and then frozen. Three viewport heights survive on purpose, and all three are true overlays that live outside the scaled canvas: the TOC panel (`max-height: 90vh`) and the lightbox figure and image (`88vh` / `80vh`). If a new vh appears anywhere else inside `.reveal .slides`, it is a bug.
 
 ## Elevation & Depth
@@ -223,6 +229,10 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 **The Ruled, Not Boxed Rule.** Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat `Sunken` inset (`.panel.sunken`) — no border, no shadow.
 
+**The Rule Opens From Above Rule.** A heavy rule that opens a block must have visible air above it, or it stops reading as an opening. `.marginnote` therefore takes `margin-top: var(--space-lg)` (reset to 0 when it is the first child): set flush under a chart, its 3px rule read as one more unlabelled near-black bar in the series rather than as the start of an aside.
+
+**The Rules Line Up Or Clearly Don't Rule.** Two instances of the same device sitting adjacent either end at the same x or differ obviously; a near-miss reads as a mistake where a clear difference would have read as a decision. `.stat-grid + .callout` therefore takes the ledger's own column (`max-width: calc((100% - var(--space-3xl)) / 2)`) in place of the callout's 60ch prose measure — at 60ch the note's rule stopped 32px past the stat column above it. Scoped to that one adjacency: a standalone callout keeps its 60ch.
+
 ## Components
 
 ### Slide Title (the signature device)
@@ -241,7 +251,7 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 ### Stat / Stat Ledger
 - **Stat:** big gothic numeral (Libre Franklin 800, 3.50rem, line-height 0.92, tabular lining figures, `Ink Bold`) over a gothic uppercase label (0.80rem, 0.12em, `Ink Soft`).
-- **Ledger (`.stat-grid`):** two columns; each row is label left, green-deep figure right (2.20rem), baseline-aligned on a hairline, with a 3px near-black top rule opening each column. Reads like a colophon, not a card grid. Figures count up on entry via `data-count`.
+- **Ledger (`.stat-grid`):** two columns; each row is label left, green-deep figure right (2.20rem), baseline-aligned on a hairline, with a 3px near-black top rule opening each column. Reads like a colophon, not a card grid. Figures count up on entry via `data-count`. A `.callout` placed directly after the ledger drops to the ledger's column width so the two 3px rules end at the same x (see The Rules Line Up Or Clearly Don't Rule).
 
 ### Index List (contents / agenda)
 - **Style:** a ruled grid: 3px near-black rule top and bottom, 1px hairlines between rows. Each row = big gothic folio (`decimal-leading-zero`, 800, 1.9rem, `Lead Green` deep) + gothic title (700, 2.20rem, `Ink Bold`) + optional serif description (1.18rem, `Ink Soft`).
@@ -258,6 +268,13 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 ### Statement
 - **Default:** a huge gothic claim — Libre Franklin 800, 5.60rem, line-height 0.98, tracking −0.03em, `Ink Bold`, max-width 18ch, with one `.accent` phrase in green-deep.
 - **Quote variant:** the human voice returns to the serif italic (500, 5.60rem, line-height 1.08) opened by a `Gold Spark` quotation mark.
+
+### Closing (the colophon)
+- **Character:** the sign-off page — a full-bleed `--navy-field` deep-pole slide with a 4px `--ond-mark` plate rule at the head, read as a masthead colophon rather than as another content slide.
+- **Measures:** title at display size (`--fs-h1`, 800, line-height 0.96, tracking −0.028em, Paper) to **22ch**; serif lead in `--ond-quiet` to **46ch**. These override the global hero/lead measures on purpose; see Layout.
+- **Byline (`.byline.authors`):** on the closing only, the author blocks read **across** — `flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: var(--space-xl)`, each `.author` at `flex: 0 1 auto; max-width: 34ch`. Institution marks are pushed to the foot of their block (`margin-top: auto; padding-top: var(--space-sm)`) so they sit on one line no matter how many lines each author runs; without that they land at different heights and the row reads as two stacked cards. Monochrome logos invert to white at 85% opacity; `.keep-color` opts a box logo out.
+- **Elsewhere the byline stays a column.** Under a cover title the byline is a caption and stacking is correct; the generic `.byline` / `.byline.authors` outside `.closing` is unchanged.
+- **Colour:** links, kicker, contact icons and dropcap take `--ond-mark` (gold-bright); names `--ond-text`, affiliations and roles `--ond-quiet`.
 
 ### Deck Nav Button (footer chrome)
 - **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
@@ -306,6 +323,9 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to *both* the `.present` list in `03-layouts.css` and the `.pdf-page` list in `01-foundations.css`.
 - **Do** cap a figure or code block with `--block-max-h` (28rem), and give print its own per-page `.pdf-imprint` rather than expecting the live footer to travel.
 - **Do** ask `fieldOf()` which register a surface sits in — it is the one answer the live chrome and the printed imprint share.
+- **Do** let the closing take its own measures (22ch title, 46ch lead, byline in a row) — it is all type, and it is the only place those overrides apply.
+- **Do** give an opening rule air above it and land adjacent rules at the same x; a near-miss between two copies of the same device reads as a mistake.
+- **Do** inset a panel's own header text past any control floating over it (`calc(2.4rem + var(--space-sm))` on `.toc-head`) while leaving the rule full-width.
 - **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
 
 ### Don't:
@@ -318,4 +338,7 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Don't** put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.
 - **Don't** rely on a low-opacity fill to carry a large form; outline it instead, as `.sec-no` does with a 3px Paper stroke.
 - **Don't** box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.
+- **Don't** waive the fit check with boilerplate when the real fault is a measure drawn for a different composition — fix the measure, as `.closing` now does.
+- **Don't** widen `.lead` past 30ch outside `.closing`, or push the closing's row byline onto covers and other slides.
+- **Don't** read the showcase deck's slack as a measurement of the system; its copy is placeholder by design.
 - **Don't** convert the OKLCH neutrals to hex or "correct" the hex corporate palette; each format is normative where it stands.

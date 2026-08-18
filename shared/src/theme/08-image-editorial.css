@@ -55,6 +55,12 @@
 
 /* MARGIN NOTE — the serif counter-voice as true marginalia: a heavy rule, a
    gothic label, an italic gloss. Sits in the narrow column of a ratio split. */
+/* The rule needs air above it. With none, a marginnote set under a chart put a
+   heavy full-width rule directly beneath the last bar, where it read as one
+   more — unlabelled, near-black — bar in the series rather than as the opening
+   of an aside. A rule that opens a block has to be clearly above that block. */
+.reveal .marginnote { margin-top: var(--space-lg); }
+.reveal .marginnote:first-child { margin-top: 0; }
 .reveal .marginnote { border-top: 3px solid var(--rule); padding-top: 0.55em; max-width: 34ch;
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); line-height: 1.4; color: var(--ink-soft); }
 .reveal .marginnote .mn-label { display: block; font-family: var(--font-label); font-style: normal; font-weight: 800;

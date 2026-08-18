@@ -35,6 +35,11 @@
   font-size: var(--fs-label); text-transform: uppercase; letter-spacing: var(--track-hall);
   color: var(--ink-bold); margin-bottom: 0.3em;
 }
+/* A note closing a ledger takes the ledger's column, not its own prose measure.
+   Both are opened by the same 3px rule, and at 60ch the note's rule stopped 32px
+   past the column above it — two identical devices that almost line up read as a
+   mistake, where a clear difference would have read as a decision. */
+.reveal .stat-grid + .callout { max-width: calc((100% - var(--space-3xl)) / 2); }
 .reveal .callout.warm { border-top-color: var(--brown); }
 .reveal .callout.warm .callout-label { color: var(--brown-deep); }
 .reveal .callout.navy { border-top-color: var(--navy); }
