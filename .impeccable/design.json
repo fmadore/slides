@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-17T00:00:00Z",
+  "generatedAt": "2026-08-18T00:00:00Z",
   "title": "Design System: Broadsheet",
   "extensions": {
     "colorMeta": {
@@ -36,7 +36,7 @@
       },
       "gold-spark": {
         "role": "secondary",
-        "displayName": "Gold Spark",
+        "displayName": "Gold Spark (the deep pole's mark)",
         "canonical": "#cca352",
         "tonalRamp": [
           "oklch(0.22 0.05 84)",
@@ -141,31 +141,31 @@
       },
       "line": {
         "role": "neutral",
-        "displayName": "Line (hairline)",
-        "canonical": "oklch(0.872 0.005 250)",
+        "displayName": "Line (hairline, 2.22:1)",
+        "canonical": "oklch(0.744 0.005 250)",
         "tonalRamp": [
           "oklch(0.15 0.014 254)",
           "oklch(0.27 0.014 254)",
           "oklch(0.40 0.014 254)",
-          "oklch(0.56 0.012 254)",
-          "oklch(0.70 0.010 254)",
-          "oklch(0.87 0.005 252)",
-          "oklch(0.95 0.003 250)",
+          "oklch(0.53 0.012 254)",
+          "oklch(0.62 0.010 254)",
+          "oklch(0.744 0.005 250)",
+          "oklch(0.90 0.003 250)",
           "oklch(0.99 0.001 250)"
         ]
       },
       "line-strong": {
         "role": "neutral",
-        "displayName": "Line Strong",
-        "canonical": "oklch(0.700 0.010 256)",
+        "displayName": "Line Strong (control + plate border, 3.52:1)",
+        "canonical": "oklch(0.623 0.010 256)",
         "tonalRamp": [
           "oklch(0.15 0.014 254)",
           "oklch(0.27 0.014 254)",
           "oklch(0.40 0.014 254)",
-          "oklch(0.56 0.012 254)",
-          "oklch(0.70 0.010 254)",
-          "oklch(0.87 0.005 252)",
-          "oklch(0.95 0.003 250)",
+          "oklch(0.53 0.012 254)",
+          "oklch(0.62 0.010 254)",
+          "oklch(0.744 0.005 250)",
+          "oklch(0.90 0.003 250)",
           "oklch(0.99 0.001 250)"
         ]
       },
@@ -231,8 +231,8 @@
       },
       "ink-faint": {
         "role": "neutral",
-        "displayName": "Ink Faint",
-        "canonical": "oklch(0.560 0.016 256)",
+        "displayName": "Ink Faint (5.15:1 on paper, 4.51:1 on sunken)",
+        "canonical": "oklch(0.530 0.016 256)",
         "tonalRamp": [
           "oklch(0.15 0.014 254)",
           "oklch(0.27 0.014 254)",
@@ -340,9 +340,9 @@
       "name": "Kicker",
       "kind": "custom",
       "refersTo": "kicker",
-      "description": "Gothic overline label with a green tick; warm/navy variants tint when categorising; lifts to gold on dark fields.",
+      "description": "Gothic overline label with a green tick, sized for the hall (--fs-label 1.05rem, --track-hall 0.10em); warm/navy variants tint when categorising; on a dark field it takes the field's mark (--ond-mark).",
       "html": "<p class=\"ds-kicker\">Part Two &middot; The Corpus</p>",
-      "css": ".ds-kicker { display: inline-flex; align-items: center; gap: 0.55em; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.18em; color: oklch(0.405 0.018 258); margin: 0; } .ds-kicker::before { content: \"\"; width: 1.4em; height: 3px; border-radius: 1px; background: #009260; flex: none; }"
+      "css": ".ds-kicker { display: inline-flex; align-items: center; gap: 0.55em; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.10em; color: oklch(0.405 0.018 258); margin: 0 0 0.5rem; } .ds-kicker::before { content: \"\"; width: 1.4em; height: 3px; border-radius: 1px; background: #009260; flex: none; }"
     },
     {
       "name": "Callout",
@@ -380,9 +380,9 @@
       "name": "Section Divider Field",
       "kind": "custom",
       "refersTo": "section-divider",
-      "description": "The full-bleed saturated green field: gold plate rule at top, ghosted mega folio, giant gothic title, italic serif subtitle. Navy and warm variants exist.",
+      "description": "The full-bleed saturated green field: plate rule in the field's own mark, outlined mega folio (3px Paper stroke), giant gothic title, italic serif subtitle. The navy variant is the deep pole and its mark becomes gold-bright; a warm brown variant exists.",
       "html": "<div class=\"ds-section\"><div class=\"ds-sec-rule\"></div><div class=\"ds-sec-no\">02</div><h2 class=\"ds-sec-title\">The corpus has a shape</h2><p class=\"ds-sec-sub\">What sixty years of West African print looks like from above.</p></div>",
-      "css": ".ds-section { position: relative; background: color-mix(in oklch, #009260, #04140d 14%); color: oklch(0.991 0.001 250); padding: 3.8rem 4.8rem; min-height: 22rem; box-sizing: border-box; } .ds-sec-rule { position: absolute; left: 4.8rem; right: 4.8rem; top: 3.8rem; height: 4px; background: #cca352; } .ds-sec-no { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 6rem; line-height: 0.82; letter-spacing: -0.03em; color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 76%); margin: 2rem 0 0.75rem; font-variant-numeric: tabular-nums; } .ds-sec-title { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 3.8rem; font-weight: 800; letter-spacing: -0.03em; line-height: 0.94; color: oklch(0.991 0.001 250); max-width: 16ch; margin: 0; } .ds-sec-sub { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-weight: 500; font-size: 1.6rem; color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 22%); margin: 1.5rem 0 0; max-width: 38ch; }"
+      "css": ".ds-section { --ond-mark: oklch(0.991 0.001 250); --ond-quiet: color-mix(in oklch, oklch(0.991 0.001 250), transparent 5%); position: relative; background: color-mix(in oklch, #009260, #04140d 14%); color: oklch(0.991 0.001 250); padding: 3.8rem 4.8rem; min-height: 22rem; box-sizing: border-box; } .ds-section.navy { --ond-mark: color-mix(in oklch, #cca352, white 24%); --ond-quiet: color-mix(in oklch, oklch(0.991 0.001 250), transparent 18%); background: color-mix(in oklch, #00268a, #03081c 8%); } .ds-sec-rule { position: absolute; left: 4.8rem; right: 4.8rem; top: 3.8rem; height: 4px; background: var(--ond-mark); } .ds-sec-no { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 6rem; line-height: 0.82; letter-spacing: -0.03em; color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 76%); margin: 2rem 0 0.75rem; font-variant-numeric: tabular-nums; } @supports (-webkit-text-stroke: 3px currentColor) { .ds-sec-no { color: transparent; -webkit-text-stroke: 3px oklch(0.991 0.001 250); } } .ds-sec-title { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 3.8rem; font-weight: 800; letter-spacing: -0.03em; line-height: 0.94; color: oklch(0.991 0.001 250); max-width: 16ch; margin: 0; } .ds-sec-sub { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-weight: 500; font-size: 1.6rem; color: var(--ond-quiet); margin: 1.5rem 0 0; max-width: 38ch; }"
     },
     {
       "name": "Statement",
@@ -396,9 +396,9 @@
       "name": "Deck Nav Button",
       "kind": "button",
       "refersTo": "nav-button",
-      "description": "Footer chrome navigation: outlined square that fills Lead Green on hover; gold treatment on dark fields.",
+      "description": "Footer chrome navigation: outlined square that fills Lead Green on hover. Focus takes the themed --focus-ring (green on light, Paper on any dark field); on dark it takes a 10%-Paper fill with an --ond-rule border and hovers to the field's mark.",
       "html": "<button class=\"ds-nav-btn\" aria-label=\"Next slide\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18l6-6-6-6\"/></svg></button>",
-      "css": ".ds-nav-btn { appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.700 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid #009260; outline-offset: 2px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.872 0.005 250); color: oklch(0.560 0.016 256); }"
+      "css": ".ds-nav-btn { --focus-ring: #009260; appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.623 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.744 0.005 250); color: oklch(0.530 0.016 256); }"
     },
     {
       "name": "Plate Caption (documentary figure)",
@@ -407,14 +407,23 @@
       "description": "The ruled plate caption under a duotone documentary photograph: 2px rule, gothic Fig. mark in deep green, italic serif gloss. (In the deck the image itself takes the injected #duo-green SVG duotone filter on an ink ground.)",
       "html": "<figure class=\"ds-plate\"><div class=\"ds-plate-img\"></div><figcaption class=\"ds-plate-cap\"><span class=\"ds-fig-no\">Fig. 03</span><span class=\"ds-fig-cap\">Friday prayer outside the Grande Mosqu&eacute;e, Ouagadougou, 1998.</span></figcaption></figure>",
       "css": ".ds-plate { margin: 0; max-width: 30rem; } .ds-plate-img { height: 11rem; background: #04140d; border: 1px solid oklch(0.700 0.010 256); background-image: linear-gradient(135deg, #04140d 0%, color-mix(in oklch, #009260, #04140d 40%) 60%, color-mix(in oklch, #009260, #04140d 14%) 100%); } .ds-plate-cap { display: flex; gap: 0.7em; margin-top: 0.55em; padding-top: 0.5em; border-top: 2px solid oklch(0.165 0.014 258); } .ds-fig-no { flex: none; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-fig-cap { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1rem; line-height: 1.34; color: oklch(0.405 0.018 258); }"
+    },
+    {
+      "name": "Media Field Scrim",
+      "kind": "custom",
+      "refersTo": "closing-field",
+      "description": "Full-bleed image ground: two crossed scrim gradients plus a theme-owned footer band, so the caption and the footer strip hold Paper contrast (13.2:1 and 18.8:1 against a worst-case white frame) whatever the image is.",
+      "html": "<div class=\"ds-media\"><div class=\"ds-media-scrim\"></div><div class=\"ds-media-band\"></div><div class=\"ds-media-caption\"><p class=\"ds-media-kicker\">Fig. 04</p><h2 class=\"ds-media-title\">Ouagadougou, 1983</h2></div></div>",
+      "css": ".ds-media { --ond-mark: color-mix(in oklch, #cca352, white 24%); position: relative; height: 20rem; background: linear-gradient(120deg, #6b6f74, #cfd3d6); overflow: hidden; } .ds-media-scrim { position: absolute; inset: 0; background: linear-gradient(0deg, oklch(0.14 0.02 258 / 0.94) 0%, oklch(0.14 0.02 258 / 0.86) 30%, oklch(0.14 0.02 258 / 0.52) 54%, oklch(0.14 0.02 258 / 0.12) 74%, transparent 86%), linear-gradient(90deg, oklch(0.14 0.02 258 / 0.84) 0%, oklch(0.14 0.02 258 / 0.48) 44%, transparent 76%); } .ds-media-band { position: absolute; left: 0; right: 0; bottom: 0; height: 4rem; pointer-events: none; background: linear-gradient(0deg, oklch(0.14 0.02 258 / 0.94) 0%, oklch(0.14 0.02 258 / 0.86) 62%, transparent 100%); } .ds-media-caption { position: absolute; left: 4.8rem; right: 4.8rem; bottom: 4.5rem; z-index: 2; max-width: 34ch; } .ds-media-kicker { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--ond-mark); margin: 0 0 0.5rem; } .ds-media-title { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 2.6rem; line-height: 0.98; letter-spacing: -0.022em; color: oklch(0.991 0.001 250); margin: 0; }"
     }
   ],
   "narrative": {
     "northStar": "The Scholarly Broadsheet",
-    "overview": "Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on three rules the author wrote into the theme itself. First, an inverted type hierarchy: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, colour is a field, not a sprinkle: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a crisp, high-contrast page: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration. The voice is authored-by-a-historian and must never read as template-made or AI-generated. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision.",
+    "overview": "Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on three rules the author wrote into the theme itself. First, an inverted type hierarchy: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, colour is a field, not a sprinkle: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a crisp, high-contrast page: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration. The voice is authored-by-a-historian and must never read as template-made or AI-generated. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision, and the neutral rule ramp and the on-dark registers are both pinned to measured contrast rather than to how they look on a laptop.",
     "keyCharacteristics": [
       "Inverted type hierarchy: loud gothic display, quiet serif prose",
-      "Colour as full-bleed structural fields (green leads, navy is the deep pole, gold is the single spark)",
+      "Colour as full-bleed structural fields (green leads, navy is the deep pole, gold sparks the deep pole only)",
+      "Two on-dark registers, split by measured luminance: the deep pole re-opens a tonal ramp and takes gold; the bright fields spend Paper and separate their tiers by weight",
       "Signature device: a heavy 4px green marker bar above every standard slide title",
       "Ruled, not boxed: hairlines and heavy editorial rules instead of cards",
       "Flat by default; shadows only on true overlays",
@@ -428,12 +437,12 @@
       },
       {
         "name": "The One Gold Spark Rule",
-        "body": "Gold appears on dark fields only — the plate rule, dark-field ticks and kickers, the quote mark. On paper it exists solely as the mark highlight wash. It is never a second accent competing with green on light slides.",
+        "body": "Gold is the spark of the deep pole, not of \"the dark fields\". It reaches a dark field only through --ond-mark, and only where that token resolves to gold-bright. It is never a second accent competing with green on a light slide, and never hand-placed on a bright field.",
         "section": "colors"
       },
       {
-        "name": "The Dark-Field Flip Rule",
-        "body": "On .section, .closing and .media, strong text lifts to Paper, list ticks and kickers lift to Gold Spark, and the footer chrome inverts (.on-dark). Never leave ink-coloured emphasis sitting on a dark field.",
+        "name": "The Two Dark Registers Rule",
+        "body": "(Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — --ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink — whose :root values are the bright register, so any dark surface is safe without opting in. Deep pole (.section.navy, .closing, .media; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after :root re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright. Bright fields (the green divider at 4.97:1, the brown .section.warm at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by weight (600 against 700), never by alpha. The footer and the viewport live outside the slide and cannot inherit the register, so shared/src/deck/03-toc-sync.js mirrors it onto them as data-field=\"deep\". Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.",
         "section": "colors"
       },
       {
@@ -475,21 +484,35 @@
         "name": "The Hall Label Rule",
         "body": "The label voice splits by distance, not by component. A label printed on paper is read at 40cm; a label projected in a hall is read at 20m, and the hall is the primary reader. A label that tells the audience what a figure counts, which decade a bar sits in, or what a column holds takes --fs-label (1.05rem), never the chrome size. Tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes less space beneath it, so net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.",
         "section": "typography"
+      },
+      {
+        "name": "The Themed Focus Rule",
+        "body": "Focus is never the browser default. One token carries it — --focus-ring, --green on light (3.87:1 on Paper) and Paper on every dark field (green measures 1.28:1 on its own field, 1.47:1 on brown). .deck-btn, .toc-item, .is-zoomable and in-slide links all consume it, and focus radii take var(--radius-sm).",
+        "section": "components"
+      },
+      {
+        "name": "The Scrim Guarantee Rule",
+        "body": "A dark ground the theme does not own must be manufactured, not assumed. Full-bleed media carries a theme-owned footer band regardless of what the author added, and any new overlay-on-image pattern states the contrast it holds against a worst-case white frame.",
+        "section": "components"
       }
     ],
     "dos": [
       "Do put the 4px green marker bar above every standard slide title; use .no-rule only when a layout genuinely replaces it (cover, section, statement).",
-      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.",
-      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on dark. WCAG 2.2 AA is binding.",
+      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the deep pole's spark.",
+      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on the deep pole. WCAG 2.2 AA is binding.",
       "Do keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave h4 in the serif.",
       "Do size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
-      "Do structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers."
+      "Do structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.",
+      "Do colour dark fields through the on-dark tokens (--ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.",
+      "Do theme every focus state with --focus-ring and a var(--radius-sm) corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field."
     ],
     "donts": [
       "Don't resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.",
       "Don't put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.",
       "Don't use viewport units or fluid clamp() type inside the slide canvas; it fights the uniform canvas transform.",
-      "Don't use gold as a second accent on light slides, set small text in raw #009260, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper, ticks to gold).",
+      "Don't use gold as a second accent on light slides, set small text in raw #009260, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).",
+      "Don't put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.",
+      "Don't rely on a low-opacity fill to carry a large form; outline it instead, as .sec-no does with a 3px Paper stroke.",
       "Don't box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.",
       "Don't convert the OKLCH neutrals to hex or \"correct\" the hex corporate palette; each format is normative where it stands."
     ]

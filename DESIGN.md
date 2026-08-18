@@ -11,13 +11,13 @@ colors:
   paper: "oklch(0.991 0.001 250)"
   panel: "oklch(0.972 0.002 250)"
   sunken: "oklch(0.945 0.004 250)"
-  line: "oklch(0.872 0.005 250)"
-  line-strong: "oklch(0.700 0.010 256)"
+  line: "oklch(0.744 0.005 250)"
+  line-strong: "oklch(0.623 0.010 256)"
   rule: "oklch(0.165 0.014 258)"
   ink: "oklch(0.205 0.016 258)"
   ink-bold: "oklch(0.150 0.016 262)"
   ink-soft: "oklch(0.405 0.018 258)"
-  ink-faint: "oklch(0.560 0.016 256)"
+  ink-faint: "oklch(0.530 0.016 256)"
 typography:
   display:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
@@ -119,7 +119,8 @@ The voice is authored-by-a-historian and must never read as template-made or AI-
 
 **Key Characteristics:**
 - Inverted type hierarchy: loud gothic display, quiet serif prose
-- Colour as full-bleed structural fields (green leads, navy is the deep pole, gold is the single spark)
+- Colour as full-bleed structural fields (green leads, navy is the deep pole, gold sparks the deep pole only)
+- Two on-dark registers, split by measured luminance: the deep pole re-opens a tonal ramp and takes gold; the bright fields spend Paper and separate their tiers by weight
 - Signature device: a heavy 4px green marker bar above every standard slide title
 - Ruled, not boxed: hairlines and heavy editorial rules instead of cards
 - Flat by default; shadows only on true overlays
@@ -134,7 +135,7 @@ The exact six-colour University of Bayreuth corporate palette (binding, hex-norm
 
 ### Secondary
 - **Structural Navy** (`{colors.structural-navy}`): the structural deep pole. The `.closing` field, the `.section.navy` divider variant, share-bar fills, the `.accent-navy` text voice.
-- **Gold Spark** (`{colors.gold-spark}`): the single spark, used almost exclusively on dark fields — the plate rule atop `.section`/`.closing`, list ticks and kickers on dark, the quote mark, the inline `mark` highlight wash. Brightened (`--gold-bright`, `color-mix(... white 24%)`) for AA on dark.
+- **Gold Spark** (`{colors.gold-spark}`): the spark of the *deep* pole, reached through `--ond-mark`. That token resolves to `--gold-bright` (`color-mix(... white 24%)`, 7.13:1 on navy) on `.section.navy`, `.closing` and `.media`, and to Paper on the green and brown fields. It draws the `.section`/`.closing` plate rule, dark-field list ticks, the dropcap, the marginnote and dateline keys, the closing kicker, links and icons, the footer counter and the on-dark progress fill. On paper, gold survives only as the `mark` highlight wash and the oversized quotation mark of the statement quote.
 
 ### Tertiary
 - **Amber Highlight** (`{colors.amber-highlight}`): minor supporting role; highlight washes.
@@ -145,16 +146,21 @@ The exact six-colour University of Bayreuth corporate palette (binding, hex-norm
 - **Paper** (`{colors.paper}`): the page/slide background — cool, crisp near-white, not a warm-paper wash.
 - **Panel** (`{colors.panel}`): faintly raised surfaces (TOC close button).
 - **Sunken** (`{colors.sunken}`): insets, code blocks, table stripes, chart tracks.
-- **Line** (`{colors.line}`): hairlines. **Line Strong** (`{colors.line-strong}`): stronger rules, plate borders, chip outlines.
+- **Line** (`{colors.line}`): hairlines, re-spaced for the hall at 2.22:1 on Paper. At its former 1.43:1 it was a printer's hairline — present at 40cm, simply gone on a weak beamer, which quietly turned "Ruled, not boxed" into floating text. **Line Strong** (`{colors.line-strong}`): the borders that draw a control or a plate — chip outlines, nav-button borders, plate borders — at 3.52:1, clearing the 3:1 WCAG 2.2 asks of a component boundary.
 - **Rule** (`{colors.rule}`): the heavy near-black editorial rule (3px dividers, callout tops, table header rules, footer/runhead rules).
-- **Ink** (`{colors.ink}`): primary text. **Ink Bold** (`{colors.ink-bold}`): big display headlines. **Ink Soft** (`{colors.ink-soft}`): secondary text. **Ink Faint** (`{colors.ink-faint}`): tertiary text, captions, chrome.
+- **Ink** (`{colors.ink}`): primary text. **Ink Bold** (`{colors.ink-bold}`): big display headlines. **Ink Soft** (`{colors.ink-soft}`): secondary text. **Ink Faint** (`{colors.ink-faint}`): tertiary text, captions, chrome — 5.15:1 on Paper and 4.51:1 on `Sunken`, which is where code line numbers and zebra rows actually put it.
 
 ### Named Rules
 **The Field, Not Sprinkle Rule.** Colour arrives as a flat structural plane (a full-bleed divider field, a heavy marker bar, a solid fill) or not at all. Never as a timid tint, gradient wash, or decorative accent scattered across a light slide.
 
-**The One Gold Spark Rule.** Gold appears on dark fields only — the plate rule, dark-field ticks and kickers, the quote mark. On paper it exists solely as the `mark` highlight wash. It is never a second accent competing with green on light slides.
+**The One Gold Spark Rule.** Gold is the spark of the deep pole, not of "the dark fields". It reaches a dark field only through `--ond-mark`, and only where that token resolves to gold-bright. It is never a second accent competing with green on a light slide, and never hand-placed on a bright field.
 
-**The Dark-Field Flip Rule.** On `.section`, `.closing` and `.media`, strong text lifts to Paper, list ticks and kickers lift to Gold Spark, and the footer chrome inverts (`.on-dark`). Never leave ink-coloured emphasis sitting on a dark field.
+**The Two Dark Registers Rule.** (Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — `--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink` — whose `:root` values *are* the bright register, so any dark surface is safe without opting in.
+
+- **Deep pole** (`.section.navy`, `.closing`, `.media`; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after `:root` re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright.
+- **Bright fields** (the green divider at 4.97:1, the brown `.section.warm` at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by **weight** (600 against 700), never by alpha.
+
+The footer and the viewport live outside the slide and cannot inherit the register, so `shared/src/deck/03-toc-sync.js` mirrors it onto them as `data-field="deep"`. Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.
 
 ## Typography
 
@@ -234,7 +240,8 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Variants:** `.green` (green border, green-deep text), `.navy`, `.warm`, `.solid` (Lead Green fill, Paper text).
 
 ### Section Divider
-- **Style:** a full-bleed saturated `Lead Green` field (`--green-field`, green deepened 14% toward near-black) with a 4px `Gold Spark` plate rule across the top, an oversized ghosted folio (9.50rem, Paper at 24% opacity), and a giant gothic title (800, 6.10rem, Paper, line-height 0.94) with an italic serif subtitle at 78% Paper.
+- **Style:** a full-bleed saturated `Lead Green` field (`--green-field`, green deepened 14% toward near-black) with a 4px plate rule across the top drawn in the field's own mark (`--ond-mark`), an oversized outlined folio, and a giant gothic title (800, 6.10rem, Paper, line-height 0.94) with an italic serif subtitle in `--ond-quiet`. The per-variant `.section.navy::before` and `.section.warm::before` plate overrides were deleted: the register already hands each field the right mark.
+- **Folio (`.sec-no`):** 9.50rem gothic, outlined rather than ghosted. Inside `@supports (-webkit-text-stroke: 3px currentColor)` it becomes `color: transparent` with a 3px Paper stroke, so it carries the field's full Paper contrast (4.97:1 on green, 13.06:1 on navy) at almost none of its visual mass and still sits under the title. As a 24% ghost it measured 1.52:1; that fill remains only as the no-support fallback. Verified through the `?print-pdf` export path.
 - **Variants:** `.navy` (navy field, gold-bright rule) for the structural deep; `.warm` (brown field) for the critical stakes strand, sparingly.
 
 ### Statement
@@ -243,7 +250,17 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 ### Deck Nav Button (footer chrome)
 - **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
-- **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px green outline, 2px offset; **Disabled:** 30% opacity. On dark fields the button takes a translucent Paper treatment and hovers to Gold on navy-deep.
+- **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px `--focus-ring` outline, 2px offset; **Disabled:** 30% opacity. On dark fields it takes a 10%-Paper fill, an `--ond-rule` border and an `--ond-text` glyph, and hovers to the field's mark (`--ond-mark` fill, `--ond-mark-ink` glyph).
+
+### Media Field (full-bleed image)
+- **Character:** the one dark ground the theme does not own — the image underneath it can be anything — so the scrim is built as a guarantee rather than a gesture.
+- **Scrim (`.media-scrim`):** two crossed gradients, one up from the caption edge and one in from the reading edge, darkest stop held above 0.85 alpha over `oklch(0.14 0.02 258)`.
+- **Footer band (`section.media::after`):** a theme-owned strip the height of the footer clearance, present whether or not the author added a scrim, because the footer is chrome the author never sees when choosing the image.
+- **Measured worst case** (a pure-white frame): Paper reads 18.8:1 on the footer strip and 13.2:1 in the caption zone — deeper than the navy field, which is why `.media` sits in the deep register and its caption kicker takes gold. Both layers carry `print-color-adjust: exact` so the guarantee survives PDF export.
+
+### Progress Bar
+- **Style:** a 3px rule on the viewport, `Lead Green` fill on light over an ink track at 22% opacity.
+- **On dark:** the fill takes `--ond-mark` — a green bar on a green divider was drawing itself at 1.28:1 against its own background, invisible on exactly the slides that end a section — and the unfilled track lifts from 1.23:1 to 1.61:1.
 
 ### Plate (documentary figure)
 - **Style:** the one image treatment, never broken: documentary photographs get a green duotone (SVG filter `#duo-green`, navy variant available) on an ink ground (`#04140d`), a 1px `Line Strong` border, and a ruled caption — 2px near-black top rule, gothic uppercase "Fig." mark in green-deep, italic serif gloss. Live UI screenshots instead keep true colour inside real browser chrome (`.chrome`, 8px radius, shadow-2). In `.figrow` splits, documentary figures show whole (`object-fit: contain`); `.crop` bleeds true photos.
@@ -253,6 +270,10 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 **The Two Image Treatments Rule.** Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.
 
+**The Themed Focus Rule.** Focus is never the browser default. One token carries it — `--focus-ring`, `--green` on light (3.87:1 on Paper) and Paper on every dark field (green measures 1.28:1 on its own field, 1.47:1 on brown). `.deck-btn`, `.toc-item`, `.is-zoomable` and in-slide links all consume it, and focus radii take `var(--radius-sm)`.
+
+**The Scrim Guarantee Rule.** A dark ground the theme does not own must be manufactured, not assumed. Full-bleed media carries a theme-owned footer band regardless of what the author added, and any new overlay-on-image pattern states the contrast it holds against a worst-case white frame.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -261,12 +282,16 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Do** use the AA-derived depths for text: `--green-deep` for green text/links on light, `--brown-deep` for brown, `--gold-bright` for gold on dark. WCAG 2.2 AA is binding.
 - **Do** keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave `h4` in the serif.
 - **Do** size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.
-- **Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers.
+- **Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.
+- **Do** colour dark fields through the on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.
+- **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
 
 ### Don't:
 - **Don't** resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.
 - **Don't** put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.
 - **Don't** use viewport units or fluid clamp() type inside the slide canvas; it fights the uniform canvas transform.
-- **Don't** use gold as a second accent on light slides, set small text in raw `#009260`, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper, ticks to gold).
+- **Don't** use gold as a second accent on light slides, set small text in raw `#009260`, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).
+- **Don't** put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.
+- **Don't** rely on a low-opacity fill to carry a large form; outline it instead, as `.sec-no` does with a 3px Paper stroke.
 - **Don't** box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.
 - **Don't** convert the OKLCH neutrals to hex or "correct" the hex corporate palette; each format is normative where it stands.

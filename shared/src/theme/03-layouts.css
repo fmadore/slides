@@ -71,30 +71,43 @@
   color: var(--paper);
   background: var(--green-field);
 }
-/* a thick gold plate rule across the top of the field */
+/* The thick plate rule across the top of the field. It takes the field's own
+   spark: gold-bright on the navy deep (7.13:1), Paper on the green and brown
+   fields, where gold measures 2.17:1 and is mud on a projector. */
 .reveal section.section::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
+  top: var(--slide-pad-y); height: var(--bar); background: var(--ond-mark);
 }
 .reveal section.section .sec-no {
   font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
   letter-spacing: -0.03em; line-height: 0.82; color: color-mix(in oklch, var(--paper), transparent 76%);
   margin-bottom: var(--space-sm); font-variant-numeric: tabular-nums;
 }
+/* The oversized folio is the only place a divider states its own number, and
+   as a 24% ghost it measured 1.52:1 — gone by about row five. Outlined, it
+   carries the full Paper contrast of the field while keeping almost none of
+   its visual mass, so it still sits under the title. The filled ghost above
+   is the fallback where text-stroke is unsupported. */
+@supports (-webkit-text-stroke: 3px currentColor) {
+  .reveal section.section .sec-no {
+    color: transparent;
+    -webkit-text-stroke: 3px var(--paper);
+  }
+}
 .reveal section.section h2 {
   color: var(--paper); font-family: var(--font-display); font-size: var(--fs-section); font-weight: 800;
   letter-spacing: -0.03em; max-width: 16ch; margin: 0; line-height: 0.94;
 }
 .reveal section.section .sec-sub {
-  color: color-mix(in oklch, var(--paper), transparent 22%);
+  color: var(--ond-quiet);
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead);
   margin-top: var(--space-lg); max-width: 38ch; font-weight: 500;
 }
 
 /* Navy variant of the divider (the structural deep). `.green` kept as an alias
-   so existing `.section.green` decks render as the lead green field. */
+   so existing `.section.green` decks render as the lead green field. The plate
+   rule needs no override here: the deep register already hands it gold. */
 .reveal section.section.navy { background: var(--navy-field); }
-.reveal section.section.navy::before { background: var(--gold-bright); }
 .reveal section.section.green { background: var(--green-field); }
 
 /* --- STATEMENT (big claim / quote) ----------------------------------------- */
@@ -155,20 +168,38 @@
 .reveal .panel.green { border-top-color: var(--green); }
 
 /* --- MEDIA / FULL-BLEED IMAGE ---------------------------------------------- */
+/* The media field is the one dark ground the theme does not own: the image
+   underneath it can be anything. It only earns the deep register if the scrim
+   is a guarantee rather than a gesture, so it is built from two crossed
+   gradients — one up from the caption edge, one in from the reading edge —
+   and the darkest stop is held above 0.85. Against a worst-case white frame
+   that keeps the composited ground under 0.06 luminance, which is deeper than
+   the navy field, so Paper and gold both hold their measured contrast. */
 .reveal section.media { padding: 0; }
 .reveal section.media .media-fill { position: absolute; inset: 0; overflow: hidden; }
 .reveal section.media .media-fill img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; border: none; }
 .reveal section.media .media-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(90deg, oklch(0.14 0.02 258 / 0.92) 0%, oklch(0.14 0.02 258 / 0.55) 42%, transparent 74%);
+  background:
+    linear-gradient(0deg,  oklch(0.14 0.02 258 / 0.94) 0%,  oklch(0.14 0.02 258 / 0.86) 30%,
+                           oklch(0.14 0.02 258 / 0.52) 54%, oklch(0.14 0.02 258 / 0.12) 74%, transparent 86%),
+    linear-gradient(90deg, oklch(0.14 0.02 258 / 0.84) 0%,  oklch(0.14 0.02 258 / 0.48) 44%, transparent 76%);
+}
+/* The footer strip is chrome the author never sees when choosing the image, so
+   the theme protects it itself — present whether or not a .media-scrim was
+   authored. */
+.reveal section.media::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+  height: calc(var(--footer-h) + var(--space-md)); pointer-events: none;
+  background: linear-gradient(0deg, oklch(0.14 0.02 258 / 0.94) 0%, oklch(0.14 0.02 258 / 0.86) 62%, transparent 100%);
 }
 .reveal section.media .media-caption {
-  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x); z-index: 2;
   bottom: calc(var(--footer-h) + var(--space-lg)); color: var(--paper); max-width: 34ch;
 }
 .reveal section.media .media-caption h2 { color: var(--paper); }
-.reveal section.media .media-caption .kicker { color: var(--gold-bright); }
-.reveal section.media .media-caption .kicker::before { background: var(--gold); }
+.reveal section.media .media-caption .kicker { color: var(--ond-mark); }
+.reveal section.media .media-caption .kicker::before { background: var(--ond-mark); }
 
 /* Image + caption side layout */
 .reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
@@ -184,16 +215,16 @@
 }
 .reveal section.closing::before {
   content: ""; position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
-  top: var(--slide-pad-y); height: var(--bar); background: var(--gold);
+  top: var(--slide-pad-y); height: var(--bar); background: var(--ond-mark);
 }
 .reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 16ch; letter-spacing: -0.028em; line-height: 0.96; }
-.reveal section.closing .lead { color: color-mix(in oklch, var(--paper), transparent 18%); }
-.reveal section.closing .contact a { color: color-mix(in oklch, var(--paper), transparent 18%); }
-.reveal section.closing .contact a:hover { color: var(--paper); }
-.reveal section.closing .contact a .ico { color: var(--gold); }
-.reveal section.closing .kicker { color: var(--gold-bright); }
-.reveal section.closing .kicker::before { background: var(--gold); }
-.reveal section.closing p a { color: var(--gold-bright); text-decoration-color: color-mix(in oklch, var(--gold), transparent 50%); }
-.reveal section.closing p a:hover { color: var(--paper); text-decoration-color: var(--paper); }
-.reveal section.closing .byline .name { color: var(--paper); }
-.reveal section.closing .byline .affil { color: color-mix(in oklch, var(--paper), transparent 30%); }
+.reveal section.closing .lead { color: var(--ond-quiet); }
+.reveal section.closing .contact a { color: var(--ond-quiet); }
+.reveal section.closing .contact a:hover { color: var(--ond-text); }
+.reveal section.closing .contact a .ico { color: var(--ond-mark); }
+.reveal section.closing .kicker { color: var(--ond-mark); }
+.reveal section.closing .kicker::before { background: var(--ond-mark); }
+.reveal section.closing p a { color: var(--ond-mark); text-decoration-color: color-mix(in oklch, var(--ond-mark), transparent 50%); }
+.reveal section.closing p a:hover { color: var(--ond-text); text-decoration-color: var(--ond-text); }
+.reveal section.closing .byline .name { color: var(--ond-text); }
+.reveal section.closing .byline .affil { color: var(--ond-quiet); }

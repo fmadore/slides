@@ -148,7 +148,7 @@
    to view it full-screen. Zoomable images are keyboard controls. */
 .reveal .slides .shot.is-zoomable,
 .reveal .slides .site-frame-view > img.is-zoomable { cursor: zoom-in; }
-.reveal .slides .is-zoomable:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.reveal .slides .is-zoomable:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 3px; }
 .deck-lightbox {
   position: fixed; inset: 0; z-index: 80;
   display: flex; align-items: center; justify-content: center;

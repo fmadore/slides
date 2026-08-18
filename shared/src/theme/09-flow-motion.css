@@ -3,9 +3,11 @@
    The brown/amber pole carries the critical "counter-thread" (the stakes, the
    blind spot); and a process is better drawn than bulleted.
    ============================================================================= */
-/* A warm section divider — for the critical "stakes" strand (use sparingly). */
+/* A warm section divider — for the critical "stakes" strand (use sparingly).
+   It is a bright field like the green one (5.71:1 against Paper), so it keeps
+   the bright register and its plate rule needs no override: gold-bright sat
+   at 3.12:1 here, a hair over the floor and muddy against the brown. */
 .reveal section.section.warm { background: var(--warm-field); }
-.reveal section.section.warm::before { background: var(--gold-bright); }
 /* A warm statement accent (the claim worth pausing on, in the critical key). */
 .reveal section.statement.warm .statement-body .accent { color: var(--brown-deep); }
 .reveal section.statement.warm.quote .statement-body::before { color: var(--brown); }

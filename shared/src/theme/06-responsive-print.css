@@ -5,7 +5,8 @@
   .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
   .toc-overlay, .deck-btn { display: none !important; }
   .reveal section.section, .reveal section.closing,
-  .reveal section.media .media-scrim { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .reveal section.media .media-scrim,
+  .reveal section.media::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .reveal .slides section.section,
   .reveal .slides section.closing,
   .reveal .slides section.media { height: 100% !important; }

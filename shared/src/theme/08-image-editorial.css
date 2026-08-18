@@ -49,9 +49,9 @@
   float: left; font-family: var(--font-display); font-weight: 800; font-size: 3.4em;
   line-height: 0.66; padding: 0.06em 0.14em 0 0; color: var(--green-deep);
 }
-.reveal p.dropcap.gold::first-letter,
+.reveal p.dropcap.gold::first-letter { color: var(--gold); }
 .reveal section.section p.dropcap::first-letter,
-.reveal section.closing p.dropcap::first-letter { color: var(--gold); }
+.reveal section.closing p.dropcap::first-letter { color: var(--ond-mark); }
 
 /* MARGIN NOTE — the serif counter-voice as true marginalia: a heavy rule, a
    gothic label, an italic gloss. Sits in the narrow column of a ratio split. */
@@ -61,8 +61,8 @@
   font-size: var(--fs-label); letter-spacing: var(--track-hall); text-transform: uppercase; color: var(--ink-bold); margin-bottom: 0.3em; }
 .reveal .marginnote.warm { border-top-color: var(--brown); }
 .reveal .marginnote.warm .mn-label { color: var(--brown-deep); }
-.reveal section.section .marginnote, .reveal section.closing .marginnote { border-top-color: var(--gold); color: color-mix(in oklch, var(--paper), transparent 20%); }
-.reveal section.section .marginnote .mn-label, .reveal section.closing .marginnote .mn-label { color: var(--gold-bright); }
+.reveal section.section .marginnote, .reveal section.closing .marginnote { border-top-color: var(--ond-mark); color: var(--ond-quiet); }
+.reveal section.section .marginnote .mn-label, .reveal section.closing .marginnote .mn-label { color: var(--ond-mark); }
 
 /* DATELINE — a masthead row: the part/strand on the left, the venue on the
    right, on a heavy rule. Gothic small-caps; gold-keyed on dark fields. */
@@ -72,8 +72,8 @@
   border-bottom: 3px solid var(--rule); max-width: none; }
 .reveal .dateline .dl-part { color: var(--green-deep); }
 .reveal .dateline .dl-meta { font-weight: 600; letter-spacing: 0.12em; }
-.reveal section.section .dateline, .reveal section.closing .dateline { border-bottom-color: var(--gold); color: color-mix(in oklch, var(--paper), transparent 38%); }
-.reveal section.section .dateline .dl-part, .reveal section.closing .dateline .dl-part { color: var(--gold-bright); }
+.reveal section.section .dateline, .reveal section.closing .dateline { border-bottom-color: var(--ond-mark); color: var(--ond-quiet); }
+.reveal section.section .dateline .dl-part, .reveal section.closing .dateline .dl-part { color: var(--ond-mark); }
 
 /* GHOSTED FOLIO — an oversized faint gothic number anchoring a field, like a
    pressroom plate. :has() scopes the stacking fix to slides that use one. */
@@ -93,6 +93,6 @@
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-soft); }
 .reveal .colophon .col-item b { font-family: var(--font-label); font-style: normal; font-weight: 800;
   font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-bold); }
-.reveal section.closing .colophon { border-top-color: color-mix(in oklch, var(--paper), transparent 70%); }
+.reveal section.closing .colophon { border-top-color: var(--ond-rule); }
 .reveal section.closing .colophon .col-item { color: color-mix(in oklch, var(--paper), transparent 30%); }
 .reveal section.closing .colophon .col-item b { color: color-mix(in oklch, var(--paper), transparent 8%); }

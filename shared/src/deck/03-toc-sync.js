@@ -124,6 +124,16 @@
 
   /* ---- per-slide sync ----------------------------------------------------- */
   var DARK = ["section", "closing", "media"];
+  /* The dark fields split into two registers by luminance (see the on-dark
+     token block in the theme). The footer and the viewport live outside the
+     slide, so they cannot inherit the slide's register — deck.js mirrors it
+     onto them as data-field="deep". Everything else dark stays on the bright
+     defaults, which are safe on any field. */
+  function isDeepField(el) {
+    if (!el) return false;
+    if (el.classList.contains("section")) return el.classList.contains("navy");
+    return el.classList.contains("closing") || el.classList.contains("media");
+  }
   function update() {
     var cur = Reveal.getCurrentSlide();
     var hCount = Reveal.getHorizontalSlides().length;
@@ -136,9 +146,14 @@
     var darkAttr = cur && cur.getAttribute("data-footer");
     var isDark = darkAttr ? darkAttr === "dark"
       : !!(cur && DARK.some(function (c) { return cur.classList.contains(c); }));
-    if (footer) footer.classList.toggle("on-dark", isDark);
+    var isDeep = isDark && isDeepField(cur);
     var vp = document.querySelector(".reveal-viewport");
-    if (vp) vp.classList.toggle("deck-dark", isDark);
+    [footer, vp].forEach(function (el) {
+      if (!el) return;
+      el.classList.toggle(el === footer ? "on-dark" : "deck-dark", isDark);
+      if (isDeep) el.setAttribute("data-field", "deep");
+      else el.removeAttribute("data-field");
+    });
 
     // Running head: the current section on content slides; hidden on title pages.
     if (runhead) {

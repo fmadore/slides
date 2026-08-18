@@ -162,6 +162,48 @@ needs less air beneath it, and the tighter gap binds the label to its title.
 Net height is now roughly neutral while labels are ~30% larger. Recorded in
 DESIGN.md as **The Hall Label Rule**.
 
+*Pass 2 (`colorize`) ✅ COMPLETE 2026-08-18.* The diagnosis was one idea, not a
+list of failures: `.on-dark` was a single mode serving three fields whose
+luminance differs by more than 4×, and its values had been tuned on navy.
+Measured against Paper, the navy field reaches 13.06:1 and the duotone ground
+18.4:1 — room for a tonal ramp and for gold. The green field tops out at
+**4.97:1** and the brown at 5.71:1, so past ~7% transparency Paper itself falls
+under AA, and nothing else in the palette clears even 3:1 on green (gold 2.17,
+gold-bright 2.71, amber 2.34, sky 2.28). So the dark fields became **two
+registers**: a deep pole with the ramp and the gold spark, and bright fields
+that spend Paper and nothing else and separate their tiers by weight instead of
+alpha. Six `--ond-*` tokens carry it; `deck.js` mirrors the register onto the
+footer and viewport as `data-field="deep"`, since both live outside the slide.
+
+Measuring turned up two defects the baseline had not: the gold plate rule that
+opens every green divider was sitting at **2.17:1** — the signature device,
+mud on a beamer — and the ghosted section folio at **1.52:1**. Both were put to
+the author: the green field's rule is now Paper (4.97:1), which makes gold
+genuinely exclusive to the deep pole and sharpens the One Gold Spark Rule
+rather than diluting it; the folio is now outlined rather than ghosted, which
+carries full Paper contrast at almost no visual mass. Deepening `--green-field`
+to rescue gold was rejected — it would have bought a still-dull 3.13:1 rule by
+moving the brand plane a visible step darker.
+
+The weak-beamer hairline was fixed at the ramp rather than per component:
+`--line` 1.43 → 2.22:1, `--line-strong` 2.60 → 3.52:1 (so chip outlines, nav
+buttons and plate borders clear the 3:1 WCAG asks of a component boundary), and
+`--ink-faint` to 4.51:1 on `--sunken`, where it had been 3.97:1. Focus became
+one `--focus-ring` token — green on light, Paper on every dark field — and
+in-slide links got a themed ring for the first time. The `.media` scrim was
+rebuilt as two crossed gradients plus a theme-owned footer band, and verified
+against a worst-case pure-white frame at 18.8:1. Every dark-field pair now
+passes; verified in the rendered catalogue, and the outlined folio and both
+scrim layers survive the `?print-pdf` export path.
+
+Two rules survived the first sweep and were caught by `document` re-deriving
+the system from the code: `.dateline .dl-part` still keyed itself gold on
+`.section` (2.71:1 on green) and the closing colophon's rule sat at 2.38:1.
+Both now take the register. The remaining blanket Paper mixes on `.closing`
+were measured and left alone — 6.05 to 11.24:1 on a field that is permanently
+navy — as was the `.folio-ghost` watermark, which is decoration rather than
+information and is recorded as such.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |

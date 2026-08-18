@@ -58,13 +58,22 @@
   --paper:       oklch(0.991 0.001 250);   /* page / slide background       */
   --panel:       oklch(0.972 0.002 250);   /* faintly raised surfaces       */
   --sunken:      oklch(0.945 0.004 250);   /* insets, code, table stripes   */
-  --line:        oklch(0.872 0.005 250);   /* hairlines                     */
-  --line-strong: oklch(0.700 0.010 256);   /* stronger rules                */
+  /* The rule tier is set by the hall, not the page. A hairline at 1.4:1 is a
+     printer's hairline: it exists at 40cm and is simply gone on a hazy beamer,
+     which quietly turns "ruled, not boxed" into floating text. Each tier is
+     pinned to a measured floor instead — hairlines carry 2.2:1, and the rules
+     that draw a control (chip outlines, nav buttons, plate borders) clear the
+     3:1 that WCAG 2.2 asks of a component boundary. */
+  --line:        oklch(0.744 0.005 250);   /* hairlines               2.22:1 */
+  --line-strong: oklch(0.623 0.010 256);   /* control + plate borders 3.52:1 */
   --rule:        oklch(0.165 0.014 258);   /* heavy editorial rule (near-black) */
   --ink:         oklch(0.205 0.016 258);   /* primary text                  */
   --ink-bold:    oklch(0.150 0.016 262);   /* big display headlines         */
   --ink-soft:    oklch(0.405 0.018 258);   /* secondary text                */
-  --ink-faint:   oklch(0.560 0.016 256);   /* tertiary, captions, chrome    */
+  --ink-faint:   oklch(0.530 0.016 256);   /* tertiary, captions, chrome —
+                                              5.15:1 on paper, and 4.51:1 on
+                                              --sunken, where code line
+                                              numbers and zebra rows put it */
 
   /* — Semantic roles — */
   --accent:        var(--green);
@@ -72,6 +81,25 @@
   --accent-2:      var(--navy);
   --accent-warm:   var(--brown);
   --highlight:     var(--amber);
+
+  /* — The on-dark register — the dark fields are TWO registers, not one.
+     Measured against Paper, the DEEP pole has room for a tonal ramp and is
+     where gold belongs: the navy field reaches 13.1:1 and the duotone ground
+     18.4:1. The BRIGHT fields have no such room — the green field tops out at
+     4.97:1 against Paper and the brown at 5.71:1, so past ~7% transparency
+     Paper itself falls under AA, and nothing else in the palette clears even
+     3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). A bright
+     field therefore spends Paper and nothing else, and separates its tiers by
+     WEIGHT rather than by alpha.
+     The values below are the bright ones, so any dark surface is safe without
+     opting in; the deep pole re-opens the ramp in the block after :root. */
+  --ond-text:   var(--paper);                                        /* primary text on a dark field  */
+  --ond-quiet:  color-mix(in oklch, var(--paper), transparent 5%);   /* secondary text, glosses       */
+  --ond-chrome: var(--paper);                                        /* the footer's own quieter tier */
+  --ond-mark:   var(--paper);                                        /* the spark: plate rule, ticks  */
+  --ond-rule:   color-mix(in oklch, var(--paper), transparent 30%);  /* rules and control borders     */
+  --ond-mark-ink: var(--ink-bold);                                   /* text sitting ON the spark     */
+  --focus-ring: var(--green);                                        /* 3.87:1 on paper               */
 
   /* — Type — news gothic LEADS (display), book serif is the counter-voice — */
   --font-display: "Libre Franklin", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -169,6 +197,33 @@
   --r-overlay-element-bg-color: 18 26 22;
   --r-overlay-element-fg-color: 244 243 238;
 }
+
+/* The DEEP pole re-opens the tonal ramp and takes the gold spark: the navy
+   divider, the closing field, and full-bleed media (whose scrim is a true
+   deep ground, guaranteed by the theme — see section.media below). deck.js
+   mirrors the same distinction onto the footer and the viewport, which live
+   outside the slide, as data-field="deep". Every other dark surface — the
+   green and brown dividers, and any slide an author marks dark by hand —
+   keeps the bright defaults, which are safe on all of them. */
+.reveal section.section.navy,
+.reveal section.closing,
+.reveal section.media,
+.deck-footer.on-dark[data-field="deep"],
+.reveal-viewport.deck-dark[data-field="deep"] {
+  --ond-quiet:  color-mix(in oklch, var(--paper), transparent 18%);   /* 9.18:1 on navy */
+  --ond-chrome: color-mix(in oklch, var(--paper), transparent 35%);   /* 6.22:1 on navy */
+  --ond-mark:   var(--gold-bright);                                   /* 7.13:1 on navy */
+  --ond-rule:   color-mix(in oklch, var(--paper), transparent 55%);   /* 3.05:1 on navy */
+  --ond-mark-ink: var(--navy-deep);
+}
+
+/* Every dark field flips the focus ring. The green ring measures 1.28:1 on
+   its own field and 1.47:1 on the brown one; Paper never drops below 4.97:1
+   on any of them, so one inverted ring serves all three. */
+.reveal section.section,
+.reveal section.closing,
+.reveal section.media,
+.deck-footer.on-dark { --focus-ring: var(--paper); }
 
 /* ----------------------------------------------------------------------------
    2. VIEWPORT FRAME
@@ -302,6 +357,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
 .reveal a:hover { color: var(--green); text-decoration-line: underline; text-decoration-color: var(--green); }
+.reveal a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: var(--radius-sm); }
 
 /* Lists — hanging green tick markers (the colour earns a small structural role) */
 .reveal ul, .reveal ol { display: block; margin: 0 0 var(--r-block-margin); padding: 0; max-width: 56ch; }
@@ -324,9 +380,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 .reveal li ul, .reveal li ol { margin: 0.45em 0 0; }
 .reveal li ul > li::before { background: var(--ink-faint); }   /* nested: neutral tick */
 
-/* dark fields: ticks lift to gold for legibility */
+/* dark fields: ticks lift to the field's spark — gold on the deep pole,
+   Paper on the bright fields, where no gold clears 3:1 */
 .reveal section.section ul > li::before,
-.reveal section.closing ul > li::before { background: var(--gold); }
+.reveal section.closing ul > li::before { background: var(--ond-mark); }
 
 /* Blockquote / pull quote — the serif's italic is the whole effect */
 .reveal blockquote {

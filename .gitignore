@@ -22,6 +22,9 @@ node_modules
 # CI cache for generated PDFs/social cards
 .extras-cache/
 
+# Local output of tools/visual-diff.mjs (the before/after guard for design passes)
+visual-diff/
+
 # Locally generated deck extras (CI builds these into _site)
 talks/*/slides.pdf
 talks/*/social-card.png
