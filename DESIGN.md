@@ -74,6 +74,7 @@ spacing:
   xl: "2rem"
   2xl: "3rem"
   3xl: "4rem"
+  block-max: "28rem"
 components:
   slide-title:
     textColor: "{colors.ink-bold}"
@@ -105,6 +106,16 @@ components:
   nav-button-hover:
     backgroundColor: "{colors.lead-green}"
     textColor: "{colors.paper}"
+  print-imprint:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-faint}"
+    typography: "{typography.chrome}"
+    padding: "0.5rem 0 0"
+  print-imprint-rule:
+    borderColor: "{colors.rule}"
+  print-imprint-folio:
+    textColor: "{colors.lead-green}"
+    typography: "{typography.chrome}"
 ---
 
 # Design System: Broadsheet
@@ -160,7 +171,7 @@ The exact six-colour University of Bayreuth corporate palette (binding, hex-norm
 - **Deep pole** (`.section.navy`, `.closing`, `.media`; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after `:root` re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright.
 - **Bright fields** (the green divider at 4.97:1, the brown `.section.warm` at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by **weight** (600 against 700), never by alpha.
 
-The footer and the viewport live outside the slide and cannot inherit the register, so `shared/src/deck/03-toc-sync.js` mirrors it onto them as `data-field="deep"`. Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.
+The footer and the viewport live outside the slide and cannot inherit the register, so `shared/src/deck/03-toc-sync.js` mirrors it onto them as `data-field="deep"`. **One helper owns the question.** `fieldOf(el)` in that same module returns `null` on a paper slide, `"bright"`, or `"deep"`; the live chrome (`update()`) and the printed imprint (`buildPrintImprints()`) both read it, so a slide can never be dark for one surface and light for the other. Any new surface that has to sit over a slide asks `fieldOf`, it does not re-derive the answer from class names. Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.
 
 ## Typography
 
@@ -190,9 +201,9 @@ The footer and the viewport live outside the slide and cannot inherit the regist
 
 The canvas is a **fixed 1280×720 reveal.js stage, uniformly scaled** by reveal's transform to fit the viewport. The type scale is therefore deliberately fixed rem — NOT viewport-fluid `clamp()`. Viewport units inside the canvas would fight the canvas transform; do not introduce them. Only chrome that lives outside the scaled canvas (deck footer, running head, TOC overlay) uses `clamp()` and media queries (`max-width: 640px` compacts chrome; `max-height: 560px` reserves a real footer strip outside the scaled area).
 
-Each slide is a padded editorial column (padding 3.8rem top, 4.8rem sides, footer clearance below), content flowing from the top. Hero layouts (`.cover`, `.section`, `.statement`, `.closing`, `.metric`) declare `justify-content: center`, but **that declaration is inert on its own**: reveal forces `display: block` on the active `.present` slide, and only `.balance.present` restores `display: flex !important`. Vertical centring therefore happens only where the slide also carries `.balance` — verified 2026-08-17 by measuring the rendered catalogue, where `.metric` and `.cover` sit top-aligned with ~326px of space below. Treat `.balance` as part of the layout contract, not an optional helper, until the hero rules are folded in at `.present` specificity. Multi-column content uses `.cols` (equal or 3:2 / 2:3 / 1:2 ratios, 4rem gutters). Spacing follows a 4pt-derived semantic scale (0.25rem–4rem). Prose measures are enforced: 62ch body, 56ch lists, 30ch leads, 22ch slide titles.
+Each slide is a padded editorial column (padding 3.8rem top, 4.8rem sides, footer clearance below), content flowing from the top. **Hero layouts centre themselves; centring is not opt-in.** One rule at `.present` specificity gives `.cover`, `.section`, `.statement`, `.closing`, `.metric`, `.center` and `.balance` `display: flex !important` with `flex-direction: column; justify-content: center`. The `!important` and the `.present` qualifier are both load-bearing: reveal hard-sets `display: block` on the active slide, so a bare `justify-content` on the unqualified selector was inert, and for a period only `.balance` actually centred. `.balance` is now the opt-in for *non-hero* sparse slides only — on a hero it is redundant, not load-bearing. The same seven-selector list is restated as `html.reveal-print .reveal .slides .pdf-page > section.… { justify-content: center; }` in `01-foundations.css`, because reveal's print view re-parents each slide into a `.pdf-page` wrapper and the wrapper, not the section, is what carries `.present`. **The screen list and the print list must be edited together**; a hero class added to one and not the other centres on screen and top-aligns on paper. Multi-column content uses `.cols` (equal or 3:2 / 2:3 / 1:2 ratios, 4rem gutters). Spacing follows a 4pt-derived semantic scale (0.25rem–4rem). Prose measures are enforced: 62ch body, 56ch lists, 30ch leads, 22ch slide titles.
 
-**The Fixed Canvas Rule.** All sizing inside `.reveal .slides` is rem on a 16px root, scaled as a whole. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only.
+**The Fixed Canvas Rule.** All sizing inside `.reveal .slides` is rem on a 16px root, scaled as a whole. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only. This binds *caps* as much as type: the tallest a figure or code block may stand is `{spacing.block-max}` (`--block-max-h`), which replaced two `62vh` literals — the `.figrow` figure image and the `pre code` block. A vh cap measures the *window*, not the scaled 1280×720 stage, so the same slide held a different amount of image on a laptop, a hall projector and a phone; 28rem is that 62vh taken once at the 720px reference height and then frozen. Three viewport heights survive on purpose, and all three are true overlays that live outside the scaled canvas: the TOC panel (`max-height: 90vh`) and the lightbox figure and image (`88vh` / `80vh`). If a new vh appears anywhere else inside `.reveal .slides`, it is a bug.
 
 ## Elevation & Depth
 
@@ -252,6 +263,14 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
 - **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px `--focus-ring` outline, 2px offset; **Disabled:** 30% opacity. On dark fields it takes a 10%-Paper fill, an `--ond-rule` border and an `--ond-text` glyph, and hovers to the field's mark (`--ond-mark` fill, `--ond-mark-ink` glyph).
 
+### Print Imprint (`.pdf-imprint`)
+- **Character:** the folio for paper. One persistent footer is right on screen because it updates as you move; on paper every page is final and needs its own mark. The live `.deck-footer` and `.deck-runhead` are therefore hidden outright under `html.reveal-print`, and `buildPrintImprints()` (`shared/src/deck/02-chrome.js`, called from the `PRINT` branch of `08-diagnostics.js` on `pdf-ready`) appends one imprint per `.pdf-page`, numbered from that page's own index. The behaviour it replaces parked the single live footer at the tail of the last page carrying whatever folio was current when the export ran — one wrong number and sixteen blank ones.
+- **Voice:** the screen footer's, restated — chrome caps (Libre Franklin 700, 0.80rem `--fs-footer`, 0.18em tracking, uppercase, line-height 1.2), a 2px `Rule` above with 0.5rem clearance (the same weight and colour as `.deck-footer::before`, so the two read as one device), deck title (and venue) left with ellipsis, folio right. Absolutely positioned at the slide's own `--slide-pad-x` inset, `--space-md` from the page foot, so it lands on the same measure as the column above it.
+- **On paper:** title in `Ink Faint` (5.15:1 on Paper), folio in `--green-deep` (6.12:1), the `/` separator dropped back to `Ink Faint` at weight 400, tabular lining figures. The rule is the heavy near-black `Rule` at 18.71:1.
+- **On dark pages:** the register is read from the shared `fieldOf()` helper, never from a second class list, and every colour comes through the on-dark tokens — `--ond-chrome` for the title, `--ond-mark` for the folio, `--ond-rule` for the rule. The imprint is appended to `.pdf-page`, a *sibling* of the section, so it inherits nothing from the field: like `.deck-footer`, it has to be **named in the deep-register override list** in `01-foundations.css` to reach the deep ramp. On the bright fields it spends Paper alone — 4.97:1 on the green divider, 5.71:1 on the brown. On the deep pole it opens the ramp and takes the spark: title 6.22:1, gold folio 7.13:1, rule 3.71:1 on navy, so the folio answers the gold plate rule at the head of the same page.
+- **Print fidelity:** carries `print-color-adjust: exact`, like the divider fields and the media scrim, so the folio colour survives the export rather than being helpfully flattened.
+- **Escaping:** the deck title and venue are passed through `escapeHTML()` (`01-foundation.js`) here and in the live footer, because the engine builds all chrome by string concatenation. Any new chrome built the same way does the same.
+
 ### Media Field (full-bleed image)
 - **Character:** the one dark ground the theme does not own — the image underneath it can be anything — so the scrim is built as a guarantee rather than a gesture.
 - **Scrim (`.media-scrim`):** two crossed gradients, one up from the caption edge and one in from the reading edge, darkest stop held above 0.85 alpha over `oklch(0.14 0.02 258)`.
@@ -284,12 +303,17 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Do** size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.
 - **Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.
 - **Do** colour dark fields through the on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.
+- **Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to *both* the `.present` list in `03-layouts.css` and the `.pdf-page` list in `01-foundations.css`.
+- **Do** cap a figure or code block with `--block-max-h` (28rem), and give print its own per-page `.pdf-imprint` rather than expecting the live footer to travel.
+- **Do** ask `fieldOf()` which register a surface sits in — it is the one answer the live chrome and the printed imprint share.
 - **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
 
 ### Don't:
 - **Don't** resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.
 - **Don't** put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.
-- **Don't** use viewport units or fluid clamp() type inside the slide canvas; it fights the uniform canvas transform.
+- **Don't** use viewport units or fluid clamp() type inside the slide canvas — including `vh` height caps, which measure the window rather than the 1280×720 stage. The only sanctioned viewport units are the three on true overlays (TOC panel, lightbox).
+- **Don't** treat `.balance` as the way to centre a hero; the hero classes centre themselves, and `.balance` is for non-hero sparse slides.
+- **Don't** interpolate a deck title, venue or any author string into chrome markup without `escapeHTML()`.
 - **Don't** use gold as a second accent on light slides, set small text in raw `#009260`, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).
 - **Don't** put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.
 - **Don't** rely on a low-opacity fill to carry a large form; outline it instead, as `.sec-no` does with a 3px Paper stroke.

@@ -167,6 +167,12 @@
   --slide-pad-x: 4.8rem;
   --slide-pad-y: 3.8rem;
   --footer-h: 3rem;
+  /* The tallest a figure or code block may stand inside the canvas. It has to
+     be rem: the canvas is a fixed 1280×720 stage that reveal scales as a whole,
+     so a vh cap here would measure the *window* instead — the same slide would
+     hold a different amount of image on a laptop, a hall projector and a phone.
+     28rem is the 62vh this replaces, taken at the 720px reference height. */
+  --block-max-h: 28rem;
 
   /* ----- reveal.js variable contract (replaces stock theme) ----- */
   --r-background: oklch(0.165 0.012 258);                 /* graphite frame around the slide */
@@ -201,14 +207,15 @@
 /* The DEEP pole re-opens the tonal ramp and takes the gold spark: the navy
    divider, the closing field, and full-bleed media (whose scrim is a true
    deep ground, guaranteed by the theme — see section.media below). deck.js
-   mirrors the same distinction onto the footer and the viewport, which live
-   outside the slide, as data-field="deep". Every other dark surface — the
+   mirrors the same distinction onto the footer, the printed imprint and the
+   viewport, which all live outside the slide, as data-field="deep". Every other dark surface — the
    green and brown dividers, and any slide an author marks dark by hand —
    keeps the bright defaults, which are safe on all of them. */
 .reveal section.section.navy,
 .reveal section.closing,
 .reveal section.media,
 .deck-footer.on-dark[data-field="deep"],
+.pdf-imprint[data-field="deep"],
 .reveal-viewport.deck-dark[data-field="deep"] {
   --ond-quiet:  color-mix(in oklch, var(--paper), transparent 18%);   /* 9.18:1 on navy */
   --ond-chrome: color-mix(in oklch, var(--paper), transparent 35%);   /* 6.22:1 on navy */
@@ -283,8 +290,15 @@ html.reveal-print .reveal .slides .pdf-page > section {
   flex-direction: column;
   overflow: visible;
 }
-/* .balance centres via a .present-scoped rule that reveal's print re-parenting
-   also defeats — restate it for pdf pages. */
+/* The hero layouts centre via a .present-scoped rule that reveal's print
+   re-parenting also defeats (the page wrapper, not the section, is what is
+   "present") — restate it for pdf pages so export matches the screen. */
+html.reveal-print .reveal .slides .pdf-page > section.cover,
+html.reveal-print .reveal .slides .pdf-page > section.section,
+html.reveal-print .reveal .slides .pdf-page > section.statement,
+html.reveal-print .reveal .slides .pdf-page > section.closing,
+html.reveal-print .reveal .slides .pdf-page > section.metric,
+html.reveal-print .reveal .slides .pdf-page > section.center,
 html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
 
 /* Headings — GOTHIC display, heavy weight, tight optical letterfit */
@@ -564,13 +578,22 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* ----------------------------------------------------------------------------
    5. LAYOUT CLASSES
    ---------------------------------------------------------------------------- */
-/* Vertically centre content on hero-style slides */
-.reveal section.cover, .reveal section.section,
-.reveal section.statement, .reveal section.closing,
-.reveal section.center { justify-content: center; }
-
-/* `.balance` — opt-in helper to vertically centre a sparse content slide. */
-.reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
+/* Vertically centre content on hero-style slides.
+   This has to win at `.present` specificity. Reveal hard-sets `display: block`
+   on the active slide, which drops the flex context and makes a bare
+   `justify-content` here inert — the layout looked centred in the stylesheet
+   and top-aligned on the screen, and every author who copied a hero recipe
+   inherited the discrepancy. `.balance` opts any *other* sparse slide into the
+   same treatment; on a hero it is now redundant rather than load-bearing. */
+.reveal .slides > section.cover.present,
+.reveal .slides > section.section.present,
+.reveal .slides > section.statement.present,
+.reveal .slides > section.closing.present,
+.reveal .slides > section.metric.present,
+.reveal .slides > section.center.present,
+.reveal .slides > section.balance.present {
+  display: flex !important; flex-direction: column; justify-content: center;
+}
 .reveal section.balance .cols { flex: 0 0 auto; }
 
 /* --- COVER --- a broadsheet masthead: heavy rule, gothic event line, giant
@@ -696,7 +719,6 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 }
 
 /* --- BIG METRIC --- an oversized single figure (new layout helper) ---------- */
-.reveal section.metric { justify-content: center; }
 .reveal section.metric .metric-num {
   font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
   line-height: 0.86; letter-spacing: -0.035em; color: var(--green-deep);
@@ -768,7 +790,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 .reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
 .reveal .figrow.flip { grid-template-columns: 1fr 1.1fr; }
 /* Documentary figures show whole by default; .crop bleeds true photos. */
-.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: contain; border: 1px solid var(--line-strong); }
+.reveal .figrow .fig-frame img { width: 100%; max-height: var(--block-max-h); object-fit: contain; border: 1px solid var(--line-strong); }
 .reveal .figrow.crop .fig-frame img { object-fit: cover; }
 
 /* --- CLOSING / CONTACT --- a deep navy field, gold spark ---------------------- */
@@ -957,7 +979,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
      flush against the panel edge. The .scroll-panel variant already had it. */
   display: block;
   font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: 0;
-  background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
+  background: transparent; color: var(--ink); max-height: var(--block-max-h); -webkit-font-smoothing: auto;
   font-feature-settings: "liga" 0;
 }
 .reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 3px; color: var(--green-deep); }
@@ -1137,6 +1159,31 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* ----------------------------------------------------------------------------
    10. PRINT TO PDF · REDUCED MOTION · SMALL SCREENS
    ---------------------------------------------------------------------------- */
+/* PDF export: the live footer is one element for the whole deck. Reveal's
+   print view parks it at the tail of the last page still stamped with whatever
+   folio was current when the export ran — so one page carried a wrong number
+   and the other sixteen carried none. Print gets its own imprint instead: one
+   per page, numbered from that page's own position (built by deck.js). */
+html.reveal-print .deck-footer, html.reveal-print .deck-runhead { display: none !important; }
+html.reveal-print .reveal .slides .pdf-page { position: relative; }
+.pdf-imprint {
+  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  bottom: var(--space-md); z-index: 3;
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md);
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em; line-height: 1.2;
+  color: var(--ink-faint); border-top: 2px solid var(--rule);
+  padding-top: 0.5rem;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.pdf-imprint .pi-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdf-imprint .pi-folio { color: var(--green-deep); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.pdf-imprint .pi-folio span { color: var(--ink-faint); font-weight: 400; }
+/* Dark pages take the same two registers as the screen chrome. */
+.pdf-imprint.on-dark { color: var(--ond-chrome); border-top-color: var(--ond-rule); }
+.pdf-imprint.on-dark .pi-folio { color: var(--ond-mark); }
+.pdf-imprint.on-dark .pi-folio span { color: var(--ond-chrome); }
+
 @media print {
   .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
   .toc-overlay, .deck-btn { display: none !important; }

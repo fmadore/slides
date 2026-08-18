@@ -104,6 +104,7 @@
         var fitAllPages = function () {
           if (!fitReady || !document.querySelector(".reveal .pdf-page")) return;
           document.querySelectorAll(".reveal .pdf-page > section").forEach(function (s) { fitSlide(s, true); });
+          buildPrintImprints();
         };
         Reveal.on("pdf-ready", fitAllPages);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllPages);

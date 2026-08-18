@@ -1,6 +1,31 @@
 /* ----------------------------------------------------------------------------
    10. PRINT TO PDF · REDUCED MOTION · SMALL SCREENS
    ---------------------------------------------------------------------------- */
+/* PDF export: the live footer is one element for the whole deck. Reveal's
+   print view parks it at the tail of the last page still stamped with whatever
+   folio was current when the export ran — so one page carried a wrong number
+   and the other sixteen carried none. Print gets its own imprint instead: one
+   per page, numbered from that page's own position (built by deck.js). */
+html.reveal-print .deck-footer, html.reveal-print .deck-runhead { display: none !important; }
+html.reveal-print .reveal .slides .pdf-page { position: relative; }
+.pdf-imprint {
+  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
+  bottom: var(--space-md); z-index: 3;
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md);
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em; line-height: 1.2;
+  color: var(--ink-faint); border-top: 2px solid var(--rule);
+  padding-top: 0.5rem;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.pdf-imprint .pi-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pdf-imprint .pi-folio { color: var(--green-deep); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.pdf-imprint .pi-folio span { color: var(--ink-faint); font-weight: 400; }
+/* Dark pages take the same two registers as the screen chrome. */
+.pdf-imprint.on-dark { color: var(--ond-chrome); border-top-color: var(--ond-rule); }
+.pdf-imprint.on-dark .pi-folio { color: var(--ond-mark); }
+.pdf-imprint.on-dark .pi-folio span { color: var(--ond-chrome); }
+
 @media print {
   .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
   .toc-overlay, .deck-btn { display: none !important; }

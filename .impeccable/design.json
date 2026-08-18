@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-18T00:00:00Z",
+  "generatedAt": "2026-08-18T06:39:51Z",
   "title": "Design System: Broadsheet",
   "extensions": {
     "colorMeta": {
@@ -401,6 +401,14 @@
       "css": ".ds-nav-btn { --focus-ring: #009260; appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.623 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.744 0.005 250); color: oklch(0.530 0.016 256); }"
     },
     {
+      "name": "Print Imprint (per-page folio)",
+      "kind": "custom",
+      "refersTo": "print-imprint",
+      "description": "PDF-only page footer. The live deck footer and running head are hidden under html.reveal-print; buildPrintImprints() appends one imprint per .pdf-page, numbered from that page's own index. Its rule matches .deck-footer::before exactly (2px, Rule) so the two read as one device. Dark pages invert through the same on-dark tokens and the same two registers as the screen chrome, via the shared fieldOf() helper — and because the imprint is a sibling of the section rather than a descendant, it must be named in the deep-register override list to reach the deep ramp, exactly as .deck-footer is.",
+      "html": "<div class=\"ds-imprint\"><span class=\"ds-imprint-title\">Archives of the Everyday · Bayreuth</span><span class=\"ds-imprint-folio\">04<span> / </span>17</span></div><div class=\"ds-imprint ds-imprint-bright\"><span class=\"ds-imprint-title\">Archives of the Everyday · Bayreuth</span><span class=\"ds-imprint-folio\">09<span> / </span>17</span></div><div class=\"ds-imprint ds-imprint-deep\"><span class=\"ds-imprint-title\">Archives of the Everyday · Bayreuth</span><span class=\"ds-imprint-folio\">15<span> / </span>17</span></div>",
+      "css": ".ds-imprint { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-family: var(--font-label, 'Libre Franklin', system-ui, sans-serif); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; line-height: 1.2; color: var(--ink-faint, oklch(0.530 0.016 256)); border-top: 2px solid var(--rule, oklch(0.165 0.014 258)); padding: 0.5rem 4.8rem 0; margin-bottom: 1.5rem; print-color-adjust: exact; } .ds-imprint-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ds-imprint-folio { color: var(--green-deep, #0b6e48); white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; } .ds-imprint-folio span { color: var(--ink-faint, oklch(0.530 0.016 256)); font-weight: 400; } /* bright register — Paper alone, tiered by weight; 4.97:1 on the green field */ .ds-imprint-bright { background: color-mix(in oklch, #009260, #04140d 14%); color: var(--paper, oklch(0.991 0.001 250)); border-top-color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 30%); padding-bottom: 0.9rem; margin-bottom: 1.5rem; } .ds-imprint-bright .ds-imprint-folio, .ds-imprint-bright .ds-imprint-folio span { color: var(--paper, oklch(0.991 0.001 250)); } /* deep pole — the ramp re-opens and the folio takes the gold spark; 6.22:1 / 7.13:1 on navy */ .ds-imprint-deep { background: color-mix(in oklch, #00268a, #03081c 8%); color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 35%); border-top-color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 55%); padding-bottom: 0.9rem; margin-bottom: 0; } .ds-imprint-deep .ds-imprint-folio { color: color-mix(in oklch, #cca352, white 24%); } .ds-imprint-deep .ds-imprint-folio span { color: color-mix(in oklch, oklch(0.991 0.001 250), transparent 35%); }"
+    },
+    {
       "name": "Plate Caption (documentary figure)",
       "kind": "custom",
       "refersTo": "slide-title",
@@ -442,7 +450,7 @@
       },
       {
         "name": "The Two Dark Registers Rule",
-        "body": "(Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — --ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink — whose :root values are the bright register, so any dark surface is safe without opting in. Deep pole (.section.navy, .closing, .media; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after :root re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright. Bright fields (the green divider at 4.97:1, the brown .section.warm at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by weight (600 against 700), never by alpha. The footer and the viewport live outside the slide and cannot inherit the register, so shared/src/deck/03-toc-sync.js mirrors it onto them as data-field=\"deep\". Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.",
+        "body": "(Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — --ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink — whose :root values are the bright register, so any dark surface is safe without opting in. Deep pole (.section.navy, .closing, .media; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after :root re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright. Bright fields (the green divider at 4.97:1, the brown .section.warm at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by weight (600 against 700), never by alpha. The footer and the viewport live outside the slide and cannot inherit the register, so shared/src/deck/03-toc-sync.js mirrors it onto them as data-field=\"deep\". Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one. One helper owns the question: fieldOf(el) in shared/src/deck/03-toc-sync.js returns null on a paper slide, \"bright\", or \"deep\"; the live chrome and the printed imprint both read it, so a slide can never be dark for one surface and light for the other.",
         "section": "colors"
       },
       {
@@ -457,7 +465,7 @@
       },
       {
         "name": "The Fixed Canvas Rule",
-        "body": "All sizing inside .reveal .slides is rem on a 16px root, scaled as a whole by reveal's transform on a fixed 1280×720 canvas. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only.",
+        "body": "All sizing inside .reveal .slides is rem on a 16px root, scaled as a whole. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only. This binds caps as much as type: the tallest a figure or code block may stand is {spacing.block-max} (--block-max-h), which replaced two 62vh literals — the .figrow figure image and the pre code block. A vh cap measures the window, not the scaled 1280×720 stage, so the same slide held a different amount of image on a laptop, a hall projector and a phone; 28rem is that 62vh taken once at the 720px reference height and then frozen. Three viewport heights survive on purpose, and all three are true overlays that live outside the scaled canvas: the TOC panel (max-height: 90vh) and the lightbox figure and image (88vh / 80vh). If a new vh appears anywhere else inside .reveal .slides, it is a bug.",
         "section": "layout"
       },
       {
@@ -498,18 +506,23 @@
     ],
     "dos": [
       "Do put the 4px green marker bar above every standard slide title; use .no-rule only when a layout genuinely replaces it (cover, section, statement).",
-      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the deep pole's spark.",
-      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on the deep pole. WCAG 2.2 AA is binding.",
+      "Do spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.",
+      "Do use the AA-derived depths for text: --green-deep for green text/links on light, --brown-deep for brown, --gold-bright for gold on dark. WCAG 2.2 AA is binding.",
       "Do keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave h4 in the serif.",
       "Do size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
       "Do structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.",
       "Do colour dark fields through the on-dark tokens (--ond-text, --ond-quiet, --ond-chrome, --ond-mark, --ond-rule, --ond-mark-ink) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.",
+      "Do centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to both the .present list in 03-layouts.css and the .pdf-page list in 01-foundations.css.",
+      "Do cap a figure or code block with --block-max-h (28rem), and give print its own per-page .pdf-imprint rather than expecting the live footer to travel.",
+      "Do ask fieldOf() which register a surface sits in — it is the one answer the live chrome and the printed imprint share.",
       "Do theme every focus state with --focus-ring and a var(--radius-sm) corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field."
     ],
     "donts": [
       "Don't resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.",
       "Don't put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.",
-      "Don't use viewport units or fluid clamp() type inside the slide canvas; it fights the uniform canvas transform.",
+      "Don't use viewport units or fluid clamp() type inside the slide canvas — including vh height caps, which measure the window rather than the 1280×720 stage. The only sanctioned viewport units are the three on true overlays (TOC panel, lightbox).",
+      "Don't treat .balance as the way to centre a hero; the hero classes centre themselves, and .balance is for non-hero sparse slides.",
+      "Don't interpolate a deck title, venue or any author string into chrome markup without escapeHTML().",
       "Don't use gold as a second accent on light slides, set small text in raw #009260, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).",
       "Don't put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.",
       "Don't rely on a low-opacity fill to carry a large form; outline it instead, as .sec-no does with a 3px Paper stroke.",

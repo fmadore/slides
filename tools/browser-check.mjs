@@ -57,6 +57,9 @@ const browser = await launchChromium(chromium, {
   channel: BROWSER_CHANNEL,
 });
 
+// True when a console message is about our own origin rather than a third party.
+function isLocal(text) { return text.includes('127.0.0.1') || text.includes('localhost'); }
+
 async function openPage(ctx, url) {
   const page = await ctx.newPage();
   const errors = [];
@@ -66,7 +69,13 @@ async function openPage(ctx, url) {
     // fetches (live iframes, remote embeds) so CI stays hermetic.
     if (m.type() !== 'error') return;
     const t = m.text();
-    if (/Failed to load resource|net::ERR/.test(t) && !t.includes('127.0.0.1')) return;
+    if (/Failed to load resource|net::ERR/.test(t) && !isLocal(t)) return;
+    // A remote site refusing to be framed (X-Frame-Options / frame-ancestors)
+    // is the exact condition .site-frame's placeholder fallback exists for, and
+    // it depends on the *remote* server's headers — so it says nothing about
+    // this deck. Whether it fires at all depends on whether the runner has
+    // network, which made the gate flaky in both directions.
+    if (/(Content Security Policy directive: "frame-ancestors|in a frame because it set 'X-Frame-Options')/.test(t) && !isLocal(t)) return;
     errors.push(t);
   });
   page.on('requestfailed', r => {

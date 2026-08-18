@@ -71,6 +71,14 @@
     t.innerHTML = html.trim();
     return t.content.firstElementChild;
   }
+  /* Deck titles are author copy, and this engine builds its chrome by string
+     concatenation. A title carrying &, <, or a quote would otherwise land in
+     the markup as markup. */
+  function escapeHTML(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
   function tidyUrl(u) {
     return String(u || "").replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
   }

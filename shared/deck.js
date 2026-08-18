@@ -71,6 +71,14 @@
     t.innerHTML = html.trim();
     return t.content.firstElementChild;
   }
+  /* Deck titles are author copy, and this engine builds its chrome by string
+     concatenation. A title carrying &, <, or a quote would otherwise land in
+     the markup as markup. */
+  function escapeHTML(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
   function tidyUrl(u) {
     return String(u || "").replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
   }
@@ -97,8 +105,8 @@
       '<div class="deck-footer">' +
         '<div class="foot-left">' +
           (CFG.logoMark === false ? "" : '<a class="foot-logo" href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener" style="display:flex"><img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence"></a>') +
-          '<span class="foot-title"><b>' + (CFG.talkShort || CFG.talkTitle || "") + "</b>" +
-            (CFG.venue ? " · " + CFG.venue : "") + "</span>" +
+          '<span class="foot-title"><b>' + escapeHTML(CFG.talkShort || CFG.talkTitle || "") + "</b>" +
+            (CFG.venue ? " · " + escapeHTML(CFG.venue) : "") + "</span>" +
         "</div>" +
         '<div class="deck-nav">' +
           '<span class="counter"><span class="cur">1</span><span> / </span><span class="tot">1</span></span>' +
@@ -116,6 +124,31 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
+  }
+
+  /* ---- per-page imprint (PDF export only) --------------------------------- */
+  /* On screen one persistent footer is right: it updates as you move. On paper
+     there is nothing to update — every page is final and needs its own folio,
+     so each printed page gets an imprint of its own instead. */
+  function buildPrintImprints() {
+    var pages = document.querySelectorAll(".reveal .slides .pdf-page");
+    if (!pages.length) return;
+    var total = String(pages.length).padStart(2, "0");
+    var title = escapeHTML(CFG.talkShort || CFG.talkTitle || "");
+    if (CFG.venue) title += " · " + escapeHTML(CFG.venue);
+    Array.prototype.forEach.call(pages, function (page, i) {
+      if (page.querySelector(".pdf-imprint")) return;
+      var field = fieldOf(page.querySelector("section"));
+      var mark = elem(
+        '<div class="pdf-imprint' + (field ? " on-dark" : "") + '"' +
+          (field === "deep" ? ' data-field="deep"' : "") + ' aria-hidden="true">' +
+          '<span class="pi-title">' + title + "</span>" +
+          '<span class="pi-folio">' + String(i + 1).padStart(2, "0") +
+            "<span> / </span>" + total + "</span>" +
+        "</div>"
+      );
+      page.appendChild(mark);
+    });
   }
 
   /* ---- running head (current section, like a book) ------------------------ */
@@ -278,6 +311,17 @@
     if (el.classList.contains("section")) return el.classList.contains("navy");
     return el.classList.contains("closing") || el.classList.contains("media");
   }
+  /* null on a paper slide, else the register the chrome over it must use.
+     The live footer and the printed imprint both read it, so a slide can never
+     be dark for one and light for the other. */
+  function fieldOf(el) {
+    if (!el) return null;
+    var attr = el.getAttribute("data-footer");
+    var dark = attr ? attr === "dark"
+      : DARK.some(function (c) { return el.classList.contains(c); });
+    if (!dark) return null;
+    return isDeepField(el) ? "deep" : "bright";
+  }
   function update() {
     var cur = Reveal.getCurrentSlide();
     var hCount = Reveal.getHorizontalSlides().length;
@@ -287,10 +331,9 @@
     if (btnPrev) btnPrev.disabled = Reveal.isFirstSlide();
     if (btnNext) btnNext.disabled = Reveal.isLastSlide();
 
-    var darkAttr = cur && cur.getAttribute("data-footer");
-    var isDark = darkAttr ? darkAttr === "dark"
-      : !!(cur && DARK.some(function (c) { return cur.classList.contains(c); }));
-    var isDeep = isDark && isDeepField(cur);
+    var field = fieldOf(cur);
+    var isDark = !!field;
+    var isDeep = field === "deep";
     var vp = document.querySelector(".reveal-viewport");
     [footer, vp].forEach(function (el) {
       if (!el) return;
@@ -798,6 +841,7 @@
         var fitAllPages = function () {
           if (!fitReady || !document.querySelector(".reveal .pdf-page")) return;
           document.querySelectorAll(".reveal .pdf-page > section").forEach(function (s) { fitSlide(s, true); });
+          buildPrintImprints();
         };
         Reveal.on("pdf-ready", fitAllPages);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllPages);

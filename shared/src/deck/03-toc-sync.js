@@ -134,6 +134,17 @@
     if (el.classList.contains("section")) return el.classList.contains("navy");
     return el.classList.contains("closing") || el.classList.contains("media");
   }
+  /* null on a paper slide, else the register the chrome over it must use.
+     The live footer and the printed imprint both read it, so a slide can never
+     be dark for one and light for the other. */
+  function fieldOf(el) {
+    if (!el) return null;
+    var attr = el.getAttribute("data-footer");
+    var dark = attr ? attr === "dark"
+      : DARK.some(function (c) { return el.classList.contains(c); });
+    if (!dark) return null;
+    return isDeepField(el) ? "deep" : "bright";
+  }
   function update() {
     var cur = Reveal.getCurrentSlide();
     var hCount = Reveal.getHorizontalSlides().length;
@@ -143,10 +154,9 @@
     if (btnPrev) btnPrev.disabled = Reveal.isFirstSlide();
     if (btnNext) btnNext.disabled = Reveal.isLastSlide();
 
-    var darkAttr = cur && cur.getAttribute("data-footer");
-    var isDark = darkAttr ? darkAttr === "dark"
-      : !!(cur && DARK.some(function (c) { return cur.classList.contains(c); }));
-    var isDeep = isDark && isDeepField(cur);
+    var field = fieldOf(cur);
+    var isDark = !!field;
+    var isDeep = field === "deep";
     var vp = document.querySelector(".reveal-viewport");
     [footer, vp].forEach(function (el) {
       if (!el) return;

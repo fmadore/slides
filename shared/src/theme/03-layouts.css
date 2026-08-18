@@ -1,13 +1,22 @@
 /* ----------------------------------------------------------------------------
    5. LAYOUT CLASSES
    ---------------------------------------------------------------------------- */
-/* Vertically centre content on hero-style slides */
-.reveal section.cover, .reveal section.section,
-.reveal section.statement, .reveal section.closing,
-.reveal section.center { justify-content: center; }
-
-/* `.balance` — opt-in helper to vertically centre a sparse content slide. */
-.reveal .slides > section.balance.present { display: flex !important; flex-direction: column; justify-content: center; }
+/* Vertically centre content on hero-style slides.
+   This has to win at `.present` specificity. Reveal hard-sets `display: block`
+   on the active slide, which drops the flex context and makes a bare
+   `justify-content` here inert — the layout looked centred in the stylesheet
+   and top-aligned on the screen, and every author who copied a hero recipe
+   inherited the discrepancy. `.balance` opts any *other* sparse slide into the
+   same treatment; on a hero it is now redundant rather than load-bearing. */
+.reveal .slides > section.cover.present,
+.reveal .slides > section.section.present,
+.reveal .slides > section.statement.present,
+.reveal .slides > section.closing.present,
+.reveal .slides > section.metric.present,
+.reveal .slides > section.center.present,
+.reveal .slides > section.balance.present {
+  display: flex !important; flex-direction: column; justify-content: center;
+}
 .reveal section.balance .cols { flex: 0 0 auto; }
 
 /* --- COVER --- a broadsheet masthead: heavy rule, gothic event line, giant
@@ -133,7 +142,6 @@
 }
 
 /* --- BIG METRIC --- an oversized single figure (new layout helper) ---------- */
-.reveal section.metric { justify-content: center; }
 .reveal section.metric .metric-num {
   font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
   line-height: 0.86; letter-spacing: -0.035em; color: var(--green-deep);
@@ -205,7 +213,7 @@
 .reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
 .reveal .figrow.flip { grid-template-columns: 1fr 1.1fr; }
 /* Documentary figures show whole by default; .crop bleeds true photos. */
-.reveal .figrow .fig-frame img { width: 100%; max-height: 62vh; object-fit: contain; border: 1px solid var(--line-strong); }
+.reveal .figrow .fig-frame img { width: 100%; max-height: var(--block-max-h); object-fit: contain; border: 1px solid var(--line-strong); }
 .reveal .figrow.crop .fig-frame img { object-fit: cover; }
 
 /* --- CLOSING / CONTACT --- a deep navy field, gold spark ---------------------- */

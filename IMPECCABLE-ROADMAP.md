@@ -204,6 +204,59 @@ were measured and left alone — 6.05 to 11.24:1 on a field that is permanently
 navy — as was the `.folio-ghost` watermark, which is decoration rather than
 information and is recorded as such.
 
+*Pass 3 (`harden`) ✅ COMPLETE 2026-08-18.* The pass found one theme with two
+faces: rules that read correctly in the stylesheet but do not survive the
+runtime. Hero centring was the clearest case — `.cover`, `.section`,
+`.statement`, `.closing` and `.metric` all declared `justify-content: center`,
+and reveal hard-sets `display: block` on the active slide, so the declaration
+was inert and only `.balance` actually centred anything. Ten slides across all
+seven decks had silently inherited the discrepancy. The hero list now wins at
+`.present` specificity, and the same list is restated for `.pdf-page`, because
+reveal's print re-parenting defeats `.present` a second way. `.balance` remains,
+demoted to what it always claimed to be: an opt-in for *non-hero* sparse slides.
+
+The two `62vh` caps were the same defect in a different register — a viewport
+unit inside a canvas that reveal scales as a whole, so the same slide held a
+different amount of image on a laptop, a hall projector and a phone. Both now
+take `--block-max-h` (28rem: the 62vh they replace, measured at the 720px
+reference height). The three surviving viewport units are the TOC panel and the
+lightbox, which are true overlays outside the canvas and correct as they stand.
+
+PDF export got a real imprint. One persistent footer is right on screen because
+it updates as you move; on paper every page is final, and reveal was parking
+that single footer at the tail of the last page still stamped with whatever
+folio was current — one wrong number, sixteen blank pages. Each page now builds
+its own imprint, in the screen footer's voice, inverting on dark pages through
+the Pass 2 registers. A shared `fieldOf()` helper backs both, so a slide can
+never be dark for the footer and light for the imprint.
+
+`document` earned its keep a second time: the imprint set `data-field="deep"`
+but was never *named* in the deep-register override list, and it hangs off
+`.pdf-page` — a sibling of the section — so it inherited nothing and every dark
+page silently rendered in the bright register. Legible, but the gold folio the
+deep pole is owed never appeared. Naming it there fixed it (title 6.22:1, gold
+folio 7.13:1 on navy), and the rule went from a 1px hairline to the footer's own
+2px near-black, so the two really are one device rather than approximately one.
+
+Two findings arrived from outside the brief. `tools/browser-check.mjs` already
+meant to ignore third-party embed failures, but its exemption matched only
+fetch errors, not a remote site refusing to be framed — so the gate failed
+intermittently on `zmo.de`'s `frame-ancestors`, which says nothing about any
+deck and depends on whether the runner has network. Confirmed pre-existing by
+re-running against a stashed tree. And the engine builds its chrome by string
+concatenation, so `escapeHTML()` now guards the deck title and venue.
+
+The waiver review came back clean: all seven decks export one page per slide,
+one imprint per page, no unclipped overflow — the eight `data-fit-allow`
+waivers cost nothing at export. `.reveal pre code` already carried
+`display: block`; that one was closed earlier, in Pass 1.
+
+**Found, not fixed** (it needs an author-copy decision, so it was reported
+rather than decided): `.scroll-panel` truncates silently mid-sentence in PDF,
+and the authored `.scroll-hint` line still tells the reader to scroll. Fixing
+it properly means either expanding the panel in print or rewording per-deck
+copy.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |

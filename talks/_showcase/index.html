@@ -59,7 +59,8 @@
        and quotes. Colour is a flat structural FIELD + heavy rule, not a sprinkle
        — green leads, navy is the deep pole, gold the spark. Every .slide-title
        carries a heavy green marker bar; add .no-rule to drop it.
-     • Add class="balance" to a sparse <section> to vertically centre it.
+     • Hero layouts (cover, section, statement, closing, metric) centre themselves.
+       Add class="balance" to centre any OTHER sparse <section>.
      • Speaker notes go in <aside class="notes">…</aside> (press S). They are
        stripped on deploy, so candid cues are safe — but keep them professional.
 
@@ -139,7 +140,7 @@
     </section>
 
     <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field (add "navy" for the deep variant) ░░ -->
-    <section class="section balance" data-toc="First section" data-visual-test="divider">
+    <section class="section" data-toc="First section" data-visual-test="divider">
       <p class="sec-no">01</p>
       <h2>The first section</h2>
       <p class="sec-sub">An optional italic subtitle.</p>
@@ -271,9 +272,14 @@ hits = col.search("réforme", lang="fr", after=1990)
 print(f"{len(hits)} documents")</code></pre>
     </section>
 
-    <!-- ░░ FRAGMENTS ░░ reveal items step in on ←/→. Add class="fragment" to any
-         element; variants from theme.css: fade-up, highlight-green. data-fragment-index
-         controls order. Great for walking through a list without overwhelming the room. ░░ -->
+    <!-- ░░ FRAGMENTS ░░ items step in on ←/→. Add class="fragment" to any element;
+         data-fragment-index controls order. Two kinds, and the difference matters
+         when you copy this: ENTRANCE fragments are hidden until their turn — plain
+         .fragment, and the theme's .fade-up. EMPHASIS fragments are reveal's own
+         .highlight-green, which leaves the item on screen from the start and only
+         recolours it on its turn. Use emphasis to return to a point already made;
+         reaching for it as an entrance puts the last line on screen with the first.
+         Great for walking through a list without overwhelming the room. ░░ -->
     <section data-toc="Step by step">
       <p class="kicker">Built incrementally</p>
       <h2 class="slide-title">One point at a time</h2>
@@ -281,7 +287,7 @@ print(f"{len(hits)} documents")</code></pre>
         <li class="fragment">First it appears on its own</li>
         <li class="fragment">Then the second joins it</li>
         <li class="fragment fade-up">This one rises as it fades in</li>
-        <li class="fragment highlight-green">And this one lands in green</li>
+        <li class="fragment highlight-green">This one stood here all along — on its turn it goes green</li>
       </ul>
       <aside class="notes">Press → to step through. Fragments keep the room with you instead of reading ahead.</aside>
     </section>
@@ -304,20 +310,20 @@ print(f"{len(hits)} documents")</code></pre>
     </section>
 
     <!-- ░░ SECTION DIVIDER (navy variant — the structural deep) ░░ -->
-    <section class="section navy balance" data-toc="Second section">
+    <section class="section navy" data-toc="Second section">
       <p class="sec-no">02</p>
       <h2>The second section</h2>
       <p class="sec-sub">Green leads; navy is the deep pole — two fields, one system.</p>
     </section>
 
     <!-- ░░ BIG STATEMENT ░░ a claim worth pausing on; one accent phrase ░░ -->
-    <section class="statement balance" data-footer="light">
+    <section class="statement" data-footer="light">
       <p class="statement-body">A claim worth pausing on, with one <span class="accent">emphasised phrase.</span></p>
       <p class="attribution">A supporting line beneath it.</p>
     </section>
 
     <!-- ░░ STATEMENT (quote variant) ░░ adds class="quote": italic, gold quote mark ░░ -->
-    <section class="statement quote balance" data-footer="light">
+    <section class="statement quote" data-footer="light">
       <p class="statement-body">The archive is not a neutral mirror; it is an argument about what was worth keeping.</p>
       <p class="attribution">— An attributable source</p>
     </section>
@@ -476,7 +482,7 @@ print(f"{len(hits)} documents")</code></pre>
     </section>
 
     <!-- ░░ CLOSING / CONTACT ░░ -->
-    <section class="closing balance" data-footer="dark" data-visual-test="closing">
+    <section class="closing" data-footer="dark" data-visual-test="closing">
       <p class="kicker">Thank you · Merci</p>
       <h2>A closing line.</h2>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>

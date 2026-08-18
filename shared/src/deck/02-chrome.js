@@ -6,8 +6,8 @@
       '<div class="deck-footer">' +
         '<div class="foot-left">' +
           (CFG.logoMark === false ? "" : '<a class="foot-logo" href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener" style="display:flex"><img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence"></a>') +
-          '<span class="foot-title"><b>' + (CFG.talkShort || CFG.talkTitle || "") + "</b>" +
-            (CFG.venue ? " · " + CFG.venue : "") + "</span>" +
+          '<span class="foot-title"><b>' + escapeHTML(CFG.talkShort || CFG.talkTitle || "") + "</b>" +
+            (CFG.venue ? " · " + escapeHTML(CFG.venue) : "") + "</span>" +
         "</div>" +
         '<div class="deck-nav">' +
           '<span class="counter"><span class="cur">1</span><span> / </span><span class="tot">1</span></span>' +
@@ -25,6 +25,31 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
+  }
+
+  /* ---- per-page imprint (PDF export only) --------------------------------- */
+  /* On screen one persistent footer is right: it updates as you move. On paper
+     there is nothing to update — every page is final and needs its own folio,
+     so each printed page gets an imprint of its own instead. */
+  function buildPrintImprints() {
+    var pages = document.querySelectorAll(".reveal .slides .pdf-page");
+    if (!pages.length) return;
+    var total = String(pages.length).padStart(2, "0");
+    var title = escapeHTML(CFG.talkShort || CFG.talkTitle || "");
+    if (CFG.venue) title += " · " + escapeHTML(CFG.venue);
+    Array.prototype.forEach.call(pages, function (page, i) {
+      if (page.querySelector(".pdf-imprint")) return;
+      var field = fieldOf(page.querySelector("section"));
+      var mark = elem(
+        '<div class="pdf-imprint' + (field ? " on-dark" : "") + '"' +
+          (field === "deep" ? ' data-field="deep"' : "") + ' aria-hidden="true">' +
+          '<span class="pi-title">' + title + "</span>" +
+          '<span class="pi-folio">' + String(i + 1).padStart(2, "0") +
+            "<span> / </span>" + total + "</span>" +
+        "</div>"
+      );
+      page.appendChild(mark);
+    });
   }
 
   /* ---- running head (current section, like a book) ------------------------ */

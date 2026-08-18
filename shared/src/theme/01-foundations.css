@@ -167,6 +167,12 @@
   --slide-pad-x: 4.8rem;
   --slide-pad-y: 3.8rem;
   --footer-h: 3rem;
+  /* The tallest a figure or code block may stand inside the canvas. It has to
+     be rem: the canvas is a fixed 1280×720 stage that reveal scales as a whole,
+     so a vh cap here would measure the *window* instead — the same slide would
+     hold a different amount of image on a laptop, a hall projector and a phone.
+     28rem is the 62vh this replaces, taken at the 720px reference height. */
+  --block-max-h: 28rem;
 
   /* ----- reveal.js variable contract (replaces stock theme) ----- */
   --r-background: oklch(0.165 0.012 258);                 /* graphite frame around the slide */
@@ -201,14 +207,15 @@
 /* The DEEP pole re-opens the tonal ramp and takes the gold spark: the navy
    divider, the closing field, and full-bleed media (whose scrim is a true
    deep ground, guaranteed by the theme — see section.media below). deck.js
-   mirrors the same distinction onto the footer and the viewport, which live
-   outside the slide, as data-field="deep". Every other dark surface — the
+   mirrors the same distinction onto the footer, the printed imprint and the
+   viewport, which all live outside the slide, as data-field="deep". Every other dark surface — the
    green and brown dividers, and any slide an author marks dark by hand —
    keeps the bright defaults, which are safe on all of them. */
 .reveal section.section.navy,
 .reveal section.closing,
 .reveal section.media,
 .deck-footer.on-dark[data-field="deep"],
+.pdf-imprint[data-field="deep"],
 .reveal-viewport.deck-dark[data-field="deep"] {
   --ond-quiet:  color-mix(in oklch, var(--paper), transparent 18%);   /* 9.18:1 on navy */
   --ond-chrome: color-mix(in oklch, var(--paper), transparent 35%);   /* 6.22:1 on navy */
@@ -283,8 +290,15 @@ html.reveal-print .reveal .slides .pdf-page > section {
   flex-direction: column;
   overflow: visible;
 }
-/* .balance centres via a .present-scoped rule that reveal's print re-parenting
-   also defeats — restate it for pdf pages. */
+/* The hero layouts centre via a .present-scoped rule that reveal's print
+   re-parenting also defeats (the page wrapper, not the section, is what is
+   "present") — restate it for pdf pages so export matches the screen. */
+html.reveal-print .reveal .slides .pdf-page > section.cover,
+html.reveal-print .reveal .slides .pdf-page > section.section,
+html.reveal-print .reveal .slides .pdf-page > section.statement,
+html.reveal-print .reveal .slides .pdf-page > section.closing,
+html.reveal-print .reveal .slides .pdf-page > section.metric,
+html.reveal-print .reveal .slides .pdf-page > section.center,
 html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
 
 /* Headings — GOTHIC display, heavy weight, tight optical letterfit */

@@ -12,7 +12,7 @@
      flush against the panel edge. The .scroll-panel variant already had it. */
   display: block;
   font-family: var(--font-mono); padding: 1.1em 1.3em; border-radius: 0;
-  background: transparent; color: var(--ink); max-height: 62vh; -webkit-font-smoothing: auto;
+  background: transparent; color: var(--ink); max-height: var(--block-max-h); -webkit-font-smoothing: auto;
   font-feature-settings: "liga" 0;
 }
 .reveal code { font-family: var(--font-mono); font-size: 0.86em; background: var(--sunken); padding: 0.1em 0.36em; border-radius: 3px; color: var(--green-deep); }
