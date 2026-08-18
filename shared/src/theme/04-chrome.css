@@ -102,6 +102,12 @@
 }
 .toc-overlay.open { opacity: 1; visibility: visible; }
 .toc-panel {
+  /* box-sizing is load-bearing here. The panel sits outside .slides, so it never
+     inherited the border-box the slide canvas sets, and `width: min(92vw, 60rem)`
+     was sizing the CONTENT box — the 2×2rem padding was then added on top. On a
+     390px phone that laid out a 423px panel: the overlay ran past the screen and
+     the close button sat 14px beyond its right edge, unreachable. */
+  box-sizing: border-box;
   position: relative; max-width: 60rem; width: min(92vw, 60rem); margin: auto;
   max-height: 90vh; overflow: auto;
   padding: clamp(1.6rem, 3vw, 2.6rem) clamp(2rem, 4vw, 3.4rem);
@@ -118,8 +124,17 @@
   padding-right: calc(2.4rem + var(--space-sm)); }
 .toc-head .toc-eyebrow { font-family: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: var(--track-label); font-size: 0.8rem; color: var(--green-deep); }
 .toc-head .toc-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 800; color: var(--ink-bold); margin: 0.2rem 0 0; letter-spacing: -0.02em; }
-.toc-list { list-style: none; margin: 0; padding: 0; }
-.toc-list > li { margin: 0; }
+/* The overlay is mounted inside .reveal, so the deck's body-prose list styling
+   reaches it: a 56ch measure, a 1.5em indent, and the green tick every slide
+   bullet carries. All three applied here, which is why the rows sat indented
+   from the head's rule on the left, stopped well short of it on the right, and
+   each carried a stray tick aligned for 1.52rem serif rather than for the row.
+   The contents list is furniture, not prose — it opts out of all of it. The
+   .reveal prefix is load-bearing: `.reveal ul` outranks a bare `.toc-list`, so
+   the reset that lived here before never actually applied. */
+.reveal .toc-list { list-style: none; margin: 0; padding: 0; max-width: none; }
+.reveal .toc-list > li { margin: 0; padding-left: 0; position: static; }
+.reveal .toc-list > li::before { content: none; }
 .toc-item {
   display: flex; align-items: baseline; gap: 0.9rem; width: 100%; text-align: left;
   background: none; border: none; border-bottom: 1px solid var(--line); cursor: pointer;
@@ -130,8 +145,14 @@
 }
 .toc-list > li:last-child .toc-item { border-bottom: none; }
 .toc-item .toc-num { flex: none; width: 2.1rem; font-family: var(--font-label); font-size: 0.62em; font-weight: 800; color: var(--green-deep); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
-.toc-item .toc-label { flex: 0 1 auto; color: var(--ink-bold); }
-.toc-item .toc-dots { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted var(--line-strong); position: relative; bottom: 0.32em; }
+/* The row must be able to shrink with the panel: a long section title wraps
+   onto a second line rather than widening the whole overlay. */
+.toc-item .toc-label { flex: 0 1 auto; min-width: 0; overflow-wrap: break-word; color: var(--ink-bold); }
+/* The leader sits just above the shared baseline, the way a printed contents
+   leader does. At 0.32em it floated at about 60% of the x-height, level with
+   the middle of the lowercase — reading as a rule laid over the row rather
+   than as a line running along it. */
+.toc-item .toc-dots { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted var(--line-strong); position: relative; bottom: 0.12em; }
 .toc-item .toc-folio { flex: none; font-family: var(--font-label); font-size: 0.6em; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
 .toc-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--radius-sm); }
 .toc-item:focus-visible .toc-label { color: var(--green-deep); }

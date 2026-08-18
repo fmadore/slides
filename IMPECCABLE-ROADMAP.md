@@ -298,6 +298,26 @@ title in a constant position across a deck, which is worth more than a filled
 canvas. Centring everything would have been the wrong fix to a measurement
 artefact.
 
+*TOC alignment follow-up 2026-08-18 (user-reported).* The contents rows looked
+misaligned because they were: the overlay is mounted inside `.reveal`, so three
+slide-prose rules reached it — a 56ch cap, a 1.5em list indent, and the green
+bullet tick — leaving every row indented from the head's rule on the left,
+stopped short of it on the right, and carrying a stray tick. The existing
+`.toc-list` reset never applied: a bare `.toc-list` loses on specificity to
+`.reveal ul`. Two more came out of measuring it: `.toc-panel` was `content-box`,
+so `width: min(92vw, 60rem)` sized the content and the padding was added on top
+— a 423px panel on a 390px phone with the close button off-screen, and 1062px
+on desktop where 60rem was the stated intent; and the dotted leader sat 0.32em
+up, at about 60% of the x-height, reading as a rule laid across the row rather
+than a line running along it (now 0.12em, just above the shared baseline).
+
+The numerals were *not* misaligned — `align-items: baseline` was doing its job,
+confirmed by probing each cell with a zero-size inline-block strut, which lands
+exactly on the line's baseline. An earlier canvas-metrics measurement had
+suggested three different baselines; it was comparing the ink tops of digits
+against mixed-case text and was simply wrong. Worth remembering: for baseline
+questions, probe the layout, don't measure the glyphs.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |
