@@ -3,18 +3,18 @@
   function buildFooter(reveal) {
     var amLogo = CFG.logoMark || (SCRIPT_BASE + "logo-africamultiple.png");
     footer = elem(
-      '<div class="deck-footer">' +
+      '<div class="deck-footer" role="contentinfo">' +
         '<div class="foot-left">' +
           (CFG.logoMark === false ? "" : '<a class="foot-logo" href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener" style="display:flex"><img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence"></a>') +
           '<span class="foot-title"><b>' + escapeHTML(CFG.talkShort || CFG.talkTitle || "") + "</b>" +
             (CFG.venue ? " · " + escapeHTML(CFG.venue) : "") + "</span>" +
         "</div>" +
-        '<div class="deck-nav">' +
+        '<nav class="deck-nav" aria-label="' + escapeHTML(STR.deckNav) + '">' +
           '<span class="counter"><span class="cur">1</span><span> / </span><span class="tot">1</span></span>' +
           '<button class="deck-btn prev" title="' + STR.prev + ' (←)" aria-label="' + STR.prev + '">' + ICON.prev + "</button>" +
           '<button class="deck-btn next" title="' + STR.next + ' (→)" aria-label="' + STR.next + '">' + ICON.next + "</button>" +
           '<button class="deck-btn toc-btn" title="' + STR.tocAria + ' (T)" aria-label="' + STR.tocOpen + '">' + ICON.toc + "<span>" + STR.contents + "</span></button>" +
-        "</div>" +
+        "</nav>" +
       "</div>"
     );
     reveal.appendChild(footer);

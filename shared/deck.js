@@ -25,11 +25,11 @@
      Add a language by extending I18N; decks opt in via <html lang="xx">. -------- */
   var LANG = (CFG.lang || document.documentElement.lang || "en").slice(0, 2).toLowerCase();
   var I18N = {
-    en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close",
+    en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close", deckNav: "Slide navigation",
           imageViewer: "Image viewer", imageClose: "Close image", imageView: "View image full screen", imagePrev: "Previous image", imageNext: "Next image",
           embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
           frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
-    fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer",
+    fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer", deckNav: "Navigation des diapositives",
           imageViewer: "Visionneuse d’images", imageClose: "Fermer l’image", imageView: "Afficher l’image en plein écran", imagePrev: "Image précédente", imageNext: "Image suivante",
           embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
           frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
@@ -102,18 +102,18 @@
   function buildFooter(reveal) {
     var amLogo = CFG.logoMark || (SCRIPT_BASE + "logo-africamultiple.png");
     footer = elem(
-      '<div class="deck-footer">' +
+      '<div class="deck-footer" role="contentinfo">' +
         '<div class="foot-left">' +
           (CFG.logoMark === false ? "" : '<a class="foot-logo" href="https://www.africamultiple.uni-bayreuth.de/en/index.html" target="_blank" rel="noopener" style="display:flex"><img src="' + amLogo + '" alt="Africa Multiple — Cluster of Excellence"></a>') +
           '<span class="foot-title"><b>' + escapeHTML(CFG.talkShort || CFG.talkTitle || "") + "</b>" +
             (CFG.venue ? " · " + escapeHTML(CFG.venue) : "") + "</span>" +
         "</div>" +
-        '<div class="deck-nav">' +
+        '<nav class="deck-nav" aria-label="' + escapeHTML(STR.deckNav) + '">' +
           '<span class="counter"><span class="cur">1</span><span> / </span><span class="tot">1</span></span>' +
           '<button class="deck-btn prev" title="' + STR.prev + ' (←)" aria-label="' + STR.prev + '">' + ICON.prev + "</button>" +
           '<button class="deck-btn next" title="' + STR.next + ' (→)" aria-label="' + STR.next + '">' + ICON.next + "</button>" +
           '<button class="deck-btn toc-btn" title="' + STR.tocAria + ' (T)" aria-label="' + STR.tocOpen + '">' + ICON.toc + "<span>" + STR.contents + "</span></button>" +
-        "</div>" +
+        "</nav>" +
       "</div>"
     );
     reveal.appendChild(footer);

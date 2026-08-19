@@ -318,6 +318,44 @@ suggested three different baselines; it was comparing the ink tops of digits
 against mixed-case text and was simply wrong. Worth remembering: for baseline
 questions, probe the layout, don't measure the glyphs.
 
+*Pass 5 (`polish`) ✅ COMPLETE 2026-08-18.* Two of the four findings were the
+system caught breaking its own rules. `.flow-step` was three bordered radiused
+boxes joined by arrows — on the slide captioned "A process, drawn — not
+bulleted", which Phase 1 called the one composition an unrelated product could
+ship unchanged. It now opens on the same heavy rule `.panel` uses, with the
+gutter doing the separating and the direction marks seated on the rule band.
+`.reveal pre` dropped its hairline to become the flat Sunken inset the system
+already sanctions as its only surface. Neither needed a new idea — both needed
+the rule already written down.
+
+`transition: all` is gone from the theme. It had been sweeping in
+`outline-color` and `outline-offset`, so the focus ring — the one Pass 2 spent
+a whole pass making AA-compliant — faded up over 220ms instead of appearing when
+focus landed. Three interactive elements now list exactly what they animate.
+
+The right-aligned table header turned out **not** to be the trailing
+letter-space Phase 1 diagnosed. Measured, the header ink and the numeral ink sat
+4.6px apart because `padding: 0.55em 0.9em` resolves against each cell's own
+font-size — 12.4px inside a 0.82em header, 17.0px inside a full-size body cell.
+The horizontal padding now resolves against the table's font-size and the two
+ink edges land on 1186.2 exactly. Tracking was a red herring; two font sizes
+sharing an em-based padding was the defect.
+
+**The fourth finding is not a theme defect and was not fixed.** The roadmap
+recorded "the identical green kicker+bar opener on 9 of 24 slides", which is the
+catalogue. Counted across the repo the opener runs on 88%, 89%, 79%, 64% and 66%
+of slides in the five published decks — against 37% in `_showcase` and 25% in
+`_template`. So the living surfaces are the restrained ones, and the retired
+anti-reference — "a per-slide green eyebrow + tick-rule", named in PRODUCT.md as
+a tell not to resurrect — is alive in the authored archive. The components are
+correct; the habit is editorial. Published decks are archives and the kicker
+text is authored copy, so this is the author's call, not a pass's.
+
+Two smaller things came along: the `mark`/`.hl` wash had 1.4px of side padding
+and stopped flush against the first and last glyph (a highlighter overshoots the
+word it marks), and the footer was a plain div — it now carries
+`role="contentinfo"` with a real `<nav>` inside it.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |

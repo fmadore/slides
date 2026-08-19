@@ -106,6 +106,15 @@ components:
   nav-button-hover:
     backgroundColor: "{colors.lead-green}"
     textColor: "{colors.paper}"
+  flow-step:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink}"
+    padding: "0.75rem 0 0"
+  code-inset:
+    backgroundColor: "{colors.sunken}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "1.1em 1.3em"
   print-imprint:
     backgroundColor: "transparent"
     textColor: "{colors.ink-faint}"
@@ -233,6 +242,8 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 **The Ruled, Not Boxed Rule.** Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat `Sunken` inset (`.panel.sunken`) — no border, no shadow.
 
+Two surfaces were brought back under this rule in the last pass, and both are its reference reading. **The process flow (`.flow-step`)** carried a 1px `Line` border and a `--radius-md` corner: three bordered radiused boxes joined by arrows, on the slide captioned "A process, drawn — not bulleted" — the one composition on the deck an unrelated product could have shipped unchanged. Each step now opens on `border-top: var(--bar) solid var(--rule)`, the same heavy near-black rule `.panel` opens on, and separation comes from the gutter (`--space-xl` between steps, up from `--space-xs`) rather than from a border. **The code block (`.reveal pre`)** likewise dropped its hairline (`border: none`); with the `Sunken` fill and `--radius-md` unchanged it now matches `.panel.sunken` exactly — the one sanctioned surface, which carries no border. A block that wants a boundary takes the opening rule or the Sunken fill, never a hairline outline on top of either.
+
 **The Rule Opens From Above Rule.** A heavy rule that opens a block must have visible air above it, or it stops reading as an opening. `.marginnote` therefore takes `margin-top: var(--space-lg)` (reset to 0 when it is the first child): set flush under a chart, its 3px rule read as one more unlabelled near-black bar in the series rather than as the start of an aside.
 
 **The Rules Line Up Or Clearly Don't Rule.** Two instances of the same device sitting adjacent either end at the same x or differ obviously; a near-miss reads as a mistake where a clear difference would have read as a decision. `.stat-grid + .callout` therefore takes the ledger's own column (`max-width: calc((100% - var(--space-3xl)) / 2)`) in place of the callout's 60ch prose measure — at 60ch the note's rule stopped 32px past the stat column above it. Scoped to that one adjacency: a standalone callout keeps its 60ch.
@@ -281,6 +292,7 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Colour:** links, kicker, contact icons and dropcap take `--ond-mark` (gold-bright); names `--ond-text`, affiliations and roles `--ond-quiet`.
 
 ### Deck Nav Button (footer chrome)
+- **Landmarks:** the footer is a real `role="contentinfo"` element and its controls sit inside a genuine `<nav class="deck-nav">` carrying an `aria-label` — chrome that steers the deck is a navigation landmark, not a div of buttons.
 - **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
 - **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px `--focus-ring` outline, 2px offset; **Disabled:** 30% opacity. On dark fields it takes a 10%-Paper fill, an `--ond-rule` border and an `--ond-text` glyph, and hovers to the field's mark (`--ond-mark` fill, `--ond-mark-ink` glyph).
 
@@ -298,6 +310,21 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Footer band (`section.media::after`):** a theme-owned strip the height of the footer clearance, present whether or not the author added a scrim, because the footer is chrome the author never sees when choosing the image.
 - **Measured worst case** (a pure-white frame): Paper reads 18.8:1 on the footer strip and 13.2:1 in the caption zone — deeper than the navy field, which is why `.media` sits in the deep register and its caption kicker takes gold. Both layers carry `print-color-adjust: exact` so the guarantee survives PDF export.
 
+### Process Flow (`.flow`)
+- **Character:** a process drawn as ruled columns, not as boxes joined by arrows.
+- **Structure:** a flex row of `.flow-step` columns (`flex: 1 1 0`) with an `--space-xl` gutter; each step opens on a 4px (`--bar`) near-black `Rule` top border with `padding: var(--space-sm) 0 0` — no background, no side or bottom border, no radius.
+- **Contents:** gothic uppercase step number (`.step-n`, 600, `--fs-label`, 0.12em tracking, `Structural Navy`), gothic step head (`.step-h`, 600, body size, line-height 1.08), serif gloss at caption size in `Ink Soft`, and an optional italic `.step-q`.
+- **Vector chip (`.step-vec`):** monospace at caption size on the `Sunken` fill with a 3px (`--radius-sm`) corner and no border — the same treatment as inline `code`.
+- **Arrow (`.flow-arrow`):** sits *on* the rule band rather than beside the prose — `align-self: flex-start`, `height: var(--bar)`, a half-bar negative top margin, `--green-deep`, `--fs-small`, weight 700. `.flow.tight` closes the gutter to 0.
+
+### Table (ruled ledger)
+- **Style:** no boxes and no vertical lines — a gothic uppercase header row (700, 0.82em, 0.10em tracking, `Ink Bold`) over a 3px near-black `Rule`, 1px hairlines between body rows, and `Sunken` at 70% transparency striping the even rows. Body text at `--fs-small`; `.num` columns are right-aligned with tabular lining figures.
+- **Padding:** `0.55em calc(0.9 * var(--fs-small))`. The horizontal value is measured against the *table's* font-size, not the cell's; the vertical value stays in em on purpose, so a smaller header row keeps a proportional band.
+
+### Inline Highlight (`mark` / `.hl`)
+- **Style:** a gold wash laid as a gradient from 58% height, so it reads as a highlighter stroke under the phrase rather than as a filled chip; square corners (`border-radius: 0`), text colour inherited.
+- **Overhang:** `padding: 0 0.2em; margin: 0 -0.14em`. The stroke overshoots the first and last glyph the way a real marker does, and the negative margin gives the space back so surrounding text does not move. At the former 0.06em (1.4px) the wash stopped flush against the glyphs and read as a printing error.
+
 ### Progress Bar
 - **Style:** a 3px rule on the viewport, `Lead Green` fill on light over an ink track at 22% opacity.
 - **On dark:** the fill takes `--ond-mark` — a green bar on a green divider was drawing itself at 1.28:1 against its own background, invisible on exactly the slides that end a section — and the unfilled track lifts from 1.23:1 to 1.61:1.
@@ -311,6 +338,10 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 **The Two Image Treatments Rule.** Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.
 
 **The Themed Focus Rule.** Focus is never the browser default. One token carries it — `--focus-ring`, `--green` on light (3.87:1 on Paper) and Paper on every dark field (green measures 1.28:1 on its own field, 1.47:1 on brown). `.deck-btn`, `.toc-item`, `.is-zoomable` and in-slide links all consume it, and focus radii take `var(--radius-sm)`.
+
+**The Focus Ring Is Not Animated Rule.** A focus indicator appears the instant focus lands; it never fades up. Every transition in the theme names its properties — `.deck-btn`, `.toc-close` and the lightbox close button list `background-color, border-color, color, transform`; `.fragment.fade-up` lists `transform, opacity`. `transition: all` appears nowhere in the theme: it swept `outline-color` and `outline-offset` into the 220ms (`--dur`) ramp, so the ring arrived late on exactly the interaction that needs it immediately. Add a property to a transition by naming it.
+
+**The Padding Measures The Container Rule.** Em padding resolves against the element's own font-size, so a header cell at 0.82em and a body cell at 1em drew different gutters from one declaration — 12.4px against 17.0px — and a right-aligned header sat 4.6px inboard of the numerals it labelled. Horizontal cell padding is therefore `calc(0.9 * var(--fs-small))`: one gutter measured against the table, so header ink and numeral ink end at the same x (1186.2px, measured). A prior reading blamed trailing letter-space on the tracked headers; measurement showed the em mismatch was the cause. Any grid whose columns must align across rows of different type sizes sizes its gutter against the container, not the cell.
 
 **The Scrim Guarantee Rule.** A dark ground the theme does not own must be manufactured, not assumed. Full-bleed media carries a theme-owned footer band regardless of what the author added, and any new overlay-on-image pattern states the contrast it holds against a worst-case white frame.
 
@@ -330,6 +361,9 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Do** let the closing take its own measures (22ch title, 46ch lead, byline in a row) — it is all type, and it is the only place those overrides apply.
 - **Do** give an opening rule air above it and land adjacent rules at the same x; a near-miss between two copies of the same device reads as a mistake.
 - **Do** inset a panel's own header text past any control floating over it (`calc(2.4rem + var(--space-sm))` on `.toc-head`) while leaving the rule full-width.
+- **Do** open a process step, a panel or any grouped column on the 4px near-black rule and let the gutter separate them — `.flow-step` and `.panel` share one opening device.
+- **Do** name every property a transition animates, and keep the focus ring out of them.
+- **Do** measure a gutter that must align across type sizes against the container (`calc(0.9 * var(--fs-small))` on table cells) rather than against each cell's own em.
 - **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
 
 ### Don't:
@@ -345,4 +379,6 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 - **Don't** waive the fit check with boilerplate when the real fault is a measure drawn for a different composition — fix the measure, as `.closing` now does.
 - **Don't** widen `.lead` past 30ch outside `.closing`, or push the closing's row byline onto covers and other slides.
 - **Don't** read the showcase deck's slack as a measurement of the system; its copy is placeholder by design.
+- **Don't** write `transition: all` — it animates `outline-color` and `outline-offset` and makes the focus ring fade up over 220ms.
+- **Don't** put a border on the Sunken inset (code blocks included) or a radius on a ruled column; the surface is either the fill or the opening rule, never either one plus a hairline outline.
 - **Don't** convert the OKLCH neutrals to hex or "correct" the hex corporate palette; each format is normative where it stands.

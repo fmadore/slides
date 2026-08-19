@@ -17,19 +17,25 @@
 
 /* FLOW — a process as a diagram: numbered steps joined by arrows. Generalises
    the per-deck "semflow"; flex so it takes any number of steps. */
-.reveal .flow { display: flex; align-items: stretch; gap: var(--space-xs); margin: var(--space-lg) 0; max-width: none; }
+/* The steps are ruled columns, not cards. Three bordered radiused boxes joined
+   by arrows is the one composition on this deck an unrelated product could ship
+   unchanged — and it sat on the slide captioned "A process, drawn — not
+   bulleted". Each step now opens on the same heavy rule .panel uses, and the
+   separation comes from the gutter rather than from a border. */
+.reveal .flow { display: flex; align-items: stretch; gap: var(--space-xl); margin: var(--space-lg) 0; max-width: none; }
 .reveal .flow-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0.4em;
-  border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
+  border-top: var(--bar) solid var(--rule); padding: var(--space-sm) 0 0; }
 .reveal .flow-step .step-n { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label);
   letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); }
 .reveal .flow-step .step-h { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); line-height: 1.08; color: var(--ink); }
 .reveal .flow-step p { margin: 0; font-size: var(--fs-caption); line-height: 1.4; color: var(--ink-soft); max-width: none; }
 .reveal .flow-step .step-q { font-family: var(--font-display); font-style: italic; font-size: var(--fs-small); color: var(--ink); }
 .reveal .flow-step .step-vec { align-self: flex-start; font-family: var(--font-mono); font-size: var(--fs-caption);
-  color: var(--brown-deep); background: var(--sunken); border: var(--hair); border-radius: var(--radius-sm); padding: 0.2em 0.5em; }
+  color: var(--brown-deep); background: var(--sunken); border-radius: var(--radius-sm); padding: 0.2em 0.5em; }
 .reveal .flow-step ul { margin: 0; } .reveal .flow-step li { margin: 0 0 0.25em; }
-.reveal .flow-arrow { flex: none; align-self: center; display: flex; align-items: center;
-  color: var(--green); font-weight: 700; font-size: var(--fs-lead); }
+.reveal .flow-arrow { flex: none; align-self: flex-start; display: flex; align-items: center;
+  height: var(--bar); margin-top: calc(var(--bar) / -2 + 0.5px);
+  color: var(--green-deep); font-weight: 700; font-size: var(--fs-small); }
 .reveal .flow.tight { gap: 0; } .reveal .flow.tight .flow-arrow { padding: 0 0.15em; }
 
 /* =============================================================================

@@ -3,8 +3,10 @@
    ---------------------------------------------------------------------------- */
 .reveal pre {
   width: 100%; margin: var(--space-md) 0; font-size: 0.78em; line-height: 1.5;
+  /* The Sunken inset is the system's one sanctioned surface, and it carries no
+     border — a hairline around it makes the block a card again. */
   box-shadow: none; border-radius: var(--radius-md); background: var(--sunken);
-  border: 1px solid var(--line);
+  border: none;
 }
 .reveal pre code {
   /* display:block is load-bearing: as an inline box the horizontal padding
@@ -98,7 +100,9 @@
 
 /* "Scan for these slides" QR — a small labelled code for the cover/closing. */
 .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
-.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 6px; border: 1px solid var(--line-strong); }
+/* Pure #fff, not --paper: a QR carries its own quiet-zone contract and scanners
+   read it against white, so this one white is a functional value, not a themed one. */
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--line-strong); }
 .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
 .reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
 .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
@@ -134,6 +138,9 @@
 /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
    (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
 .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
+/* A warm near-black letterbox behind app screenshots of any aspect ratio. It is
+   deliberately not an ink token: it belongs to the captured artifact, like the
+   browser chrome around it, not to the page's own neutral ramp. */
 .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
 .reveal .demo-shot-view img { display: block; width: auto; height: auto;
   max-height: 336px; max-width: 100%; }
@@ -177,7 +184,7 @@
   width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
   background: color-mix(in oklch, var(--paper), transparent 86%);
   border: 1px solid color-mix(in oklch, var(--paper), transparent 74%);
-  color: var(--paper); transition: all var(--dur) var(--ease);
+  color: var(--paper); transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
 .deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
@@ -185,6 +192,6 @@
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */
-.reveal .fragment.fade-up { transform: translateY(14px); transition: all 420ms var(--ease); }
+.reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }

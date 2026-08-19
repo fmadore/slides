@@ -356,7 +356,11 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* Inline highlight — a solid gold underline-block behind a phrase */
 .reveal mark, .reveal .hl {
   background: linear-gradient(transparent 58%, color-mix(in oklch, var(--gold), white 18%) 58%);
-  color: inherit; padding: 0 0.06em; border-radius: 0;
+  /* A highlighter stroke overshoots the word it marks; at 0.06em (1.4px) the
+     wash stopped flush against the first and last glyph and read as a printing
+     error. The negative margin gives the ink its overhang without moving the
+     surrounding text. */
+  color: inherit; padding: 0 0.2em; margin: 0 -0.14em; border-radius: 0;
 }
 .reveal .accent { color: var(--green-deep); }
 .reveal .accent-navy { color: var(--navy); }
@@ -410,7 +414,12 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 
 /* Tables — heavy gothic small-caps headers, ruled, neutral zebra */
 .reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-small); width: 100%; }
-.reveal table th, .reveal table td { text-align: left; padding: 0.55em 0.9em; border: none; border-bottom: var(--hair); }
+/* The horizontal padding is measured against the TABLE's font-size, not each
+   cell's. `0.9em` resolved against the header's own 0.82em size and the body
+   cell's full size — 12.4px against 17.0px — so a right-aligned header sat
+   4.6px inboard of the numerals it labelled. Vertical padding stays in em,
+   where a smaller header genuinely wants a shorter row. */
+.reveal table th, .reveal table td { text-align: left; padding: 0.55em calc(0.9 * var(--fs-small)); border: none; border-bottom: var(--hair); }
 .reveal table th {
   font-family: var(--font-label); font-weight: 700; color: var(--ink-bold);
   text-transform: uppercase; letter-spacing: var(--track-hall); font-size: 0.82em;
@@ -844,7 +853,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
   top: 1.3rem; height: 1.3rem; z-index: 30;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  pointer-events: none; font-family: var(--font-label); font-size: 0.74rem; font-weight: 700;
+  pointer-events: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-faint);
 }
 .deck-runhead::after {
@@ -897,7 +906,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   -webkit-appearance: none; appearance: none; cursor: pointer;
   display: inline-grid; place-items: center; width: 2rem; height: 2rem;
   border-radius: var(--radius-sm); border: 1.5px solid var(--line-strong); background: transparent;
-  color: var(--ink-soft); padding: 0; transition: all var(--dur) var(--ease);
+  color: var(--ink-soft); padding: 0;
+  /* Never `all`: it sweeps in outline-color and outline-offset too, so the
+     focus ring faded up over 220ms instead of appearing when focus lands. */
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .deck-btn svg { width: 1.05rem; height: 1.05rem; }
 .deck-btn:hover { color: var(--paper); border-color: var(--green); background: var(--green); transform: translateY(-1px); }
@@ -998,16 +1010,16 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 .toc-item:hover .toc-dots { border-bottom-color: var(--green); }
 .toc-item.current .toc-num, .toc-item.current .toc-label, .toc-item.current .toc-folio { color: var(--green-deep); }
 .toc-item.current .toc-label { font-weight: 800; }
-.toc-foot { margin-top: clamp(1.1rem,3vw,1.8rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--ink-faint); font-family: var(--font-label); font-size: 0.8rem; font-weight: 500; }
+.toc-foot { margin-top: clamp(1.1rem,3vw,1.8rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--ink-faint); font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 500; }
 .toc-foot kbd {
-  font-family: var(--font-mono); font-size: 0.82em; padding: 0.12em 0.5em; border-radius: 4px;
+  font-family: var(--font-mono); font-size: 0.82em; padding: 0.12em 0.5em; border-radius: var(--radius-sm);
   background: var(--sunken); color: var(--ink-soft); border: 1px solid var(--line);
 }
 .toc-close {
   position: absolute; top: clamp(1.2rem,3vw,2rem); right: clamp(1.2rem,3vw,2rem);
   width: 2.4rem; height: 2.4rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
   background: var(--panel); border: 1.5px solid var(--line-strong);
-  color: var(--ink-soft); transition: all var(--dur) var(--ease);
+  color: var(--ink-soft); transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .toc-close:hover { background: var(--green-deep); color: var(--paper); border-color: var(--green-deep); }
 .toc-close svg { width: 1rem; height: 1rem; }
@@ -1017,8 +1029,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
    ---------------------------------------------------------------------------- */
 .reveal pre {
   width: 100%; margin: var(--space-md) 0; font-size: 0.78em; line-height: 1.5;
+  /* The Sunken inset is the system's one sanctioned surface, and it carries no
+     border — a hairline around it makes the block a card again. */
   box-shadow: none; border-radius: var(--radius-md); background: var(--sunken);
-  border: 1px solid var(--line);
+  border: none;
 }
 .reveal pre code {
   /* display:block is load-bearing: as an inline box the horizontal padding
@@ -1112,7 +1126,9 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 
 /* "Scan for these slides" QR — a small labelled code for the cover/closing. */
 .reveal .slides-qr { display: inline-flex; align-self: flex-start; align-items: center; gap: 0.85rem; margin-top: var(--space-lg); }
-.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: 6px; border: 1px solid var(--line-strong); }
+/* Pure #fff, not --paper: a QR carries its own quiet-zone contract and scanners
+   read it against white, so this one white is a functional value, not a themed one. */
+.reveal .slides-qr > img { width: 86px; height: 86px; display: block; background: #fff; padding: 6px; border-radius: var(--radius-md); border: 1px solid var(--line-strong); }
 .reveal .slides-qr .qr-label { display: flex; flex-direction: column; gap: 0.1em; text-align: left; }
 .reveal .slides-qr .qr-label b { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); color: var(--ink-bold); }
 .reveal .slides-qr .qr-label .qr-url { font-family: var(--font-mono); font-size: var(--fs-footer); color: var(--ink-faint); }
@@ -1148,6 +1164,9 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* The demo-shot URL bar is a <figcaption>, so generic figcaption styles leak in
    (top margin → white gap, italic → slanted URL, max-width:52ch → narrow bar). Reset. */
 .reveal .demo-shot .site-frame-bar { flex: none; margin-top: 0; max-width: none; font-style: normal; }
+/* A warm near-black letterbox behind app screenshots of any aspect ratio. It is
+   deliberately not an ink token: it belongs to the captured artifact, like the
+   browser chrome around it, not to the page's own neutral ramp. */
 .reveal .demo-shot-view { min-height: 0; line-height: 0; background: #211f1d; }
 .reveal .demo-shot-view img { display: block; width: auto; height: auto;
   max-height: 336px; max-width: 100%; }
@@ -1191,7 +1210,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
   width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
   background: color-mix(in oklch, var(--paper), transparent 86%);
   border: 1px solid color-mix(in oklch, var(--paper), transparent 74%);
-  color: var(--paper); transition: all var(--dur) var(--ease);
+  color: var(--paper); transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
 .deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
@@ -1199,7 +1218,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */
-.reveal .fragment.fade-up { transform: translateY(14px); transition: all 420ms var(--ease); }
+.reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }
 
@@ -1461,19 +1480,25 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
 
 /* FLOW — a process as a diagram: numbered steps joined by arrows. Generalises
    the per-deck "semflow"; flex so it takes any number of steps. */
-.reveal .flow { display: flex; align-items: stretch; gap: var(--space-xs); margin: var(--space-lg) 0; max-width: none; }
+/* The steps are ruled columns, not cards. Three bordered radiused boxes joined
+   by arrows is the one composition on this deck an unrelated product could ship
+   unchanged — and it sat on the slide captioned "A process, drawn — not
+   bulleted". Each step now opens on the same heavy rule .panel uses, and the
+   separation comes from the gutter rather than from a border. */
+.reveal .flow { display: flex; align-items: stretch; gap: var(--space-xl); margin: var(--space-lg) 0; max-width: none; }
 .reveal .flow-step { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0.4em;
-  border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); }
+  border-top: var(--bar) solid var(--rule); padding: var(--space-sm) 0 0; }
 .reveal .flow-step .step-n { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label);
   letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); }
 .reveal .flow-step .step-h { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); line-height: 1.08; color: var(--ink); }
 .reveal .flow-step p { margin: 0; font-size: var(--fs-caption); line-height: 1.4; color: var(--ink-soft); max-width: none; }
 .reveal .flow-step .step-q { font-family: var(--font-display); font-style: italic; font-size: var(--fs-small); color: var(--ink); }
 .reveal .flow-step .step-vec { align-self: flex-start; font-family: var(--font-mono); font-size: var(--fs-caption);
-  color: var(--brown-deep); background: var(--sunken); border: var(--hair); border-radius: var(--radius-sm); padding: 0.2em 0.5em; }
+  color: var(--brown-deep); background: var(--sunken); border-radius: var(--radius-sm); padding: 0.2em 0.5em; }
 .reveal .flow-step ul { margin: 0; } .reveal .flow-step li { margin: 0 0 0.25em; }
-.reveal .flow-arrow { flex: none; align-self: center; display: flex; align-items: center;
-  color: var(--green); font-weight: 700; font-size: var(--fs-lead); }
+.reveal .flow-arrow { flex: none; align-self: flex-start; display: flex; align-items: center;
+  height: var(--bar); margin-top: calc(var(--bar) / -2 + 0.5px);
+  color: var(--green-deep); font-weight: 700; font-size: var(--fs-small); }
 .reveal .flow.tight { gap: 0; } .reveal .flow.tight .flow-arrow { padding: 0 0.15em; }
 
 /* =============================================================================

@@ -356,7 +356,11 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* Inline highlight — a solid gold underline-block behind a phrase */
 .reveal mark, .reveal .hl {
   background: linear-gradient(transparent 58%, color-mix(in oklch, var(--gold), white 18%) 58%);
-  color: inherit; padding: 0 0.06em; border-radius: 0;
+  /* A highlighter stroke overshoots the word it marks; at 0.06em (1.4px) the
+     wash stopped flush against the first and last glyph and read as a printing
+     error. The negative margin gives the ink its overhang without moving the
+     surrounding text. */
+  color: inherit; padding: 0 0.2em; margin: 0 -0.14em; border-radius: 0;
 }
 .reveal .accent { color: var(--green-deep); }
 .reveal .accent-navy { color: var(--navy); }
@@ -410,7 +414,12 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 
 /* Tables — heavy gothic small-caps headers, ruled, neutral zebra */
 .reveal table { margin: var(--space-md) 0; border-collapse: collapse; font-size: var(--fs-small); width: 100%; }
-.reveal table th, .reveal table td { text-align: left; padding: 0.55em 0.9em; border: none; border-bottom: var(--hair); }
+/* The horizontal padding is measured against the TABLE's font-size, not each
+   cell's. `0.9em` resolved against the header's own 0.82em size and the body
+   cell's full size — 12.4px against 17.0px — so a right-aligned header sat
+   4.6px inboard of the numerals it labelled. Vertical padding stays in em,
+   where a smaller header genuinely wants a shorter row. */
+.reveal table th, .reveal table td { text-align: left; padding: 0.55em calc(0.9 * var(--fs-small)); border: none; border-bottom: var(--hair); }
 .reveal table th {
   font-family: var(--font-label); font-weight: 700; color: var(--ink-bold);
   text-transform: uppercase; letter-spacing: var(--track-hall); font-size: 0.82em;
