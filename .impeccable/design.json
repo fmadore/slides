@@ -335,6 +335,18 @@
         "value": "560px",
         "purpose": "max-height: a real footer strip is reserved outside the area reveal scales into, so the footer never covers content on landscape phones."
       }
+    ],
+    "print": [
+      {
+        "name": "excerpt-mark",
+        "value": "none | block",
+        "purpose": "Draws the paper cut on .scroll-panel: a fade into the Sunken fill plus a ruled Excerpt band (Extrait under html[lang=fr]; the address appended when the panel carries data-source-url). Set to block by @media print and by html.reveal-print for the ?print-pdf preview."
+      },
+      {
+        "name": "scroll-hint-display",
+        "value": "inline-flex | none",
+        "purpose": "Suppresses the on-screen scroll instruction in print, where it would be a false one. Declared alongside --excerpt-mark in the same two paper contexts."
+      }
     ]
   },
   "components": [

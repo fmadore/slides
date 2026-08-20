@@ -74,7 +74,10 @@
     .reveal .kvm-btn { appearance: none; -webkit-appearance: none; cursor: pointer;
       font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer); line-height: 1;
       letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85em 1.1em; border-radius: var(--radius-sm);
-      background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line-strong); transition: all var(--dur) var(--ease); }
+      background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line-strong);
+      /* Never `all`: it sweeps outline-color and outline-offset in too, so the
+         focus ring faded up over 220ms instead of landing with focus. */
+      transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
     .reveal .kvm-btn:hover { border-color: var(--navy); color: var(--navy); }
     .reveal .kvm-btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
     .reveal .kvm[data-mode="keyword"] .kvm-btn[data-mode="keyword"],
@@ -91,7 +94,7 @@
       padding: 0.36em 0; border-bottom: 1px solid var(--line); }
     .reveal .kvm-title { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); min-width: 0; }
     .reveal .kvm-title.rtl { direction: rtl; text-align: left; }
-    .reveal .kvm-tag { font-family: var(--font-label); font-weight: 700; font-size: 0.62rem; letter-spacing: 0.05em;
+    .reveal .kvm-tag { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); letter-spacing: 0.05em;
       text-transform: uppercase; color: var(--ink-soft); border: 1.5px solid var(--line); border-radius: var(--radius-sm);
       padding: 0.25em 0.6em; white-space: nowrap; }
     .reveal .kvm-tag.cross { color: var(--brown-deep); border-color: color-mix(in oklch, var(--brown), white 50%); }

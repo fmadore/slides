@@ -31,10 +31,14 @@
 .reveal .hljs-ln-numbers { color: var(--ink-faint); }
 .reveal pre .hljs-line-highlight, .reveal .highlight-line { background: var(--green-wash); }
 
-/* Scrollable file embed — e.g. the live SKILL.md; the presenter scrolls it. */
+/* Scrollable file embed — e.g. the live SKILL.md; the presenter scrolls it.
+   No hairline: this is the Sunken inset, whose surface is the fill plus the
+   inset shadow and never either one with an outline on top. `.reveal pre` was
+   brought under that rule in Pass 5; its scrollable sibling was missed. */
 .reveal .scroll-panel {
+  position: relative;   /* containing block for the paper-cut marks */
   flex: 1 1 auto; min-height: 0; max-height: 25rem; width: 100%; overflow-y: auto; overscroll-behavior: contain;
-  background: var(--sunken); border: 1px solid var(--line); border-radius: var(--radius-md);
+  background: var(--sunken); border: none; border-radius: var(--radius-md);
   box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5);
   scrollbar-width: thin;
   scrollbar-color: var(--green) transparent;
@@ -188,6 +192,52 @@
 }
 .deck-lightbox .lightbox-close:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
 .deck-lightbox .lightbox-close svg { width: 1.1rem; height: 1.1rem; }
+
+/* THE PAPER CUT. A scroll panel cannot scroll on paper, and under the
+   one-page-per-slide contract a 190-line file was never going to fit a
+   1280×720 page — so the excerpt is unavoidable. What was avoidable is the
+   silence: the PDF used to hard-cut mid-sentence with no mark at all, under
+   authored copy still telling the reader to scroll. The cut is now drawn in
+   the theme's own vocabulary — the text fades into the Sunken fill, the heavy
+   near-black rule that opens a block is used here to close one, and a gothic
+   label names what the reader is holding. Both marks and the suppressed hint
+   hang off the same pair of properties, declared once per paper context. */
+.reveal .scroll-panel::after,
+.reveal .scroll-panel::before {
+  display: var(--excerpt-mark, none);
+  position: absolute; left: 0; right: 0; pointer-events: none;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.reveal .scroll-panel::after {           /* the fade, seated on the band */
+  content: ""; bottom: 2.05em; height: 3.6em;
+  background: linear-gradient(to bottom, transparent, var(--sunken));
+}
+.reveal .scroll-panel::before {          /* the band that closes the panel */
+  content: "Excerpt"; bottom: 0; padding: 0.4em 1.5em;
+  background: var(--sunken); border-top: 2px solid var(--rule);
+  font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
+  letter-spacing: var(--track-label); text-transform: uppercase; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* A panel that already declares where its file came from names it on paper.
+   data-source-url is an existing authoring attribute — deck.js falls back to it
+   when the embed cannot load — so the band reuses the author's own answer
+   instead of asking for a second one. It is also what keeps the suppressed
+   scroll-hint from taking a URL down with it. The source variant carries its
+   caps in the string and turns text-transform off, because uppercasing a URL
+   shouts it and makes the path segments harder to read; its tracking eases for
+   the same reason. The label keeps its voice, the address stays an address. */
+.reveal .scroll-panel[data-source-url]::before {
+  content: "EXCERPT · " attr(data-source-url);
+  text-transform: none; letter-spacing: 0.06em;
+}
+html[lang="fr"] .reveal .scroll-panel::before { content: "Extrait"; }
+html[lang="fr"] .reveal .scroll-panel[data-source-url]::before { content: "EXTRAIT · " attr(data-source-url); }
+.reveal .scroll-hint { display: var(--scroll-hint-display, inline-flex); }
+/* The two paper contexts: the real print run, and the ?print-pdf preview the
+   author actually looks at. Same pair of declarations, same reason. */
+@media print { .reveal { --excerpt-mark: block; --scroll-hint-display: none; } }
+html.reveal-print .reveal { --excerpt-mark: block; --scroll-hint-display: none; }
 
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
