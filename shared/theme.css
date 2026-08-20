@@ -161,7 +161,16 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --dur: 220ms;
-  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw, bars grow, figures count */
+  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw in, bars grow from the baseline */
+  --count: 900ms;  /* the signature's third movement — figures counting up (run in deck.js).
+                      Longer than --draw on purpose: a numeral needs legible frames to be
+                      read as counting, where a rule only needs to be seen arriving. */
+  /* THE ONE STILLER. Every signature animation takes its duration from here, and
+     everything that wants the page to arrive still — print, the ?print-pdf
+     preview, prefers-reduced-motion, a .no-draw deck or slide — sets this to 0s
+     rather than restating the list of animated marks. deck.js reads the same
+     property off the slide, so the CSS half and the JS half cannot disagree. */
+  --draw-run: var(--draw);
 
   /* — Slide geometry — */
   --slide-pad-x: 4.8rem;
@@ -240,7 +249,16 @@
    slides (section / closing / media) so the framing stays consistent either way. */
 .reveal-viewport {
   background-color: var(--paper);
-  transition: background-color 360ms var(--ease);
+  /* !important is load-bearing, and only here. Reveal writes
+     `transition: transform 0.8s` INLINE on this element while it initialises,
+     and an inline declaration outranks any stylesheet rule — so the cross-fade
+     declared on this line never ran even once: the frame around the canvas cut
+     instantly between the paper ground and the graphite one, on every section
+     divider, while the slide it surrounds faded. Reveal's own transform
+     transition is restated rather than dropped; the viewport measures
+     `transform: none` in every state this deck uses (normal, overview,
+     fullscreen), so the restatement costs nothing and takes nothing away. */
+  transition: background-color 360ms var(--ease), transform 0.8s !important;
 }
 .reveal-viewport.deck-dark { background-color: oklch(0.165 0.012 258); }
 ::selection { background: var(--r-selection-background-color); color: var(--r-selection-color); }
@@ -1218,6 +1236,19 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */
+/* Reveal ships `.reveal .fragment { transition: all .2s }` — the one declaration
+   the theme's own rule forbids, since `all` sweeps in outline-color and
+   outline-offset and fades the focus ring up on any fragment that can take focus
+   (a zoomable figure, a link). Named here instead: the four properties reveal's
+   fragment vocabulary actually moves — opacity for the plain and fading kinds,
+   colour for .highlight-*, transform for .grow/.shrink, and visibility, which
+   holds the element on screen long enough for a backward step to fade out. The
+   plain .fragment is the scaffold's default disclosure, so this is the path most
+   decks take. */
+.reveal .fragment {
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease),
+              transform var(--dur) var(--ease), visibility var(--dur);
+}
 .reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }
@@ -1261,9 +1292,26 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .reveal .slides section.media { height: 100% !important; }
 }
 
+/* REDUCED MOTION — take the movement away, not the feedback. The rule here used
+   to zero every transition-duration on every element, which read as thorough and
+   was not: it also flattened the viewport's 360ms cross-fade between the paper
+   ground and the graphite one into an instant full-screen flip between near-white
+   and near-black, on every section divider — a hard luminance cut delivered to
+   exactly the audience least able to take one. A transition that only changes
+   colour or opacity carries no motion vector and stays at its authored timing;
+   what goes is displacement. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-  .toc-close:hover { transform: none; }
+  /* The signature stills through the switch print and .no-draw already use. */
+  .reveal { --draw-run: 0s; }
+  /* Backstop for any keyframe animation the switch does not own. */
+  *, *::before, *::after { animation-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  /* Overlays still fade in — they just stop travelling to get there. */
+  .toc-panel, .deck-lightbox .lightbox-figure, .reveal .fragment.fade-up { transform: none !important; }
+  /* Hover and press feedback keeps its colour change and loses its 1px lift. */
+  .deck-btn:hover, .deck-btn:active { transform: none; }
+  .toc-item:hover { padding-left: 0.4rem; }
+  /* The progress bar jumps to its new position rather than sliding across. */
+  .reveal .progress span { transition: none; }
 }
 
 /* The reveal canvas is scaled to fit, so chrome (runhead/footer/toc) is what
@@ -1505,35 +1553,49 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
    15. MOTION SIGNATURE — rules that draw, bars that grow     (Move 3, CSS half)
    One ink-on-paper idea, repeated and restrained: the heavy markers and rules
    lay themselves down as a slide arrives; the chart fills rise from the
-   baseline. Numbers count up in deck.js. All of it stilled for print and for
-   prefers-reduced-motion (the global rule in §10 zeroes these durations).
+   baseline. Numbers count up in deck.js. Nothing here restates which marks are
+   animated in order to still them — they all read their duration from
+   --draw-run, and print, the ?print-pdf preview, prefers-reduced-motion and
+   .no-draw each set that one property to 0s.
    ============================================================================= */
 @keyframes rule-draw { from { transform: scaleX(0); } }
 @keyframes grow-up   { from { height: 0; } }
-@keyframes grow-right{ from { width: 0; } }
 
-/* the signature green marker + kicker tick + gold plate-rule draw from the left */
+/* Everything the signature draws from the left is one device and one keyframe:
+   the green marker over a title, the kicker's tick, the plate rule that opens a
+   section or the colophon — and the share-bar fill, which is a rule whose
+   length is the number. It used to animate `width` under its own `grow-right`
+   keyframe; scaling it instead is exact (nothing is laid out against the fill,
+   which sits alone inside an overflow-hidden track) and takes the whole set off
+   the layout path onto the compositor. */
 .reveal section.present .slide-title::before,
 .reveal section.present .kicker::before,
 .reveal section.section.present::before,
-.reveal section.closing.present::before {
-  transform-origin: left center; animation: rule-draw var(--draw) var(--ease) both;
+.reveal section.closing.present::before,
+.reveal section.present .share-track::before {
+  transform-origin: left center; animation: rule-draw var(--draw-run) var(--ease) both;
 }
-/* chart fills rise / sweep in once their slide is present */
-.reveal section.present .barchart .bar::after { animation: grow-up var(--draw) var(--ease) both; }
-.reveal section.present .share-track::before { animation: grow-right var(--draw) var(--ease) both; }
+/* The column chart is the one animation that stays on the layout path, and it
+   is a decision rather than an oversight: each bar's value numeral is laid out
+   ON TOP of the growing fill, so the height is what carries the numeral up with
+   its bar (measured: 447px → 247px on the peak bar). Scaling the fill instead
+   would strand all eight numerals at their final height while the bars rose to
+   meet them. Measured cost of the ride, on the catalogue's data slide: 36
+   layouts / ~28ms — against 52 layouts / ~40ms for the count-up running beside
+   it, which stays either way. */
+.reveal section.present .barchart .bar::after { animation: grow-up var(--draw-run) var(--ease) both; }
 
-/* Opt-out hook for a deck or a single slide that wants the page to arrive still. */
-.reveal.no-draw section .slide-title::before,
-.reveal.no-draw section .kicker::before,
-.reveal .no-draw .slide-title::before,
-.reveal section.no-draw .barchart .bar::after,
-.reveal section.no-draw .share-track::before { animation: none !important; }
+/* THE STILLERS. A zero duration with `both` fill lands each mark on its end
+   state, so the slide simply arrives finished. The opt-out reads at deck level
+   (<div class="reveal no-draw">) and at slide level (<section class="no-draw">);
+   it used to reach five of the six marks in three different selector grammars,
+   leaving a section divider's plate rule drawing itself on a deck that had
+   asked for stillness. */
+.reveal.no-draw, .reveal section.no-draw { --draw-run: 0s; }
+html.reveal-print .reveal { --draw-run: 0s; }
 
 /* Print: ink the new dark fields, and never hold a half-drawn rule on paper. */
 @media print {
+  .reveal { --draw-run: 0s; }
   .reveal section.section.warm { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .reveal section .slide-title::before, .reveal section .kicker::before,
-  .reveal section.section::before, .reveal section.closing::before,
-  .reveal .barchart .bar::after, .reveal .share-track::before { animation: none !important; }
 }

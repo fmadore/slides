@@ -117,14 +117,29 @@
        data-count="14700"            target number
        data-count-decimals="1"       fixed decimals during the roll (default 0)
        data-count-prefix / -suffix   glued on each frame (e.g. "+", "M", "×")
-     Stilled entirely under prefers-reduced-motion. ----------------------------- */
-  var REDUCE = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+     Runs on the theme's own motion tokens, and stills with the rest of the
+     signature. ---------------------------------------------------------------- */
+  /* A CSS time token as a number of milliseconds ("560ms", "0s", "0.9s"). */
+  function msOf(value, fallback) {
+    var v = String(value || "").trim();
+    var n = parseFloat(v);
+    if (isNaN(n)) return fallback;
+    return /ms$/.test(v) ? n : (/s$/.test(v) ? n * 1000 : n);
+  }
   function animateCounts(slide) {
     if (!slide || typeof requestAnimationFrame !== "function") return;
-    // Hold the final value (no roll) when motion is unwanted or frames won't run:
-    // reduced-motion, the PDF export, or a hidden tab (rAF is paused there, so a
-    // rolling numeral would otherwise stick at 0).
-    var still = REDUCE || document.hidden || PRINT;
+    /* Counting up is the third movement of the signature the theme draws in CSS,
+       so it asks the same switch whether to run at all: --draw-run resolves to 0s
+       under print, the ?print-pdf preview, prefers-reduced-motion, and on a
+       .no-draw deck or slide. Reading the property rather than re-deriving those
+       four conditions here is what stops the JS half from stilling a different
+       set of things than the CSS half — which is how the opt-out came to reach
+       the bars but not the numbers standing on them. One condition CSS cannot
+       express is added on top: in a hidden tab rAF is paused, so a rolling
+       numeral would sit at 0 until the tab came back. */
+    var cs = getComputedStyle(slide);
+    var still = msOf(cs.getPropertyValue("--draw-run"), 560) === 0 || document.hidden || PRINT;
+    var dur = msOf(cs.getPropertyValue("--count"), 900);
     slide.querySelectorAll("[data-count]").forEach(function (el) {
       var target = parseFloat(el.getAttribute("data-count"));
       if (isNaN(target)) return;
@@ -141,7 +156,7 @@
       if (el._countRAF) return;   // a roll is already running — never reset it back to 0
       var loc = document.documentElement.lang || "en";   // group digits in the deck's language
       function fmt(v) { return pre + v.toLocaleString(loc, { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf; }
-      var dur = 900, t0 = null;
+      var t0 = null;
       function tick(ts) {
         if (t0 === null) t0 = ts;
         var p = Math.min(1, (ts - t0) / dur);

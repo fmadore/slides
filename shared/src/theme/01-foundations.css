@@ -161,7 +161,16 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
   --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
   --dur: 220ms;
-  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw, bars grow, figures count */
+  --draw: 560ms;   /* the "ink-on-paper" signature: rules draw in, bars grow from the baseline */
+  --count: 900ms;  /* the signature's third movement — figures counting up (run in deck.js).
+                      Longer than --draw on purpose: a numeral needs legible frames to be
+                      read as counting, where a rule only needs to be seen arriving. */
+  /* THE ONE STILLER. Every signature animation takes its duration from here, and
+     everything that wants the page to arrive still — print, the ?print-pdf
+     preview, prefers-reduced-motion, a .no-draw deck or slide — sets this to 0s
+     rather than restating the list of animated marks. deck.js reads the same
+     property off the slide, so the CSS half and the JS half cannot disagree. */
+  --draw-run: var(--draw);
 
   /* — Slide geometry — */
   --slide-pad-x: 4.8rem;
@@ -240,7 +249,16 @@
    slides (section / closing / media) so the framing stays consistent either way. */
 .reveal-viewport {
   background-color: var(--paper);
-  transition: background-color 360ms var(--ease);
+  /* !important is load-bearing, and only here. Reveal writes
+     `transition: transform 0.8s` INLINE on this element while it initialises,
+     and an inline declaration outranks any stylesheet rule — so the cross-fade
+     declared on this line never ran even once: the frame around the canvas cut
+     instantly between the paper ground and the graphite one, on every section
+     divider, while the slide it surrounds faded. Reveal's own transform
+     transition is restated rather than dropped; the viewport measures
+     `transform: none` in every state this deck uses (normal, overview,
+     fullscreen), so the restatement costs nothing and takes nothing away. */
+  transition: background-color 360ms var(--ease), transform 0.8s !important;
 }
 .reveal-viewport.deck-dark { background-color: oklch(0.165 0.012 258); }
 ::selection { background: var(--r-selection-background-color); color: var(--r-selection-color); }

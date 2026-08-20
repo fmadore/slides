@@ -356,6 +356,82 @@ and stopped flush against the first and last glyph (a highlighter overshoots the
 word it marks), and the footer was a plain div — it now carries
 `role="contentinfo"` with a real `<nav>` inside it.
 
+*Pass 6 (`animate`) ✅ COMPLETE 2026-08-20.* Two of the three findings held and
+the third was half wrong, which measuring settled before any code moved. The
+signature does run on the layout path — but the roadmap's "`transform:
+scaleY/scaleX` is a drop-in" is only true of the share bars. On the column
+chart each bar's value numeral is laid out *on top of* the growing fill, so the
+`height` is what carries the numeral up with its bar (447px → 247px on the peak
+bar); scaling instead would strand all eight numerals at their final height
+while the bars rose to meet them. Isolated with CDP performance counters, the
+growing bars cost 36 layouts / ~28ms against 52 layouts / ~40ms for the
+count-up running beside them — so the conversion would have bought back about a
+third of a cost that stays either way, and paid for it with the authored
+detail. Put to the author, who kept the ride. The share fill converted, and did
+not need a keyframe of its own: it is a rule whose length is the number, so it
+now draws on the same `rule-draw` `scaleX` as the marker bars, the kicker ticks
+and the plate rules — `grow-right` is deleted and one motion idea covers five
+of the six marks.
+
+The opt-out finding was the larger one and it generalised. `.no-draw` did not
+merely cover "a smaller set than the print stiller": there were **three** stiller
+lists in three different selector grammars, and a fourth condition
+(`prefers-reduced-motion`) blanket-killing durations from outside. Deck-level
+`.no-draw` reached the title bar and kicker tick but not the charts; slide-level
+`.no-draw` reached the charts but not a section divider's own plate rule; and
+neither reached the counting numerals at all, because those live in `deck.js`.
+All four now throw one switch: every signature animation takes its duration from
+`--draw-run`, and print, the `?print-pdf` preview, reduced motion and `.no-draw`
+each set that one property to `0s` (a zero duration with `both` fill lands each
+mark on its end state — verified in the runtime, not assumed from the spec).
+`deck.js` reads the same property off the slide before starting a count, so the
+JS half can no longer still a different set of things than the CSS half; the one
+condition it adds is the hidden tab, which CSS cannot express.
+
+Progressive disclosure was already half closed — the broken `highlight-green`
+recipe was fixed in an earlier pass and `_showcase` now explains entrance
+against emphasis properly. What remained was that `_template`, which seeds every
+future talk, demonstrated none of it. The author chose to seed a stepped list,
+so the scaffold's content slide now carries `.fragment` on its three items with
+a comment saying when to delete them. Verified in the print view: all three
+render at full opacity, so a scaffolded deck still exports complete.
+
+**Two findings came from measuring rather than from the brief, and both were
+motion that had been written down and never actually ran.** The theme declares
+`.reveal-viewport { transition: background-color 360ms }` for the cross-fade
+between the paper ground and the graphite one — and reveal writes
+`transition: transform 0.8s` *inline* on that same element while it initialises.
+An inline declaration outranks any stylesheet rule, so the fade had never
+happened once: the frame around the canvas cut instantly between near-white and
+near-black on every section divider while the slide it surrounds faded. It is
+the Pass 3 defect in a new place, and the override carries the theme's only
+`!important` outside a stiller. And the reduced-motion answer was a blanket
+`*{ transition-duration: 0.001ms }`, which reads as thorough and was not: it
+turned that same cross-fade into a hard full-screen luminance cut for the
+audience least able to take one. Reduced motion now removes displacement — the
+TOC panel and lightbox figure stop travelling and fade in on opacity alone,
+`.fade-up` stops rising, the button press-lift and the TOC hover slide go, the
+progress bar jumps — and leaves every colour and opacity change at its authored
+timing.
+
+One more came along with the template change: reveal ships
+`.reveal .fragment { transition: all .2s }`, the exact declaration Pass 5 removed
+from the theme and wrote a rule against. It reaches any fragment that can take
+focus, so `.reveal .fragment` now names the four properties reveal's fragment
+vocabulary actually moves.
+
+The end states are untouched: `visual-diff` reports 0.00% across all 24
+catalogue screenshots, every deck's auto-fit scales are unchanged, and the
+exported deck is still 19 pages with 19 imprints. Recorded in DESIGN.md as **The
+One Stiller Rule**, **The Reduced Motion Keeps The Feedback Rule** and **The
+Inline Style Wins Rule**, with the Ink-on-Paper rule rewritten to say why the
+column chart is the one animation left on the layout path.
+
+**Phase 2 is complete.** What is left is Phase 3 (per-deck QA, scaffold review)
+and Phase 4 (cadence). The deferred list is unchanged, except that `distill`
+now has one more candidate: `.no-draw` works correctly and is still used by no
+deck.
+
 | Pass | Command | Primary modules | Findings it must close |
 |---|---|---|---|
 | 1 | `typeset` | `01-foundations` | **[P0]** The label tier is print-scaled while the hall is the primary reader: `.stat-label`/`.bar-axis`/`figcaption` 12.8px, `table th` 11.5px, `pre code` 12.5px. Split the tier — keep 0.82rem for true chrome, add a hall tier ≈1.05–1.15rem (tracking eased to ≈0.10em) for labels that carry meaning. Also raise `.reveal pre` from `0.6em` |

@@ -192,6 +192,19 @@
 /* ----------------------------------------------------------------------------
    9. FRAGMENTS & TRANSITIONS
    ---------------------------------------------------------------------------- */
+/* Reveal ships `.reveal .fragment { transition: all .2s }` — the one declaration
+   the theme's own rule forbids, since `all` sweeps in outline-color and
+   outline-offset and fades the focus ring up on any fragment that can take focus
+   (a zoomable figure, a link). Named here instead: the four properties reveal's
+   fragment vocabulary actually moves — opacity for the plain and fading kinds,
+   colour for .highlight-*, transform for .grow/.shrink, and visibility, which
+   holds the element on screen long enough for a backward step to fade out. The
+   plain .fragment is the scaffold's default disclosure, so this is the path most
+   decks take. */
+.reveal .fragment {
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease),
+              transform var(--dur) var(--ease), visibility var(--dur);
+}
 .reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }

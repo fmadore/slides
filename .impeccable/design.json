@@ -306,12 +306,22 @@
       {
         "name": "dur",
         "value": "220ms",
-        "purpose": "Default state-transition duration (links, buttons, TOC items)."
+        "purpose": "Default state-transition duration (links, buttons, TOC items, fragments)."
       },
       {
         "name": "draw",
         "value": "560ms",
-        "purpose": "The ink-on-paper signature: marker bars and rules draw in from the left, chart bars grow from the baseline, figures count up (data-count) on slide entry. Stilled under print, prefers-reduced-motion, and hidden tabs; .no-draw opts out."
+        "purpose": "The drawn half of the ink-on-paper signature: marker bars, kicker ticks, section and colophon plate rules and the share-bar fill draw in from the left on one rule-draw scaleX keyframe; chart bars grow from the baseline, the one animation left on the layout path so each bar's numeral rides up with it."
+      },
+      {
+        "name": "count",
+        "value": "900ms",
+        "purpose": "The counted third movement: [data-count] numerals roll up on slide entry, run by deck.js. Longer than --draw on purpose - a numeral needs legible frames to read as counting."
+      },
+      {
+        "name": "draw-run",
+        "value": "var(--draw)",
+        "purpose": "The one stiller. Every signature animation takes its duration from here, and print, the ?print-pdf preview, prefers-reduced-motion and .no-draw (deck or slide) each set it to 0s rather than restating the animated marks; deck.js reads the same property off the slide before starting a count."
       }
     ],
     "breakpoints": [

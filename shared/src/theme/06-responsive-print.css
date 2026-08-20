@@ -37,9 +37,26 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .reveal .slides section.media { height: 100% !important; }
 }
 
+/* REDUCED MOTION — take the movement away, not the feedback. The rule here used
+   to zero every transition-duration on every element, which read as thorough and
+   was not: it also flattened the viewport's 360ms cross-fade between the paper
+   ground and the graphite one into an instant full-screen flip between near-white
+   and near-black, on every section divider — a hard luminance cut delivered to
+   exactly the audience least able to take one. A transition that only changes
+   colour or opacity carries no motion vector and stays at its authored timing;
+   what goes is displacement. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-  .toc-close:hover { transform: none; }
+  /* The signature stills through the switch print and .no-draw already use. */
+  .reveal { --draw-run: 0s; }
+  /* Backstop for any keyframe animation the switch does not own. */
+  *, *::before, *::after { animation-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  /* Overlays still fade in — they just stop travelling to get there. */
+  .toc-panel, .deck-lightbox .lightbox-figure, .reveal .fragment.fade-up { transform: none !important; }
+  /* Hover and press feedback keeps its colour change and loses its 1px lift. */
+  .deck-btn:hover, .deck-btn:active { transform: none; }
+  .toc-item:hover { padding-left: 0.4rem; }
+  /* The progress bar jumps to its new position rather than sliding across. */
+  .reveal .progress span { transition: none; }
 }
 
 /* The reveal canvas is scaled to fit, so chrome (runhead/footer/toc) is what

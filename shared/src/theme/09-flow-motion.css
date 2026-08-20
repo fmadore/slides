@@ -42,35 +42,49 @@
    15. MOTION SIGNATURE — rules that draw, bars that grow     (Move 3, CSS half)
    One ink-on-paper idea, repeated and restrained: the heavy markers and rules
    lay themselves down as a slide arrives; the chart fills rise from the
-   baseline. Numbers count up in deck.js. All of it stilled for print and for
-   prefers-reduced-motion (the global rule in §10 zeroes these durations).
+   baseline. Numbers count up in deck.js. Nothing here restates which marks are
+   animated in order to still them — they all read their duration from
+   --draw-run, and print, the ?print-pdf preview, prefers-reduced-motion and
+   .no-draw each set that one property to 0s.
    ============================================================================= */
 @keyframes rule-draw { from { transform: scaleX(0); } }
 @keyframes grow-up   { from { height: 0; } }
-@keyframes grow-right{ from { width: 0; } }
 
-/* the signature green marker + kicker tick + gold plate-rule draw from the left */
+/* Everything the signature draws from the left is one device and one keyframe:
+   the green marker over a title, the kicker's tick, the plate rule that opens a
+   section or the colophon — and the share-bar fill, which is a rule whose
+   length is the number. It used to animate `width` under its own `grow-right`
+   keyframe; scaling it instead is exact (nothing is laid out against the fill,
+   which sits alone inside an overflow-hidden track) and takes the whole set off
+   the layout path onto the compositor. */
 .reveal section.present .slide-title::before,
 .reveal section.present .kicker::before,
 .reveal section.section.present::before,
-.reveal section.closing.present::before {
-  transform-origin: left center; animation: rule-draw var(--draw) var(--ease) both;
+.reveal section.closing.present::before,
+.reveal section.present .share-track::before {
+  transform-origin: left center; animation: rule-draw var(--draw-run) var(--ease) both;
 }
-/* chart fills rise / sweep in once their slide is present */
-.reveal section.present .barchart .bar::after { animation: grow-up var(--draw) var(--ease) both; }
-.reveal section.present .share-track::before { animation: grow-right var(--draw) var(--ease) both; }
+/* The column chart is the one animation that stays on the layout path, and it
+   is a decision rather than an oversight: each bar's value numeral is laid out
+   ON TOP of the growing fill, so the height is what carries the numeral up with
+   its bar (measured: 447px → 247px on the peak bar). Scaling the fill instead
+   would strand all eight numerals at their final height while the bars rose to
+   meet them. Measured cost of the ride, on the catalogue's data slide: 36
+   layouts / ~28ms — against 52 layouts / ~40ms for the count-up running beside
+   it, which stays either way. */
+.reveal section.present .barchart .bar::after { animation: grow-up var(--draw-run) var(--ease) both; }
 
-/* Opt-out hook for a deck or a single slide that wants the page to arrive still. */
-.reveal.no-draw section .slide-title::before,
-.reveal.no-draw section .kicker::before,
-.reveal .no-draw .slide-title::before,
-.reveal section.no-draw .barchart .bar::after,
-.reveal section.no-draw .share-track::before { animation: none !important; }
+/* THE STILLERS. A zero duration with `both` fill lands each mark on its end
+   state, so the slide simply arrives finished. The opt-out reads at deck level
+   (<div class="reveal no-draw">) and at slide level (<section class="no-draw">);
+   it used to reach five of the six marks in three different selector grammars,
+   leaving a section divider's plate rule drawing itself on a deck that had
+   asked for stillness. */
+.reveal.no-draw, .reveal section.no-draw { --draw-run: 0s; }
+html.reveal-print .reveal { --draw-run: 0s; }
 
 /* Print: ink the new dark fields, and never hold a half-drawn rule on paper. */
 @media print {
+  .reveal { --draw-run: 0s; }
   .reveal section.section.warm { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .reveal section .slide-title::before, .reveal section .kicker::before,
-  .reveal section.section::before, .reveal section.closing::before,
-  .reveal .barchart .bar::after, .reveal .share-track::before { animation: none !important; }
 }
