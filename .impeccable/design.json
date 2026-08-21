@@ -222,6 +222,42 @@
           "oklch(0.95 0.03 62)"
         ]
       },
+      "browser-dot": {
+        "role": "neutral",
+        "displayName": "Browser Dot (the traffic-light grey)",
+        "canonical": "#8c9097",
+        "purpose": "color-mix(in oklch, ink-faint, paper 25%), mixed inline in 05-embeds-code.css:89-92 — the three 0.6rem dots in the .chrome / .site-frame bar. Not a hairline and not text: the one grey that represents a browser rather than drawing the page. One user; not a :root token."
+      },
+      "code-title-blue": {
+        "role": "secondary",
+        "displayName": "Code Title Blue (highlight.js function names)",
+        "canonical": "#00429e",
+        "purpose": "color-mix(in oklch, navy, sky 18%), mixed inline in 05-embeds-code.css:26. The only place Sky is spent: it lifts a function or title token off the keyword navy without adding a hue. One user."
+      },
+      "scroll-thumb": {
+        "role": "primary",
+        "displayName": "Scroll Thumb (themed scrollbar furniture)",
+        "canonical": "#32a68f",
+        "purpose": "color-mix(in oklch, green, paper 18%), mixed inline in 05-embeds-code.css:48 for the .scroll-panel webkit thumb (11px track, 3px Sunken inset, pill radius). Lightened so browser furniture does not read as the lead colour; Firefox's scrollbar-color takes --green directly. One user."
+      },
+      "gold-wash": {
+        "role": "tertiary",
+        "displayName": "Gold Wash (the highlighter stroke)",
+        "canonical": "#d4b474",
+        "purpose": "color-mix(in oklch, gold, white 18%), mixed inline in the mark / .hl gradient (01-foundations.css:423). Close to gold-bright but measured on Paper rather than on the deep pole, which is why the two values differ. One user."
+      },
+      "scrim-ink": {
+        "role": "neutral",
+        "displayName": "Scrim Ink (the manufactured dark ground)",
+        "canonical": "#050911",
+        "purpose": "oklch(0.14 0.02 258), the base colour of every .media-scrim stop and of the theme-owned footer band (03-layouts.css:192-202); the lightbox backdrop mixes to within two channels of it (05-embeds-code.css:180). Deeper than Rule on purpose — it has to hold Paper at 13.2:1 over a worst-case white photograph. The TOC overlay's oklch(0.16 0.012 258) and the graphite viewport frame both land on Rule and are not separate values."
+      },
+      "capture-letterbox": {
+        "role": "neutral",
+        "displayName": "Capture Letterbox (warm near-black)",
+        "canonical": "#211f1d",
+        "purpose": "The literal behind an app screenshot of any aspect ratio (.demo-shot-view, 05-embeds-code.css:161). Deliberately outside the cool ink ramp: it belongs to the captured artifact, like the browser chrome around it, not to the page's own neutrals. One user."
+      },
       "duo-ground": {
         "role": "neutral",
         "displayName": "Duotone Ground (18.4:1 against Paper)",
@@ -433,6 +469,11 @@
         "name": "shadow-pop",
         "value": "0 22px 60px oklch(0.16 0.03 258 / 0.30)",
         "purpose": "True modal overlays only: the TOC panel and the lightbox image. The Overlay-Only Shadow Rule."
+      },
+      {
+        "name": "scroll-inset",
+        "value": "inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5)",
+        "purpose": "Not a token: written inline on .scroll-panel (05-embeds-code.css:42) and the only inset shadow in the theme. It darkens into the panel from the top edge to mark that the file is cut off above — the affordance that let the panel drop its border. Inset, so it adds no elevation and does not breach the Overlay-Only Shadow Rule."
       }
     ],
     "motion": [
@@ -689,7 +730,7 @@
       },
       {
         "name": "The Overlay-Only Shadow Rule",
-        "body": "Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.",
+        "body": "Slide content is flat. An *outer* shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content. The rule is about elevation, so it binds outer shadows only: the one `inset` shadow on `.scroll-panel` marks a cut edge rather than lifting anything, and it is the exception the vocabulary names above. A second inset would need the same justification — an affordance that replaces a border, not a texture.",
         "section": "elevation"
       },
       {

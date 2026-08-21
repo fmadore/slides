@@ -17,6 +17,12 @@ colors:
   brown-deep: "color-mix(in oklch, #d57912, #140a02 44%)"
   warm-field: "color-mix(in oklch, #d57912, #160b02 30%)"
   duo-ground: "#04140d"
+  browser-dot: "color-mix(in oklch, oklch(0.530 0.016 256), oklch(0.991 0.001 250) 25%)"
+  code-title-blue: "color-mix(in oklch, #00268a, #44b8f2 18%)"
+  scroll-thumb: "color-mix(in oklch, #009260, oklch(0.991 0.001 250) 18%)"
+  gold-wash: "color-mix(in oklch, #cca352, white 18%)"
+  scrim-ink: "oklch(0.14 0.02 258)"
+  capture-letterbox: "#211f1d"
   paper: "oklch(0.991 0.001 250)"
   panel: "oklch(0.972 0.002 250)"
   sunken: "oklch(0.945 0.004 250)"
@@ -164,7 +170,7 @@ The voice is authored-by-a-historian and must never read as template-made or AI-
 
 ## Colors
 
-The exact six-colour University of Bayreuth corporate palette (binding, hex-normative) over a cool near-white/near-black neutral ramp defined in OKLCH (OKLCH-normative — do not convert). The nine derived tokens between them are normative as their `color-mix(in oklch, …)` expressions, not as hex: the corporate hex is the input, and what actually paints a field, a plate ground or a small-text depth is the mix. The section divider is never raw `#009260`; the closing is never raw `#00268a`.
+The exact six-colour University of Bayreuth corporate palette (binding, hex-normative) over a cool near-white/near-black neutral ramp defined in OKLCH (OKLCH-normative — do not convert). The fifteen derived values between them are normative as their `color-mix(in oklch, …)` expressions, not as hex: the corporate hex is the input, and what actually paints a field, a plate ground or a small-text depth is the mix. The section divider is never raw `#009260`; the closing is never raw `#00268a`. Nine of the fifteen are `:root` custom properties; the other six are mixed **inline in the one rule that spends them** — the browser-bar dot, the code-theme title blue, the scroll-panel thumb, the highlighter wash, the scrim ink and the capture letterbox. They are recorded here because they paint real surfaces, not because they are tokens: each has exactly one user, and promoting a single-user value to `:root` would invite a second, unmeasured one.
 
 ### Primary
 - **Lead Green** (`{colors.lead-green}`): the lead colour. Full-bleed `.section` divider fields, the marker bar above slide titles, list ticks, links, folios, the progress bar, chart bars. Darkened via `color-mix(in oklch, var(--green), #06140d 26%)` (`--green-deep`) for AA text and links on light backgrounds — never set small green text in the raw corporate hex.
@@ -176,7 +182,7 @@ The exact six-colour University of Bayreuth corporate palette (binding, hex-norm
 ### Tertiary
 - **Amber Highlight** (`{colors.amber-highlight}`): minor supporting role; highlight washes.
 - **Warm Brown** (`{colors.warm-brown}`): the warm "counter-thread" — `.section.warm` stakes divider, `.kicker.warm`/`.callout.warm` variants; darkened (`--brown-deep`) for AA small text on light.
-- **Sky** (`{colors.sky}`): reserved corporate colour; smallest role, kept for palette fidelity.
+- **Sky** (`{colors.sky}`): the smallest role in the palette, and it is spent exactly once — 18% of it is mixed into Navy for the highlight.js function/title token (`{colors.code-title-blue}`), which lifts a function name off the keyword navy without introducing a second hue. Sky is never used at full strength anywhere.
 
 ### Neutral
 - **Paper** (`{colors.paper}`): the page/slide background — cool, crisp near-white, not a warm-paper wash.
@@ -253,9 +259,10 @@ Flat by default. Depth is conveyed by the ruled hierarchy (heavy near-black rule
 Two tokens, and the list of what takes each is the whole vocabulary. There is no shadow-1: it was retired when its last two users — a row of book covers and a demo QR — turned out to be the retired card in disguise, and a depth token nobody spends is one the next author spends wrongly.
 - **shadow-2** (`box-shadow: 0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)`): the captured or borrowed artifact, floating over the page rather than printed on it — the browser-chrome screenshot frame (`.chrome`), the live embed in the same chrome (`.site-frame`), the demo capture (`.demo-shot`), and the QR that pops over a frame (`.site-qr`). Those four, and nothing else.
 - **shadow-pop** (`box-shadow: 0 22px 60px oklch(0.16 0.03 258 / 0.30)`): true modal overlays — the TOC panel, the lightbox image.
+- **The one inset** (`box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5)` on `.scroll-panel`): not a token and not a lift. It is written inline in the one rule that spends it, and it darkens *into* the panel from its top edge to say the content is cut off above — the affordance that let the panel drop its border. An inset shadow adds no elevation, which is why it is the single sanctioned exception below.
 
 ### Named Rules
-**The Overlay-Only Shadow Rule.** Slide content is flat. A shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content.
+**The Overlay-Only Shadow Rule.** Slide content is flat. An *outer* shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content. The rule is about elevation, so it binds outer shadows only: the one `inset` shadow on `.scroll-panel` marks a cut edge rather than lifting anything, and it is the exception the vocabulary names above. A second inset would need the same justification — an affordance that replaces a border, not a texture.
 
 ## Shapes
 
@@ -263,7 +270,7 @@ Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal
 
 **The Ruled, Not Boxed Rule.** Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat `Sunken` inset (`.panel.sunken`) — no border, no shadow.
 
-Two surfaces were brought back under this rule in the last pass, and both are its reference reading. **The process flow (`.flow-step`)** carried a 1px `Line` border and a `--radius-md` corner: three bordered radiused boxes joined by arrows, on the slide captioned "A process, drawn — not bulleted" — the one composition on the deck an unrelated product could have shipped unchanged. Each step now opens on `border-top: var(--bar) solid var(--rule)`, the same heavy near-black rule `.panel` opens on, and separation comes from the gutter (`--space-xl` between steps, up from `--space-xs`) rather than from a border. **The code block (`.reveal pre`)** likewise dropped its hairline (`border: none`); with the `Sunken` fill and `--radius-md` unchanged it now matches `.panel.sunken` exactly — the one sanctioned surface, which carries no border. A block that wants a boundary takes the opening rule or the Sunken fill, never a hairline outline on top of either. The **scrollable file embed (`.scroll-panel`)** was the same construction a third time — Sunken fill, 1px `Line` border, `--radius-md` — and it survived that pass because only the code block was looked at. It is now borderless too: the fill and the inset shadow are the surface. A scroll container does not earn an outline for marking where the scrolling stops; the inset shadow already says that.
+Two surfaces were brought back under this rule in the last pass, and both are its reference reading. **The process flow (`.flow-step`)** carried a 1px `Line` border and a `--radius-md` corner: three bordered radiused boxes joined by arrows, on the slide captioned "A process, drawn — not bulleted" — the one composition on the deck an unrelated product could have shipped unchanged. Each step now opens on `border-top: var(--bar) solid var(--rule)`, the same heavy near-black rule `.panel` opens on, and separation comes from the gutter (`--space-xl` between steps, up from `--space-xs`) rather than from a border. **The code block (`.reveal pre`)** likewise dropped its hairline (`border: none`); with the `Sunken` fill and `--radius-md` unchanged it now matches `.panel.sunken` exactly — the one sanctioned surface, which carries no border. A block that wants a boundary takes the opening rule or the Sunken fill, never a hairline outline on top of either. The **scrollable file embed (`.scroll-panel`)** was the same construction a third time — Sunken fill, 1px `Line` border, `--radius-md` — and it survived that pass because only the code block was looked at. It is now borderless too: the fill and the inset shadow are the surface. A scroll container does not earn an outline for marking where the scrolling stops; the inset shadow already says that. Its scrollbar is themed rather than left to the browser: an 11px track and a thumb in `{colors.scroll-thumb}` (Lead Green lifted 18% toward Paper, so the thumb reads as furniture rather than as the lead colour) on a 3px `Sunken` inset, with Firefox's `scrollbar-color` taking `--green` directly because that property cannot carry the mix, and a pill radius — the one radius in the system that is not 3/5/8px, because a scrollbar thumb is browser furniture and reads wrong as a rectangle.
 
 **The Rule Opens From Above Rule.** A heavy rule that opens a block must have visible air above it, or it stops reading as an opening. `.marginnote` therefore takes `margin-top: var(--space-lg)` (reset to 0 when it is the first child): set flush under a chart, its 3px rule read as one more unlabelled near-black bar in the series rather than as the start of an aside.
 
@@ -351,7 +358,7 @@ Two surfaces were brought back under this rule in the last pass, and both are it
 - **Padding:** `0.55em calc(0.9 * var(--fs-small))`. The horizontal value is measured against the *table's* font-size, not the cell's; the vertical value stays in em on purpose, so a smaller header row keeps a proportional band.
 
 ### Inline Highlight (`mark` / `.hl`)
-- **Style:** a gold wash laid as a gradient from 58% height, so it reads as a highlighter stroke under the phrase rather than as a filled chip; square corners (`border-radius: 0`), text colour inherited.
+- **Style:** a gold wash (`{colors.gold-wash}` — Gold lifted 18% toward white, mixed inline in the gradient) laid from 58% height, so it reads as a highlighter stroke under the phrase rather than as a filled chip; square corners (`border-radius: 0`), text colour inherited. It is close to `gold-bright` but not the same value: the mark sits on Paper and the spark sits on the deep pole, and each was measured where it lands.
 - **Overhang:** `padding: 0 0.2em; margin: 0 -0.14em`. The stroke overshoots the first and last glyph the way a real marker does, and the negative margin gives the space back so surrounding text does not move. At the former 0.06em (1.4px) the wash stopped flush against the glyphs and read as a printing error.
 
 ### Progress Bar
@@ -359,7 +366,7 @@ Two surfaces were brought back under this rule in the last pass, and both are it
 - **On dark:** the fill takes `--ond-mark` — a green bar on a green divider was drawing itself at 1.28:1 against its own background, invisible on exactly the slides that end a section — and the unfilled track lifts from 1.23:1 to 1.61:1.
 
 ### Plate (documentary figure)
-- **Style:** the one image treatment, never broken: documentary photographs get a green duotone (SVG filter `#duo-green`, navy variant available) on an ink ground (`#04140d`), a 1px `Line Strong` border, and a ruled caption — 2px near-black top rule, gothic uppercase "Fig." mark in green-deep, italic serif gloss. Live UI screenshots instead keep true colour inside real browser chrome (`.chrome`, 8px radius, shadow-2). In `.figrow` splits, documentary figures show whole (`object-fit: contain`); `.crop` bleeds true photos.
+- **Style:** the one image treatment, never broken: documentary photographs get a green duotone (SVG filter `#duo-green`, navy variant available) on an ink ground (`#04140d`), a 1px `Line Strong` border, and a ruled caption — 2px near-black top rule, gothic uppercase "Fig." mark in green-deep, italic serif gloss. Live UI screenshots instead keep true colour inside real browser chrome (`.chrome`, 8px radius, shadow-2), whose bar carries three 0.6rem dots in `{colors.browser-dot}` — Ink Faint lifted 25% toward Paper, the one grey in the system that is neither a hairline nor text. An app capture of any aspect ratio letterboxes on `{colors.capture-letterbox}`, a warm near-black deliberately outside the cool ink ramp: it belongs to the captured artifact, like the chrome around it, not to the page. In `.figrow` splits, documentary figures show whole (`object-fit: contain`); `.crop` bleeds true photos.
 
 ### Named Rules
 **The Ink-on-Paper Motion Rule.** One motion idea, repeated and restrained (`--draw: 560ms`, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (`--count: 900ms`, `data-count`) on slide entry. Drawing from the left is one keyframe — `rule-draw`, a `scaleX` — shared by the four marks and by the share-bar fill, which is itself a rule whose length is the number; it animated `width` under a second keyframe until that was collapsed into the first. The column chart is the one animation still on the layout path, and by decision: its `height` is what carries each bar's value numeral up with the bar (measured 447px → 247px on the peak bar), which scaling the fill would strand. The count runs longer than the draw on purpose — a numeral needs legible frames to read as counting, where a rule only needs to be seen arriving.

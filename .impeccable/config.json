@@ -44,6 +44,24 @@
         "reason": "Agent 2026-08-21: same static-engine var() fallback as the sanctioned low-contrast entry above — unresolved line-height tokens compute to impossible ratios (0.07x) on the 1280x720 scaled canvas; theme body leading is tokenised at >=1.3 and display headings intentionally sit at 0.98-1.26 per DESIGN.md's inverted hierarchy. hook-admin.mjs invocation was blocked by the permission classifier, so this entry was added by direct config edit."
       },
       {
+        "rule": "design-system-color",
+        "value": "rgb(0, 0, 0)",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-21T12:40:00.000Z",
+        "reason": "Agent 2026-08-21: not a Broadsheet value and deliberately not canonized in DESIGN.md — it is reveal's own print stylesheet (shared/reveal/reveal.css, `html:not(.print-pdf) .reveal h1 { color: #000 !important }`), which paints only the naive Ctrl-P path. The theme's paper path is ?print-pdf, where the imprint and field colours hold. Suppressed here rather than recorded in the palette: an ignore says 'known, understood, not ours'; the palette would claim it as system."
+      },
+      {
+        "rule": "design-system-color",
+        "value": "rgb(102, 102, 102)",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-21T12:40:00.000Z",
+        "reason": "Agent 2026-08-21: same vendor origin — reveal's print stylesheet puts `border: 1px solid #666` on section img outside ?print-pdf. Not the theme's --line-strong (rgb(131,135,141), already allowed)."
+      },
+      {
         "rule": "side-tab",
         "value": "border-bottom: 3px",
         "files": [
