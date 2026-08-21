@@ -38,25 +38,34 @@
   "google-fonts": {
     "source": [
       "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap",
-      "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap"
+      "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap",
+      "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
     ],
     "files": [
-      "fonts/fonts.css",
       "fonts/ebgaramond-italic-latin-ext.woff2",
       "fonts/ebgaramond-italic-latin.woff2",
       "fonts/ebgaramond-normal-latin-ext.woff2",
       "fonts/ebgaramond-normal-latin.woff2",
+      "fonts/fonts.css",
+      "fonts/jetbrainsmono-italic-latin-ext.woff2",
+      "fonts/jetbrainsmono-italic-latin.woff2",
+      "fonts/jetbrainsmono-normal-latin-ext.woff2",
+      "fonts/jetbrainsmono-normal-latin.woff2",
       "fonts/librefranklin-italic-latin-ext.woff2",
       "fonts/librefranklin-italic-latin.woff2",
       "fonts/librefranklin-normal-latin-ext.woff2",
       "fonts/librefranklin-normal-latin.woff2"
     ],
     "sha256": {
-      "fonts/fonts.css": "38f28136e1b1f5bf57b54657e0eab2465a32c3d0373bc33d42d786ab3e003f28",
-      "fonts/ebgaramond-italic-latin-ext.woff2": "1a0cc9def6e10ce327bece0049548d317017969165493f2dbc8b7cffec3f2c3d",
-      "fonts/ebgaramond-italic-latin.woff2": "ba958a191633f8f16f842a8c00555c16953ff2156c706f80f1f61a8a577a85a6",
-      "fonts/ebgaramond-normal-latin-ext.woff2": "15754d0efd6ca82bdb8ac0a0670ed0c26c6f1e5dbb6d08f83f0ae497eb5b9588",
-      "fonts/ebgaramond-normal-latin.woff2": "3f8ca84f05bced330495146be20610b04bcccbe7c4f7d03a786804881f694e8f",
+      "fonts/ebgaramond-italic-latin-ext.woff2": "fa866520f8b7fb646ebc730fd0d3cbf8945db74d92f25fdd6fee486808652fdf",
+      "fonts/ebgaramond-italic-latin.woff2": "c664773f7e1d42d36326aa457becf7674236168c74cf7d74e87e5778ef7640f9",
+      "fonts/ebgaramond-normal-latin-ext.woff2": "f8d3fa06e20989a938972165406a1b731cdc7fe33ff2b0b6798c75aa63709901",
+      "fonts/ebgaramond-normal-latin.woff2": "88603384163d301aebd5bd769832a8bfe3c9004ec24178417b9817f0ad32c63b",
+      "fonts/fonts.css": "af45bc42bcf017391cb6e3948b4679076dccf6e01957ee152f8cf66bcc78dbff",
+      "fonts/jetbrainsmono-italic-latin-ext.woff2": "60652c78382d7e5021ce4c3ed8985fc41d8f3d1b1a3bedcec2a44ed8979fe5eb",
+      "fonts/jetbrainsmono-italic-latin.woff2": "a8afa085e9ca5e53434e2ee918ba6b65c7dd4dda56509976b36591478c99d62e",
+      "fonts/jetbrainsmono-normal-latin-ext.woff2": "79bfdab9ba467e26eea4122e6f2567e188dd8a09a8c730d501fc487c4ab99c6e",
+      "fonts/jetbrainsmono-normal-latin.woff2": "18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e",
       "fonts/librefranklin-italic-latin-ext.woff2": "f405e6460d254f7b46ff7155a0cb1b91acdacb82312807c688fb37f1856eb370",
       "fonts/librefranklin-italic-latin.woff2": "c9fb9170f00060c83306219df8357a81a56c5ad142e25b3e3d9c21d2d47e2009",
       "fonts/librefranklin-normal-latin-ext.woff2": "61216d8e3efe8c5a26861f8b92dc9a922645c662da95c37bf787a4a774a5c8d5",

@@ -54,7 +54,7 @@ slides/
 │   ├── highlight.min.js      slim vendored highlight.js (see vendor-manifest.json)
 │   ├── logo-*.{png,svg}      Africa Multiple, Bayreuth, KCL marks
 │   ├── assets/               images used by more than one talk
-│   ├── fonts/                self-hosted EB Garamond + Libre Franklin (offline)
+│   ├── fonts/                self-hosted EB Garamond + Libre Franklin + JetBrains Mono
 │   └── reveal/               vendored reveal.js v6 + plugins (offline)
 ├── talks/
 │   ├── talks.json            ← the TALK MANIFEST (one record per published talk)
@@ -361,8 +361,9 @@ deployment; the DNS record itself lives in Cloudflare. `fmadore.github.io/slides
 ## Credits
 
 reveal.js (MIT, © Hakim El Hattab) · highlight.js (BSD 3-Clause) ·
-**EB Garamond** (Georg Duffner & Octavio Pardo) and **Libre Franklin**
-(Pablo Impallari / Impallari Type), SIL OFL · GitHub & ORCID marks © their
+**EB Garamond** (Georg Duffner & Octavio Pardo), **Libre Franklin**
+(Pablo Impallari / Impallari Type) and **JetBrains Mono** (Philipp Nurullin &
+Konstantin Bulenkov / JetBrains), SIL OFL · GitHub & ORCID marks © their
 owners · logo and palette: Africa Multiple Cluster of Excellence / University
 of Bayreuth. Full licence texts: [`LICENSE.md`](LICENSE.md) and
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md); vendored versions and

@@ -61,6 +61,12 @@ typography:
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "0.18em"
+  mono:
+    fontFamily: "JetBrains Mono, ui-monospace, Cascadia Code, SF Mono, Segoe UI Mono, Menlo, Consolas, monospace"
+    fontSize: "1.02rem"
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: "0"
 rounded:
   sm: "3px"
   md: "5px"
@@ -113,6 +119,7 @@ components:
   code-inset:
     backgroundColor: "{colors.sunken}"
     textColor: "{colors.ink}"
+    typography: "{typography.mono}"
     rounded: "{rounded.md}"
     padding: "1.1em 1.3em"
   print-imprint:
@@ -198,10 +205,13 @@ The footer and the viewport live outside the slide and cannot inherit the regist
 - **Body** (serif 500, 1.52rem, line-height 1.46): prose, max-width 62ch — set a touch big because EB Garamond's small x-height reads small in a hall.
 - **Label** (700, 1.05rem `--fs-label`, letter-spacing 0.10em `--track-hall`, UPPERCASE): every label *inside* the canvas that carries meaning — kickers, callout labels, stat labels, column heads, chart heads, bar-axis ticks, table headers, chips, figure numbers, step numbers.
 - **Chrome** (700, 0.80rem `--fs-footer`, letter-spacing 0.18em, UPPERCASE): the deck footer and running head, which sit outside the scaled canvas, plus the browser-frame simulations and QR URLs that are representational rather than read.
+- **Mono** (JetBrains Mono, vendored, 500, line-height 1.5): the third face, and a utility rather than a voice — it never carries prose. It appears where characters have to be counted rather than read: code blocks (1.02rem measured, the product of `pre` at 0.78em and `.reveal code` at 0.86em), the scroll-panel excerpt (0.854rem), frame-bar and QR URLs (0.80rem `--fs-footer`), and document references in deck CSS (1.00rem `--fs-caption`). It takes no tracking and never goes uppercase; the label and chrome voices own that.
 
 **The Hall Label Rule.** The label voice splits in two, and the split is by *distance*, not by component. A label printed on paper is read at 40cm; a label projected in a lecture hall is read at 20m, and the hall is the primary reader. If a label tells the audience what a figure counts, which decade a bar sits in, or what a column holds, it takes `--fs-label` — never the chrome size. The tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes *less* space beneath it, so the net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.
 
 ### Named Rules
+**The Third Face Is Pinned Too.** `--font-mono` names JetBrains Mono, and `tools/fetch-fonts.py` now vendors it beside EB Garamond and Libre Franklin — latin and latin-ext, normal and italic, 115 KB. The italic subset is not optional: highlight.js sets comments and quotes in it, so without it every code comment renders as a synthesised oblique. Before it was vendored the mono role was the one place the deck was not self-contained, and the measurements say what that cost: the same 55-character line at 19px ran 574.5px in a bare machine's generic monospace, 612.3px on the author's laptop (which holds Cascadia Code, `ui-monospace` not resolving in Chrome there), and 627px in the face the theme actually named. Three metrics for one line of code — and the published PDFs, generated in CI, were typeset in the first of them. The remaining families in the stack are a fallback for a webfont that fails to load, not a choice: what should arrive is the face this repository ships. Either vendor it or let the declared face be one that actually arrives.
+
 **The Inverted Hierarchy Rule.** Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.
 
 **The Serif h4 Rule.** `h4` deliberately stays in the serif register (EB Garamond 600, 2.00rem) — it reads as an emphatic lead, not a gothic label. Do not "fix" it to match h1–h3.

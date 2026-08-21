@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Re-vendor the two variable webfonts and update their integrity manifest.
+"""Re-vendor the three variable webfonts and update their integrity manifest.
 
 All remote responses are downloaded and validated in memory before any tracked
 file changes. The final replacements are atomic per file and roll back to the
@@ -24,6 +24,10 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 FAMILIES = {
     "EB Garamond": "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap",
     "Libre Franklin": "https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap",
+    # The mono utility face. Italic is not optional here: highlight.js sets
+    # comments and quotes in it, so without the italic subset every code
+    # comment renders in a synthesised oblique.
+    "JetBrains Mono": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
 }
 KEEP = {"latin", "latin-ext"}
 
