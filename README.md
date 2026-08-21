@@ -249,6 +249,22 @@ ceiling for a zoomable `.shot`, and anything not zoomable needs no more than
 will ever ask for. `tools/audit.py` warns on WebP, on a raster over 1800 px,
 and on one over 600 KB; CI's `--strict` turns those warnings into failures.
 
+**A deck's own CSS is held to the theme's rules.** Per-deck CSS inherits
+nothing, so a pattern the shared theme retired comes back the moment a deck
+hand-rolls a component — which is how a `transition: all` that faded the focus
+ring, a retired card and two type sizes below the theme's floor survived six
+theme passes. `tools/audit.py` now reads every `<style>` block and `style=""`
+attribute under `talks/` and fails on eight of the rules in
+[`DESIGN.md`](DESIGN.md): viewport units or `clamp()` inside the scaled canvas,
+`transition: all`, a shadow on in-flow slide content, the retired card shape (a
+fill plus a hairline border plus a radius), a hand-written `font-size` under the
+floor for where it sits (`--fs-caption` inside the canvas, `--fs-footer` in the
+chrome), a corporate colour spelled out in hex where a token exists, hero
+centring the theme already owns at `.present`, and an animation that does not
+take its duration from `var(--draw-run)` (so no stiller can reach it). Each
+check has a known-bad fixture in `tools/test_audit.py` that proves it still
+fires.
+
 **Customise the look:** edit the focused files under `shared/src/`, then run
 `npm run build:shared`. The public `shared/theme.css` and `shared/deck.js` names
 stay unchanged so every deck keeps working; `npm test` fails if either generated
@@ -273,8 +289,9 @@ Deployed by the **GitHub Actions** workflow in [`.github/workflows/pages.yml`](.
 On every pull request and push it first **validates**: the Python and Node unit
 tests, generated bundle/metadata checks, then `tools/audit.py` itself (repo and built
 site, strict) — dead local references, duplicate ids, missing `alt`/`title`,
-stale placeholders, the landing-page/manifest sync check and the **vendored
-checksums** in [`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
+stale placeholders, the landing-page/manifest sync check, the **per-deck CSS
+rules** below and the **vendored checksums** in
+[`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
 and finally Playwright browser checks of every deck at 1280×720, 844×390 and
 390×844 (console errors, auto-fit failures, footer overlap). Pull requests
 that touch the shared engine also get a screenshot-based visual regression

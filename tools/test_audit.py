@@ -240,6 +240,242 @@ class CssChecks(AuditCase):
         self.assertReports("escapes the repository")
 
 
+# Every theme rule the per-deck sweep checks, as a known-bad fixture and the
+# clean construction it drifted from. A rule that quietly stops matching would
+# leave CI green while the check does nothing — which is how the first
+# hand-rolled sweep read one rule out of a 128-line stylesheet and pronounced
+# the archives clean. Each fixture trips exactly one rule.
+DRIFT = [
+    ("viewport unit inside the canvas",
+     ".reveal .figrow img { max-height: 62vh; }",
+     "sizing against the viewport"),
+    ("clamp() inside the canvas",
+     ".reveal .stat-num { font-size: clamp(2rem, 6vw, 5rem); }",
+     "sizing against the viewport"),
+    ("transition: all",
+     ".reveal .kvm-btn { transition: all 220ms var(--ease); }",
+     "transition: all"),
+    ("shadow on in-flow content",
+     ".reveal .bio-gallery img { box-shadow: var(--shadow-1); }",
+     "a shadow on in-flow slide content"),
+    ("the retired card",
+     ".reveal .extract { background: var(--sunken); border: var(--hair);"
+     " border-radius: var(--radius-md); }",
+     "is the retired card"),
+    ("type under the in-canvas floor",
+     ".reveal .kvm-tag { font-size: 0.62rem; }",
+     "under the 1.00rem floor for the canvas"),
+    ("type under the chrome floor, outside the canvas",
+     ".deck-runhead { font-size: 0.74rem; }",
+     "under the 0.80rem floor for chrome"),
+    ("corporate hex where a token exists",
+     ".reveal .cg-label { border-top: 3px solid #009260; }",
+     "use var(--green)"),
+    ("hand-patched hero centring",
+     ".reveal .slides > section.cover { display: flex !important; }",
+     "hand-patches the centring"),
+    ("animation no stiller can reach",
+     ".reveal .ruse .n { animation: count-up 900ms var(--ease) both; }",
+     "the duration does not come from var(--draw-run)"),
+]
+
+CLEAN = [
+    ("rem caps inside the canvas",
+     ".reveal .figrow img { max-height: var(--block-max-h); }"),
+    ("viewport units in the chrome outside it",
+     ".toc-panel { width: min(92vw, 60rem); max-height: 90vh;"
+     " padding: clamp(1.6rem, 3vw, 2.6rem); }"),
+    ("a transition that names its properties",
+     ".reveal .kvm-btn { transition: background-color var(--dur) var(--ease),"
+     " color var(--dur) var(--ease); }"),
+    ("a shadow on something that genuinely floats",
+     ".reveal .site-frame.amira-embed { height: 558px; box-shadow: var(--shadow-2); }"),
+    ("a shadow turned off, and an inset fade",
+     ".reveal pre { box-shadow: none; }"
+     " .reveal .scroll-panel { box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5); }"),
+    ("a flat Sunken inset — the fill is the surface",
+     ".reveal .extract { background: var(--sunken); border: none;"
+     " border-radius: var(--radius-md); }"),
+    ("an outline chip: a border and a radius, no fill",
+     ".reveal .kvm-tag { border: 1.5px solid var(--line); border-radius: var(--radius-sm); }"),
+    ("a plate: the image border the theme itself draws",
+     ".reveal .clip-row img.shot { border: 1px solid var(--line-strong);"
+     " border-radius: var(--radius-sm); }"),
+    ("type at each floor, and type taken from a token",
+     ".reveal .fig-cap { font-size: 1.00rem; } .deck-runhead { font-size: 0.80rem; }"
+     " .reveal .demo-qr span { font-size: var(--fs-footer); }"),
+    ("a size in units the check cannot resolve",
+     ".reveal .model-tag img { font-size: 0.9em; }"),
+    ("the one white a QR quiet zone needs",
+     ".reveal .demo-qr img { background: #fff; }"),
+    ("styling something inside a hero, not the hero box",
+     ".reveal section.closing.final-question h2 { font-size: var(--fs-h2); }"
+     " .reveal section.cover .slides-qr { display: flex; justify-content: center; }"),
+    ("restoring flex on a slide the theme does not centre",
+     ".reveal .slides > section.live-frame { display: flex !important;"
+     " flex-direction: column; }"),
+    ("an animation on the one clock",
+     ".reveal .bar { animation: grow-up var(--draw-run) var(--ease) both; }"),
+    ("an animation turned off",
+     ".reveal .bar { animation: none; }"),
+]
+
+
+class DeckCssCase(AuditCase):
+    """Base for the per-deck CSS rules: one throwaway deck, styled to order."""
+
+    # Four lines of preamble, so the first line of `css` is always line 5.
+    HEAD = '<!doctype html>\n<html lang="en">\n<head>\n<style>\n'
+
+    def audit(self, css="", body=""):
+        html = f"{self.HEAD}{css}\n</style>\n</head>\n<body>{body}</body>\n</html>\n"
+        path = self.write("talks/2026-01-01-demo/index.html", html)
+        audit.audit_deck_css(path, self.rep)
+        return path
+
+
+class DeckCssRules(DeckCssCase):
+    """audit_deck_css: the theme's own rules, where the theme cannot reach."""
+
+    def test_every_rule_fires_on_its_known_bad_fixture(self):
+        for name, css, needle in DRIFT:
+            with self.subTest(name):
+                self.rep = audit.Report()
+                self.audit(css)
+                self.assertReports(needle)
+
+    def test_no_rule_fires_on_the_construction_it_drifted_from(self):
+        for name, css in CLEAN:
+            with self.subTest(name):
+                self.rep = audit.Report()
+                self.audit(css)
+                self.assertSilent()
+
+    def test_one_stylesheet_carrying_every_defect_reports_them_all(self):
+        self.audit("\n".join(css for _, css, _ in DRIFT))
+        self.assertEqual(len(self.messages()), len(DRIFT), self.messages())
+
+    def test_the_report_points_at_the_line_in_the_file(self):
+        self.audit("\n".join([
+            ".reveal .a { color: var(--ink); }",              # line 5
+            ".reveal .b { color: var(--ink); }",              # line 6
+            ".reveal .c { transition: all 220ms; }",          # line 7
+        ]))
+        self.assertReports("(line 7)")
+
+    def test_an_inline_style_is_read_as_canvas_content(self):
+        self.audit(body='<p style="font-size:0.5rem">fine print</p>')
+        self.assertReports("under the 1.00rem floor for the canvas")
+
+    def test_a_clean_inline_style_is_silent(self):
+        self.audit(body='<p style="font-size: var(--fs-section); max-width: none;">big</p>')
+        self.assertSilent()
+
+    def test_the_repository_decks_read_as_whole_stylesheets_and_pass(self):
+        """The real archive — because a stylesheet that stops parsing early
+        looks exactly like a clean one. Both halves are asserted: the rule
+        count stays proportional to the file (the bug read one rule out of 128
+        lines), and no deck breaks a rule the theme states."""
+        rep = audit.Report()
+        talks = os.path.join(self._real_root, "talks")
+        audit.ROOT = self._real_root
+        try:
+            for slug in sorted(os.listdir(talks)):
+                deck = os.path.join(talks, slug, "index.html")
+                if not os.path.exists(deck):
+                    continue
+                parser = audit.DeckParser()
+                with open(deck, encoding="utf-8") as handle:
+                    parser.feed(handle.read())
+                with self.subTest(slug):
+                    for source, first_line in parser.styles:
+                        rules = list(audit.iter_css_rules(source, first_line))
+                        self.assertGreater(len(rules), source.count("\n") // 10)
+                    audit.audit_deck_css(deck, rep)
+        finally:
+            audit.ROOT = self.root
+        self.assertEqual([f"{where}: {msg}" for where, msg in rep.errors], [])
+
+
+class CssRuleParser(AuditCase):
+    """iter_css_rules / iter_css_declarations: read the WHOLE stylesheet.
+
+    The parser's first draft never reset its brace depth, so it read one rule
+    out of a 128-line stylesheet and reported five clean decks. Nothing built
+    on top of it can be trusted unless these hold.
+    """
+
+    def rules(self, css, first_line=1):
+        return list(audit.iter_css_rules(css, first_line))
+
+    def test_every_rule_of_a_long_stylesheet_is_read(self):
+        css = "\n".join(f".reveal .r{n} {{ color: var(--ink); }}" for n in range(64))
+        self.assertEqual(len(self.rules(css)), 64)
+
+    def test_a_defect_in_the_last_rule_of_a_long_stylesheet_still_fires(self):
+        css = "\n".join([f".reveal .r{n} {{ color: var(--ink); }}" for n in range(64)]
+                        + [".reveal .last { transition: all 220ms; }"])
+        path = self.write("talks/2026-01-01-demo/index.html",
+                          f"<html><head><style>\n{css}\n</style></head></html>")
+        audit.audit_deck_css(path, self.rep)
+        self.assertReports("transition: all")
+
+    def test_braces_inside_comments_and_strings_do_not_move_the_depth(self):
+        css = ("/* a brace { in a comment, and a } too */\n"
+               '.reveal .a::before { content: "{"; }\n'
+               '.reveal .b::after { content: "}"; }\n'
+               ".reveal .c { color: var(--ink); }\n")
+        self.assertEqual([r.selector for r in self.rules(css)],
+                         [".reveal .a::before", ".reveal .b::after", ".reveal .c"])
+
+    def test_rules_inside_a_media_query_are_read_like_any_other(self):
+        css = ("@media (max-width: 640px) {\n"
+               "  .reveal .a { font-size: 0.5rem; }\n"
+               "}\n"
+               ".reveal .b { color: var(--ink); }\n")
+        self.assertEqual([r.selector for r in self.rules(css)], [".reveal .a", ".reveal .b"])
+
+    def test_an_at_rule_statement_is_not_mistaken_for_a_selector(self):
+        css = "@import 'other.css';\n.reveal .a { color: var(--ink); }\n"
+        self.assertEqual([r.selector for r in self.rules(css)], [".reveal .a"])
+
+    def test_keyframes_carry_no_slide_styling(self):
+        path = self.write("talks/2026-01-01-demo/index.html",
+                          "<html><head><style>\n"
+                          "@keyframes count { from { opacity: 0; } to { opacity: 1; } }\n"
+                          "</style></head></html>")
+        audit.audit_deck_css(path, self.rep)
+        self.assertSilent()
+
+    def test_declarations_carry_their_own_line_number(self):
+        rule = self.rules(".reveal .a {\n  color: var(--ink);\n  font-size: 0.62rem;\n}", 5)[0]
+        sizes = [d for d in audit.iter_css_declarations(rule.body, rule.line)
+                 if d.prop == "font-size"]
+        self.assertEqual(rule.line, 5)
+        self.assertEqual(sizes[0].line, 7)
+
+    def test_a_semicolon_or_comma_inside_a_value_does_not_split_it(self):
+        rule = self.rules('.reveal .a { background: url("a;b.png") no-repeat;'
+                          ' font-family: "Libre Franklin", sans-serif; }')[0]
+        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        self.assertEqual([d.prop for d in decls], ["background", "font-family"])
+
+    def test_a_comment_inside_a_block_is_not_read_as_a_declaration(self):
+        rule = self.rules(".reveal .a { /* never `all`: it sweeps the focus ring in */"
+                          " transition: color 220ms; }")[0]
+        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        self.assertEqual([(d.prop, d.value) for d in decls], [("transition", "color 220ms")])
+
+    def test_important_is_not_part_of_the_value(self):
+        rule = self.rules(".reveal .a { display: flex !important; }")[0]
+        self.assertEqual(list(audit.iter_css_declarations(rule.body))[0].value, "flex")
+
+    def test_custom_properties_are_left_to_the_theme(self):
+        rule = self.rules(".reveal .a { --fs-local: 0.5rem; font-size: var(--fs-local); }")[0]
+        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        self.assertEqual([d.prop for d in decls], ["font-size"])
+
+
 class ManifestSync(AuditCase):
     """audit_manifest: talks.json ↔ talk folders ↔ the landing page."""
 
@@ -606,6 +842,20 @@ class EndToEnd(AuditCase):
     def test_error_exits_one(self):
         self.write(f"talks/{TALK['slug']}/index.html", '<img src="gone.png" alt="x">')
         self.assertEqual(self.run_audit([]), 1)
+
+    def test_theme_rule_drift_in_a_deck_fails_the_audit(self):
+        self.write(f"talks/{TALK['slug']}/index.html",
+                   "<html><head><style>.reveal .x { transition: all 220ms; }"
+                   "</style></head></html>")
+        self.assertEqual(self.run_audit([]), 1)
+
+    def test_only_a_deck_own_css_is_held_to_the_theme_rules(self):
+        """The landing page is not a slide, and the theme has its own pass."""
+        drift = "<style>.reveal .x { transition: all 220ms; }</style>"
+        self.write("index.html",
+                   f'<html>{drift}<a href="talks/{TALK["slug"]}/">t</a>'
+                   '<script src="shared/highlight.min.js"></script></html>')
+        self.assertEqual(self.run_audit([]), 0)
 
     def test_tampered_vendor_file_fails_the_audit(self):
         self.write("shared/highlight.min.js", "window.hljs={};\n/* injected */\n")

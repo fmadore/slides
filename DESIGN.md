@@ -395,3 +395,30 @@ Two surfaces were brought back under this rule in the last pass, and both are it
 - **Don't** put a border on the Sunken inset (code blocks and the scroll panel included) or a radius on a ruled column; the surface is either the fill or the opening rule, never either one plus a hairline outline.
 - **Don't** let a screen-only affordance fail silently on paper: give the scroll panel a `data-source-url` so its printed `Excerpt` band names the source, and never leave an instruction in print that the reader cannot follow.
 - **Don't** convert the OKLCH neutrals to hex or "correct" the hex corporate palette; each format is normative where it stands.
+
+### Where a deck writes its own CSS
+
+Per-deck CSS inherits nothing: a rule the theme retired is retired in the theme
+alone, and the next deck that hand-rolls a component brings it back. Eight of
+the rules above are therefore checked mechanically over every `<style>` block
+and `style=""` attribute under `talks/` — viewport units or `clamp()` inside the
+canvas, `transition: all`, a shadow on in-flow content, the retired card (a
+fill plus a hairline plus a radius), hand-written type under the floor for
+where it sits (`--fs-caption` inside the canvas, `--fs-footer` in the chrome), a
+corporate colour spelled out where a token exists, hero centring the theme owns
+at `.present`, and an animation that does not take its duration from
+`var(--draw-run)`. `tools/audit.py` reports them as errors, so CI fails on the
+drift rather than a later sweep finding it. The rules the checks cannot read —
+measure, register, hierarchy, whether a composition is authored or template —
+are still read by eye.
+
+Two things the hand sweep got wrong before it was folded in, recorded so the
+next check does not repeat them. A rule parser that never resets its brace
+depth reads **one** rule out of a stylesheet and reports every deck clean, so
+each check here carries a known-bad fixture that proves it still fires — a
+clean report from an unproven check is not evidence. And a contrast probe that
+round-trips a colour through canvas `fillStyle` does **not** resolve `oklch()`:
+it reads the OKLCH components as RGB and invents failures. Paint the colour and
+read the pixel back, and measure it against the WCAG threshold that applies —
+`--green` at 24px/700 is large text, so it answers to 3:1, and its 3.87:1
+passes.
