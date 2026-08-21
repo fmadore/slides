@@ -512,6 +512,71 @@ class AssetHygiene(AuditCase):
         self.assertSilent("warnings")
 
 
+class ImageWeight(AuditCase):
+    """audit_image_weight: the pixel, byte and format ceilings (warnings)."""
+
+    def png(self, width, height, pad=0):
+        """A PNG header the parser can read, padded to a chosen byte weight."""
+        ihdr = (b"IHDR" + width.to_bytes(4, "big") + height.to_bytes(4, "big")
+                + b"\x08\x06\x00\x00\x00")
+        return (b"\x89PNG\r\n\x1a\n" + (13).to_bytes(4, "big") + ihdr
+                + b"\x00\x00\x00\x00" + b"\x00" * pad)
+
+    def test_oversized_raster_warns(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/huge.png" alt="x">')
+        self.write(f"talks/{TALK['slug']}/assets/huge.png", self.png(4000, 2000))
+        audit.audit_image_weight(self.rep)
+        self.assertReports("nothing can display more than", "warnings")
+
+    def test_raster_within_the_ceilings_is_silent(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/fine.png" alt="x">')
+        self.write(f"talks/{TALK['slug']}/assets/fine.png", self.png(1200, 800))
+        audit.audit_image_weight(self.rep)
+        self.assertSilent("warnings")
+
+    def test_heavy_raster_warns(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/fat.png" alt="x">')
+        self.write(f"talks/{TALK['slug']}/assets/fat.png",
+                   self.png(800, 600, pad=audit.BYTE_CEILING + 1))
+        audit.audit_image_weight(self.rep)
+        self.assertReports("people download as a PDF", "warnings")
+
+    def test_webp_warns_whatever_its_size(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/small.webp" alt="x">')
+        self.write(f"talks/{TALK['slug']}/assets/small.webp", b"RIFF\x00\x00\x00\x00WEBPVP8 ")
+        audit.audit_image_weight(self.rep)
+        self.assertReports("WebP ships to the PDF export", "warnings")
+
+    def test_unpublished_decks_are_not_policed(self):
+        self.make_repo()
+        self.write("talks/_showcase/index.html", '<img src="assets/demo.png" alt="x">')
+        self.write("talks/_showcase/assets/demo.png", self.png(4000, 2000))
+        audit.audit_image_weight(self.rep)
+        self.assertSilent("warnings")
+
+    def test_image_size_reads_every_format_it_claims_to(self):
+        cases = {
+            "png": (self.png(640, 480), (640, 480)),
+            "gif": (b"GIF89a" + (320).to_bytes(2, "little") + (200).to_bytes(2, "little"),
+                    (320, 200)),
+            "jpg": (b"\xff\xd8\xff\xc0" + (17).to_bytes(2, "big") + b"\x08"
+                    + (480).to_bytes(2, "big") + (640).to_bytes(2, "big"), (640, 480)),
+            "webp": (b"RIFF\x00\x00\x00\x00WEBPVP8 " + b"\x00" * 10
+                     + (300).to_bytes(2, "little") + (150).to_bytes(2, "little"), (300, 150)),
+        }
+        for ext, (blob, expected) in cases.items():
+            with self.subTest(ext):
+                path = self.write(f"probe.{ext}", blob)
+                self.assertEqual(audit.image_size(path), expected)
+
+    def test_image_size_returns_none_for_a_non_image(self):
+        self.assertIsNone(audit.image_size(self.write("notes.txt", b"not an image at all")))
+
+
 class EndToEnd(AuditCase):
     """main(): exit status, and --strict promoting warnings to failures."""
 

@@ -231,6 +231,24 @@ no code slides and no file embed can simply drop the `<script>` line.
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
 for a photo you genuinely want to bleed/fill.
 
+**Image assets: JPEG for photographs, PNG for flat art, never WebP.** Not a
+browser-support rule — a PDF one. Chrome's print-to-PDF copies a JPEG into the
+file byte-for-byte, but the PDF format has no WebP filter to copy into, so
+every WebP is decoded and re-emitted as zlib-compressed RGB. Measured on the
+Erlangen deck: 1.2 MB of WebP sources became **10.1 MB** of PDF images; the
+same pictures as JPEG cost 1.7 MB. PNG round-trips at roughly its own weight,
+so it stays the right choice for logos, QR codes, charts and anything with
+transparency — as a palette PNG, not 32-bit RGBA (four QR codes shipped at
+16–21 KB each; re-encoded to two colours they are under 1.5 KB).
+
+Size images to what a deck can actually show. The slide canvas is 1280 px wide
+and the lightbox tops out at 92vw, so **1800 px on the long edge** is the
+ceiling for a zoomable `.shot`, and anything not zoomable needs no more than
+3× the box it renders in (3× = a 4K projector showing the scaled canvas). A
+1655×407 logo drawn at 75×18 in the footer is 22× more pixels than any screen
+will ever ask for. `tools/audit.py` warns on WebP, on a raster over 1800 px,
+and on one over 600 KB; CI's `--strict` turns those warnings into failures.
+
 **Customise the look:** edit the focused files under `shared/src/`, then run
 `npm run build:shared`. The public `shared/theme.css` and `shared/deck.js` names
 stay unchanged so every deck keeps working; `npm test` fails if either generated

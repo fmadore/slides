@@ -11,6 +11,7 @@ Static checks (no browser, stdlib only):
   • stale placeholders (TODO/FIXME/lorem) and placeholder QR codes in
     published decks
   • orphaned assets and exact duplicate files (warnings)
+  • image weight: no WebP, nothing over 1800px or 600 KB (warnings)
   • with --site DIR: the publication build carries no speaker notes, no
     notes plugin, and none of the excluded development files
 
@@ -412,6 +413,88 @@ def reference_targets():
     return targets
 
 
+# --- image weight -----------------------------------------------------------
+# Both ceilings come from measuring what the decks actually display (issue #7).
+#
+# A raster wider than PIXEL_CEILING cannot be shown at full resolution: the
+# slide area is 1280 CSS px and the lightbox tops out at 92vw, so 1800px covers
+# a zoomed screenshot on a 1920-wide screen with nothing to spare.
+#
+# WebP is rejected outright, and not for browser support. Chrome's print-to-PDF
+# passes a JPEG through byte-for-byte but has no WebP filter to pass through
+# to, so it decodes every WebP and re-emits it as zlib'd RGB. Measured on the
+# Erlangen deck: 1.2 MB of WebP sources became 10.1 MB of PDF images. The same
+# pictures as JPEG cost 1.7 MB.
+PIXEL_CEILING = 1800
+BYTE_CEILING = 600 * 1024
+RASTER_EXT = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+
+
+def image_size(path):
+    """(width, height) of a PNG/JPEG/GIF/WebP, or None. Header parsing only."""
+    with open(path, "rb") as fh:
+        head = fh.read(32)
+        if head[:8] == b"\x89PNG\r\n\x1a\n" and head[12:16] == b"IHDR":
+            return int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
+        if head[:6] in (b"GIF87a", b"GIF89a"):
+            return int.from_bytes(head[6:8], "little"), int.from_bytes(head[8:10], "little")
+        if head[:4] == b"RIFF" and head[8:12] == b"WEBP":
+            chunk = head[12:16]
+            if chunk == b"VP8X":
+                return (int.from_bytes(head[24:27], "little") + 1,
+                        int.from_bytes(head[27:30], "little") + 1)
+            if chunk == b"VP8 ":
+                return (int.from_bytes(head[26:28], "little") & 0x3FFF,
+                        int.from_bytes(head[28:30], "little") & 0x3FFF)
+            if chunk == b"VP8L":
+                bits = int.from_bytes(head[21:25], "little")
+                return (bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1
+            return None
+        if head[:2] != b"\xff\xd8":
+            return None
+        fh.seek(2)
+        while True:
+            marker = fh.read(2)
+            if len(marker) < 2 or marker[0] != 0xFF:
+                return None
+            length = int.from_bytes(fh.read(2), "big")
+            # SOF0-SOF15, minus the four markers in that range that are not
+            # frame headers (DHT, JPG, DAC, and the standalone SOI).
+            if 0xC0 <= marker[1] <= 0xCF and marker[1] not in (0xC4, 0xC8, 0xCC, 0xD8):
+                fh.read(1)                                  # sample precision
+                height = int.from_bytes(fh.read(2), "big")
+                width = int.from_bytes(fh.read(2), "big")
+                return width, height
+            fh.seek(length - 2, os.SEEK_CUR)
+
+
+def audit_image_weight(rep):
+    """Shipped rasters stay inside the size and format budget (warnings)."""
+    roots = [os.path.join(ROOT, "shared")]
+    roots += [os.path.join(ROOT, "talks", slug) for slug in sorted(os.listdir(os.path.join(ROOT, "talks")))
+              if os.path.isdir(os.path.join(ROOT, "talks", slug)) and not slug.startswith("_")]
+    for root in roots:
+        for dirpath, dirnames, filenames in os.walk(root):
+            for name in sorted(filenames):
+                ext = os.path.splitext(name)[1].lower()
+                if ext not in RASTER_EXT:
+                    continue
+                path = os.path.join(dirpath, name)
+                rel = os.path.relpath(path, ROOT)
+                if ext == ".webp":
+                    rep.warn(rel, "WebP ships to the PDF export as zlib'd RGB, roughly "
+                                  "10x its own weight — use JPEG for photographs, PNG for flat art")
+                    continue
+                size = image_size(path)
+                if size and max(size) > PIXEL_CEILING:
+                    rep.warn(rel, f"{size[0]}x{size[1]}: nothing can display more than "
+                                  f"{PIXEL_CEILING}px (slide area is 1280px, lightbox 92vw)")
+                weight = os.path.getsize(path)
+                if weight > BYTE_CEILING:
+                    rep.warn(rel, f"{weight / 1024:.0f} KB in a deck people download as a PDF "
+                                  f"(ceiling {BYTE_CEILING // 1024} KB)")
+
+
 def audit_assets(rep):
     """Path-aware orphan detection and exact duplicate files (warnings)."""
     referenced = reference_targets()
@@ -494,6 +577,7 @@ def main(argv=None):
     audit_placeholder_qr(rep, published)
     audit_vendor(rep)
     audit_assets(rep)
+    audit_image_weight(rep)
     if args.site:
         audit_site(rep, args.site)
 
