@@ -102,9 +102,15 @@
     .reveal section.silos .cg-row > li:first-child { padding-left: 0; border-left: none; }
     .reveal section.silos .cg-row > li::before { content: none; }
 
-    /* "Structured data" (slide 13): the multimodal-LLM gloss is a caption to the
-       lead, so pull it tight underneath — keeps lead + gloss + bullets on-canvas. */
+    /* "Structured data" (slide 14): at the figrow's default 28rem image cap the
+       newspaper plate pushes the slide into auto-fit at every width — and under
+       the 0.90 floor on phones, where the narrow slide padding widens the figure
+       column. Hold the plate to 21rem and shrink-wrap its figure so the caption
+       clamps to the plate edge; with the lead pulled tight over the bullets the
+       whole slide sits on-canvas natively. */
     .reveal section[data-toc="Structured data"] .lead { margin-bottom: var(--space-xs); }
+    .reveal section[data-toc="Structured data"] .fig-frame figure { width: fit-content; margin-inline: auto; }
+    .reveal section[data-toc="Structured data"] .fig-frame img { width: auto; max-width: 100%; max-height: 21rem; }
 
     /* "Grounded answers" (slide 16): the status/roadmap callout carries a full repo URL,
        so let it use the slide's full width (fewer lines) to stay on-canvas. */
@@ -455,9 +461,8 @@
       <div class="figrow">
         <div class="col">
           <p class="lead">Multimodal LLMs turn scanned pages into structured data</p>
-          <p class="small muted">AI models that take in images and audio as well as text</p>
           <ul>
-            <li>Extracts text from scans and audio files — Hausa, Arabic, Cyrillic, Old Tatar</li>
+            <li>Extracts text from scans and audio — Hausa, Arabic, Cyrillic, Old Tatar</li>
             <li>Now reads handwriting too — cursive letters and manuscripts as well as print</li>
             <li>Pulls out people, places, dates as structured fields</li>
             <li>Opens DH methods — maps, networks, analysis at scale</li>
