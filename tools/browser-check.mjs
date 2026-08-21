@@ -6,7 +6,10 @@
  *                 auto-fitted below the readability threshold (data-fit-fail),
  *                 no raw overflow on unfitted slides
  *   • 844×390   — the persistent footer never covers slide content
- *   • 390×844   — reveal's scroll view stays off; the canvas fits horizontally
+ *   • 390×844   — reveal's scroll view stays off; the canvas fits horizontally;
+ *                 no slide auto-fitted below the threshold under the narrow
+ *                 (≤640px) chrome, whose tighter slide padding re-runs auto-fit
+ *                 at a different scale than the desktop pass measures
  *
  * Then once, on the component catalogue: the motion switch — .no-draw must
  * zero --draw-run and reach every animated mark and every counting numeral.
@@ -159,16 +162,31 @@ async function checkDeck(deck) {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
     const { page } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
+    // Auto-fit only measures once webfonts settle; wait so the walk below sees
+    // real data-fit stamps instead of racing them.
+    await page.evaluate(() => document.fonts.ready).catch(() => {});
     const r = await page.evaluate(() => {
       const scroll = !!document.querySelector('.reveal.reveal-scroll');
       const rect = document.querySelector('.slides').getBoundingClientRect();
-      return { scroll, left: rect.left, right: rect.right, vw: innerWidth };
+      // The ≤640px chrome tightens --slide-pad-x, so auto-fit lands at a
+      // different scale here than the 1280×720 pass measures — walk the deck
+      // so a narrow-only data-fit-fail surfaces in CI, not in someone's hand.
+      const fitFails = [];
+      const hs = Reveal.getHorizontalSlides();
+      for (let h = 0; h < hs.length; h++) {
+        Reveal.slide(h, 0);
+        for (const s of [hs[h], ...hs[h].querySelectorAll(':scope > section')]) {
+          if (s.hasAttribute('data-fit-fail')) fitFails.push(`#${h + 1} scale ${s.getAttribute('data-fit-fail')}`);
+        }
+      }
+      return { scroll, left: rect.left, right: rect.right, vw: innerWidth, fitFails };
     }).catch(() => null);
     if (!r) fail(where, '390×844 — could not inspect');
     else {
       if (r.scroll) fail(where, '390×844 — reveal switched to scroll view');
       if (r.left < -1 || r.right > r.vw + 1) fail(where, `390×844 — canvas clipped horizontally (${Math.round(r.left)}..${Math.round(r.right)} in ${r.vw})`);
-      if (!r.scroll && r.left >= -1 && r.right <= r.vw + 1) ok(where, '390×844 — fixed canvas, no clipping');
+      for (const f of r.fitFails) fail(where, `390×844 — slide auto-fitted below threshold: ${f} (trim it or add data-fit-allow)`);
+      if (!r.scroll && r.left >= -1 && r.right <= r.vw + 1 && !r.fitFails.length) ok(where, '390×844 — fixed canvas, no clipping, no fit failures');
     }
     await ctx.close();
   }
