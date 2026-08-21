@@ -140,9 +140,16 @@ whose state lives in the URL), or a talk directly at `/talks/<slug>/`. The no-ca
 
 ## Using the deck
 
-**Keyboard:** `←/→` navigate · `T` table of contents · `O` overview · `F` fullscreen ·
-`S` speaker notes · `Esc` close overlays. On-screen ‹ › buttons and a **Contents** button
+**Keyboard:** `←/→` navigate · `G` jump to slide (type a number, Enter) · `T` table of
+contents · `O` overview · `F` fullscreen · `S` speaker notes · `Ctrl/Cmd+Shift+F` search
+across slides · `Esc` close overlays. On-screen ‹ › buttons and a **Contents** button
 sit in the footer.
+
+**Read as a page:** append `?view=scroll` to a talk's URL for reveal's scroll view — the
+deck as one scrolling page, the link to share after a talk. The footer becomes a fixed
+identification band; counter, running head and Contents stand down (reveal's scrollbar is
+the index). Slides keep their 1280×720 stage — the view reorders, it does not reflow.
+Automatic activation on small screens stays off by design.
 
 **Layouts** (see `talks/_template/index.html` for live examples): cover, section divider
 (`.section` green field, `.section.navy` deep variant), standard content, numbered index

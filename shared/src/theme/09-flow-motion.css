@@ -82,6 +82,12 @@
    asked for stillness. */
 .reveal.no-draw, .reveal section.no-draw { --draw-run: 0s; }
 html.reveal-print .reveal { --draw-run: 0s; }
+/* The scroll view (?view=scroll) is a read-through, and it takes the switch for
+   the same reason print does. Reveal adds and removes `.present` as each page
+   crosses the scroll trigger, so every mark redraws — and every numeral rolls
+   from zero again — each time a slide passes the fold, in both directions. An
+   arrival animation needs an arrival; scrolling back up is not one. */
+.reveal-viewport.reveal-scroll .reveal { --draw-run: 0s; }
 
 /* Print: ink the new dark fields, and never hold a half-drawn rule on paper. */
 @media print {

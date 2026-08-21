@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-19T22:12:13+02:00",
+  "generatedAt": "2026-08-21T18:40:00+02:00",
   "title": "Design System: Broadsheet",
   "extensions": {
     "colorMeta": {
@@ -92,6 +92,150 @@
           "oklch(0.81 0.10 235)",
           "oklch(0.89 0.06 235)",
           "oklch(0.96 0.03 235)"
+        ]
+      },
+      "green-deep": {
+        "role": "primary",
+        "displayName": "Green Deep (AA green text/links on light, 6.13:1)",
+        "canonical": "#0a6e49",
+        "purpose": "color-mix(in oklch, #009260, #06140d 26%). The written form of the lead colour: links, .accent, ol folios, ledger figures, the Fig. mark, the printed folio. Small green text is never set in the raw corporate hex.",
+        "tonalRamp": [
+          "oklch(0.20 0.08 160)",
+          "oklch(0.32 0.11 160)",
+          "oklch(0.44 0.13 160)",
+          "oklch(0.57 0.15 160)",
+          "oklch(0.67 0.13 160)",
+          "oklch(0.77 0.10 160)",
+          "oklch(0.87 0.06 160)",
+          "oklch(0.95 0.03 160)"
+        ]
+      },
+      "green-field": {
+        "role": "primary",
+        "displayName": "Green Field (the divider plane, 4.95:1 against Paper)",
+        "canonical": "#027e54",
+        "purpose": "color-mix(in oklch, #009260, #04140d 14%). The full-bleed .section plane — the bright register. A divider never paints raw #009260.",
+        "tonalRamp": [
+          "oklch(0.20 0.08 160)",
+          "oklch(0.32 0.11 160)",
+          "oklch(0.44 0.13 160)",
+          "oklch(0.57 0.15 160)",
+          "oklch(0.67 0.13 160)",
+          "oklch(0.77 0.10 160)",
+          "oklch(0.87 0.06 160)",
+          "oklch(0.95 0.03 160)"
+        ]
+      },
+      "green-wash": {
+        "role": "primary",
+        "displayName": "Line Wash (state ground)",
+        "canonical": "#e7f0f7",
+        "purpose": "color-mix(in oklch, #009260, paper 90%). The palest ground in the system: the highlighted code line and the filled .depth row. At 90% Paper it resolves to oklch(0.950 0.014 241) — a cool near-white that reads as a marked row, not as a green tint.",
+        "tonalRamp": [
+          "oklch(0.15 0.014 254)",
+          "oklch(0.27 0.014 254)",
+          "oklch(0.40 0.014 254)",
+          "oklch(0.56 0.012 254)",
+          "oklch(0.70 0.010 254)",
+          "oklch(0.87 0.005 252)",
+          "oklch(0.95 0.003 250)",
+          "oklch(0.99 0.001 250)"
+        ]
+      },
+      "navy-field": {
+        "role": "secondary",
+        "displayName": "Navy Field (the deep pole plane, 13.10:1 against Paper)",
+        "canonical": "#012480",
+        "purpose": "color-mix(in oklch, #00268a, #03081c 8%). The .closing colophon and the .section.navy divider — the surface the deep register measures against.",
+        "tonalRamp": [
+          "oklch(0.16 0.10 265)",
+          "oklch(0.24 0.15 265)",
+          "oklch(0.31 0.20 265)",
+          "oklch(0.42 0.19 265)",
+          "oklch(0.54 0.16 265)",
+          "oklch(0.68 0.11 265)",
+          "oklch(0.82 0.06 265)",
+          "oklch(0.94 0.02 265)"
+        ]
+      },
+      "navy-deep": {
+        "role": "secondary",
+        "displayName": "Navy Deep (ink on the spark)",
+        "canonical": "#071c62",
+        "purpose": "color-mix(in oklch, #00268a, #04060f 30%). --ond-mark-ink on the deep pole: text and glyphs sitting ON gold. Also the navy duotone plate ground.",
+        "tonalRamp": [
+          "oklch(0.16 0.10 265)",
+          "oklch(0.24 0.15 265)",
+          "oklch(0.31 0.20 265)",
+          "oklch(0.42 0.19 265)",
+          "oklch(0.54 0.16 265)",
+          "oklch(0.68 0.11 265)",
+          "oklch(0.82 0.06 265)",
+          "oklch(0.94 0.02 265)"
+        ]
+      },
+      "gold-bright": {
+        "role": "secondary",
+        "displayName": "Gold Bright (the deep pole's mark, 7.13:1 on navy)",
+        "canonical": "#d7ba7e",
+        "purpose": "color-mix(in oklch, #cca352, white 24%). What --ond-mark resolves to on .section.navy, .closing and .media: plate rules, dark-field ticks, the closing kicker, the on-dark folio. Never reached by hand and never on a bright field (2.71:1 on green).",
+        "tonalRamp": [
+          "oklch(0.22 0.05 84)",
+          "oklch(0.34 0.07 84)",
+          "oklch(0.47 0.09 84)",
+          "oklch(0.60 0.10 84)",
+          "oklch(0.72 0.10 84)",
+          "oklch(0.81 0.08 84)",
+          "oklch(0.89 0.06 84)",
+          "oklch(0.95 0.03 84)"
+        ]
+      },
+      "brown-deep": {
+        "role": "tertiary",
+        "displayName": "Brown Deep (AA brown small text on light, 7.76:1)",
+        "canonical": "#774507",
+        "purpose": "color-mix(in oklch, #d57912, #140a02 44%). The .kicker.warm / .callout.warm voice and the .step-vec chip; the written form of the counter-thread.",
+        "tonalRamp": [
+          "oklch(0.22 0.07 62)",
+          "oklch(0.33 0.10 62)",
+          "oklch(0.44 0.13 62)",
+          "oklch(0.55 0.15 62)",
+          "oklch(0.66 0.15 62)",
+          "oklch(0.77 0.11 62)",
+          "oklch(0.87 0.07 62)",
+          "oklch(0.95 0.03 62)"
+        ]
+      },
+      "warm-field": {
+        "role": "tertiary",
+        "displayName": "Warm Field (the stakes divider, 5.71:1 against Paper)",
+        "canonical": "#955509",
+        "purpose": "color-mix(in oklch, #d57912, #160b02 30%). The .section.warm plane — the second bright field, used sparingly for the critical-stakes strand.",
+        "tonalRamp": [
+          "oklch(0.22 0.07 62)",
+          "oklch(0.33 0.10 62)",
+          "oklch(0.44 0.13 62)",
+          "oklch(0.55 0.15 62)",
+          "oklch(0.66 0.15 62)",
+          "oklch(0.77 0.11 62)",
+          "oklch(0.87 0.07 62)",
+          "oklch(0.95 0.03 62)"
+        ]
+      },
+      "duo-ground": {
+        "role": "neutral",
+        "displayName": "Duotone Ground (18.4:1 against Paper)",
+        "canonical": "#04140d",
+        "purpose": "The literal ink-green backing every documentary plate is duotoned onto — the deepest surface in the system and the reason .media sits in the deep register.",
+        "tonalRamp": [
+          "oklch(0.20 0.08 160)",
+          "oklch(0.32 0.11 160)",
+          "oklch(0.44 0.13 160)",
+          "oklch(0.57 0.15 160)",
+          "oklch(0.67 0.13 160)",
+          "oklch(0.77 0.10 160)",
+          "oklch(0.87 0.06 160)",
+          "oklch(0.95 0.03 160)"
         ]
       },
       "paper": {
@@ -273,23 +417,22 @@
       "chrome": {
         "displayName": "Chrome (gothic small-caps)",
         "purpose": "The deck footer and running head, which sit outside the scaled canvas, plus browser-frame simulations and QR URLs that are representational rather than read. 0.80rem, 0.18em tracking."
+      },
+      "mono": {
+        "displayName": "Mono (JetBrains Mono, vendored)",
+        "purpose": "The third face, a utility rather than a voice: it never carries prose. Code blocks (1.02rem measured), the scroll-panel excerpt, frame-bar and QR URLs, and document references. Vendored by tools/fetch-fonts.py, italic subset included because highlight.js sets comments in it. No tracking, never uppercase."
       }
     },
     "shadows": [
       {
-        "name": "shadow-1",
-        "value": "0 1px 2px oklch(0.2 0.02 258 / 0.07), 0 2px 6px oklch(0.2 0.02 258 / 0.05)",
-        "purpose": "Smallest overlay affordance; rarely used. Never on in-flow slide content."
-      },
-      {
         "name": "shadow-2",
         "value": "0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)",
-        "purpose": "The browser-chrome screenshot frame (.chrome) — a captured artifact floating above the page."
+        "purpose": "The captured or borrowed artifact floating over the page, and only these four: the browser-chrome screenshot frame (.chrome), the live embed in the same chrome (.site-frame), the demo capture (.demo-shot), and the QR that pops over a frame (.site-qr)."
       },
       {
         "name": "shadow-pop",
         "value": "0 22px 60px oklch(0.16 0.03 258 / 0.30)",
-        "purpose": "True modal overlays only: TOC panel, lightbox, QR pop. The Overlay-Only Shadow Rule."
+        "purpose": "True modal overlays only: the TOC panel and the lightbox image. The Overlay-Only Shadow Rule."
       }
     ],
     "motion": [
@@ -321,19 +464,24 @@
       {
         "name": "draw-run",
         "value": "var(--draw)",
-        "purpose": "The one stiller. Every signature animation takes its duration from here, and print, the ?print-pdf preview, prefers-reduced-motion and .no-draw (deck or slide) each set it to 0s rather than restating the animated marks; deck.js reads the same property off the slide before starting a count."
+        "purpose": "The one stiller. Every signature animation takes its duration from here, and print, the ?print-pdf preview, prefers-reduced-motion, the scroll view (.reveal-viewport.reveal-scroll .reveal) and .no-draw (deck or slide) each set it to 0s rather than restating the animated marks; deck.js reads the same property off the slide before starting a count. The scroll view needs it because reveal adds and removes .present at every scroll trigger, in both directions."
       }
     ],
     "breakpoints": [
       {
         "name": "chrome-compact",
         "value": "640px",
-        "purpose": "max-width: chrome outside the scaled canvas compacts (runhead hidden, footer title dropped). Slide content itself never responds — the 1280x720 canvas scales uniformly."
+        "purpose": "max-width: chrome outside the scaled canvas compacts (runhead hidden, footer title dropped, --slide-pad-x down to 1.6rem). Slide content itself never responds — the 1280x720 canvas scales uniformly."
       },
       {
         "name": "shallow-screen",
         "value": "560px",
-        "purpose": "max-height: a real footer strip is reserved outside the area reveal scales into, so the footer never covers content on landscape phones."
+        "purpose": "max-height: a real footer strip (--footer-reserve 2.4rem) is reserved outside the area reveal scales into, so the footer never covers content on landscape phones. The scroll view does not shorten .reveal, so its fixed band falls below the fold here — a known, documented gap."
+      },
+      {
+        "name": "scroll-activation",
+        "value": "null (off)",
+        "purpose": "Not a breakpoint by decision: reveal's automatic scroll-view switch (scrollActivationWidth) is disabled in the engine config, because the automatic mobile switch at <=435px clipped two-column slides on portrait phones. The scroll view is reached only by ?view=scroll / ?view=reader."
       }
     ],
     "print": [
@@ -380,7 +528,7 @@
       "refersTo": "stat-grid",
       "description": "The figure ledger: label left, green figure right, heavy top rule, hairlines between. Reads like a colophon, not a card grid; figures count up on entry.",
       "html": "<div class=\"ds-ledger\"><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Newspaper articles</span><span class=\"ds-ledger-num\">14,520</span></div><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Countries covered</span><span class=\"ds-ledger-num\">6</span></div><div class=\"ds-ledger-row\"><span class=\"ds-ledger-label\">Years of coverage</span><span class=\"ds-ledger-num\">64</span></div></div>",
-      "css": ".ds-ledger { border-top: 3px solid oklch(0.165 0.014 258); max-width: 34rem; } .ds-ledger-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.55em 0; border-bottom: 1px solid oklch(0.872 0.005 250); } .ds-ledger-label { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: oklch(0.405 0.018 258); } .ds-ledger-num { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 0.92; letter-spacing: -0.022em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: lining-nums tabular-nums; }"
+      "css": ".ds-ledger { border-top: 3px solid oklch(0.165 0.014 258); max-width: 34rem; } .ds-ledger-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: 0.55em 0; border-bottom: 1px solid oklch(0.744 0.005 250); } .ds-ledger-label { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: oklch(0.405 0.018 258); } .ds-ledger-num { font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 2.2rem; line-height: 0.92; letter-spacing: -0.022em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: lining-nums tabular-nums; }"
     },
     {
       "name": "Index List",
@@ -388,7 +536,7 @@
       "refersTo": "index-list",
       "description": "The contents/agenda grid: big green gothic folio, gothic title, serif description; ruled top and bottom with hairlines between.",
       "html": "<ol class=\"ds-index\"><li><span class=\"ds-idx-no\">01</span><span class=\"ds-idx-title\">The collection</span><span class=\"ds-idx-desc\">What sixty years of West African print holds.</span></li><li><span class=\"ds-idx-no\">02</span><span class=\"ds-idx-title\">The method</span><span class=\"ds-idx-desc\">Reading at scale without losing the page.</span></li></ol>",
-      "css": ".ds-index { list-style: none; margin: 0; padding: 0; max-width: 40rem; } .ds-index > li { display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline; gap: 0.2em 1.5rem; padding: 1rem 0; border-top: 1px solid oklch(0.872 0.005 250); } .ds-index > li:first-child { border-top: 3px solid oklch(0.165 0.014 258); } .ds-index > li:last-child { border-bottom: 3px solid oklch(0.165 0.014 258); } .ds-idx-no { grid-column: 1; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1; letter-spacing: -0.02em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: tabular-nums; } .ds-idx-title { grid-column: 2; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1.04; letter-spacing: -0.012em; color: oklch(0.150 0.016 262); } .ds-idx-desc { grid-column: 2; grid-row: 2; font-family: 'EB Garamond', Georgia, serif; font-size: 1.18rem; color: oklch(0.405 0.018 258); margin-top: 0.2em; }"
+      "css": ".ds-index { list-style: none; margin: 0; padding: 0; max-width: 40rem; } .ds-index > li { display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline; gap: 0.2em 1.5rem; padding: 1rem 0; border-top: 1px solid oklch(0.744 0.005 250); } .ds-index > li:first-child { border-top: 3px solid oklch(0.165 0.014 258); } .ds-index > li:last-child { border-bottom: 3px solid oklch(0.165 0.014 258); } .ds-idx-no { grid-column: 1; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 1.9rem; line-height: 1; letter-spacing: -0.02em; color: color-mix(in oklch, #009260, #06140d 26%); font-variant-numeric: tabular-nums; } .ds-idx-title { grid-column: 2; grid-row: 1; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 700; font-size: 2.2rem; line-height: 1.04; letter-spacing: -0.012em; color: oklch(0.150 0.016 262); } .ds-idx-desc { grid-column: 2; grid-row: 2; font-family: 'EB Garamond', Georgia, serif; font-size: 1.18rem; color: oklch(0.405 0.018 258); margin-top: 0.2em; }"
     },
     {
       "name": "Chip",
@@ -396,7 +544,7 @@
       "refersTo": "chip-outline",
       "description": "Gothic small-caps tag: hairline outline by default; .ds-chip-green tints; .ds-chip-solid fills with Lead Green.",
       "html": "<span class=\"ds-chip\">Archive</span> <span class=\"ds-chip ds-chip-green\">Open access</span> <span class=\"ds-chip ds-chip-solid\">Live demo</span>",
-      "css": ".ds-chip { display: inline-block; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.22em 0.6em; border-radius: 3px; background: transparent; border: 1.5px solid oklch(0.700 0.010 256); color: oklch(0.405 0.018 258); } .ds-chip-green { border-color: #009260; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-chip-solid { background: #009260; border-color: #009260; color: oklch(0.991 0.001 250); }"
+      "css": ".ds-chip { display: inline-block; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.22em 0.6em; border-radius: 3px; background: transparent; border: 1.5px solid oklch(0.623 0.010 256); color: oklch(0.405 0.018 258); } .ds-chip-green { border-color: #009260; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-chip-solid { background: #009260; border-color: #009260; color: oklch(0.991 0.001 250); }"
     },
     {
       "name": "Section Divider Field",
@@ -428,7 +576,7 @@
       "refersTo": "nav-button",
       "description": "Footer chrome navigation: outlined square that fills Lead Green on hover. Focus takes the themed --focus-ring (green on light, Paper on any dark field); on dark it takes a 10%-Paper fill with an --ond-rule border and hovers to the field's mark.",
       "html": "<button class=\"ds-nav-btn\" aria-label=\"Next slide\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 18l6-6-6-6\"/></svg></button>",
-      "css": ".ds-nav-btn { --focus-ring: #009260; appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.623 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: all 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.744 0.005 250); color: oklch(0.530 0.016 256); }"
+      "css": ".ds-nav-btn { --focus-ring: #009260; appearance: none; cursor: pointer; display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 3px; border: 1.5px solid oklch(0.623 0.010 256); background: transparent; color: oklch(0.405 0.018 258); padding: 0; transition: background-color 220ms cubic-bezier(0.22, 1, 0.36, 1), border-color 220ms cubic-bezier(0.22, 1, 0.36, 1), color 220ms cubic-bezier(0.22, 1, 0.36, 1), transform 220ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-btn svg { width: 1.05rem; height: 1.05rem; } .ds-nav-btn:hover { color: oklch(0.991 0.001 250); border-color: #009260; background: #009260; transform: translateY(-1px); } .ds-nav-btn:active { transform: translateY(0); } .ds-nav-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 3px; } .ds-nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: oklch(0.744 0.005 250); color: oklch(0.530 0.016 256); }"
     },
     {
       "name": "Print Imprint (per-page folio)",
@@ -444,7 +592,7 @@
       "refersTo": "slide-title",
       "description": "The ruled plate caption under a duotone documentary photograph: 2px rule, gothic Fig. mark in deep green, italic serif gloss. (In the deck the image itself takes the injected #duo-green SVG duotone filter on an ink ground.)",
       "html": "<figure class=\"ds-plate\"><div class=\"ds-plate-img\"></div><figcaption class=\"ds-plate-cap\"><span class=\"ds-fig-no\">Fig. 03</span><span class=\"ds-fig-cap\">Friday prayer outside the Grande Mosqu&eacute;e, Ouagadougou, 1998.</span></figcaption></figure>",
-      "css": ".ds-plate { margin: 0; max-width: 30rem; } .ds-plate-img { height: 11rem; background: #04140d; border: 1px solid oklch(0.700 0.010 256); background-image: linear-gradient(135deg, #04140d 0%, color-mix(in oklch, #009260, #04140d 40%) 60%, color-mix(in oklch, #009260, #04140d 14%) 100%); } .ds-plate-cap { display: flex; gap: 0.7em; margin-top: 0.55em; padding-top: 0.5em; border-top: 2px solid oklch(0.165 0.014 258); } .ds-fig-no { flex: none; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-fig-cap { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1rem; line-height: 1.34; color: oklch(0.405 0.018 258); }"
+      "css": ".ds-plate { margin: 0; max-width: 30rem; } .ds-plate-img { height: 11rem; background: #04140d; border: 1px solid oklch(0.623 0.010 256); background-image: linear-gradient(135deg, #04140d 0%, color-mix(in oklch, #009260, #04140d 40%) 60%, color-mix(in oklch, #009260, #04140d 14%) 100%); } .ds-plate-cap { display: flex; gap: 0.7em; margin-top: 0.55em; padding-top: 0.5em; border-top: 2px solid oklch(0.165 0.014 258); } .ds-fig-no { flex: none; font-family: 'Libre Franklin', system-ui, sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in oklch, #009260, #06140d 26%); } .ds-fig-cap { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1rem; line-height: 1.34; color: oklch(0.405 0.018 258); }"
     },
     {
       "name": "Media Field Scrim",
@@ -473,7 +621,7 @@
   ],
   "narrative": {
     "northStar": "The Scholarly Broadsheet",
-    "overview": "Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on three rules the author wrote into the theme itself. First, an inverted type hierarchy: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, colour is a field, not a sprinkle: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a crisp, high-contrast page: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration. The voice is authored-by-a-historian and must never read as template-made or AI-generated. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision, and the neutral rule ramp and the on-dark registers are both pinned to measured contrast rather than to how they look on a laptop.",
+    "overview": "Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on the three rules the author wrote into the theme itself. First, an inverted type hierarchy: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, colour is a field, not a sprinkle: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a crisp, high-contrast page: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration. The voice is authored-by-a-historian and must never read as template-made or AI-generated. The confirmed anti-references (retired tells): the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, and drop-shadowed rounded cards. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision (the serif body sits deliberately large because EB Garamond's small x-height reads small in a hall).",
     "keyCharacteristics": [
       "Inverted type hierarchy: loud gothic display, quiet serif prose",
       "Colour as full-bleed structural fields (green leads, navy is the deep pole, gold sparks the deep pole only)",
@@ -481,7 +629,7 @@
       "Signature device: a heavy 4px green marker bar above every standard slide title",
       "Ruled, not boxed: hairlines and heavy editorial rules instead of cards",
       "Flat by default; shadows only on true overlays",
-      "\"Ink on paper\" motion: rules draw in, bars grow, figures count up"
+      "\"Ink on paper\" motion: rules draw in, bars grow, figures count up — one switch (`--draw-run`) stills all three"
     ],
     "rules": [
       {
@@ -496,12 +644,17 @@
       },
       {
         "name": "The Two Dark Registers Rule",
-        "body": "(Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — `--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink` — whose `:root` values *are* the bright register, so any dark surface is safe without opting in.",
+        "body": "(Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — `--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink` — whose `:root` values *are* the bright register, so any dark surface is safe without opting in.\n\n- **Deep pole** (`.section.navy`, `.closing`, `.media`; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after `:root` re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright.\n- **Bright fields** (the green divider at 4.97:1, the brown `.section.warm` at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by **weight** (600 against 700), never by alpha.\n\nThe footer and the viewport live outside the slide and cannot inherit the register, so `shared/src/deck/03-toc-sync.js` mirrors it onto them as `data-field=\"deep\"`. **One helper owns the question.** `fieldOf(el)` in that same module returns `null` on a paper slide, `\"bright\"`, or `\"deep\"`; the live chrome (`update()`) and the printed imprint (`buildPrintImprints()`) both read it, so a slide can never be dark for one surface and light for the other. Any new surface that has to sit over a slide asks `fieldOf`, it does not re-derive the answer from class names. Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.",
         "section": "colors"
       },
       {
         "name": "The Hall Label Rule",
         "body": "The label voice splits in two, and the split is by *distance*, not by component. A label printed on paper is read at 40cm; a label projected in a lecture hall is read at 20m, and the hall is the primary reader. If a label tells the audience what a figure counts, which decade a bar sits in, or what a column holds, it takes `--fs-label` — never the chrome size. The tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes *less* space beneath it, so the net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.",
+        "section": "typography"
+      },
+      {
+        "name": "The Third Face Is Pinned Too",
+        "body": "`--font-mono` names JetBrains Mono, and `tools/fetch-fonts.py` now vendors it beside EB Garamond and Libre Franklin — latin and latin-ext, normal and italic, 115 KB. The italic subset is not optional: highlight.js sets comments and quotes in it, so without it every code comment renders as a synthesised oblique. Before it was vendored the mono role was the one place the deck was not self-contained, and the measurements say what that cost: the same 55-character line at 19px ran 574.5px in a bare machine's generic monospace, 612.3px on the author's laptop (which holds Cascadia Code, `ui-monospace` not resolving in Chrome there), and 627px in the face the theme actually named. Three metrics for one line of code — and the published PDFs, generated in CI, were typeset in the first of them. The remaining families in the stack are a fallback for a webfont that fails to load, not a choice: what should arrive is the face this repository ships. Either vendor it or let the declared face be one that actually arrives.",
         "section": "typography"
       },
       {
@@ -556,12 +709,27 @@
       },
       {
         "name": "The Ink-on-Paper Motion Rule",
-        "body": "One motion idea, repeated and restrained (`--draw: 560ms`, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (`data-count`) on slide entry. Everything stills under print, `prefers-reduced-motion`, and hidden tabs; `.no-draw` opts a deck or slide out.",
+        "body": "One motion idea, repeated and restrained (`--draw: 560ms`, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (`--count: 900ms`, `data-count`) on slide entry. Drawing from the left is one keyframe — `rule-draw`, a `scaleX` — shared by the four marks and by the share-bar fill, which is itself a rule whose length is the number; it animated `width` under a second keyframe until that was collapsed into the first. The column chart is the one animation still on the layout path, and by decision: its `height` is what carries each bar's value numeral up with the bar (measured 447px → 247px on the peak bar), which scaling the fill would strand. The count runs longer than the draw on purpose — a numeral needs legible frames to read as counting, where a rule only needs to be seen arriving.",
+        "section": "components"
+      },
+      {
+        "name": "The One Stiller Rule",
+        "body": "Nothing that wants the page to arrive still restates which marks are animated. Every signature animation takes its duration from `--draw-run`, and print, the `?print-pdf` preview, `prefers-reduced-motion`, the scroll view and `.no-draw` (on the deck or on a single slide) each set that one property to `0s`; a zero duration with `both` fill lands every mark on its end state. `deck.js` reads the same property off the slide before starting a count, and adds the one condition CSS cannot express — a hidden tab, where rAF is paused and a numeral would sit at 0. Before the switch there were three stiller lists in three different selector grammars, and the opt-out reached five of the six marks: a `.no-draw` deck still drew its section dividers' plate rules and still grew its chart bars, and every count ran regardless. No deck applies `.no-draw` — an opt-out never gets used by the decks that want the motion — so `tools/browser-check.mjs` measures the catalogue twice, switch off and switch on, and fails if a mark or a numeral escapes it, or if it finds no motion to still in the first place.",
+        "section": "components"
+      },
+      {
+        "name": "The Reduced Motion Keeps The Feedback Rule",
+        "body": "Under `prefers-reduced-motion` the signature stills completely and every *displacement* is removed — the TOC panel and the lightbox figure stop travelling (`transform: none`) and fade in on opacity alone, `.fragment.fade-up` stops rising, the deck buttons lose their 1px press lift, the TOC row stops sliding right on hover, and the progress bar jumps rather than slides. What stays is everything that changes only colour or opacity, at its authored timing, because instant is not gentler: this rule used to zero `transition-duration` on every element, which also flattened the viewport's 360ms cross-fade between the paper ground and the graphite one into a hard full-screen cut between near-white and near-black on every section divider — delivered to exactly the audience least able to take one. Reduce movement, not feedback.",
         "section": "components"
       },
       {
         "name": "The Two Image Treatments Rule",
         "body": "Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.",
+        "section": "components"
+      },
+      {
+        "name": "The One Bar Rule",
+        "body": "Browser chrome comes in two frames because there are two jobs — `.site-frame` fills its column with a live page, `.chrome` holds a capture at its natural size — but the bar across the top of both is one device, declared once (`05-embeds-code.css`) and shared by selector. The two copies it replaced had already drifted 0.05rem of padding and 0.1rem of label inset apart. Only the open link is not shared: a capture has no live page to open, which is why `.chrome-open` was dead styling rather than stocked vocabulary.",
         "section": "components"
       },
       {
@@ -571,12 +739,22 @@
       },
       {
         "name": "The Focus Ring Is Not Animated Rule",
-        "body": "A focus indicator appears the instant focus lands; it never fades up. Every transition in the theme names its properties — `.deck-btn`, `.toc-close` and the lightbox close button list `background-color, border-color, color, transform`; `.fragment.fade-up` lists `transform, opacity`. `transition: all` appears nowhere in the theme: it swept `outline-color` and `outline-offset` into the 220ms (`--dur`) ramp, so the ring arrived late on exactly the interaction that needs it immediately. Add a property to a transition by naming it.",
+        "body": "A focus indicator appears the instant focus lands; it never fades up. Every transition in the theme names its properties — `.deck-btn`, `.toc-close` and the lightbox close button list `background-color, border-color, color, transform`; `.fragment.fade-up` lists `transform, opacity`. `transition: all` appears nowhere in the theme: it swept `outline-color` and `outline-offset` into the 220ms (`--dur`) ramp, so the ring arrived late on exactly the interaction that needs it immediately. Add a property to a transition by naming it — and that includes overriding vendor CSS that does not: reveal ships `.reveal .fragment { transition: all .2s }`, so `.reveal .fragment` restates it as `opacity, color, transform, visibility`, the four properties reveal's fragment vocabulary actually moves. It matters now that a stepped list is the scaffold's default, and a fragment can hold something focusable.",
+        "section": "components"
+      },
+      {
+        "name": "The Inline Style Wins Rule",
+        "body": "Reveal writes `transition: transform 0.8s` *inline* on the viewport element while it initialises, and an inline declaration outranks any stylesheet rule — so the `.reveal-viewport` cross-fade the theme had declared never ran once, and the frame around the canvas cut instantly between the paper ground and the graphite one while the slide it surrounds faded. That one declaration therefore carries `!important`, and restates reveal's transform transition rather than dropping it. Before overriding a vendor property, check whether the vendor sets it inline; a stylesheet rule that reads correctly and never applies is worse than no rule at all.",
         "section": "components"
       },
       {
         "name": "The Padding Measures The Container Rule",
         "body": "Em padding resolves against the element's own font-size, so a header cell at 0.82em and a body cell at 1em drew different gutters from one declaration — 12.4px against 17.0px — and a right-aligned header sat 4.6px inboard of the numerals it labelled. Horizontal cell padding is therefore `calc(0.9 * var(--fs-small))`: one gutter measured against the table, so header ink and numeral ink end at the same x (1186.2px, measured). A prior reading blamed trailing letter-space on the tracked headers; measurement showed the em mismatch was the cause. Any grid whose columns must align across rows of different type sizes sizes its gutter against the container, not the cell.",
+        "section": "components"
+      },
+      {
+        "name": "The Paper Cannot Scroll Rule",
+        "body": "An affordance that only exists on screen must be answered in print, not left to fail quietly. `.scroll-panel` caps at 25rem and scrolls; on paper it cannot, and under the one-page-per-slide contract a 190-line file was never going to fit a 1280×720 page — so the excerpt is unavoidable and only the silence was ever the defect. The PDF used to hard-cut mid-sentence with no mark, beneath authored copy still telling the reader to scroll. Print now draws the cut in the system's own vocabulary: the text fades into the Sunken fill, the heavy near-black rule that opens a block is used here to close one, and a gothic `Excerpt` band names what the reader is holding — `Extrait` under `html[lang=\"fr\"]`. A panel carrying `data-source-url` prints the address beside the label, in its own case and eased tracking, because uppercasing a URL shouts it; that attribute already existed as deck.js's load-failure fallback, so the band reuses the author's answer rather than asking for a second one, and it is what keeps the suppressed `.scroll-hint` from taking a URL down with it. Both marks and the suppressed hint hang off `--excerpt-mark` / `--scroll-hint-display`, declared once for `@media print` and once for the `?print-pdf` preview.",
         "section": "components"
       },
       {
@@ -593,14 +771,16 @@
       "**Do** size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.",
       "**Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.",
       "**Do** colour dark fields through the on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.",
-      "**Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to *both* the `.present` list in `03-layouts.css` and the `.pdf-page` list in `01-foundations.css`.",
+      "**Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to all three lists — the `.present` list in `03-layouts.css`, and the `.pdf-page` and `.scroll-page-content` lists in `01-foundations.css`.",
       "**Do** cap a figure or code block with `--block-max-h` (28rem), and give print its own per-page `.pdf-imprint` rather than expecting the live footer to travel.",
       "**Do** ask `fieldOf()` which register a surface sits in — it is the one answer the live chrome and the printed imprint share.",
       "**Do** let the closing take its own measures (22ch title, 46ch lead, byline in a row) — it is all type, and it is the only place those overrides apply.",
       "**Do** give an opening rule air above it and land adjacent rules at the same x; a near-miss between two copies of the same device reads as a mistake.",
       "**Do** inset a panel's own header text past any control floating over it (`calc(2.4rem + var(--space-sm))` on `.toc-head`) while leaving the rule full-width.",
       "**Do** open a process step, a panel or any grouped column on the 4px near-black rule and let the gutter separate them — `.flow-step` and `.panel` share one opening device.",
-      "**Do** name every property a transition animates, and keep the focus ring out of them.",
+      "**Do** name every property a transition animates, and keep the focus ring out of them — including where that means restating a vendor rule (`.reveal .fragment`).",
+      "**Do** still motion by setting `--draw-run: 0s` on the scope that wants stillness, never by listing the animated marks again; give a new signature animation `var(--draw-run)` as its duration and it inherits every stiller.",
+      "**Do** step a list with `.fragment` when the room should be walked through it — the scaffold seeds a stepped list, and deleting the classes is the right call when the points need to be compared rather than delivered one at a time.",
       "**Do** measure a gutter that must align across type sizes against the container (`calc(0.9 * var(--fs-small))` on table cells) rather than against each cell's own em.",
       "**Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field."
     ],
@@ -618,7 +798,10 @@
       "**Don't** widen `.lead` past 30ch outside `.closing`, or push the closing's row byline onto covers and other slides.",
       "**Don't** read the showcase deck's slack as a measurement of the system; its copy is placeholder by design.",
       "**Don't** write `transition: all` — it animates `outline-color` and `outline-offset` and makes the focus ring fade up over 220ms.",
-      "**Don't** put a border on the Sunken inset (code blocks included) or a radius on a ruled column; the surface is either the fill or the opening rule, never either one plus a hairline outline.",
+      "**Don't** answer `prefers-reduced-motion` by zeroing every transition duration: that turns a colour cross-fade into a flash. Take the displacement away and leave the feedback at its authored timing.",
+      "**Don't** animate a layout property without a reason the comment can state; the column chart has one — the numeral rides its bar — and it is the only place in the theme that does.",
+      "**Don't** put a border on the Sunken inset (code blocks and the scroll panel included) or a radius on a ruled column; the surface is either the fill or the opening rule, never either one plus a hairline outline.",
+      "**Don't** let a screen-only affordance fail silently on paper: give the scroll panel a `data-source-url` so its printed `Excerpt` band names the source, and never leave an instruction in print that the reader cannot follow.",
       "**Don't** convert the OKLCH neutrals to hex or \"correct\" the hex corporate palette; each format is normative where it stands."
     ]
   }

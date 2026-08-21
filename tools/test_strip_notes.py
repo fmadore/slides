@@ -13,7 +13,7 @@ spec.loader.exec_module(strip_notes)
 
 
 def strip(html):
-    counts = {"aside": 0, "note": 0, "plugin": 0}
+    counts = {"aside": 0, "attr": 0, "note": 0, "plugin": 0}
     return strip_notes.strip_notes(html, counts), counts
 
 
@@ -57,6 +57,29 @@ class StripHtmlNotes(unittest.TestCase):
         self.assertIn("keep2", out)
         self.assertEqual(c["aside"], 0)
 
+    def test_data_notes_attribute(self):
+        out, c = strip('<section class="cover" data-notes="secret">slide</section>')
+        self.assertNotIn("secret", out)
+        self.assertEqual(out, '<section class="cover">slide</section>')
+        self.assertEqual(c["attr"], 1)
+
+    def test_data_notes_quoting_variants(self):
+        cases = ("<section data-notes='secret'>x</section>",
+                 '<SECTION DATA-NOTES="secret">x</SECTION>',
+                 '<section data-notes = "secret">x</section>',
+                 '<section data-notes="multi\nline secret">x</section>',
+                 "<section data-notes=secret>x</section>")
+        for html in cases:
+            out, c = strip(html)
+            self.assertNotIn("secret", out, html)
+            self.assertEqual(c["attr"], 1, html)
+
+    def test_does_not_eat_other_data_attributes(self):
+        html = '<section data-toc="Intro" data-notes-visible="1" data-note="keep">x</section>'
+        out, c = strip(html)
+        self.assertEqual(out, html)
+        self.assertEqual(c["attr"], 0)
+
     def test_markdown_note_block(self):
         html = "<textarea data-template>\n## Slide\n\nNote:\nsecret cue</textarea>"
         out, c = strip(html)
@@ -76,7 +99,8 @@ class BuildTree(unittest.TestCase):
         src = os.path.join(tmp, "repo")
         for d in ("shared/src/theme", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github", ".impeccable"):
             os.makedirs(os.path.join(src, d), exist_ok=True)
-        deck = ('<html><body><aside class="notes">secret</aside>'
+        deck = ('<html><body><section data-notes="attribute secret">slide</section>'
+                '<aside class="notes">secret</aside>'
                 '<script src="../../shared/reveal/plugin/notes.js"></script></body></html>')
         writes = {
             "index.html": "<html>landing</html>",
@@ -120,9 +144,28 @@ class BuildTree(unittest.TestCase):
             with open(os.path.join(dest, "talks/2026-01-01-demo/index.html")) as fh:
                 html = fh.read()
             self.assertNotIn("secret", html)
+            self.assertNotIn("data-notes", html)
             self.assertNotIn("notes.js", html)
             self.assertEqual(counts["aside"], 1)
+            self.assertEqual(counts["attr"], 1)
             self.assertEqual(counts["plugin"], 1)
+
+    def test_assertion_catches_a_surviving_data_notes(self):
+        # The post-build scan is the safety net: if stripping ever regressed,
+        # the build must fail rather than publish the note. Disable stripping
+        # and build a deck whose only note is the attribute form.
+        with tempfile.TemporaryDirectory() as tmp:
+            src = os.path.join(tmp, "repo")
+            os.makedirs(os.path.join(src, "talks", "2026-01-01-demo"))
+            with open(os.path.join(src, "talks", "2026-01-01-demo", "index.html"), "w") as fh:
+                fh.write('<html><body><section data-notes="secret">x</section></body></html>')
+            unstripped, strip_notes.strip_notes = strip_notes.strip_notes, lambda html, counts: html
+            try:
+                with self.assertRaises(SystemExit) as caught:
+                    strip_notes.build(src, os.path.join(tmp, "_site"))
+            finally:
+                strip_notes.strip_notes = unstripped
+            self.assertIn("index.html", str(caught.exception))
 
     def test_counts_reset_between_builds(self):
         with tempfile.TemporaryDirectory() as tmp:

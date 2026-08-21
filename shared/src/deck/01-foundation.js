@@ -12,8 +12,9 @@
      • builds the auto table-of-contents overlay from [data-toc] sections
      • keeps everything in sync on each slide change
 
-   Keyboard:  ←/→ navigate · T table of contents · O overview · F fullscreen
-              S speaker notes · ? help · Esc closes overlays
+   Keyboard:  ←/→ navigate · G jump to slide (type a number, Enter) · T table of
+              contents · O overview · F fullscreen · S speaker notes
+              Ctrl/Cmd+Shift+F search across slides · ? help · Esc closes overlays
    ============================================================================= */
 (function () {
   "use strict";

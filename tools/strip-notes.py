@@ -9,10 +9,11 @@ not a near-complete copy of the repository:
 
   index.html · CNAME · .nojekyll · shared/ · talks/<slug>/  (non-underscored)
 
-and strips notes from every copied HTML file. Three forms are removed:
+and strips notes from every copied HTML file. Four forms are removed:
 
   • <aside class="notes"> … </aside>       — any quoting style, any position
     of "notes" in the class list, any case, attributes across several lines
+  • a data-notes="…" attribute on any element   (reveal's attribute form)
   • a `Note:` block inside a <textarea data-template>   (Markdown slides)
   • the reveal notes-plugin <script> tag (the plugin file is not copied)
 
@@ -49,6 +50,12 @@ ASIDE_RE = re.compile(
     r"<aside\b[^>]*\bclass\s*=\s*(?P<q>['\"])(?:[^'\"]*\s)?notes(?:\s[^'\"]*)?(?P=q)[^>]*>"
     r".*?</aside\s*>",
     re.DOTALL | re.IGNORECASE)
+# data-notes="…" — reveal's attribute form of a speaker note, valid on any
+# element. Matches single or double quotes (value may span lines) and the
+# unquoted form, and eats the whitespace that preceded the attribute.
+DATA_NOTES_RE = re.compile(
+    r"\s*\bdata-notes\s*=\s*(?:(?P<q>['\"]).*?(?P=q)|[^\s>]+)",
+    re.DOTALL | re.IGNORECASE)
 TEXTAREA_RE = re.compile(r"(<textarea\b[^>]*\bdata-template\b[^>]*>)(.*?)(</textarea>)",
                          re.DOTALL | re.IGNORECASE)
 # Mirrors the Markdown plugin's notes separator: a line starting with Note(s):
@@ -69,6 +76,8 @@ def strip_notes(html, counts):
 
     html, n = ASIDE_RE.subn("", html)
     counts["aside"] += n
+    html, n = DATA_NOTES_RE.subn("", html)
+    counts["attr"] += n
     html, n = NOTES_PLUGIN_RE.subn("", html)
     counts["plugin"] += n
     return TEXTAREA_RE.sub(_textarea, html)
@@ -117,7 +126,7 @@ def build(src, dest):
             os.makedirs(os.path.dirname(d) or dest, exist_ok=True)
             shutil.copy2(s, d)
 
-    counts = {"aside": 0, "note": 0, "plugin": 0, "files": 0}
+    counts = {"aside": 0, "attr": 0, "note": 0, "plugin": 0, "files": 0}
     for root, _, names in os.walk(dest):
         for n in names:
             if not n.endswith(".html"):
@@ -140,7 +149,8 @@ def build(src, dest):
             p = os.path.join(root, n)
             with open(p, encoding="utf-8") as fh:
                 html = fh.read()
-            if ASIDE_RE.search(html) or NOTES_PLUGIN_RE.search(html):
+            if (ASIDE_RE.search(html) or DATA_NOTES_RE.search(html)
+                    or NOTES_PLUGIN_RE.search(html)):
                 leftovers.append(os.path.relpath(p, dest))
     if leftovers:
         raise SystemExit("note blocks survived the strip: " + ", ".join(leftovers))
@@ -157,8 +167,8 @@ def main(argv):
 
     counts = build(src, dest)
     print(f"published to {dest!r}: stripped {counts['aside']} <aside class=notes>, "
-          f"{counts['note']} Markdown Note: block(s) and {counts['plugin']} notes-plugin "
-          f"tag(s) across {counts['files']} file(s)")
+          f"{counts['attr']} data-notes attribute(s), {counts['note']} Markdown Note: block(s) "
+          f"and {counts['plugin']} notes-plugin tag(s) across {counts['files']} file(s)")
 
 
 if __name__ == "__main__":

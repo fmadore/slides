@@ -1,22 +1,33 @@
   /* ---- table-of-contents overlay ------------------------------------------ */
   var overlay, tocItems = [];
   function buildTOC(reveal) {
+    /* Reveal's scroll view (?view=scroll) re-parents every slide out of
+       `.slides > section` — the selector getHorizontalSlides() reads — so the
+       list below has nothing to enumerate: it built an empty overlay on one
+       deck and a one-entry one on another, and the folio it printed could not
+       agree with the (equally unreachable) footer counter. The chrome for that
+       view hides the Contents button; leaving the overlay unbuilt is what stops
+       the T key from opening a dialog listing a deck that isn't there. */
+    if (Reveal.isScrollView && Reveal.isScrollView()) return;
     var hSlides = Reveal.getHorizontalSlides();
     var entries = [];
+    // The right-hand folio is the same one the footer and the printed imprint
+    // spend, so an annexe entry reads A01 rather than a number the counter on
+    // that very slide would contradict.
+    var counted = 0, annexe = 0;
     hSlides.forEach(function (sec, h) {
+      var folio = isUncounted(sec) ? "A" + pad2(++annexe) : pad2(++counted);
       var label = sec.getAttribute("data-toc");
-      if (label) entries.push({ h: h, label: label });
+      if (label) entries.push({ h: h, label: label, folio: folio });
     });
     if (!entries.length) return; // no TOC requested
 
     var rows = entries.map(function (e, i) {
-      var n = String(i + 1).padStart(2, "0");
-      var folio = String(e.h + 1).padStart(2, "0");
       return '<li><button class="toc-item" data-h="' + e.h + '">' +
-               '<span class="toc-num">' + n + "</span>" +
+               '<span class="toc-num">' + pad2(i + 1) + "</span>" +
                '<span class="toc-label">' + e.label + "</span>" +
                '<span class="toc-dots" aria-hidden="true"></span>' +
-               '<span class="toc-folio">' + folio + "</span>" +
+               '<span class="toc-folio">' + e.folio + "</span>" +
              "</button></li>";
     }).join("");
 
@@ -147,10 +158,10 @@
   }
   function update() {
     var cur = Reveal.getCurrentSlide();
-    var hCount = Reveal.getHorizontalSlides().length;
     var h = Reveal.getIndices().h;
-    if (counterCur) counterCur.textContent = String(h + 1).padStart(2, "0");
-    if (counterTot) counterTot.textContent = String(hCount).padStart(2, "0");
+    var folio = countedFolio(h);
+    if (counterCur) counterCur.textContent = pad2(folio.cur);
+    if (counterTot) counterTot.textContent = pad2(folio.total);
     if (btnPrev) btnPrev.disabled = Reveal.isFirstSlide();
     if (btnNext) btnNext.disabled = Reveal.isLastSlide();
 

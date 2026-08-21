@@ -26,6 +26,22 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
 .pdf-imprint.on-dark .pi-folio { color: var(--ond-mark); }
 .pdf-imprint.on-dark .pi-folio span { color: var(--ond-chrome); }
 
+/* SCROLL VIEW (?view=scroll): the deck read as one page instead of presented.
+   The chrome has to answer for what it can still be true about. The footer is
+   the deck's identification and it stays — but `position: absolute` measured it
+   against a `.reveal` one viewport tall, so it scrolled off after the first
+   screen and never came back; fixed, it holds its band, and the slide's own
+   `--footer-h` clearance already keeps content out from under it. The nav
+   cluster goes: reveal re-parents every slide out of `.slides > section`, which
+   is the selector getHorizontalSlides() reads, so the counter has no counted
+   total to print (it froze at 01 / 01 on every slide) and the contents list has
+   no entries to build — the scrollbar is this view's index. The running head
+   goes with them: it names the section you are standing in, and in a scroll
+   there is no standing. */
+.reveal-viewport.reveal-scroll .deck-footer { position: fixed; }
+.reveal-viewport.reveal-scroll .deck-nav,
+.reveal-viewport.reveal-scroll .deck-runhead { display: none !important; }
+
 @media print {
   .deck-footer, .deck-nav, .deck-runhead { color: var(--ink-faint) !important; }
   .toc-overlay, .deck-btn { display: none !important; }

@@ -123,7 +123,6 @@
 
   function revealPlugins() {
     var p = [];
-    if (window.RevealHighlight) p.push(RevealHighlight);
     if (window.RevealNotes) p.push(RevealNotes);
     if (window.RevealZoom) p.push(RevealZoom);
     if (window.RevealSearch) p.push(RevealSearch);

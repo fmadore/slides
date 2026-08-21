@@ -322,6 +322,50 @@ html.reveal-print .reveal .slides .pdf-page > section.metric,
 html.reveal-print .reveal .slides .pdf-page > section.center,
 html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
 
+/* Scroll view (?view=scroll): the same failure as print, one wrapper deeper.
+   Reveal's scroll view re-parents every slide into
+   .scroll-page > .scroll-page-sticky > .scroll-page-content, so the
+   `.slides > section` child combinator above stops matching and the slide loses
+   its padding, its flex column and its border-box sizing in one go: measured on
+   the catalogue, the 1280px canvas became a 1376px content box clipped 48px at
+   each edge, with the copy flush into the top-left corner. Auto-activation stays
+   off (scrollActivationWidth: null in deck.js) — this view is only ever reached
+   by asking for it in the URL.
+   The declarations are the ones above, verbatim, and `display` is deliberately
+   NOT !important here: reveal writes `display: block` inline on every loaded
+   slide, which is why a non-hero slide is a block box on screen and why the
+   hero list needs !important to win. Forcing flex on every slide instead put
+   the whole deck in a fixed-height flex column, where a `.cols` row grows to
+   the safe area and an over-long slide silently shrinks its children to fit —
+   measured on the Erlangen deck, twelve slides came out exactly 595px tall and
+   the two the fit engine scales in the normal view (×0.979, ×0.903) stopped
+   being detected as overflowing at all. Sizing is left to reveal, which
+   !importants width, height, top and left in this view. */
+.reveal-scroll .reveal .slides .scroll-page-content > section {
+  padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
+  overflow: visible;
+}
+/* The third copy of the hero list. Reveal does mark the section `.present` in
+   this view, so the `.present` rule in 03-layouts.css still matches its class
+   part — but it is written against `.slides > section` too, so it matches
+   nothing here either. Like the print list it drops `.present`: a slide you
+   have scrolled past keeps its composition rather than snapping to the top.
+   All three lists are edited together. */
+.reveal-scroll .reveal .slides .scroll-page-content > section.cover,
+.reveal-scroll .reveal .slides .scroll-page-content > section.section,
+.reveal-scroll .reveal .slides .scroll-page-content > section.statement,
+.reveal-scroll .reveal .slides .scroll-page-content > section.closing,
+.reveal-scroll .reveal .slides .scroll-page-content > section.metric,
+.reveal-scroll .reveal .slides .scroll-page-content > section.center,
+.reveal-scroll .reveal .slides .scroll-page-content > section.balance {
+  display: flex !important; flex-direction: column; justify-content: center;
+}
+
 /* Headings — GOTHIC display, heavy weight, tight optical letterfit */
 .reveal h1, .reveal h2, .reveal h3 {
   font-family: var(--font-display);

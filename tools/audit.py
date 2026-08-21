@@ -54,6 +54,13 @@ from slideslib.manifest import ManifestValidationError, load_manifest
 # site, not in the repo).
 GENERATED = {"slides.pdf", "social-card.png"}
 
+# Directories the walks never descend into. `.claude` holds git worktrees, and a
+# worktree is a second copy of this repository: walked, its `shared/src`
+# partials fail the exclusion below (which tests a path relative to ROOT) and
+# get audited as standalone stylesheets, so the bundle-relative `fonts/fonts.css`
+# reads as a missing reference. One tree is audited at a time — its own.
+PRUNED_DIRS = {".git", ".claude", "node_modules", "_site"}
+
 # Files that must never appear in a publication build (see the allowlist in
 # tools/strip-notes.py).
 DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
@@ -192,7 +199,7 @@ def is_within(path, root):
 
 def iter_html(root):
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d not in {".git", "node_modules", "_site"}]
+        dirnames[:] = [d for d in dirnames if d not in PRUNED_DIRS]
         for n in filenames:
             if n.endswith(".html"):
                 yield os.path.join(dirpath, n)
@@ -728,7 +735,7 @@ def reference_targets():
     """Resolve local references to exact files, avoiding basename collisions."""
     targets = set()
     for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [d for d in dirnames if d not in {".git", "node_modules", "_site"}]
+        dirnames[:] = [d for d in dirnames if d not in PRUNED_DIRS]
         for name in filenames:
             path = os.path.join(dirpath, name)
             ext = os.path.splitext(name)[1].lower()
@@ -918,7 +925,7 @@ def main(argv=None):
         if in_talks:
             audit_deck_css(path, rep)
     for dirpath, dirnames, filenames in os.walk(ROOT):
-        dirnames[:] = [d for d in dirnames if d not in {".git", "node_modules", "_site"}]
+        dirnames[:] = [d for d in dirnames if d not in PRUNED_DIRS]
         for name in filenames:
             if name.endswith(".css"):
                 path = os.path.join(dirpath, name)

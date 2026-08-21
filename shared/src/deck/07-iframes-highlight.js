@@ -70,14 +70,14 @@
   }
 
   /* ---- syntax highlighting (plugin-independent) --------------------------- */
-  /* Highlight every <pre><code> with whichever hljs is present: the slim global
-     from shared/highlight.min.js, or the copy inside reveal's highlight plugin.
-     A deck can therefore drop the 921 KB bundled plugin and load the slim build
-     instead — this fills the gap. A no-op when the reveal plugin already ran
-     (it sets data-highlighted), so it's safe to keep in either configuration. */
+  /* Highlight every <pre><code> with the slim global from
+     shared/highlight.min.js (~40 KB), which is what every deck loads instead of
+     reveal's 921 KB bundled highlight plugin — that plugin is not vendored and
+     the engine registers no highlighter. A deck with no code slides simply
+     drops the script tag and this becomes a no-op. The data-highlighted guard
+     is hljs's own mark, so a second pass never re-highlights a block. */
   function highlightAll() {
-    var hp = (typeof Reveal !== "undefined" && Reveal.getPlugin) ? Reveal.getPlugin("highlight") : null;
-    var hl = window.hljs || (hp && hp.hljs);
+    var hl = window.hljs;
     if (!hl) return;
     document.querySelectorAll(".reveal .slides pre code").forEach(function (code) {
       if (code.dataset.highlighted) return;

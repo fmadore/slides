@@ -36,12 +36,15 @@
        .plate/.chrome/.duotone, .scroll-panel embeds.
      • EXPERIMENTAL (APIs may still move): .dateline, p.dropcap, .marginnote,
        .folio-ghost, .colophon (the "editorial signature" set), auto-animate
-       recipes.
+       recipes, annexe slides (data-visibility="uncounted" — the A-series folio
+       is new), reveal's own lightbox (data-preview-image/-video/-link/-fit).
 
      AUTHORING — PURE HTML (no Markdown plugin)
      • Every slide is a plain <section>. Slide options go on the tag: a layout
        class (cover / section / statement / closing / media), data-toc="Label"
-       to add a contents entry, data-footer="light|dark" to force footer colour.
+       to add a contents entry, data-footer="light|dark" to force footer colour,
+       data-visibility="uncounted" to keep a backup slide out of the count (or
+       "hidden" to drop it at load).
      • Use the house classes from theme.css (:root is the source of truth):
        .kicker, .slide-title, .lead, .cols/.col/.col-head, .callout,
        .stat/.stat-grid, .panel, .chip, .figrow, .index-list, .metric …
@@ -379,6 +382,50 @@ print(f"{len(hits)} documents")</code></pre>
       </div>
     </section>
 
+    <!-- ░░ OVERLAY ON DEMAND ░░ reveal's OWN lightbox, opened by a data-preview-*
+         attribute on any element inside .slides. It is a different tool from the
+         click-to-zoom viewer above: that one promotes .shot and .site-frame-view
+         images to focusable buttons and shows them in the deck's own dialog;
+         this one throws a full-screen overlay reveal builds itself.
+           • data-preview-link="https://…"  a live page in an iframe over the slide
+           • data-preview-image="path.jpg"  a full-screen image (or bare, on an <img>,
+             to use its own src)
+           • data-preview-video="clip.mp4"  a screencast, with controls; add
+             data-preview-autoplay="false" / -controls / -loop / -muted to taste
+           • data-preview-fit="contain|cover|scale-down|none" sizes image and video
+         The two never bind the same element: deck.js skips anything carrying a
+         data-preview-* attribute, so putting one on a .shot hands that image to
+         reveal's overlay instead of the deck's. Caveats worth knowing before you
+         reach for it. The link variant needs a network connection and a site that
+         allows framing — islam.zmo.de allows the published slide origins, so the
+         frame below opens live from slides.frederickmadore.com and shows reveal's
+         "unable to load iframe" note from a local preview. It opens on CLICK
+         only, with no keyboard equivalent, so keep a real link beside it as
+         below. Esc closes it. The image and video variants are offline-safe:
+         point them at a file in assets/. ░░ -->
+    <section data-toc="An overlay on demand">
+      <p class="kicker">Reveal’s own overlay</p>
+      <h2 class="slide-title">The live site, only if the room asks</h2>
+      <div class="cols">
+        <div class="col">
+          <p class="lead">A framed page spends a whole slide on something the room may never ask about.</p>
+          <ul>
+            <li>One attribute on the frame, and the page opens over the slide at full size</li>
+            <li>Esc closes it and the deck is exactly where you left it</li>
+            <li>Nothing loads until someone clicks — so an unasked question costs nothing</li>
+          </ul>
+        </div>
+        <div class="col">
+          <figure class="chrome" data-preview-link="https://islam.zmo.de/s/westafrica/page/home">
+            <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-url">islam.zmo.de/s/westafrica</span></div>
+            <div class="chrome-view" style="height:280px"><img data-src="assets/example-site.png" style="height:100%" alt="The collection’s home page, shown as a screenshot until the frame is opened live." width="1920" height="1180"></div>
+          </figure>
+          <p class="small muted">Click the frame for the live page, or open it in a tab: <a href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">islam.zmo.de ↗</a></p>
+        </div>
+      </div>
+      <aside class="notes">The screenshot is what the slide shows and what the PDF prints; the live page is there for the question you cannot predict.</aside>
+    </section>
+
     <!-- ░░ DATA AS DESIGN ░░ native house charts: .barchart on a heavy baseline
          (height per bar via --h) + .share-bars (width via --p). Values count up
          with data-count; the bars grow in on slide entry. ░░ -->
@@ -507,6 +554,39 @@ print(f"{len(hits)} documents")</code></pre>
         <img data-src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
       </div>
+    </section>
+
+    <!-- ░░ ANNEXE ░░ everything below the closing slide is backup material for
+         questions. Each <section> carries data-visibility="uncounted": reveal
+         still navigates to it, search still finds it and the PDF still prints
+         it, but it stays out of the deck's own numbering. Put the divider first
+         if you want a contents entry to jump to. ░░ -->
+    <section class="section" data-toc="Appendix" data-visibility="uncounted">
+      <p class="sec-no">A</p>
+      <h2>Appendix</h2>
+      <p class="sec-sub">Held back for questions — reachable, and outside the count.</p>
+    </section>
+
+    <section data-visibility="uncounted">
+      <p class="kicker">Backup material</p>
+      <h2 class="slide-title">Where the count stops</h2>
+      <p class="lead">The footer still reads the closing slide’s number, because these pages sit outside the deck’s own sequence.</p>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li><code>data-visibility="uncounted"</code> keeps a slide reachable by arrow key, contents and search, and out of the count</li>
+            <li>The counter holds at the last counted slide while an annexe slide is on screen, so it never runs past its own total</li>
+            <li>The PDF keeps these pages and folios them <b>A01</b>, <b>A02</b> … — the record stays complete, the talk’s numbering stays intact</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">The other switch</span>
+            <code>data-visibility="hidden"</code> removes a slide outright when the deck loads — a draft you are not ready to show, rather than one you are keeping in reserve.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Backup slides live after the closing so the talk can end where it ends, and the material for questions is one arrow key away.</aside>
     </section>
 
   </div>

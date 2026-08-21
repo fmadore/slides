@@ -3,10 +3,23 @@
      opens with Enter/Space; the dialog focuses its close button, traps Tab,
      navigates with the arrow keys, closes with Escape, and returns focus to
      the originating image. hidden/inert state mirrors the visual state. ------ */
+  /* Reveal 5.2+ ships a lightbox of its own, opened by data-preview-image /
+     -video / -link on any element inside .slides — the way to show a screencast
+     or an on-demand live site, which this viewer (images, one <img src>) cannot.
+     Two viewers must never bind one element: the enhancer below stops the click
+     before it reaches reveal's delegated handler on .slides, so the native
+     overlay would simply never open on an element it had also promoted. The
+     author's opt-in wins, and the attribute may sit on the image or on anything
+     around it, because that is what reveal's own closest() lookup reads.
+     data-preview-link="false" is reveal's opt-out, so it hands the element back. */
+  var PREVIEW_OWNED = '[data-preview-image], [data-preview-video],' +
+    ' [data-preview-link]:not([data-preview-link="false"])';
+
   var lightbox, lbImg;
   function buildLightbox() {
-    var imgs = document.querySelectorAll(
-      ".reveal .slides .shot, .reveal .slides .site-frame-view > img"
+    var imgs = Array.prototype.filter.call(
+      document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"),
+      function (img) { return !img.closest(PREVIEW_OWNED); }
     );
     if (!imgs.length) return;
     lightbox = elem(

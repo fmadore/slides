@@ -12,8 +12,9 @@
      • builds the auto table-of-contents overlay from [data-toc] sections
      • keeps everything in sync on each slide change
 
-   Keyboard:  ←/→ navigate · T table of contents · O overview · F fullscreen
-              S speaker notes · ? help · Esc closes overlays
+   Keyboard:  ←/→ navigate · G jump to slide (type a number, Enter) · T table of
+              contents · O overview · F fullscreen · S speaker notes
+              Ctrl/Cmd+Shift+F search across slides · ? help · Esc closes overlays
    ============================================================================= */
 (function () {
   "use strict";
@@ -126,25 +127,67 @@
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
   }
 
+  /* ---- counted vs annexe slides ------------------------------------------
+     A deck may keep backup material after its closing slide for questions,
+     marked data-visibility="uncounted" (reveal's own attribute). Reveal still
+     navigates to it and it still prints, but it must never inflate the folio
+     the room reads. One folio vocabulary answers that everywhere the deck
+     numbers itself — footer counter, contents list, printed imprint: counted
+     slides run 1…N, annexe slides take an A-series of their own, and while an
+     annexe slide is on screen the live counter holds at N / N rather than
+     counting past its own total. The stronger data-visibility="hidden" needs
+     nothing here — reveal removes those slides at init. */
+  function isUncounted(sec) {
+    return !!sec && sec.getAttribute("data-visibility") === "uncounted";
+  }
+  function pad2(n) { return String(n).padStart(2, "0"); }
+  /* The counted folio at a horizontal index: {cur, total} over the counted
+     slides alone. On an annexe slide cur is the last counted slide before it. */
+  function countedFolio(h) {
+    var cur = 0, total = 0;
+    Reveal.getHorizontalSlides().forEach(function (sec, i) {
+      if (isUncounted(sec)) return;
+      total++;
+      if (i <= h) cur = total;
+    });
+    return { cur: cur || 1, total: total || 1 };
+  }
+
   /* ---- per-page imprint (PDF export only) --------------------------------- */
   /* On screen one persistent footer is right: it updates as you move. On paper
      there is nothing to update — every page is final and needs its own folio,
-     so each printed page gets an imprint of its own instead. */
+     so each printed page gets an imprint of its own instead.
+     The PDF is the shareable record, so annexe pages print with the rest — but
+     they are uncounted, so they cannot take a number out of the deck's own
+     sequence. Counted pages read NN / TT against the counted total; annexe
+     pages read A01, A02 … The alternative — repeating the closing page's
+     "25 / 25" across every annexe page — would read as a printing fault where
+     a plainly different mark reads as a decision, and this way the reader can
+     see at a glance where the talk ended. */
   function buildPrintImprints() {
     var pages = document.querySelectorAll(".reveal .slides .pdf-page");
     if (!pages.length) return;
-    var total = String(pages.length).padStart(2, "0");
+    var counted = 0;
+    Array.prototype.forEach.call(pages, function (page) {
+      if (!isUncounted(page.querySelector("section"))) counted++;
+    });
+    var total = pad2(counted);
     var title = escapeHTML(CFG.talkShort || CFG.talkTitle || "");
     if (CFG.venue) title += " · " + escapeHTML(CFG.venue);
-    Array.prototype.forEach.call(pages, function (page, i) {
+    var n = 0, annexe = 0;
+    Array.prototype.forEach.call(pages, function (page) {
+      var sec = page.querySelector("section");
+      // The folios advance for every page, so a page that already carries an
+      // imprint (a re-run of the pass) cannot shift the numbering behind it.
+      var folio = isUncounted(sec) ? "A" + pad2(++annexe)
+                                   : pad2(++n) + "<span> / </span>" + total;
       if (page.querySelector(".pdf-imprint")) return;
-      var field = fieldOf(page.querySelector("section"));
+      var field = fieldOf(sec);
       var mark = elem(
         '<div class="pdf-imprint' + (field ? " on-dark" : "") + '"' +
           (field === "deep" ? ' data-field="deep"' : "") + ' aria-hidden="true">' +
           '<span class="pi-title">' + title + "</span>" +
-          '<span class="pi-folio">' + String(i + 1).padStart(2, "0") +
-            "<span> / </span>" + total + "</span>" +
+          '<span class="pi-folio">' + folio + "</span>" +
         "</div>"
       );
       page.appendChild(mark);
@@ -178,22 +221,33 @@
   /* ---- table-of-contents overlay ------------------------------------------ */
   var overlay, tocItems = [];
   function buildTOC(reveal) {
+    /* Reveal's scroll view (?view=scroll) re-parents every slide out of
+       `.slides > section` — the selector getHorizontalSlides() reads — so the
+       list below has nothing to enumerate: it built an empty overlay on one
+       deck and a one-entry one on another, and the folio it printed could not
+       agree with the (equally unreachable) footer counter. The chrome for that
+       view hides the Contents button; leaving the overlay unbuilt is what stops
+       the T key from opening a dialog listing a deck that isn't there. */
+    if (Reveal.isScrollView && Reveal.isScrollView()) return;
     var hSlides = Reveal.getHorizontalSlides();
     var entries = [];
+    // The right-hand folio is the same one the footer and the printed imprint
+    // spend, so an annexe entry reads A01 rather than a number the counter on
+    // that very slide would contradict.
+    var counted = 0, annexe = 0;
     hSlides.forEach(function (sec, h) {
+      var folio = isUncounted(sec) ? "A" + pad2(++annexe) : pad2(++counted);
       var label = sec.getAttribute("data-toc");
-      if (label) entries.push({ h: h, label: label });
+      if (label) entries.push({ h: h, label: label, folio: folio });
     });
     if (!entries.length) return; // no TOC requested
 
     var rows = entries.map(function (e, i) {
-      var n = String(i + 1).padStart(2, "0");
-      var folio = String(e.h + 1).padStart(2, "0");
       return '<li><button class="toc-item" data-h="' + e.h + '">' +
-               '<span class="toc-num">' + n + "</span>" +
+               '<span class="toc-num">' + pad2(i + 1) + "</span>" +
                '<span class="toc-label">' + e.label + "</span>" +
                '<span class="toc-dots" aria-hidden="true"></span>' +
-               '<span class="toc-folio">' + folio + "</span>" +
+               '<span class="toc-folio">' + e.folio + "</span>" +
              "</button></li>";
     }).join("");
 
@@ -324,10 +378,10 @@
   }
   function update() {
     var cur = Reveal.getCurrentSlide();
-    var hCount = Reveal.getHorizontalSlides().length;
     var h = Reveal.getIndices().h;
-    if (counterCur) counterCur.textContent = String(h + 1).padStart(2, "0");
-    if (counterTot) counterTot.textContent = String(hCount).padStart(2, "0");
+    var folio = countedFolio(h);
+    if (counterCur) counterCur.textContent = pad2(folio.cur);
+    if (counterTot) counterTot.textContent = pad2(folio.total);
     if (btnPrev) btnPrev.disabled = Reveal.isFirstSlide();
     if (btnNext) btnNext.disabled = Reveal.isLastSlide();
 
@@ -587,10 +641,23 @@
      opens with Enter/Space; the dialog focuses its close button, traps Tab,
      navigates with the arrow keys, closes with Escape, and returns focus to
      the originating image. hidden/inert state mirrors the visual state. ------ */
+  /* Reveal 5.2+ ships a lightbox of its own, opened by data-preview-image /
+     -video / -link on any element inside .slides — the way to show a screencast
+     or an on-demand live site, which this viewer (images, one <img src>) cannot.
+     Two viewers must never bind one element: the enhancer below stops the click
+     before it reaches reveal's delegated handler on .slides, so the native
+     overlay would simply never open on an element it had also promoted. The
+     author's opt-in wins, and the attribute may sit on the image or on anything
+     around it, because that is what reveal's own closest() lookup reads.
+     data-preview-link="false" is reveal's opt-out, so it hands the element back. */
+  var PREVIEW_OWNED = '[data-preview-image], [data-preview-video],' +
+    ' [data-preview-link]:not([data-preview-link="false"])';
+
   var lightbox, lbImg;
   function buildLightbox() {
-    var imgs = document.querySelectorAll(
-      ".reveal .slides .shot, .reveal .slides .site-frame-view > img"
+    var imgs = Array.prototype.filter.call(
+      document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"),
+      function (img) { return !img.closest(PREVIEW_OWNED); }
     );
     if (!imgs.length) return;
     lightbox = elem(
@@ -735,14 +802,14 @@
   }
 
   /* ---- syntax highlighting (plugin-independent) --------------------------- */
-  /* Highlight every <pre><code> with whichever hljs is present: the slim global
-     from shared/highlight.min.js, or the copy inside reveal's highlight plugin.
-     A deck can therefore drop the 921 KB bundled plugin and load the slim build
-     instead — this fills the gap. A no-op when the reveal plugin already ran
-     (it sets data-highlighted), so it's safe to keep in either configuration. */
+  /* Highlight every <pre><code> with the slim global from
+     shared/highlight.min.js (~40 KB), which is what every deck loads instead of
+     reveal's 921 KB bundled highlight plugin — that plugin is not vendored and
+     the engine registers no highlighter. A deck with no code slides simply
+     drops the script tag and this becomes a no-op. The data-highlighted guard
+     is hljs's own mark, so a second pass never re-highlights a block. */
   function highlightAll() {
-    var hp = (typeof Reveal !== "undefined" && Reveal.getPlugin) ? Reveal.getPlugin("highlight") : null;
-    var hl = window.hljs || (hp && hp.hljs);
+    var hl = window.hljs;
     if (!hl) return;
     document.querySelectorAll(".reveal .slides pre code").forEach(function (code) {
       if (code.dataset.highlighted) return;
@@ -875,7 +942,6 @@
 
   function revealPlugins() {
     var p = [];
-    if (window.RevealHighlight) p.push(RevealHighlight);
     if (window.RevealNotes) p.push(RevealNotes);
     if (window.RevealZoom) p.push(RevealZoom);
     if (window.RevealSearch) p.push(RevealSearch);
