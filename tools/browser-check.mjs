@@ -8,6 +8,9 @@
  *   • 844×390   — the persistent footer never covers slide content
  *   • 390×844   — reveal's scroll view stays off; the canvas fits horizontally
  *
+ * Then once, on the component catalogue: the motion switch — .no-draw must
+ * zero --draw-run and reach every animated mark and every counting numeral.
+ *
  * Usage:
  *   node tools/browser-check.mjs [--root DIR] [--screenshots DIR] [--decks a,b]
  *
@@ -181,6 +184,103 @@ await mapLimit(decks, CONCURRENCY, checkDeck);
   if (talks < 1) fail('index.html', 'landing page lists no talks');
   else ok('index.html', `landing page lists ${talks} talks`);
   for (const e of errors) fail('index.html', `console: ${e}`);
+  await ctx.close();
+}
+
+// ---- the one stiller: .no-draw has to reach every animated mark -----------
+// The opt-out no deck applies is the opt-out nothing exercises. `--draw-run` is
+// the single property print, `?print-pdf`, prefers-reduced-motion and .no-draw
+// all throw, and the promise is that throwing it stills the whole signature.
+// This measures the catalogue twice — switch off, then on — so a mark that
+// stopped reading the switch shows up, and so does a theme that quietly lost
+// its motion: a run that counts zero animated marks proves nothing and fails.
+{
+  const stillDeck = existsSync(join(ROOT, 'talks', '_showcase', 'index.html')) ? '_showcase' : '_template';
+  const where = `talks/${stillDeck}`;
+  const ctx = await browser.newContext({
+    viewport: { width: 1280, height: 720 },
+    reducedMotion: 'no-preference',   // the switch under test must be the only one thrown
+  });
+  const { page } = await openPage(ctx, `${BASE}/talks/${stillDeck}/`);
+  await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
+  const report = await page.evaluate(() => {
+    const ms = value => {
+      const n = parseFloat(value);
+      return isNaN(n) ? 0 : (/ms$/.test(String(value).trim()) ? n : n * 1000);
+    };
+    const label = (el, pseudo) => {
+      const cls = el.getAttribute && el.getAttribute('class');
+      return `${el.tagName.toLowerCase()}${cls ? '.' + cls.trim().split(/\s+/).join('.') : ''}${pseudo || ''}`;
+    };
+    // Every animated mark on a slide, including the ::before/::after the
+    // signature actually draws its rules and plates with.
+    const marksOn = slide => {
+      const out = [];
+      for (const el of [slide, ...slide.querySelectorAll('*')]) {
+        for (const pseudo of [null, '::before', '::after']) {
+          const cs = getComputedStyle(el, pseudo);
+          if (!cs.animationName || cs.animationName === 'none') continue;
+          out.push({
+            what: label(el, pseudo),
+            name: cs.animationName,
+            longest: Math.max(...cs.animationDuration.split(',').map(ms)),
+          });
+        }
+      }
+      return out;
+    };
+    const walk = () => {
+      const slides = [];
+      const hs = Reveal.getHorizontalSlides();
+      for (let h = 0; h < hs.length; h++) {
+        Reveal.slide(h, 0);
+        while (Reveal.nextFragment()) { /* fragment-revealed marks count too */ }
+        const slide = Reveal.getCurrentSlide();
+        slides.push({
+          h: h + 1,
+          drawRun: getComputedStyle(slide).getPropertyValue('--draw-run').trim(),
+          marks: marksOn(slide),
+          // deck.js reads the same property before starting a count, so the JS
+          // half is measured here too: nothing may still be rolling.
+          rolling: [...slide.querySelectorAll('[data-count]')]
+            .filter(el => el._countRAF)
+            .map(el => label(el, null)),
+          counts: slide.querySelectorAll('[data-count]').length,
+        });
+      }
+      return slides;
+    };
+    const moving = walk();
+    document.querySelector('.reveal').classList.add('no-draw');
+    const still = walk();
+    return { moving, still };
+  }).catch(error => ({ error: String(error) }));
+
+  if (report.error) {
+    fail(where, `could not measure the motion switch: ${report.error}`);
+  } else {
+    const count = slides => slides.reduce((n, s) => n + s.marks.length, 0);
+    const running = slides => slides.flatMap(s => s.marks
+      .filter(m => m.longest > 0).map(m => `#${s.h} ${m.what} (${m.name})`));
+    const marks = count(report.moving);
+    const drew = running(report.moving).length;
+    const stillRunning = running(report.still);
+    const notZeroed = report.still.filter(s => s.drawRun !== '0s').map(s => `#${s.h} (${s.drawRun})`);
+    const rolling = report.still.flatMap(s => s.rolling.map(w => `#${s.h} ${w}`));
+    const counters = report.moving.reduce((n, s) => n + s.counts, 0);
+
+    if (!marks || !drew) {
+      fail(where, `motion switch: found ${marks} animated mark(s), ${drew} of them running — ` +
+                  'nothing to still, so this check would pass on a theme with no signature left');
+    }
+    if (!counters) fail(where, 'motion switch: no [data-count] numerals in the catalogue to still');
+    for (const m of notZeroed) fail(where, `motion switch: .no-draw left --draw-run at ${m}`);
+    for (const m of stillRunning) fail(where, `motion switch: .no-draw did not reach ${m}`);
+    for (const m of rolling) fail(where, `motion switch: a count is still rolling under .no-draw — ${m}`);
+    if (marks && drew && counters && !notZeroed.length && !stillRunning.length && !rolling.length) {
+      ok(where, `motion switch — .no-draw stills all ${drew} animated mark(s) and ${counters} count(s)`);
+    }
+  }
   await ctx.close();
 }
 

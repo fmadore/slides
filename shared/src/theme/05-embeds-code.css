@@ -70,7 +70,14 @@
   background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--radius-lg);
   overflow: hidden; box-shadow: var(--shadow-2);
 }
-.reveal .site-frame-bar {
+/* THE BROWSER-CHROME BAR — one device, declared once. Two frames carry it and
+   they are two different jobs: .site-frame fills its column with a live page,
+   .chrome (section 12) holds a capture at its natural size. Their bar is the
+   same bar, and it had been written twice — long enough for the two copies to
+   drift 0.05rem of padding and 0.1rem of label inset apart. A near-miss between
+   two copies of one device reads as a mistake, so there is now one copy. */
+.reveal .site-frame-bar,
+.reveal .chrome-bar {
   flex: none; display: flex; align-items: center; gap: 0.5rem;
   padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
   /* The bar must span the frame. If authored as a <figcaption>, it would otherwise
@@ -78,14 +85,20 @@
      the URL — so pin it open regardless of the element used. */
   max-width: none;
 }
-.reveal .site-frame-bar .dot {
+.reveal .site-frame-bar .dot,
+.reveal .chrome-dot {
   width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
   background: color-mix(in oklch, var(--ink-faint), var(--paper) 25%);
 }
-.reveal .site-frame-url {
+.reveal .site-frame-url,
+.reveal .chrome-url {
   margin-left: 0.5rem; font-family: var(--font-mono); font-size: var(--fs-footer);
   color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* The open link belongs to the live embed alone: a captured screenshot has no
+   page to open. That is the difference between the two frames, not an omission
+   in one of them. Its twin .chrome-open was styled the day .chrome was written
+   (2026-06-29) and no markup ever used it, catalogue included. */
 .reveal .site-frame-open { margin-left: auto; flex: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700; }
 .reveal .site-frame-view { position: relative; flex: 1 1 auto; min-height: 0; background: var(--paper); }
 .reveal .site-frame-view > iframe,

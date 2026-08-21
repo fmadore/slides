@@ -293,7 +293,9 @@ stale placeholders, the landing-page/manifest sync check, the **per-deck CSS
 rules** below and the **vendored checksums** in
 [`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
 and finally Playwright browser checks of every deck at 1280×720, 844×390 and
-390×844 (console errors, auto-fit failures, footer overlap). Pull requests
+390×844 (console errors, auto-fit failures, footer overlap), plus one pass over
+the catalogue proving the motion switch still works: `.no-draw` has to zero
+`--draw-run` and reach every animated mark and every counting numeral. Pull requests
 that touch the shared engine also get a screenshot-based visual regression
 check, with diff images uploaded as workflow artifacts.
 
