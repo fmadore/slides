@@ -102,6 +102,33 @@
         "value": "999px",
         "createdAt": "2026-08-17T10:58:14.258Z",
         "reason": "Agent: .scroll-panel::-webkit-scrollbar-thumb (05-embeds-code.css:43). A pill radius is the conventional scrollbar-thumb treatment and the craft floor asks for custom scrollbars to be themed; the DESIGN.md rounded scale (3/5/8px) governs surfaces, not scrollbar furniture."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "2.9rem",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-23T07:23:08.972Z",
+        "reason": "Agent 2026-08-23: deliberate per-deck step-down, commented in the Erlangen deck's style block - the research question runs long, so its .statement-body sits below the default statement display size (DESIGN.md ramp governs the system; the golden rule sanctions one-off fitting in a talk's own style block, and audit.py's per-deck floor still polices it)."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.72rem",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-23T07:23:32.482Z",
+        "reason": "Agent 2026-08-23: deliberate per-deck step-down in the Erlangen deck's Bichkek news-card composition - the .lead runs at 1.72rem over 60ch so two card columns hold their line count; commented in the deck's style block. Same sanction as 2.9rem above."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.7rem",
+        "files": [
+          "talks/**/*.html"
+        ],
+        "createdAt": "2026-08-23T07:23:32.673Z",
+        "reason": "Agent 2026-08-23: deliberate per-deck step-down in the Erlangen deck's silos bridge band - four serif concept entries at 1.7rem so the row fits one line each; commented in the deck's style block. The only other 1.7rem in the repo is a height, not a font-size."
       }
     ]
   }
