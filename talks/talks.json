@@ -3,6 +3,28 @@
   "site": "https://slides.frederickmadore.com",
   "talks": [
     {
+      "slug": "2026-09-23-stellenbosch-mcp-glam-africains",
+      "date": "2026-09-23",
+      "language": "fr",
+      "event": "Humanités numériques et IA en études africaines · STIAS, Stellenbosch",
+      "venue": "Atelier Point Sud · STIAS, Stellenbosch · 23 septembre 2026",
+      "title": "Les serveurs MCP pour les GLAM africains",
+      "shortTitle": "Serveurs MCP · GLAM africains",
+      "description": "Deux serveurs MCP — CIAO et AMIRA — comme troisième voie entre moissonnage et invisibilité.",
+      "presenters": [
+        "Frédérick Madore"
+      ],
+      "tags": [
+        "MCP",
+        "GLAM",
+        "IWAC",
+        "AMIRA",
+        "IA"
+      ],
+      "deckTitle": "Les serveurs MCP pour les GLAM africains : une voie d'avenir à l'ère de l'IA ?",
+      "eventUrl": "https://fmadore.github.io/stias-dh-ai-workshop-2026/fr/papers/mcp-servers-african-glams"
+    },
+    {
       "slug": "2026-07-01-rhodes-reconfiguring-archive",
       "date": "2026-07-01",
       "language": "en",
@@ -27,7 +49,6 @@
       "event": "Rencontres des études africaines en France · Paris",
       "venue": "9es REAF · Paris · 30 juin 2026",
       "title": "Humanités numériques, IA et études africaines",
-      "deckTitle": "Humanités numériques, IA et études africaines : retour sur une note de synthèse",
       "shortTitle": "DH, IA & études africaines",
       "description": "Retour sur une note de synthèse collective (Hanovre, février 2026).",
       "presenters": [
@@ -38,7 +59,8 @@
         "digital humanities",
         "AI",
         "African studies"
-      ]
+      ],
+      "deckTitle": "Humanités numériques, IA et études africaines : retour sur une note de synthèse"
     },
     {
       "slug": "2026-06-29-erlangen-islam-peripheries",
@@ -47,7 +69,6 @@
       "event": "Digital History in/of Central Asia · FAU Erlangen-Nürnberg",
       "venue": "Digital History in/of Central Asia · FAU Erlangen-Nürnberg · 29 June 2026",
       "title": "Islam's “Peripheries”",
-      "deckTitle": "Islam's “Peripheries”: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
       "shortTitle": "Islam's “Peripheries”",
       "description": "Comparing two locked multilingual archives — West Africa and Central Asia — with AI-driven DH.",
       "presenters": [
@@ -60,7 +81,8 @@
         "archives",
         "Central Asia",
         "West Africa"
-      ]
+      ],
+      "deckTitle": "Islam's “Peripheries”: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
     },
     {
       "slug": "2026-06-15-luxembourg-beyond-keywords",
