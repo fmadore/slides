@@ -32,10 +32,8 @@
        runs the full column, and the radial hub (1.24:1) that sits in a column
        beside its reading.
 
-       Both ceilings are set for PRINT, not for the screen. Reveal's print view
-       drops the auto-fit transform and lets a slide spill past the page, so a
-       chart sized to the last screen pixel loses its closing line to the paper
-       edge. These leave a line of slack. */
+       Leave room for headings, captions and the interpretation in both screen
+       and print layouts, including platform differences in text wrapping. */
     .reveal .chart-band .shot { max-height: 16rem; width: auto; max-width: 100%; margin-inline: auto; }
     .reveal .evidence-summary .share-bars { gap: var(--space-xs); }
     .reveal .evidence-summary .share-head > span,
@@ -324,7 +322,7 @@
     <!-- ░░ 12 · LE CALENDRIER DE L’ARCHIVE ░░ -->
     <section data-toc="Le calendrier de l’archive">
       <p class="kicker">Lire la collection dans son propre calendrier</p>
-      <h2 class="slide-title">Douze mois que l’axe grégorien ne montre pas</h2>
+      <h2 class="slide-title">Le rythme lunaire de l’archive</h2>
       <div class="chart-band chart-mid">
         <img class="shot" data-src="assets/chart-ciao-lunaire.png" alt="Graphique du serveur CIAO : les articles de presse répartis sur les douze mois du calendrier hégirien, avec trois pics nets — Ramadan à 1 918, Dhou al-Hijja à 1 854 et Chawwal à 1 573 — au-dessus d’une ligne pointillée marquant la répartition uniforme" width="1800" height="742">
         <p class="chart-cap">get_temporal_distribution(calendar="hijri", granularity="lunar_month")</p>
