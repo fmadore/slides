@@ -42,16 +42,22 @@ try {
 const before = new Set(readdirSync(BEFORE).filter(f => f.endsWith('.png')));
 const after = new Set(readdirSync(AFTER).filter(f => f.endsWith('.png')));
 let failures = 0;
+const matched = [...before].filter(name => after.has(name));
+if (!matched.length) {
+  console.error('FAIL  no matching baseline screenshots; comparison is incomplete');
+  process.exit(1);
+}
 
 for (const name of [...before].filter(n => !after.has(n))) {
   console.log(`FAIL  ${name}: present in --before but missing from --after`);
   failures++;
 }
 for (const name of [...after].filter(n => !before.has(n))) {
-  console.log(`note  ${name}: new screenshot (no baseline) — skipped`);
+  console.log(`FAIL  ${name}: no baseline screenshot — capture or approve a complete baseline`);
+  failures++;
 }
 
-for (const name of [...before].filter(n => after.has(n))) {
+for (const name of matched) {
   const a = PNG.sync.read(readFileSync(join(BEFORE, name)));
   const b = PNG.sync.read(readFileSync(join(AFTER, name)));
   if (a.width !== b.width || a.height !== b.height) {

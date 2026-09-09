@@ -320,6 +320,9 @@ Two surfaces were brought back under this rule in the last pass, and both are it
 - **Colour:** links, kicker, contact icons and dropcap take `--ond-mark` (gold-bright); names `--ond-text`, affiliations and roles `--ond-quiet`.
 
 ### Deck Nav Button (footer chrome)
+- **Sharing:** the copy-link control uses the same outlined button and stroke-icon language. It copies a semantic slide hash, announces success, and offers a selectable URL if clipboard access is unavailable.
+- **Print:** ordinary slides preserve block flow and border-box sizing; hero slides retain flex centring. Fit after fonts, local embeds, images, and frame replacements settle. Print fitting uses layout zoom before pagination: transforms alone can leave Chromium clipping text at its unscaled bounds. Both supported print URLs get the same imprints.
+- **Media recovery:** a ruled, paper-ground fallback offers a persistent external link and an explicit “Show the site here” action. An iframe load event does not establish application readiness; owned embeds may send an origin-checked ready message. Reduced motion disables Auto-Animate geometry changes as well as the signature effects.
 - **Landmarks:** the footer is a real `role="contentinfo"` element and its controls sit inside a genuine `<nav class="deck-nav">` carrying an `aria-label` — chrome that steers the deck is a navigation landmark, not a div of buttons.
 - **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
 - **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px `--focus-ring` outline, 2px offset; **Disabled:** 30% opacity. On dark fields it takes a 10%-Paper fill, an `--ond-rule` border and an `--ond-text` glyph, and hovers to the field's mark (`--ond-mark` fill, `--ond-mark-ink` glyph).

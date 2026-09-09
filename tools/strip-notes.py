@@ -27,9 +27,13 @@ Usage:
   python3 tools/strip-notes.py <src> <dest>
 """
 import os
-import re
+import json
 import shutil
 import sys
+import tempfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from slideslib.notes import remaining_notes, strip_html_notes
 
 # What gets published (relative to the source root). Talk folders are added
 # dynamically: every talks/<dir>/ that does not start with "_".
@@ -44,43 +48,8 @@ SKIP_NAMES = {
     "vendor-manifest.json", # development-time integrity metadata
 }
 
-# <aside … class="…notes…" …> — matches any attribute order and spacing,
-# single or double quotes, extra classes before/after, and uppercase markup.
-ASIDE_RE = re.compile(
-    r"<aside\b[^>]*\bclass\s*=\s*(?P<q>['\"])(?:[^'\"]*\s)?notes(?:\s[^'\"]*)?(?P=q)[^>]*>"
-    r".*?</aside\s*>",
-    re.DOTALL | re.IGNORECASE)
-# data-notes="…" — reveal's attribute form of a speaker note, valid on any
-# element. Matches single or double quotes (value may span lines) and the
-# unquoted form, and eats the whitespace that preceded the attribute.
-DATA_NOTES_RE = re.compile(
-    r"\s*\bdata-notes\s*=\s*(?:(?P<q>['\"]).*?(?P=q)|[^\s>]+)",
-    re.DOTALL | re.IGNORECASE)
-TEXTAREA_RE = re.compile(r"(<textarea\b[^>]*\bdata-template\b[^>]*>)(.*?)(</textarea>)",
-                         re.DOTALL | re.IGNORECASE)
-# Mirrors the Markdown plugin's notes separator: a line starting with Note(s):
-NOTE_RE = re.compile(r"^[ \t]*notes?:", re.IGNORECASE | re.MULTILINE)
-# The speaker-notes plugin: its <script> tag and its RevealNotes plugin hook.
-NOTES_PLUGIN_RE = re.compile(r"[ \t]*<script[^>]*\bsrc\s*=\s*['\"][^'\"]*plugin/notes\.js['\"][^>]*>\s*</script>\n?",
-                             re.IGNORECASE)
-
-
 def strip_notes(html, counts):
-    def _textarea(m):
-        open_tag, body, close_tag = m.group(1), m.group(2), m.group(3)
-        nm = NOTE_RE.search(body)
-        if nm:
-            counts["note"] += 1
-            body = body[:nm.start()].rstrip() + "\n      "
-        return open_tag + body + close_tag
-
-    html, n = ASIDE_RE.subn("", html)
-    counts["aside"] += n
-    html, n = DATA_NOTES_RE.subn("", html)
-    counts["attr"] += n
-    html, n = NOTES_PLUGIN_RE.subn("", html)
-    counts["plugin"] += n
-    return TEXTAREA_RE.sub(_textarea, html)
+    return strip_html_notes(html, counts)
 
 
 def copy_tree(src, dest):
@@ -95,18 +64,62 @@ def copy_tree(src, dest):
             shutil.copy2(s, d)
 
 
-def build(src, dest):
-    """Copy the allowlisted site into dest and strip notes. Returns counts."""
-    src = os.path.realpath(src)
-    dest_real = os.path.realpath(dest)
-    # Refuse a destination that would clobber the source tree: the source
-    # itself, or any ancestor of it (removing dest would remove the source).
-    if dest_real == src or src.startswith(dest_real + os.sep):
-        raise SystemExit(f"refusing destination {dest!r}: it contains the source tree")
+BUILD_MARKER = ".slides-build.json"
 
+
+def within(path, parent):
+    try:
+        return os.path.commonpath([os.path.normcase(path), os.path.normcase(parent)]) == os.path.normcase(parent)
+    except ValueError:
+        return False
+
+
+def build(src, dest):
+    """Stage and verify before replacing an output owned by this builder."""
+    src, dest = os.path.realpath(src), os.path.realpath(dest)
+    inputs = [os.path.join(src, name) for name in ALLOWLIST + ["talks", "tools", ".git", "docs"]]
+    if within(src, dest) or any(within(dest, path) or within(path, dest) for path in inputs):
+        raise SystemExit(f"refusing destination {dest!r}: overlaps source inputs")
     if os.path.exists(dest):
-        shutil.rmtree(dest)
-    os.makedirs(dest)
+        try:
+            with open(os.path.join(dest, BUILD_MARKER), encoding="utf-8") as fh:
+                owned = json.load(fh) == {"source": src}
+        except (OSError, ValueError):
+            owned = False
+        if not owned:
+            raise SystemExit(f"refusing destination {dest!r}: not a marked slides build; choose a new directory")
+    parent = os.path.dirname(dest)
+    os.makedirs(parent, exist_ok=True)
+    stage = tempfile.mkdtemp(prefix=".slides-stage-", dir=parent)
+    backup = None
+    published = False
+    try:
+        counts = populate(src, stage)
+        with open(os.path.join(stage, BUILD_MARKER), "w", encoding="utf-8") as fh:
+            json.dump({"source": src}, fh)
+        if os.path.exists(dest):
+            backup = tempfile.mkdtemp(prefix=".slides-backup-", dir=parent)
+            os.rmdir(backup)
+            os.replace(dest, backup)
+        try:
+            os.replace(stage, dest)
+            published = True
+        except OSError:
+            if backup:
+                os.replace(backup, dest)
+                backup = None
+            raise
+        return counts
+    finally:
+        # Both paths were allocated by mkdtemp directly under this parent.
+        # Preserve the old build if restoring it also fails (e.g. a file lock).
+        for owned_path in (stage, backup if published else None):
+            if owned_path and within(os.path.realpath(owned_path), parent) and os.path.isdir(owned_path):
+                shutil.rmtree(owned_path)
+
+
+def populate(src, dest):
+    """Populate a fresh, owned staging directory."""
 
     entries = list(ALLOWLIST)
     talks_dir = os.path.join(src, "talks")
@@ -149,8 +162,7 @@ def build(src, dest):
             p = os.path.join(root, n)
             with open(p, encoding="utf-8") as fh:
                 html = fh.read()
-            if (ASIDE_RE.search(html) or DATA_NOTES_RE.search(html)
-                    or NOTES_PLUGIN_RE.search(html)):
+            if remaining_notes(html):
                 leftovers.append(os.path.relpath(p, dest))
     if leftovers:
         raise SystemExit("note blocks survived the strip: " + ", ".join(leftovers))

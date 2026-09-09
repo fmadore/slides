@@ -25,7 +25,7 @@
     var rows = entries.map(function (e, i) {
       return '<li><button class="toc-item" data-h="' + e.h + '">' +
                '<span class="toc-num">' + pad2(i + 1) + "</span>" +
-               '<span class="toc-label">' + e.label + "</span>" +
+               '<span class="toc-label">' + escapeHTML(e.label) + "</span>" +
                '<span class="toc-dots" aria-hidden="true"></span>' +
                '<span class="toc-folio">' + e.folio + "</span>" +
              "</button></li>";
@@ -36,11 +36,11 @@
         '<div class="toc-panel">' +
           '<button class="toc-close" aria-label="' + STR.closeAria + '">' + ICON.close + "</button>" +
           '<div class="toc-head"><div>' +
-            '<div class="toc-eyebrow">' + (CFG.tocEyebrow || STR.contents) + "</div>" +
-            '<h2 class="toc-title">' + (CFG.talkTitle || "Overview") + "</h2>" +
+            '<div class="toc-eyebrow">' + escapeHTML(CFG.tocEyebrow || STR.contents) + "</div>" +
+            '<h2 class="toc-title">' + escapeHTML(CFG.talkTitle || "Overview") + "</h2>" +
           "</div></div>" +
           '<ul class="toc-list">' + rows + "</ul>" +
-          '<div class="toc-foot"><span>' + (CFG.presenter || "") +
+          '<div class="toc-foot"><span>' + escapeHTML(CFG.presenter || "") +
             "</span><span><kbd>T</kbd> " + STR.contents.toLowerCase() + " &nbsp; <kbd>O</kbd> " + STR.overview + " &nbsp; <kbd>Esc</kbd> " + STR.close + "</span></div>" +
         "</div>" +
       "</div>"

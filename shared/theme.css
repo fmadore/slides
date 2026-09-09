@@ -303,11 +303,13 @@
    rule above no longer matches, so every PDF page rendered flush against the
    page edge with a collapsed height — trimmed slides. justify-content is left
    alone so the centred layouts (.cover, .section, .statement, …) keep their
-   own value. */
+   own value. Ordinary slides keep the screen's block flow: a fixed-height
+   flex column would shrink image rows and overlap their captions. */
 html.reveal-print .reveal .slides .pdf-page > section {
   height: 100% !important;
+  box-sizing: border-box !important;
   padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md)) !important;
-  display: flex !important;
+  display: block !important;
   flex-direction: column;
   overflow: visible;
 }
@@ -320,7 +322,7 @@ html.reveal-print .reveal .slides .pdf-page > section.statement,
 html.reveal-print .reveal .slides .pdf-page > section.closing,
 html.reveal-print .reveal .slides .pdf-page > section.metric,
 html.reveal-print .reveal .slides .pdf-page > section.center,
-html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
+html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !important; justify-content: center; }
 
 /* Scroll view (?view=scroll): the same failure as print, one wrapper deeper.
    Reveal's scroll view re-parents every slide into
@@ -1088,6 +1090,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content:
 }
 .toc-close:hover { background: var(--green-deep); color: var(--paper); border-color: var(--green-deep); }
 .toc-close svg { width: 1rem; height: 1rem; }
+.deck-status {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
 
 /* ----------------------------------------------------------------------------
    8. CODE — light highlight.js token theme
@@ -1362,6 +1368,13 @@ html.reveal-print .reveal { --excerpt-mark: block; --scroll-hint-display: none; 
 .reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }
+/* Explicit opt-in remains usable when a remote document cannot prove readiness. */
+.frame-show {
+  font: inherit; color: var(--green-deep); background: var(--paper);
+  border: 1px solid var(--line-strong); padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+}
+.frame-show:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 
 /* ----------------------------------------------------------------------------
    10. PRINT TO PDF · REDUCED MOTION · SMALL SCREENS

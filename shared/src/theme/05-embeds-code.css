@@ -271,3 +271,10 @@ html.reveal-print .reveal { --excerpt-mark: block; --scroll-hint-display: none; 
 .reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }
+/* Explicit opt-in remains usable when a remote document cannot prove readiness. */
+.frame-show {
+  font: inherit; color: var(--green-deep); background: var(--paper);
+  border: 1px solid var(--line-strong); padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+}
+.frame-show:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }

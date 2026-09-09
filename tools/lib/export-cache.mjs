@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 export const EXTRAS_CACHE_VERSION = '2';
-const GENERATED = new Set(['slides.pdf', 'social-card.png', '.extras-hash']);
+const GENERATED = new Set(['slides.pdf', 'social-card.png', '.extras-hash', 'export-evidence.json']);
 
 export function hashTree(dir, hash, base = dir) {
   for (const entry of readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
@@ -25,9 +25,10 @@ export function treeDigest(dir) {
   return hash.digest('hex');
 }
 
-export function deckExtrasHash({ root, repo, slug, sharedDigest, dependencyFiles = [] }) {
+export function deckExtrasHash({ root, repo, slug, sharedDigest, dependencyFiles = [], options = {} }) {
   const hash = createHash('sha256');
   hash.update(`extras-cache-v${EXTRAS_CACHE_VERSION}\0`);
+  hash.update(JSON.stringify(Object.entries(options).sort(([a], [b]) => a.localeCompare(b))));
   hash.update(sharedDigest || treeDigest(join(root, 'shared')));
   hash.update('\0');
   hashTree(join(root, 'talks', slug), hash);
@@ -39,4 +40,12 @@ export function deckExtrasHash({ root, repo, slug, sharedDigest, dependencyFiles
     hash.update('\0');
   }
   return hash.digest('hex');
+}
+
+export function reusableEvidence(evidence, now = Date.now()) {
+  if (!evidence || evidence.version !== 1) return false;
+  if (evidence.frames?.some(frame => !frame.captured)) {
+    return now - Date.parse(evidence.createdAt) < 60 * 60 * 1000;
+  }
+  return true;
 }

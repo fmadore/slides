@@ -116,7 +116,8 @@ jobs:
         if: steps.engine.outputs.changed == 'true'
         run: |
           git worktree add /tmp/base-tree ${{ steps.engine.outputs.base }}
-          node tools/browser-check.mjs --root /tmp/base-tree --decks _template --screenshots /tmp/shots-base || true
+          ln -s "$GITHUB_WORKSPACE/node_modules" /tmp/base-tree/node_modules
+          node /tmp/base-tree/tools/browser-check.mjs --root /tmp/base-tree --decks _template --screenshots /tmp/shots-base
 
       - name: Capture head screenshots
         if: steps.engine.outputs.changed == 'true'
@@ -166,7 +167,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .extras-cache
-          key: deck-extras-${{ hashFiles('talks/**', 'shared/**', 'package-lock.json', 'tools/export-pdf.mjs', 'tools/lib/export-cache.mjs', 'tools/lib/pdf-frames.mjs', 'tools/lib/runtime.mjs') }}
+          key: deck-extras-${{ hashFiles('talks/**', 'shared/**', 'package-lock.json', 'tools/export-pdf.mjs', 'tools/lib/*.mjs') }}-${{ github.run_id }}
           restore-keys: deck-extras-
 
       - name: Export PDFs and social cards
@@ -176,11 +177,13 @@ jobs:
           mkdir -p .extras-cache
           rm -rf .extras-cache/talks
           (cd _site && find talks -maxdepth 2 \
-             \( -name slides.pdf -o -name social-card.png -o -name .extras-hash \) \
+             \( -name slides.pdf -o -name social-card.png -o -name .extras-hash -o -name export-evidence.json \) \
              -exec install -D {} ../.extras-cache/{} \;)
 
       - name: Drop build-internal hash files
-        run: find _site -name .extras-hash -delete
+        run: |
+          find _site -name .extras-hash -delete
+          rm _site/.slides-build.json
 
       - uses: actions/upload-pages-artifact@v5
         with:

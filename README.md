@@ -151,7 +151,7 @@ identification band; counter, running head and Contents stand down (reveal's scr
 the index). Slides keep their 1280×720 stage — the view reorders, it does not reflow.
 Automatic activation on small screens stays off by design.
 
-**Layouts** (see `talks/_template/index.html` for live examples): cover, section divider
+**Layouts** (see `talks/_showcase/index.html` for live examples): cover, section divider
 (`.section` green field, `.section.navy` deep variant), standard content, numbered index
 (`.index-list`), two-column (`.cols`, `.cols.ratio-3-2`), big statement (`.statement`,
 `.statement.quote`), oversized metric (`.metric`), code (`<pre><code class="language-…">`),
@@ -165,7 +165,7 @@ the table of contents, `<aside class="notes">` for speaker notes.
 `.role` (job title), and an `.affil`. For a co-presented talk, swap it for the stacked
 `.byline.authors` variant — one `.author` block per presenter, each keeping its own
 affiliation — delete the `data-contact` row (it renders one person's links), and list every
-name in `DECK_CONFIG.presenter` so the TOC footer matches. `_template` ships this as a
+name in `DECK_CONFIG.presenter` so the TOC footer matches. `_showcase` ships this as a
 commented block on the cover.
 
 **Build slides up incrementally** with reveal's fragments: add `class="fragment"` to any
@@ -173,14 +173,14 @@ element and it steps in on the next ←/→ (variants in the theme: `fade-up`, `
 `data-fragment-index="n"` controls order). For a smooth morph between two slides, put
 `data-auto-animate` on both `<section>`s and give the shared elements the same `data-id` —
 reveal interpolates position, size and style (a heading shrinking from centre to top, a
-growing number, an evolving diagram). Both are demonstrated in `_template`. Press `B` (or
+growing number, an evolving diagram). Both are demonstrated in `_showcase`. Press `B` (or
 `.`) any time to black out the screen mid-talk.
 
 **Write slides in plain HTML.** Every slide is a `<section>`; slide-level attributes
 (layout `class`, `data-toc`, `data-footer`) go on the tag, and the house classes above
 style the content. Speaker notes go in `<aside class="notes">…</aside>` (press `S`). There
 is no Markdown plugin — authoring is HTML only, so every slide stays fully under your
-control and the markup carries no stray form elements. See `talks/_template/index.html`
+control and the markup carries no stray form elements. See `talks/_showcase/index.html`
 for a worked example of each layout.
 
 **Scrollable file embed** (e.g. a GitHub skill): a `<div class="scroll-panel"
@@ -203,8 +203,8 @@ on the present slide so the frame fills. Note two more caveats — a live frame 
 connection (it isn't offline like the rest of the deck), and many sites refuse to be framed
 (`X-Frame-Options` / CSP `frame-ancestors`); verify in a browser. If a site blocks framing,
 drop a screenshot into the talk's `assets/` and swap the `<iframe>` for an `<img>` (the same
-`.site-frame-view` styling fits both). See the "A framed website" slide in `_template`
-(screenshot form) or "A live look" in the Luxembourg deck for the markup.
+`.site-frame-view` styling fits both). See the "A framed website" slide in `_showcase`
+(screenshot form) or the Paris deck’s live website for the markup.
 
 **Export to PDF:** the deploy workflow generates a notes-free `slides.pdf` for
 every published deck (linked from the landing page). For a manual export, open
@@ -233,6 +233,44 @@ via `window.hljs`. To add a language, edit `LANGUAGES` in
 [`tools/fetch-highlight.py`](tools/fetch-highlight.py) and re-run it (the
 version + checksum are recorded in `shared/vendor-manifest.json`). A talk with
 no code slides and no file embed can simply drop the `<script>` line.
+
+**Reader and slide links.** Each catalogue entry has a Read link to
+`?view=scroll&scrollLayout=compact`. Slides keep their fixed canvas in reading
+order. The footer's link button copies a URL to the current slide; author an
+explicit `<section id="stable-name">` when the link must survive title edits.
+Otherwise the engine derives an ID from the slide label/title.
+
+**Rehearsal pacing.** Outside the generated metadata block in `DECK_CONFIG`,
+set `totalTime: 1200` for a twenty-minute talk, or `defaultTiming: 90` for a
+per-slide baseline (seconds). `totalTime` takes precedence. An individual
+`<section data-timing="150">` overrides its allocation. These values drive
+reveal's speaker-view pacing timer; they do not advance the slides. Run
+`python tools/preflight.py --decks <slug> --json preflight.json` for an offline
+inventory and a rough estimate from notes at 130 words/minute. The report lists
+live dependencies, local asset failures and QR images; it does not decode QR
+targets or replace rehearsal. Add `--exports _site` to include export evidence.
+
+**Publication safety and evidence.** `strip-notes.py` builds into a fresh
+staging directory and replaces only an output marked `.slides-build.json`
+for this source repository. It rejects source inputs and unmarked existing
+directories; choose a new output directory for the first build. Failed
+validation preserves the previous output. Notes are removed using HTML-aware
+source spans, and the resulting HTML is independently checked for note forms.
+
+The exporter supports both reveal print URLs, waits for local media, checks
+painted text/images against page/footer bounds, and compares PDF page counts
+with the original leaf-slide inventory. Each deck gets `export-evidence.json`
+with browser version, digest, options, page count and frame-capture outcomes.
+Output-affecting options invalidate the cache; failed captures expire after an
+hour. `--refresh-frames` retries immediately, and `--force` regenerates all
+selected output. Render the affected PDF pages for visual review as well.
+
+**Live-frame recovery.** A persistent external link and explicit “Show the
+site here” control remain available when an embedded page cannot prove it is
+ready. For an owned application, declare `data-ready-message="message-type"`
+on the iframe and have the application send that message to its parent; the
+engine verifies both origin and source. The state resets on each activation.
+Use a local screenshot when a live surface is unnecessary for the argument.
 
 **Figures show whole.** `.figrow` images use `object-fit: contain`, so a map,
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
@@ -310,7 +348,7 @@ Only after validation passes does the **build** run: an allowlisted copy of
 the site with **speaker notes stripped** (`tools/strip-notes.py` — the repo
 keeps the notes, the artifact carries none and excludes all development
 files), plus a generated `slides.pdf` and `social-card.png` per deck (cached,
-regenerated only when the deck or shared engine changed).
+regenerated when source, rendering options or browser change, or a failed capture expires).
 Deployment happens only from `main`. Live at
 **<https://slides.frederickmadore.com/>**.
 

@@ -28,6 +28,7 @@
 import { existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkInteractions } from './lib/interactions.mjs';
 import {
   intArg,
   launchChromium,
@@ -68,6 +69,7 @@ function isLocal(text) { return text.includes('127.0.0.1') || text.includes('loc
 
 async function openPage(ctx, url) {
   const page = await ctx.newPage();
+  await page.route('**/*', route => route.request().url().startsWith(BASE) ? route.continue() : route.abort());
   const errors = [];
   page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
   page.on('console', m => {
@@ -106,16 +108,17 @@ async function checkDeck(deck) {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
     const { page, errors } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
-    const report = await page.evaluate(() => {
+    const report = await page.evaluate(async () => {
       const out = { fits: [], fitFails: [], overflows: [] };
-      const hs = Reveal.getHorizontalSlides();
-      for (let h = 0; h < hs.length; h++) {
-        Reveal.slide(h, 0);
+      for (const leaf of window.DeckRuntime.leafSlides()) {
+        const { h, v = 0 } = Reveal.getIndices(leaf);
+        Reveal.slide(h, v);
+        await window.DeckRuntime.settle();
         // walk fragments so fragment-revealed content is laid out too
         while (Reveal.nextFragment()) { /* step through */ }
-        const all = [hs[h], ...hs[h].querySelectorAll(':scope > section')];
+        const all = [leaf];
         for (const s of all) {
-          const label = `#${h + 1}`;
+          const label = `#${h + 1}.${v}`;
           if (s.hasAttribute('data-fit')) out.fits.push(`${label}×${s.getAttribute('data-fit')}`);
           if (s.hasAttribute('data-fit-fail')) out.fitFails.push(`${label} scale ${s.getAttribute('data-fit-fail')}`);
           if (!s.querySelector(':scope > .fit') &&
@@ -141,12 +144,13 @@ async function checkDeck(deck) {
     const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
     const { page } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
-    const bad = await page.evaluate(() => {
+    const bad = await page.evaluate(async () => {
       const footer = document.querySelector('.deck-footer').getBoundingClientRect();
       const out = [];
-      const hs = Reveal.getHorizontalSlides();
-      for (let h = 0; h < hs.length; h++) {
-        Reveal.slide(h, 0);
+      for (const leaf of window.DeckRuntime.leafSlides()) {
+        const { h, v = 0 } = Reveal.getIndices(leaf);
+        Reveal.slide(h, v);
+        await window.DeckRuntime.settle();
         const r = Reveal.getCurrentSlide().getBoundingClientRect();
         if (r.bottom > footer.top + 1) out.push(`#${h + 1} (+${Math.round(r.bottom - footer.top)}px)`);
       }
@@ -165,17 +169,18 @@ async function checkDeck(deck) {
     // Auto-fit only measures once webfonts settle; wait so the walk below sees
     // real data-fit stamps instead of racing them.
     await page.evaluate(() => document.fonts.ready).catch(() => {});
-    const r = await page.evaluate(() => {
+    const r = await page.evaluate(async () => {
       const scroll = !!document.querySelector('.reveal.reveal-scroll');
       const rect = document.querySelector('.slides').getBoundingClientRect();
       // The ≤640px chrome tightens --slide-pad-x, so auto-fit lands at a
       // different scale here than the 1280×720 pass measures — walk the deck
       // so a narrow-only data-fit-fail surfaces in CI, not in someone's hand.
       const fitFails = [];
-      const hs = Reveal.getHorizontalSlides();
-      for (let h = 0; h < hs.length; h++) {
-        Reveal.slide(h, 0);
-        for (const s of [hs[h], ...hs[h].querySelectorAll(':scope > section')]) {
+      for (const leaf of window.DeckRuntime.leafSlides()) {
+        const { h, v = 0 } = Reveal.getIndices(leaf);
+        Reveal.slide(h, v);
+        await window.DeckRuntime.settle();
+        for (const s of [leaf]) {
           if (s.hasAttribute('data-fit-fail')) fitFails.push(`#${h + 1} scale ${s.getAttribute('data-fit-fail')}`);
         }
       }
@@ -193,6 +198,10 @@ async function checkDeck(deck) {
 }
 
 await mapLimit(decks, CONCURRENCY, checkDeck);
+if (decks.includes('_showcase')) {
+  try { await checkInteractions(browser, BASE); }
+  catch (error) { fail('interactions', error.stack || String(error)); }
+}
 
 // ---- landing page ---------------------------------------------------------
 {

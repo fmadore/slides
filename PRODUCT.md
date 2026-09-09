@@ -98,7 +98,7 @@ own CI. The author is the credit; the university is an affiliation.
 
 ## Evidence on Hand
 
-- Five published talks (May–July 2026) under `talks/YYYY-MM-DD-*/`, each with
+- Published talks listed in `talks/talks.json` under `talks/YYYY-MM-DD-*/`, each with
   real research assets in `talks/*/assets/` (IWAC screenshots, OCR samples,
   archival photographs, QR codes).
 - `talks/_showcase/` — the full layout catalogue (never published);

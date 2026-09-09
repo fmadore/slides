@@ -49,6 +49,7 @@ if TOOLS not in sys.path:
 
 from slideslib.deck_metadata import CONFIG_START, HEAD_START, sync_deck_html
 from slideslib.manifest import ManifestValidationError, load_manifest
+from slideslib.notes import remaining_notes
 
 # Landing-page links that are generated at build time (they exist on the live
 # site, not in the repo).
@@ -880,11 +881,6 @@ def audit_assets(rep):
                      + " (move one copy to shared/assets/)")
 
 
-ASIDE_NOTES_RE = re.compile(
-    r"<aside\b[^>]*\bclass\s*=\s*(?P<q>['\"])(?:[^'\"]*\s)?notes(?:\s[^'\"]*)?(?P=q)",
-    re.IGNORECASE)
-
-
 def audit_site(rep, site):
     """A publication build must be notes-free and contain no dev-only files."""
     site = os.path.abspath(site)
@@ -901,7 +897,7 @@ def audit_site(rep, site):
         rel = os.path.join("_site", os.path.relpath(path, site))
         with open(path, encoding="utf-8") as fh:
             html = fh.read()
-        if ASIDE_NOTES_RE.search(html):
+        if remaining_notes(html):
             rep.error(rel, "speaker notes remain in the publication build")
         if "plugin/notes.js" in html:
             rep.error(rel, "reveal notes plugin still referenced in the publication build")

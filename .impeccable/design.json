@@ -536,7 +536,14 @@
         "value": "inline-flex | none",
         "purpose": "Suppresses the on-screen scroll instruction in print, where it would be a false one. Declared alongside --excerpt-mark in the same two paper contexts."
       }
-    ]
+    ],
+    "runtimeContracts": {
+      "verifiedAt": "2026-09-09",
+      "print": "Ordinary pages use border-box block flow; heroes retain flex centring. Fit with layout zoom after media settles and before pagination; verify bounds, imprints and rendered PDF pages.",
+      "media": "Explicit live-view action; owned iframe readiness messages validate origin/source and reset on activation. Lazy gallery media resolves before display.",
+      "motion": "Reduced motion disables Auto-Animate geometry changes and signature effects; opacity/colour feedback remains.",
+      "sharing": "Footer stroke-icon button copies semantic slide URL and announces success; explicit authored IDs survive title edits."
+    }
   },
   "components": [
     {

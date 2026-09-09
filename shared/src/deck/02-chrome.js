@@ -25,6 +25,29 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
+    var copyLabel = LANG === "fr" ? "Copier le lien de cette diapositive" : "Copy link to this slide";
+    var copy = document.createElement("button");
+    copy.className = "deck-btn copy-link";
+    copy.type = "button";
+    copy.title = copyLabel;
+    copy.setAttribute("aria-label", copyLabel);
+    copy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg>';
+    var status = document.createElement("span");
+    status.className = "deck-status";
+    status.setAttribute("role", "status");
+    footer.querySelector(".deck-nav").append(copy, status);
+    copy.addEventListener("click", async function () {
+      var canonical = document.querySelector('link[rel="canonical"]');
+      var url = new URL(canonical ? canonical.href : location.href);
+      url.search = "";
+      url.hash = "/" + encodeURIComponent(Reveal.getCurrentSlide().id);
+      try {
+        await navigator.clipboard.writeText(url.href);
+        status.textContent = LANG === "fr" ? "Lien copié" : "Link copied";
+      } catch (error) {
+        window.prompt(copyLabel, url.href);
+      }
+    });
   }
 
   /* ---- counted vs annexe slides ------------------------------------------

@@ -19,14 +19,14 @@
      Loading / success / failure states are exposed accessibly (aria-busy,
      role=status/alert), and the slide is re-fitted once the embed resolves. */
   function loadFileEmbeds() {
-    document.querySelectorAll("[data-embed-src], [data-skill-src]").forEach(function (panel) {
+    return Promise.all(Array.from(document.querySelectorAll("[data-embed-src], [data-skill-src]")).map(function (panel) {
       var code = panel.querySelector("code");
       if (!code) return;
       var src = panel.getAttribute("data-embed-src") || panel.getAttribute("data-skill-src");
       panel.setAttribute("aria-busy", "true");
       panel.setAttribute("role", "status");
       code.textContent = STR.embedLoading;
-      fetch(src)
+      return fetch(src)
         .then(function (r) { if (!r.ok) throw r.status; return r.text(); })
         .then(function (text) {
           code.textContent = text;
@@ -49,5 +49,5 @@
           panel.setAttribute("role", "alert");
           refitAfterLoad(panel);
         });
-    });
+    }));
   }

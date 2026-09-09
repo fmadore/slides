@@ -42,7 +42,15 @@
     decorateChrome();
     lazifyFrames();   // live iframes load only when their slide becomes visible
 
-    Reveal.initialize({
+    leafSlides().forEach(function (slide, i) {
+      if (slide.id) return;
+      var label = slide.dataset.toc || (slide.querySelector("h1,h2") || {}).textContent || "slide";
+      var id = label.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "slide";
+      var baseId = id, suffix = 2;
+      while (document.getElementById(id)) id = baseId + "-" + suffix++;
+      slide.id = id;
+    });
+    window.DeckRuntime.ready = Reveal.initialize({
       width: 1280, height: 720, margin: 0,
       minScale: 0.2, maxScale: 2.0,
       // Never switch to reveal 6's scroll view on narrow screens: the theme is
@@ -53,6 +61,9 @@
       controls: false, progress: true, slideNumber: false,
       transition: CFG.transition || "fade",
       transitionSpeed: "default",
+      autoAnimate: !motionPreference.matches,
+      defaultTiming: CFG.defaultTiming || null,
+      totalTime: CFG.totalTime || null,
       backgroundTransition: "fade",
       overview: true, touch: true, keyboard: true,
       // PDF export (?print-pdf): one printed page per slide. Reveal's default
@@ -66,7 +77,7 @@
       buildFooter(reveal);
       buildRunhead(reveal);
       buildTOC(reveal);
-      loadFileEmbeds();
+      fileEmbedsReady = loadFileEmbeds();
       buildLightbox();
       initFrameFallbacks();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)
@@ -90,6 +101,7 @@
         });
       });
       if (CHECK_MODE) enableCheckMode();
+      motionPreference.addEventListener("change", function () { Reveal.configure({ autoAnimate: !motionPreference.matches }); });
 
       // Defensive relayout: recompute the scale once the window and webfonts
       // have settled, in case the deck initialised before it had real size.
@@ -103,8 +115,7 @@
       if (PRINT) {
         var fitAllPages = function () {
           if (!fitReady || !document.querySelector(".reveal .pdf-page")) return;
-          document.querySelectorAll(".reveal .pdf-page > section").forEach(function (s) { fitSlide(s, true); });
-          buildPrintImprints();
+          settleSlides(leafSlides());
         };
         Reveal.on("pdf-ready", fitAllPages);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllPages);

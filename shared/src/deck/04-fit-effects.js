@@ -60,7 +60,16 @@
       fit.className = "fit";
       while (kids.length) fit.appendChild(kids.shift());
       sec.insertBefore(fit, sec.firstChild);
-      fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
+      if (PRINT) {
+        // Transforms apply after print fragmentation: text outside the
+        // unscaled page can disappear even when its painted bounds fit.
+        // Chromium's layout zoom scales before pagination instead.
+        var printLeft = padL + (centered ? safeW * (1 - k) / 2 : 0);
+        var printTop = boxTop + (centered ? safeH * (1 - k) / 2 : 0);
+        fit.style.cssText = "position:absolute;top:" + (printTop / k) + "px;left:" + (printLeft / k) +
+          "px;width:" + safeW + "px;margin:0;display:flex;flex-direction:column;zoom:" + k.toFixed(4) + ";" +
+          (centered ? "height:" + safeH + "px;justify-content:center;" : "");
+      } else fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
         "px;margin:0;display:flex;flex-direction:column;" +
         (centered
           ? "bottom:" + padB + "px;justify-content:center;transform-origin:center center;"
@@ -87,7 +96,7 @@
   /* Re-fit a slide when late-loading content (images, embeds, iframes) changes
      its measured height after the first pass. */
   function refitAfterLoad(el) {
-    var sec = el && el.closest ? el.closest(".slides > section") : null;
+    var sec = leafSlideFor(el);
     if (!sec || !fitReady) return;
     if ((FIT_SEEN && FIT_SEEN.has(sec)) || sec.querySelector(":scope > .fit")) fitSlide(sec, true);
   }

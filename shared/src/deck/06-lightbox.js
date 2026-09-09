@@ -34,15 +34,27 @@
     var lbCap = lightbox.querySelector("figcaption");
     var lbClose = lightbox.querySelector(".lightbox-close");
     var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
-    var curIdx = -1, lbLastFocus = null;
+    var curIdx = -1, lbLastFocus = null, request = 0;
+    lbCap.setAttribute("aria-live", "polite");
     function showAt(i) {
       curIdx = (i + list.length) % list.length;
       var img = list[curIdx];
       var alt = img.getAttribute("alt") || "";
-      lbImg.setAttribute("src", img.currentSrc || img.src);
       lbImg.setAttribute("alt", alt);
-      lbCap.textContent = alt;
-      lbCap.style.display = alt ? "" : "none";
+      lbImg.hidden = true;
+      lbCap.textContent = LANG === "fr" ? "Chargement de l’image…" : "Loading image…";
+      lbCap.style.display = "";
+      var current = ++request;
+      loadImage(img).then(function () {
+        if (current !== request) return;
+        if (!img.naturalWidth) {
+          lbCap.textContent = LANG === "fr" ? "Image indisponible. Essayez une autre image." : "Image unavailable. Try another image.";
+          return;
+        }
+        lbImg.src = imageSource(img);
+        lbImg.hidden = false;
+        lbCap.textContent = alt;
+      });
       if (!lightbox.classList.contains("open")) {
         lbLastFocus = document.activeElement;
         lightbox.classList.add("open");
@@ -55,6 +67,7 @@
       setDialogHidden(lightbox, true);
       lbImg.removeAttribute("src");
       curIdx = -1;
+      request++;
       // Return focus to the image that opened the viewer.
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
       lbLastFocus = null;

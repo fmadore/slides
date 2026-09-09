@@ -28,7 +28,8 @@
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { deckExtrasHash, treeDigest } from './lib/export-cache.mjs';
+import { deckExtrasHash, treeDigest, reusableEvidence } from './lib/export-cache.mjs';
+import { slideInventory, settlePrint, printGeometry } from './lib/slides.mjs';
 import { captureLiveFrames, installPrintFrameSnapshots } from './lib/pdf-frames.mjs';
 import { intArg, launchChromium, listDecks, startStaticServer, valueArg } from './lib/runtime.mjs';
 
@@ -36,6 +37,7 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const ROOT = resolve(valueArg(args, '--root', REPO));
 const FORCE = args.includes('--force');
+const REFRESH = args.includes('--refresh-frames');
 const ONLY = valueArg(args, '--decks', null)?.split(',');
 const EXECUTABLE_PATH = valueArg(args, '--executable-path', null);
 const BROWSER_CHANNEL = valueArg(args, '--browser-channel', null);
@@ -53,6 +55,7 @@ const CACHE_DEPENDENCIES = [
   'tools/lib/export-cache.mjs',
   'tools/lib/pdf-frames.mjs',
   'tools/lib/runtime.mjs',
+  'tools/lib/slides.mjs',
 ];
 
 const decks = listDecks(ROOT, { includeDrafts: false, only: ONLY });
@@ -61,6 +64,7 @@ const browser = await launchChromium(chromium, {
   channel: BROWSER_CHANNEL,
 });
 let failures = 0;
+console.log(`info  browser: Chromium ${browser.version()}`);
 
 for (const slug of decks) {
   const deckDir = join(ROOT, 'talks', slug);
@@ -71,8 +75,12 @@ for (const slug of decks) {
     slug,
     sharedDigest,
     dependencyFiles: CACHE_DEPENDENCIES,
+    options: { frameSnapshots: FRAME_SNAPSHOTS, frameTimeoutMs: FRAME_TIMEOUT_MS, browser: browser.version() },
   });
-  if (!FORCE && existsSync(hashFile) && readFileSync(hashFile, 'utf8') === hash &&
+  const evidenceFile = join(deckDir, 'export-evidence.json');
+  let evidence;
+  try { evidence = JSON.parse(readFileSync(evidenceFile, 'utf8')); } catch { /* rebuild old/incomplete caches */ }
+  if (!FORCE && !REFRESH && reusableEvidence(evidence) && existsSync(hashFile) && readFileSync(hashFile, 'utf8') === hash &&
       existsSync(join(deckDir, 'slides.pdf')) && existsSync(join(deckDir, 'social-card.png'))) {
     console.log(`ok    ${slug}: unchanged — reusing cached slides.pdf + social-card.png`);
     continue;
@@ -83,6 +91,13 @@ for (const slug of decks) {
   const deckUrl = `${BASE}/talks/${slug}/`;
   const hasFrames = /<iframe\b/i.test(readFileSync(join(deckDir, 'index.html'), 'utf8'));
   let frameCaptures = [];
+  await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
+  await page.evaluate(() => window.DeckRuntime.ready);
+  const expectedSlides = await slideInventory(page);
+  const expectedFrames = await page.evaluate(() => [...document.querySelectorAll('.slides iframe')].map(f => ({
+    title: f.title, url: f.getAttribute('data-src') || f.getAttribute('src'), captured: false,
+    error: 'Capture did not complete',
+  })));
 
   if (FRAME_SNAPSHOTS && hasFrames) {
     try {
@@ -114,11 +129,18 @@ for (const slug of decks) {
     console.log(`info  ${slug}: PDF uses ${installed.screenshots} frame screenshot(s), ` +
       `${installed.placeholders} labelled placeholder(s)`);
   }
-  await page.waitForTimeout(1500); // lazy images inside pdf pages
+  await settlePrint(page);
+  const geometryErrors = await printGeometry(page);
+  if (geometryErrors.length) {
+    geometryErrors.forEach(error => console.error(`FAIL  ${slug}: ${error}`));
+    failures++;
+    await ctx.close();
+    continue;
+  }
   const slideCount = await page.evaluate(() => document.querySelectorAll('.reveal .pdf-page').length);
   const pdf = await page.pdf({ printBackground: true, preferCSSPageSize: true });
   const pageCount = (pdf.toString('latin1').match(/\/Type[\s]*\/Page[^s]/g) || []).length;
-  if (pageCount !== slideCount) {
+  if (pageCount !== slideCount || slideCount !== expectedSlides.length) {
     console.log(`FAIL  ${slug}: PDF has ${pageCount} pages for ${slideCount} slides`);
     failures++;
     await ctx.close();
@@ -127,12 +149,18 @@ for (const slug of decks) {
   writeFileSync(join(deckDir, 'slides.pdf'), pdf);
 
   // ---- social card (cover screenshot) --------------------------------------
+  await page.emulateMedia({ media: 'screen' });
   await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
   await page.evaluate(() => document.fonts ? document.fonts.ready : null);
   await page.waitForTimeout(1500); // let the cover's rules draw + webfonts paint
   await page.screenshot({ path: join(deckDir, 'social-card.png') });
 
   writeFileSync(hashFile, hash);
+  writeFileSync(evidenceFile, JSON.stringify({ version: 1, createdAt: new Date().toISOString(), sourceDigest: hash,
+    browser: browser.version(), pages: pageCount, options: { frameSnapshots: FRAME_SNAPSHOTS, frameTimeoutMs: FRAME_TIMEOUT_MS },
+    frames: FRAME_SNAPSHOTS ? (frameCaptures.length ? frameCaptures.map(({ title, url, dataUrl, error }) => ({ title, url, captured: !!dataUrl, error })) : expectedFrames) : [],
+    geometry: 'passed', slides: expectedSlides,
+  }, null, 2) + '\n');
   console.log(`ok    ${slug}: slides.pdf (${slideCount} pages, ${(pdf.length / 1024 / 1024).toFixed(1)} MB) + social-card.png`);
   await ctx.close();
 }

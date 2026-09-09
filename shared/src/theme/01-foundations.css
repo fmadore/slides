@@ -303,11 +303,13 @@
    rule above no longer matches, so every PDF page rendered flush against the
    page edge with a collapsed height — trimmed slides. justify-content is left
    alone so the centred layouts (.cover, .section, .statement, …) keep their
-   own value. */
+   own value. Ordinary slides keep the screen's block flow: a fixed-height
+   flex column would shrink image rows and overlap their captions. */
 html.reveal-print .reveal .slides .pdf-page > section {
   height: 100% !important;
+  box-sizing: border-box !important;
   padding: var(--slide-pad-y) var(--slide-pad-x) calc(var(--footer-h) + var(--space-md)) !important;
-  display: flex !important;
+  display: block !important;
   flex-direction: column;
   overflow: visible;
 }
@@ -320,7 +322,7 @@ html.reveal-print .reveal .slides .pdf-page > section.statement,
 html.reveal-print .reveal .slides .pdf-page > section.closing,
 html.reveal-print .reveal .slides .pdf-page > section.metric,
 html.reveal-print .reveal .slides .pdf-page > section.center,
-html.reveal-print .reveal .slides .pdf-page > section.balance { justify-content: center; }
+html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !important; justify-content: center; }
 
 /* Scroll view (?view=scroll): the same failure as print, one wrapper deeper.
    Reveal's scroll view re-parents every slide into

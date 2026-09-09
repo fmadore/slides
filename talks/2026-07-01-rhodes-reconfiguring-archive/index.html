@@ -41,15 +41,15 @@
        reveal sets display:block on the present section, so a flex-fill won't work here —
        we give the framed figure a fixed 460px (above the embed content, within this
        slide's ~470px vertical budget) so the whole map and its legend show. The iframe is
-       fullscreen-capable (allowfullscreen). The JS at the end of <body> swaps in
+       fullscreen-capable (allowfullscreen). The shared readiness handler reveals
        assets/amrc-map.png if the embed can't reach the network (offline fallback);
        object-fit:contain keeps that wide static map whole, centred in the frame. */
-    .reveal figure.amrc-embed { height: 460px; min-height: 0; background: var(--sunken);
+    .reveal figure.amrc-embed { position: relative; height: 460px; min-height: 0; background: var(--sunken);
       border-radius: var(--radius-lg); overflow: hidden; }
     .reveal .amrc-iframe { display: block; width: 100%; height: 100%; border: 0;
       background: transparent; }
-    .reveal img.amrc-fallback { width: 100%; height: 100%; object-fit: contain;
-      object-position: center; background: transparent; }
+    .reveal img.amrc-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+      object-position: center; background: var(--sunken); }
     .reveal img.amrc-fallback[hidden] { display: none; }
 
     /* AMIRA live-site embeds (home page + DRE search) — a browser-chrome frame, tall as
@@ -132,7 +132,7 @@
        71-figure stat generously from the intro line and the detail line below it. */
     .reveal section.record-slide .cols { align-items: center; }
     .reveal section.record-slide .col > .stat { margin: var(--space-xl) 0; }
-    .reveal .site-frame.map-embed { height: 462px; }
+    .reveal .site-frame.map-embed { height: 360px; }
     .reveal .site-frame.network-embed { height: 430px; }
     /* ILAM slide — give the live frame the most height it can take: title on one
        line (drop the 22ch clamp) with a tighter margin, and a one-line full-width
@@ -247,7 +247,7 @@
       <div class="cols ratio-3-2">
         <div class="col">
           <figure class="shot-fig amrc-embed">
-            <iframe class="amrc-iframe" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/collection-overview/clusterPartners" title="Africa Multiple Research Centres (AMRCs) and its partners" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
+            <iframe data-ready-message="dre-embed-height" class="amrc-iframe" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/collection-overview/clusterPartners" title="Africa Multiple Research Centres (AMRCs) and its partners" scrolling="no" allowfullscreen allow="fullscreen"></iframe>
             <img class="shot amrc-fallback" data-src="assets/amrc-map.png" alt="World map showing the five Africa Multiple Research Centres — Université Joseph Ki-Zerbo (Ouagadougou), University of Bayreuth, Moi University (Eldoret), University of Lagos and Rhodes University (Makhanda) — alongside a privileged partner, cooperation partners and global partner Centres of African Studies across the Americas, Europe, Asia and Australia." hidden width="1640" height="659">
           </figure>
         </div>
@@ -457,10 +457,10 @@
     </section>
 
     <!-- ════════ 13 · SPATIAL EXPLORATION — custom DRE module (live map) ═══════ -->
-    <section data-toc="Spatial exploration" data-fit-allow="interactive map needs the full viewport">
+    <section data-toc="Spatial exploration">
       <p class="kicker">Custom Omeka S module · built in-house</p>
       <h2 class="slide-title">Spatial exploration</h2>
-      <p class="lead">One of the DRE visualisation modules I build — every <span class="accent">georeferenced place</span> in the collection, on one map you can pan, zoom and open.</p>
+      <p>Every <span class="accent">georeferenced place</span> in the collection: pan, zoom, open.</p>
       <figure class="site-frame map-embed">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -468,7 +468,7 @@
           <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/spatial-exploration" target="_blank" rel="noopener">Open the map ↗</a>
         </div>
         <div class="site-frame-view">
-          <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/spatial-exploration" title="Spatial exploration — every georeferenced place in the AMIRA collection, on an interactive map" allowfullscreen allow="fullscreen"></iframe>
+          <iframe data-ready-message="dre-embed-height" class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/spatial-exploration" title="Spatial exploration — every georeferenced place in the AMIRA collection, on an interactive map" allowfullscreen allow="fullscreen"></iframe>
           <div class="viz-fallback" hidden>
             <p>Live map — open it at</p>
             <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/spatial-exploration" target="_blank" rel="noopener">data.africamultiple…/spatial-exploration ↗</a>
@@ -491,7 +491,7 @@
               <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">Open ↗</a>
             </div>
             <div class="site-frame-view">
-              <iframe class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/discursive-communities" title="Networks — an entity network of the AMIRA collection, drawn from its knowledge-graph links" allowfullscreen allow="fullscreen"></iframe>
+              <iframe data-ready-message="dre-embed-height" class="js-viz-embed" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/dre-embed/discursive-communities" title="Networks — an entity network of the AMIRA collection, drawn from its knowledge-graph links" allowfullscreen allow="fullscreen"></iframe>
               <div class="viz-fallback" hidden>
                 <p>Live network — open it at</p>
                 <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/networks" target="_blank" rel="noopener">data.africamultiple…/networks ↗</a>
@@ -592,75 +592,6 @@
 <script src="../../shared/reveal/plugin/zoom.js"></script>
 <script src="../../shared/reveal/plugin/search.js"></script>
 <script src="../../shared/deck.js"></script>
-
-<!-- AMRC live embed: load the DRE iframe only when its slide is shown — a MapLibre map in
-     an offscreen / display:none slide initialises at zero size and never renders. The
-     embed is responsive (reports the iframe's height), so the fixed 290px CSS height fits
-     the canvas with no clipping. If it hasn't reported a height within 5s of being shown
-     (offline / framing blocked), swap in the static map screenshot so the slide is never
-     blank. -->
-<script>
-(function(){
-  function setup(){
-    var ifr=document.querySelector('.amrc-iframe');
-    var img=document.querySelector('.amrc-fallback');
-    if(!ifr||!img) return;
-    var src=ifr.getAttribute('data-src'), loaded=false, live=false;
-    window.addEventListener('message',function(e){
-      if(ifr.contentWindow&&e.source===ifr.contentWindow&&e.data&&e.data.type==='dre-embed-height'){ live=true; }
-    });
-    function activate(){
-      if(loaded||!src) return; loaded=true;
-      ifr.src=src;
-      setTimeout(function(){ if(!live){ ifr.remove(); img.hidden=false; } },5000);
-    }
-    function isAmrc(sl){ return sl&&sl.querySelector&&sl.querySelector('.amrc-iframe'); }
-    if(window.Reveal&&Reveal.on){
-      Reveal.on('slidechanged',function(ev){ if(isAmrc(ev.currentSlide)) activate(); });
-      Reveal.on('ready',function(ev){ if(isAmrc(ev.currentSlide)) activate(); });
-      try{ if(Reveal.isReady&&Reveal.isReady()&&isAmrc(Reveal.getCurrentSlide())) activate(); }catch(e){}
-    } else { activate(); }
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup); else setup();
-})();
-</script>
-
-<!-- Custom DRE visualisation modules (spatial map + entity network): lazy-load each
-     embed only when its slide is shown — a WebGL/canvas viz built in a display:none
-     slide initialises at zero size and never paints. Each embed reports its height via
-     postMessage('dre-embed-height'); we use that purely as a liveness ping (NOT to
-     resize — the slide canvas is fixed at 1280×720). If none arrives within 7s
-     (offline / framing blocked), reveal the frame's .viz-fallback so it never reads
-     as a broken/blank frame. -->
-<script>
-(function(){
-  var frames = [].slice.call(document.querySelectorAll('iframe.js-viz-embed'));
-  if(!frames.length) return;
-  window.addEventListener('message', function(e){
-    if(!e.data || e.data.type!=='dre-embed-height') return;
-    frames.forEach(function(f){ if(f.contentWindow===e.source) f.__live=true; });
-  });
-  function activate(f){
-    if(f.__loaded || !f.getAttribute('data-src')) return;
-    f.__loaded=true;
-    f.src=f.getAttribute('data-src');
-    setTimeout(function(){
-      if(!f.__live){
-        var view=f.parentNode, fb=view&&view.querySelector('.viz-fallback');
-        if(fb) fb.hidden=false;
-      }
-    },7000);
-  }
-  function check(slide){
-    if(slide&&slide.querySelectorAll) [].forEach.call(slide.querySelectorAll('iframe.js-viz-embed'), activate);
-  }
-  if(window.Reveal&&Reveal.on){
-    Reveal.on('slidechanged',function(ev){ check(ev.currentSlide); });
-    Reveal.on('ready',function(ev){ check(ev.currentSlide); });
-    try{ if(Reveal.isReady&&Reveal.isReady()) check(Reveal.getCurrentSlide()); }catch(e){}
-  } else { frames.forEach(activate); }
-})();
-</script>
 
 </body>
 </html>

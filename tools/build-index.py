@@ -59,7 +59,8 @@ def render_talk(t):
     lang_label = {"en": "English", "fr": "Français"}.get(t["language"], t["language"])
     extras = [f'<span class="talk-presenters">{esc(" · ".join(t.get("presenters", [])))}</span>',
               f'<span class="talk-lang" title="{esc(lang_label)}">{esc(t["language"].upper())}</span>',
-              f'<a href="talks/{slug}/slides.pdf">PDF</a>']
+              f'<a href="talks/{slug}/?view=scroll&amp;scrollLayout=compact">Read</a>',
+              f'<a href="{esc(t.get("pdf") or "talks/" + t["slug"] + "/slides.pdf")}">PDF</a>']
     if t.get("video"):
         extras.append(f'<a href="{esc(t["video"])}" target="_blank" rel="noopener">Video</a>')
     if t.get("eventUrl"):
@@ -86,12 +87,12 @@ def build_block(manifest):
     return f"""{START}
       <div class="index-head">
         <span class="label">The talks</span>
-        <span class="count" id="talk-count" data-total="{n}">{n:02d} talk{'s' if n != 1 else ''}</span>
+        <span class="count" id="talk-count" role="status" aria-live="polite" aria-atomic="true" data-total="{n}">{n:02d} talk{'s' if n != 1 else ''}</span>
       </div>
       <ol class="talks" id="talk-list">
 {rows}
       </ol>
-      <p class="empty" id="no-match" hidden>No talks match — clear the filters to see all of them.</p>
+      <p class="empty" id="no-match" hidden>No talks match. <button type="button" id="clear-filters">Clear filters</button></p>
       <script type="application/json" id="talk-data">{data}</script>
       {END}"""
 

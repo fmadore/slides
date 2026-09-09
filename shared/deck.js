@@ -41,7 +41,39 @@
      ?audit) disables auto-fitting so authored overflow is visible raw. */
   var CHECK_MODE = /[?&](check|audit)\b/.test(location.search);
   var NO_FIT = /[?&](no-fit|audit)\b/.test(location.search);
-  var PRINT = /[?&]print-pdf\b/.test(location.search);
+  var PARAMS = new URLSearchParams(location.search);
+  var PRINT = PARAMS.has("print-pdf") || PARAMS.get("view") === "print";
+  var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var fileEmbedsReady = Promise.resolve();
+
+  function leafSlides() {
+    return Array.from(document.querySelectorAll(".reveal .slides section"))
+      .filter(function (s) { return !s.querySelector(":scope > section") && !s.classList.contains("stack"); });
+  }
+  function leafSlideFor(el) { return el && el.closest ? el.closest("section:not(.stack)") : null; }
+  function imageSource(img) { return img.currentSrc || img.getAttribute("src") || img.getAttribute("data-src") || ""; }
+  function loadImage(img) {
+    if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+    if (!img.getAttribute("src") && img.dataset.src) img.src = img.dataset.src;
+    if (!img.getAttribute("src") && !img.getAttribute("srcset")) return Promise.resolve();
+    return new Promise(function (resolve) {
+      var timer = setTimeout(done, 10000);
+      function done() { clearTimeout(timer); img.removeEventListener("load", done); img.removeEventListener("error", done); resolve(); }
+      img.addEventListener("load", done); img.addEventListener("error", done);
+      if (img.complete) done();
+    }).then(function () { return img.complete && img.naturalWidth && img.decode ? img.decode().catch(function () {}) : null; });
+  }
+  async function settleSlides(slides) {
+    await fileEmbedsReady;
+    if (document.fonts) await document.fonts.ready;
+    await Promise.all(slides.flatMap(function (s) { return Array.from(s.querySelectorAll("img")).map(loadImage); }));
+    Reveal.layout();
+    fitReady = true;
+    slides.forEach(function (s) { fitSlide(s, true); });
+    if (Reveal.isPrintView()) buildPrintImprints();
+    await new Promise(function (resolve) { requestAnimationFrame(function () { requestAnimationFrame(resolve); }); });
+  }
+  window.DeckRuntime = { leafSlides: leafSlides, settle: function () { return settleSlides(Reveal.isPrintView() ? leafSlides() : [Reveal.getCurrentSlide()].filter(Boolean)); } };
 
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
@@ -88,7 +120,8 @@
   function contactHTML() {
     var L = CFG.links, out = [];
     function row(href, icon, label) {
-      return '<a href="' + href + '" target="_blank" rel="noopener"><span class="ico">' + icon + "</span><span>" + label + "</span></a>";
+      if (!/^(https?:|mailto:)/i.test(href)) return "";
+      return '<a href="' + escapeHTML(href) + '" target="_blank" rel="noopener"><span class="ico">' + icon + "</span><span>" + escapeHTML(label) + "</span></a>";
     }
     if (L.github)  out.push(row(L.github, ICON.github, tidyUrl(L.github).replace(/^github\.com\//, "")));
     if (L.website) out.push(row(L.website, ICON.globe, tidyUrl(L.website)));
@@ -125,6 +158,29 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
+    var copyLabel = LANG === "fr" ? "Copier le lien de cette diapositive" : "Copy link to this slide";
+    var copy = document.createElement("button");
+    copy.className = "deck-btn copy-link";
+    copy.type = "button";
+    copy.title = copyLabel;
+    copy.setAttribute("aria-label", copyLabel);
+    copy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg>';
+    var status = document.createElement("span");
+    status.className = "deck-status";
+    status.setAttribute("role", "status");
+    footer.querySelector(".deck-nav").append(copy, status);
+    copy.addEventListener("click", async function () {
+      var canonical = document.querySelector('link[rel="canonical"]');
+      var url = new URL(canonical ? canonical.href : location.href);
+      url.search = "";
+      url.hash = "/" + encodeURIComponent(Reveal.getCurrentSlide().id);
+      try {
+        await navigator.clipboard.writeText(url.href);
+        status.textContent = LANG === "fr" ? "Lien copié" : "Link copied";
+      } catch (error) {
+        window.prompt(copyLabel, url.href);
+      }
+    });
   }
 
   /* ---- counted vs annexe slides ------------------------------------------
@@ -245,7 +301,7 @@
     var rows = entries.map(function (e, i) {
       return '<li><button class="toc-item" data-h="' + e.h + '">' +
                '<span class="toc-num">' + pad2(i + 1) + "</span>" +
-               '<span class="toc-label">' + e.label + "</span>" +
+               '<span class="toc-label">' + escapeHTML(e.label) + "</span>" +
                '<span class="toc-dots" aria-hidden="true"></span>' +
                '<span class="toc-folio">' + e.folio + "</span>" +
              "</button></li>";
@@ -256,11 +312,11 @@
         '<div class="toc-panel">' +
           '<button class="toc-close" aria-label="' + STR.closeAria + '">' + ICON.close + "</button>" +
           '<div class="toc-head"><div>' +
-            '<div class="toc-eyebrow">' + (CFG.tocEyebrow || STR.contents) + "</div>" +
-            '<h2 class="toc-title">' + (CFG.talkTitle || "Overview") + "</h2>" +
+            '<div class="toc-eyebrow">' + escapeHTML(CFG.tocEyebrow || STR.contents) + "</div>" +
+            '<h2 class="toc-title">' + escapeHTML(CFG.talkTitle || "Overview") + "</h2>" +
           "</div></div>" +
           '<ul class="toc-list">' + rows + "</ul>" +
-          '<div class="toc-foot"><span>' + (CFG.presenter || "") +
+          '<div class="toc-foot"><span>' + escapeHTML(CFG.presenter || "") +
             "</span><span><kbd>T</kbd> " + STR.contents.toLowerCase() + " &nbsp; <kbd>O</kbd> " + STR.overview + " &nbsp; <kbd>Esc</kbd> " + STR.close + "</span></div>" +
         "</div>" +
       "</div>"
@@ -469,7 +525,16 @@
       fit.className = "fit";
       while (kids.length) fit.appendChild(kids.shift());
       sec.insertBefore(fit, sec.firstChild);
-      fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
+      if (PRINT) {
+        // Transforms apply after print fragmentation: text outside the
+        // unscaled page can disappear even when its painted bounds fit.
+        // Chromium's layout zoom scales before pagination instead.
+        var printLeft = padL + (centered ? safeW * (1 - k) / 2 : 0);
+        var printTop = boxTop + (centered ? safeH * (1 - k) / 2 : 0);
+        fit.style.cssText = "position:absolute;top:" + (printTop / k) + "px;left:" + (printLeft / k) +
+          "px;width:" + safeW + "px;margin:0;display:flex;flex-direction:column;zoom:" + k.toFixed(4) + ";" +
+          (centered ? "height:" + safeH + "px;justify-content:center;" : "");
+      } else fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;right:" + padR +
         "px;margin:0;display:flex;flex-direction:column;" +
         (centered
           ? "bottom:" + padB + "px;justify-content:center;transform-origin:center center;"
@@ -496,7 +561,7 @@
   /* Re-fit a slide when late-loading content (images, embeds, iframes) changes
      its measured height after the first pass. */
   function refitAfterLoad(el) {
-    var sec = el && el.closest ? el.closest(".slides > section") : null;
+    var sec = leafSlideFor(el);
     if (!sec || !fitReady) return;
     if ((FIT_SEEN && FIT_SEEN.has(sec)) || sec.querySelector(":scope > .fit")) fitSlide(sec, true);
   }
@@ -603,14 +668,14 @@
      Loading / success / failure states are exposed accessibly (aria-busy,
      role=status/alert), and the slide is re-fitted once the embed resolves. */
   function loadFileEmbeds() {
-    document.querySelectorAll("[data-embed-src], [data-skill-src]").forEach(function (panel) {
+    return Promise.all(Array.from(document.querySelectorAll("[data-embed-src], [data-skill-src]")).map(function (panel) {
       var code = panel.querySelector("code");
       if (!code) return;
       var src = panel.getAttribute("data-embed-src") || panel.getAttribute("data-skill-src");
       panel.setAttribute("aria-busy", "true");
       panel.setAttribute("role", "status");
       code.textContent = STR.embedLoading;
-      fetch(src)
+      return fetch(src)
         .then(function (r) { if (!r.ok) throw r.status; return r.text(); })
         .then(function (text) {
           code.textContent = text;
@@ -633,7 +698,7 @@
           panel.setAttribute("role", "alert");
           refitAfterLoad(panel);
         });
-    });
+    }));
   }
 
   /* ---- image lightbox: view a figure/screenshot full-screen ----------------
@@ -672,15 +737,27 @@
     var lbCap = lightbox.querySelector("figcaption");
     var lbClose = lightbox.querySelector(".lightbox-close");
     var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
-    var curIdx = -1, lbLastFocus = null;
+    var curIdx = -1, lbLastFocus = null, request = 0;
+    lbCap.setAttribute("aria-live", "polite");
     function showAt(i) {
       curIdx = (i + list.length) % list.length;
       var img = list[curIdx];
       var alt = img.getAttribute("alt") || "";
-      lbImg.setAttribute("src", img.currentSrc || img.src);
       lbImg.setAttribute("alt", alt);
-      lbCap.textContent = alt;
-      lbCap.style.display = alt ? "" : "none";
+      lbImg.hidden = true;
+      lbCap.textContent = LANG === "fr" ? "Chargement de l’image…" : "Loading image…";
+      lbCap.style.display = "";
+      var current = ++request;
+      loadImage(img).then(function () {
+        if (current !== request) return;
+        if (!img.naturalWidth) {
+          lbCap.textContent = LANG === "fr" ? "Image indisponible. Essayez une autre image." : "Image unavailable. Try another image.";
+          return;
+        }
+        lbImg.src = imageSource(img);
+        lbImg.hidden = false;
+        lbCap.textContent = alt;
+      });
       if (!lightbox.classList.contains("open")) {
         lbLastFocus = document.activeElement;
         lightbox.classList.add("open");
@@ -693,6 +770,7 @@
       setDialogHidden(lightbox, true);
       lbImg.removeAttribute("src");
       curIdx = -1;
+      request++;
       // Return focus to the image that opened the viewer.
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
       lbLastFocus = null;
@@ -732,10 +810,9 @@
 
   /* ---- live iframes: lazy-load + offline fallback -------------------------
      Every .site-frame-view iframe is converted to reveal's data-src form so it
-     loads only when its slide becomes visible (and unloads after). If a frame
-     has not loaded within a grace period of its slide becoming active — no
-     network, or the site refuses framing — a fallback note with the original
-     link appears instead of a silent white box. -------------------------------- */
+     loads only when its slide becomes visible (and unloads after). A useful
+     fallback stays until the user opens the live surface or an owned app
+     sends its declared readiness message. Load events are not evidence. ------ */
   function lazifyFrames() {
     document.querySelectorAll(".reveal .slides .site-frame-view > iframe[src]").forEach(function (f) {
       if (!f.hasAttribute("data-src")) f.setAttribute("data-src", f.getAttribute("src"));
@@ -743,25 +820,32 @@
     });
   }
   function initFrameFallbacks() {
-    var frames = document.querySelectorAll(".reveal .slides .site-frame-view > iframe");
+    var frames = document.querySelectorAll(".reveal .slides iframe");
     if (!frames.length) return;
     var fallbackTimers = new WeakMap();
-    frames.forEach(function (f) {
-      f.addEventListener("load", function () {
-        f.setAttribute("data-frame-loaded", "");
-        clearTimeout(fallbackTimers.get(f));
-        fallbackTimers.delete(f);
-        hideFallback(f);
+    // A load event also fires for blocked/error documents. Only an explicit
+    // application handshake establishes readiness; the user may opt into an
+    // unverified live surface through the overlay's button.
+    window.addEventListener("message", function (event) {
+      frames.forEach(function (f) {
+        var type = f.getAttribute("data-ready-message");
+        var url = new URL(f.getAttribute("data-src") || f.src, location.href);
+        if (type && event.source === f.contentWindow && event.origin === url.origin &&
+            event.data && event.data.type === type && leafSlideFor(f) === Reveal.getCurrentSlide()) {
+          f.setAttribute("data-frame-ready", "");
+          clearTimeout(fallbackTimers.get(f));
+          hideFallback(f);
+        }
       });
     });
     function fallbackFor(f) {
       var view = f.parentElement;
-      var fb = view.querySelector(".frame-fallback");
+      var fb = view.querySelector(".frame-fallback, .viz-fallback, .amrc-fallback");
       if (!fb) {
         var openLink = f.closest(".site-frame") && f.closest(".site-frame").querySelector(".site-frame-open");
         var href = f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || f.getAttribute("data-src") || "";
         fb = elem('<div class="frame-fallback" role="status"><p></p></div>');
-        fb.querySelector("p").textContent = STR.frameUnavailable;
+        fb.querySelector("p").textContent = LANG === "fr" ? "Ce site utilise une connexion réseau." : "This website uses a network connection.";
         if (href) {
           var link = document.createElement("a");
           link.href = href;
@@ -770,35 +854,52 @@
           link.textContent = STR.frameOpen + " ↗";
           fb.appendChild(link);
         }
+        var show = document.createElement("button");
+        show.type = "button";
+        show.className = "frame-show";
+        show.textContent = LANG === "fr" ? "Afficher le site ici" : "Show the site here";
+        show.addEventListener("click", function () {
+          clearTimeout(fallbackTimers.get(f));
+          fb.hidden = true;
+          f.style.visibility = "";
+          if (f.getAttribute("data-src")) f.src = f.getAttribute("data-src");
+          f.focus();
+        });
+        fb.appendChild(show);
         fb.hidden = true;
         view.appendChild(fb);
       }
       return fb;
     }
     function hideFallback(f) {
-      var fb = f.parentElement.querySelector(".frame-fallback");
+      var fb = f.parentElement.querySelector(".frame-fallback, .viz-fallback, .amrc-fallback");
       if (fb) fb.hidden = true;
+      f.style.visibility = "";
     }
     function watchCurrent() {
       frames.forEach(function (f) {
         clearTimeout(fallbackTimers.get(f));
         fallbackTimers.delete(f);
+        f.removeAttribute("data-frame-ready");
       });
       var cur = Reveal.getCurrentSlide();
       if (!cur) return;
-      cur.querySelectorAll(".site-frame-view > iframe").forEach(function (f) {
-        if (f.hasAttribute("data-frame-loaded")) return;
+      cur.querySelectorAll("iframe").forEach(function (f) {
+        var fallback = fallbackFor(f);
+        fallback.hidden = false;
+        if (fallback.matches("img")) f.style.visibility = "hidden";
         var timer = setTimeout(function () {
           fallbackTimers.delete(f);
-          if (!f.hasAttribute("data-frame-loaded") && Reveal.getCurrentSlide() === cur) {
-            fallbackFor(f).hidden = false;
+          if (!f.hasAttribute("data-frame-ready") && Reveal.getCurrentSlide() === cur) {
+            var text = fallback.querySelector("p");
+            if (text && fallback.classList.contains("frame-fallback")) text.textContent = STR.frameUnavailable;
           }
         }, 8000);
         fallbackTimers.set(f, timer);
       });
     }
     Reveal.on("slidechanged", watchCurrent);
-    watchCurrent();
+    if (!Reveal.isPrintView()) watchCurrent();
   }
 
   /* ---- syntax highlighting (plugin-independent) --------------------------- */
@@ -861,7 +962,15 @@
     decorateChrome();
     lazifyFrames();   // live iframes load only when their slide becomes visible
 
-    Reveal.initialize({
+    leafSlides().forEach(function (slide, i) {
+      if (slide.id) return;
+      var label = slide.dataset.toc || (slide.querySelector("h1,h2") || {}).textContent || "slide";
+      var id = label.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "slide";
+      var baseId = id, suffix = 2;
+      while (document.getElementById(id)) id = baseId + "-" + suffix++;
+      slide.id = id;
+    });
+    window.DeckRuntime.ready = Reveal.initialize({
       width: 1280, height: 720, margin: 0,
       minScale: 0.2, maxScale: 2.0,
       // Never switch to reveal 6's scroll view on narrow screens: the theme is
@@ -872,6 +981,9 @@
       controls: false, progress: true, slideNumber: false,
       transition: CFG.transition || "fade",
       transitionSpeed: "default",
+      autoAnimate: !motionPreference.matches,
+      defaultTiming: CFG.defaultTiming || null,
+      totalTime: CFG.totalTime || null,
       backgroundTransition: "fade",
       overview: true, touch: true, keyboard: true,
       // PDF export (?print-pdf): one printed page per slide. Reveal's default
@@ -885,7 +997,7 @@
       buildFooter(reveal);
       buildRunhead(reveal);
       buildTOC(reveal);
-      loadFileEmbeds();
+      fileEmbedsReady = loadFileEmbeds();
       buildLightbox();
       initFrameFallbacks();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)
@@ -909,6 +1021,7 @@
         });
       });
       if (CHECK_MODE) enableCheckMode();
+      motionPreference.addEventListener("change", function () { Reveal.configure({ autoAnimate: !motionPreference.matches }); });
 
       // Defensive relayout: recompute the scale once the window and webfonts
       // have settled, in case the deck initialised before it had real size.
@@ -922,8 +1035,7 @@
       if (PRINT) {
         var fitAllPages = function () {
           if (!fitReady || !document.querySelector(".reveal .pdf-page")) return;
-          document.querySelectorAll(".reveal .pdf-page > section").forEach(function (s) { fitSlide(s, true); });
-          buildPrintImprints();
+          settleSlides(leafSlides());
         };
         Reveal.on("pdf-ready", fitAllPages);
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllPages);

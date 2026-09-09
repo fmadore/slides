@@ -5,6 +5,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 spec = importlib.util.spec_from_file_location("strip_notes", os.path.join(HERE, "strip-notes.py"))
@@ -18,6 +19,19 @@ def strip(html):
 
 
 class StripHtmlNotes(unittest.TestCase):
+    def test_unquoted_nested_and_quoted_greater_than(self):
+        out, counts = strip('<p title="keep > this">before</p><aside title=cue class=notes><aside>secret</aside>also secret</aside><p>after</p>')
+        self.assertEqual(out, '<p title="keep > this">before</p><p>after</p>')
+        self.assertEqual(counts['aside'], 1)
+
+    def test_note_syntax_inside_other_attributes_or_scripts_is_preserved(self):
+        html = '''<p title='data-notes="example"'>visible</p><script>const example = '<aside class=notes>example</aside>';</script>'''
+        self.assertEqual(strip(html)[0], html)
+
+    def test_unclosed_note_fails_instead_of_truncating(self):
+        with self.assertRaises(ValueError):
+            strip('<aside class=notes>unfinished')
+
     def test_plain_double_quotes(self):
         out, c = strip('<p>x</p><aside class="notes">secret</aside><p>y</p>')
         self.assertNotIn("secret", out)
@@ -95,6 +109,34 @@ class StripHtmlNotes(unittest.TestCase):
 
 
 class BuildTree(unittest.TestCase):
+    def test_rejects_source_children_and_unowned_outputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            for path in ('talks', 'shared', 'talks/2026-01-01-demo', 'shared/new-output'):
+                with self.assertRaises(SystemExit):
+                    strip_notes.build(src, os.path.join(src, path))
+            with self.assertRaises(SystemExit):
+                strip_notes.build(src, os.path.join(src, 'tools'))
+            self.assertTrue(os.path.isfile(os.path.join(src, 'talks/2026-01-01-demo/index.html')))
+            other = os.path.join(tmp, 'other')
+            os.mkdir(other)
+            with self.assertRaises(SystemExit):
+                strip_notes.build(src, other)
+            self.assertTrue(os.path.isdir(other))
+
+    def test_rebuild_and_failure_preserve_previous_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            dest = os.path.join(tmp, 'site')
+            strip_notes.build(src, dest)
+            strip_notes.build(src, dest)
+            with open(os.path.join(src, 'index.html'), 'w') as fh:
+                fh.write('<aside class=notes>broken')
+            with self.assertRaises(ValueError):
+                strip_notes.build(src, dest)
+            with open(os.path.join(dest, 'index.html')) as fh:
+                self.assertEqual(fh.read(), '<html>landing</html>')
+
     def make_repo(self, tmp):
         src = os.path.join(tmp, "repo")
         for d in ("shared/src/theme", "talks/2026-01-01-demo/assets", "talks/_template", "tools", ".github", ".impeccable"):
@@ -173,6 +215,26 @@ class BuildTree(unittest.TestCase):
             c1 = strip_notes.build(src, os.path.join(tmp, "a"))
             c2 = strip_notes.build(src, os.path.join(tmp, "b"))
             self.assertEqual(c1, c2)
+
+    def test_failed_rollback_preserves_backup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            dest = os.path.join(tmp, "site")
+            strip_notes.build(src, dest)
+            replace = os.replace
+
+            def fail_publication_and_restore(source, target):
+                if target == dest:
+                    raise OSError("simulated destination lock")
+                return replace(source, target)
+
+            with patch.object(strip_notes.os, "replace", side_effect=fail_publication_and_restore):
+                with self.assertRaises(OSError):
+                    strip_notes.build(src, dest)
+            backups = [os.path.join(tmp, name) for name in os.listdir(tmp)
+                       if name.startswith(".slides-backup-")]
+            self.assertEqual(len(backups), 1)
+            self.assertTrue(os.path.isfile(os.path.join(backups[0], "index.html")))
 
     def test_refuses_source_destination(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -41,7 +41,39 @@
      ?audit) disables auto-fitting so authored overflow is visible raw. */
   var CHECK_MODE = /[?&](check|audit)\b/.test(location.search);
   var NO_FIT = /[?&](no-fit|audit)\b/.test(location.search);
-  var PRINT = /[?&]print-pdf\b/.test(location.search);
+  var PARAMS = new URLSearchParams(location.search);
+  var PRINT = PARAMS.has("print-pdf") || PARAMS.get("view") === "print";
+  var motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var fileEmbedsReady = Promise.resolve();
+
+  function leafSlides() {
+    return Array.from(document.querySelectorAll(".reveal .slides section"))
+      .filter(function (s) { return !s.querySelector(":scope > section") && !s.classList.contains("stack"); });
+  }
+  function leafSlideFor(el) { return el && el.closest ? el.closest("section:not(.stack)") : null; }
+  function imageSource(img) { return img.currentSrc || img.getAttribute("src") || img.getAttribute("data-src") || ""; }
+  function loadImage(img) {
+    if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+    if (!img.getAttribute("src") && img.dataset.src) img.src = img.dataset.src;
+    if (!img.getAttribute("src") && !img.getAttribute("srcset")) return Promise.resolve();
+    return new Promise(function (resolve) {
+      var timer = setTimeout(done, 10000);
+      function done() { clearTimeout(timer); img.removeEventListener("load", done); img.removeEventListener("error", done); resolve(); }
+      img.addEventListener("load", done); img.addEventListener("error", done);
+      if (img.complete) done();
+    }).then(function () { return img.complete && img.naturalWidth && img.decode ? img.decode().catch(function () {}) : null; });
+  }
+  async function settleSlides(slides) {
+    await fileEmbedsReady;
+    if (document.fonts) await document.fonts.ready;
+    await Promise.all(slides.flatMap(function (s) { return Array.from(s.querySelectorAll("img")).map(loadImage); }));
+    Reveal.layout();
+    fitReady = true;
+    slides.forEach(function (s) { fitSlide(s, true); });
+    if (Reveal.isPrintView()) buildPrintImprints();
+    await new Promise(function (resolve) { requestAnimationFrame(function () { requestAnimationFrame(resolve); }); });
+  }
+  window.DeckRuntime = { leafSlides: leafSlides, settle: function () { return settleSlides(Reveal.isPrintView() ? leafSlides() : [Reveal.getCurrentSlide()].filter(Boolean)); } };
 
   // Folder this script lives in (e.g. .../shared/) so engine assets resolve no
   // matter how deep the talk page sits. Captured while currentScript is valid.
@@ -88,7 +120,8 @@
   function contactHTML() {
     var L = CFG.links, out = [];
     function row(href, icon, label) {
-      return '<a href="' + href + '" target="_blank" rel="noopener"><span class="ico">' + icon + "</span><span>" + label + "</span></a>";
+      if (!/^(https?:|mailto:)/i.test(href)) return "";
+      return '<a href="' + escapeHTML(href) + '" target="_blank" rel="noopener"><span class="ico">' + icon + "</span><span>" + escapeHTML(label) + "</span></a>";
     }
     if (L.github)  out.push(row(L.github, ICON.github, tidyUrl(L.github).replace(/^github\.com\//, "")));
     if (L.website) out.push(row(L.website, ICON.globe, tidyUrl(L.website)));

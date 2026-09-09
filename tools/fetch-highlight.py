@@ -27,7 +27,7 @@ import subprocess
 import urllib.request
 
 # Pin a version so builds are reproducible. Bump deliberately.
-VERSION = "11.11.1"
+VERSION = "11.12.0"
 # Both serve the identical highlightjs/cdn-release tag; the first that
 # responds wins (some networks block one CDN or the other).
 MIRRORS = [
@@ -100,7 +100,7 @@ chunks.append("window.hljs=hljs;")
 chunks.append("})();")
 
 out = "\n".join(chunks) + "\n"
-with open(OUT, "w", encoding="utf-8") as f:
+with open(OUT, "w", encoding="utf-8", newline="\n") as f:
     f.write(out)
 
 # Verify the generated JavaScript actually parses before trusting it.

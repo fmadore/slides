@@ -37,6 +37,9 @@
        chart sized to the last screen pixel loses its closing line to the paper
        edge. These leave a line of slack. */
     .reveal .chart-band .shot { max-height: 16rem; width: auto; max-width: 100%; margin-inline: auto; }
+    .reveal .evidence-summary .share-bars { gap: var(--space-xs); }
+    .reveal .evidence-summary .share-head > span,
+    .reveal .evidence-summary .share-head > b { font-size: var(--fs-body); }
     .reveal .chart-mid .shot { max-height: 18rem; width: auto; max-width: 100%; margin-inline: auto; }
     .reveal .chart-hub .shot { max-height: 26rem; width: auto; max-width: 100%; margin-inline: auto; }
     /* The caption names the tool that drew the chart, so it sits under the whole
@@ -291,10 +294,26 @@
     <section data-toc="Les vocabulaires">
       <p class="kicker">Sujets, lieux, personnes</p>
       <h2 class="slide-title">Le modèle voit l’index, pas seulement les notices</h2>
-      <div class="chart-band">
-        <img class="shot" data-src="assets/chart-ciao-lieux.png" alt="Graphique du serveur CIAO « Places Named » : une carte choroplèthe de l’Afrique de l’Ouest, un classement des pays cités (Burkina Faso 2 954, Côte d’Ivoire 2 849, Bénin 1 859, Arabie saoudite 1 572) et un classement des lieux cités hors cadre, mené par La Mecque avec 1 701 mentions" width="1800" height="470">
-        <p class="chart-cap">get_place_distribution · dessiné par le serveur dans la conversation</p>
+      <div class="cols evidence-summary">
+        <div class="col">
+          <h3 class="col-label">Les quatre premiers pays</h3>
+          <ul class="share-bars green">
+            <li><div class="share-head"><span>Burkina Faso</span><b>2 954</b></div><div class="share-track" style="--p:100%"></div></li>
+            <li><div class="share-head"><span>Côte d’Ivoire</span><b>2 849</b></div><div class="share-track" style="--p:96.4%"></div></li>
+            <li><div class="share-head"><span>Bénin</span><b>1 859</b></div><div class="share-track" style="--p:62.9%"></div></li>
+            <li><div class="share-head"><span>Arabie saoudite</span><b>1 572</b></div><div class="share-track" style="--p:53.2%"></div></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3 class="col-label">En tête hors du cadre de la carte</h3>
+          <ul class="share-bars">
+            <li><div class="share-head"><span>La Mecque</span><b>1 701</b></div><div class="share-track" style="--p:57.6%"></div></li>
+            <li><div class="share-head"><span>Médine</span><b>491</b></div><div class="share-track" style="--p:16.6%"></div></li>
+            <li><div class="share-head"><span>Djeddah</span><b>413</b></div><div class="share-track" style="--p:14%"></div></li>
+          </ul>
+        </div>
       </div>
+      <p class="chart-cap">get_place_distribution · extrait, même échelle · <a href="assets/chart-ciao-lieux.png" data-preview-image="assets/chart-ciao-lieux.png">graphique original du serveur</a></p>
       <div class="callout warm">
         <span class="callout-label">Ce que la carte dit de l’archive</span>
         Le quatrième pays le plus cité est <strong>l’Arabie saoudite</strong>, et le lieu le plus cité hors d’Afrique de l’Ouest — La Mecque, 1 701 mentions — devance toutes les villes de la collection sauf Ouagadougou.
@@ -321,10 +340,13 @@
     <section data-toc="Les agrégats">
       <p class="kicker navy">Décrire un ensemble, pas le parcourir</p>
       <h2 class="slide-title">Une réponse que la pagination ne donne jamais</h2>
-      <div class="chart-band">
-        <img class="shot" data-src="assets/chart-amira-apercu.png" alt="Graphique du serveur AMIRA « aperçu de la collection » : huit compteurs (3 975 items de recherche, 93 projets, 1 643 personnes, 542 institutions, 277 publications, 140 vidéos, 43 podcasts, 87 revues) puis quatre classements en barres — items par université, par section de recherche, par type de ressource et par langue" width="1800" height="415">
-        <p class="chart-cap">get_collection_overview · le premier appel de toute recherche</p>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">Items de recherche</span><span class="stat-num">3 975</span></div>
+        <div class="stat"><span class="stat-label">Projets</span><span class="stat-num">93</span></div>
+        <div class="stat"><span class="stat-label">Personnes</span><span class="stat-num">1 643</span></div>
+        <div class="stat"><span class="stat-label">Institutions</span><span class="stat-num">542</span></div>
       </div>
+      <p class="chart-cap">get_collection_overview · extrait du 5 juillet 2026 · <a href="assets/chart-amira-apercu.png" data-preview-image="assets/chart-amira-apercu.png">aperçu complet du serveur</a></p>
       <div class="callout">
         <span class="callout-label">La note que le graphique porte lui-même</span>
         « Ces comptes décrivent la collection constituée, non la recherche africaine dans son ensemble ; la couverture est inégale et penche vers quelques grands fonds. »
