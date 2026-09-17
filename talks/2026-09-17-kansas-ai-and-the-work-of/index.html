@@ -30,8 +30,11 @@
        that are genuinely specific to this one talk. -->
   <style>
     .reveal .evidence-slide .slide-title { font-size: var(--fs-h3); max-width: none; margin-bottom: var(--space-sm); }
-    .reveal .evidence-slide .site-frame { height: 25rem; flex: none; margin: 0; }
+    .reveal .evidence-slide .site-frame { height: 28rem; flex: none; margin: 0; }
     .reveal .evidence-slide .site-frame-view > img { object-fit: contain; }
+    .reveal .evidence-slide .frame-fallback { padding: 0; }
+    .reveal .evidence-slide .frame-fallback img { width: 100%; height: 100%; object-fit: contain; margin: 0; }
+    .reveal .evidence-slide .frame-show { position: absolute; bottom: var(--space-md); right: var(--space-md); background: var(--paper); }
     .reveal .evidence-caption { display: flex; gap: var(--space-xl); align-items: baseline; margin-top: var(--space-sm); }
     .reveal .evidence-caption p { font-size: var(--fs-small); margin: 0; }
     .reveal .evidence-caption .source { margin-left: auto; white-space: nowrap; font-size: var(--fs-caption); }
@@ -46,6 +49,9 @@
     .reveal .abundance-slide .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top; margin: 0; }
     .reveal .abundance-slide .frame-show { position: absolute; bottom: var(--space-md); right: var(--space-md); background: var(--paper); }
     .reveal .references p { font-size: var(--fs-small); margin-bottom: var(--space-md); }
+    .reveal .ewe-slide .scroll-panel { max-height: 25rem; }
+    .reveal .ewe-slide .shot.tall { max-height: 26.5rem; }
+    .reveal .ewe-slide .scroll-panel pre code { font-size: var(--fs-label); }
   </style>
 </head>
 <body>
@@ -93,9 +99,10 @@
       <aside class="notes">
         <p class="note-cue">0:00–0:50 · 50 seconds</p>
         <p>Thank you, James, for the kind invitation to join this panel.</p>
-        <p>My own experience with AI began with a practical problem: I had assembled a collection of sources that had grown beyond what I could read and process on my own.</p>
-        <p>I work in two connected roles. As a historian, I study Islam and Muslim public life in francophone West Africa. As a data curator, I help other researchers find and use these sources.</p>
-        <p>Working on the Islam West Africa Collection has made those roles increasingly difficult to separate. Decisions about transcription, names and interfaces shape the histories we can write. I want to discuss what AI changes in that work, and who has the resources to benefit.</p>
+        <p>In about ten minutes I’ll give you the broad picture: how AI arrived in my work, and what I’m experimenting with. We can go into detail in the discussion.</p>
+        <p>It started with a practical problem. The Islam West Africa Collection, or IWAC for short, is an online database I built, and it had grown well beyond what I could read on my own.</p>
+        <p>I work in two connected roles: historian of Islam and Muslim public life in francophone West Africa, and data curator helping other researchers use those sources.</p>
+        <p>Building it has made those two roles hard to separate. Decisions about transcription, names and interfaces shape the histories we can write. So: what does AI change in that work, and who has the resources to benefit?</p>
       </aside>
     </section>
 
@@ -120,95 +127,157 @@
       <p class="small">A familiar problem for historians: “scanning parties”, thousands of photographs, little time to read them.</p>
       <aside class="notes">
         <p class="note-cue">0:50–2:50 · 120 seconds</p>
-        <p>The IWAC grew out of fieldwork that began in 2011. I collected press clippings, Islamic publications and private holdings. Requests from colleagues helped turn that material into a public resource across six West African countries.</p>
-        <p>My case may be extreme. I’m a digital hoarder: I scan everything I can and scrape websites. My Zotero holdings add up to 38,142 records. About twenty thousand IWAC items came from Zotero, so the public collection already draws on those holdings, with much more potentially available to integrate.</p>
-        <p>[Zotero count for reference: 6,678 + 15,000 + 8,889 + 1,075 + 6,500 = 38,142. These holdings overlap with IWAC; do not add the two totals.]</p>
-        <p>But I suspect the experience is increasingly common among historians. Think of the “scanning parties” in archives: we come home with thousands of disorganised photographs, intending to read them later. The time to consult them never seems to come. We can accumulate sources much faster than we can examine them.</p>
-        <p>Here, that includes 34,468 minutes of YouTube videos, nearly 574 hours just to watch once. How do we process that? Transcription, time-coded indexing and checking passages against the recording could help us find material to study. The voice, images and context still need our attention.</p>
-        <p>This abundance has a history of labour by archivists, librarians, publishers, collectors and assistants. It also has gaps: the predominantly French corpus reflects where I worked, what survived and what could be shared. AI enters that already shaped collection.</p>
+        <p>The IWAC grew out of fieldwork. Since 2011 I have worked in Benin, Togo, Côte d’Ivoire and Burkina Faso, and I spent countless hours scanning press clippings and Islamic publications, and saving material published online — including nearly 574 hours of YouTube video, just to watch once. That became a large personal digital collection. I wanted others to be able to use it, so I built a public database now covering six West African countries. Making it public also meant clearing rights, so I reached out to editors for permission to share their material.</p>
+        <p>I’m a digital hoarder: I scan everything I can and scrape websites. My Zotero library alone holds 38,142 records, and about twenty thousand IWAC items came from it.</p>
+        <p>The work was artisanal. I’m not an archivist, and I have no team: I catalogued everything myself — the metadata, the people named, the places, the organisations. Early on that was manageable. As the collection grew, I could no longer keep up on my own, and that is where AI became interesting.</p>
+        <p>My case may be extreme, but I suspect the experience is increasingly common among historians. Think of the “scanning parties” in archives: we come home with thousands of disorganised photographs, intending to read them later. The time to consult them never seems to come. We can accumulate sources much faster than we can examine them.</p>
+        <p>And the pile itself has a shape. Mine is predominantly French, reflecting where I worked and what could be shared. By the time AI arrives, the collection already carries those choices.</p>
       </aside>
     </section>
 
-    <section data-toc="Curation is interpretation" data-timing="70">
-      <h2 class="slide-title">Curation already interprets</h2>
+    <section data-toc="Curation is interpretation" data-timing="85">
+      <h2 class="slide-title">Newly readable, still interpreted</h2>
+      <div class="col-head">What multimodal LLMs changed in two or three years</div>
+      <ul>
+        <li>Multimodal LLMs extract text from printed and handwritten pages</li>
+        <li>Transcription quality beyond traditional OCR and HTR</li>
+        <li>Small LLMs identify names, places and organisations</li>
+      </ul>
       <div class="flow">
         <div class="flow-step"><span class="step-n">Transcription</span><div class="step-h">A readable text</div><p>Which spellings and uncertainties survive?</p></div>
         <span class="flow-arrow" aria-hidden="true">→</span>
         <div class="flow-step"><span class="step-n">Indexing</span><div class="step-h">A connected record</div><p>Do two names identify the same person?</p></div>
         <span class="flow-arrow" aria-hidden="true">→</span>
-        <div class="flow-step"><span class="step-n">Exploration</span><div class="step-h">A visible pattern</div><p>Which documents and categories count?</p></div>
+        <div class="flow-step"><span class="step-n">Cataloguing</span><div class="step-h">A findable collection</div><p>Which names and places get recorded?</p></div>
       </div>
-      <div class="callout"><span class="callout-label">Historical source criticism</span><p>Keep each transformation traceable to the document.</p></div>
+      <div class="callout"><span class="callout-label">Historical source criticism</span><p>A wrong transcription still reads well. Keep each transformation traceable to the document.</p></div>
       <aside class="notes">
-        <p class="note-cue">2:50–4:00 · 70 seconds</p>
-        <p>AI helped me address a practical backlog: making scanned documents searchable and connecting references to the same people, places and organisations.</p>
-        <p>But these operations involve historical judgement. A transcription may quietly regularise an unusual spelling. A name match may join records that concern different people. An index may leave out an announcement that another historian would consider significant.</p>
-        <p>The difficulty is that the output can look convincing. A fluent sentence gives us fewer visible warning signs than garbled text. A clean record can conceal an uncertain identification.</p>
-        <p>So I keep the images available alongside the transcriptions, distinguish generated additions and return to the sources. The article describes practical experiments rather than a systematic accuracy benchmark.</p>
-        <p>My two roles meet here: the choices I make as a curator become part of the evidence that I, and others, encounter as historians.</p>
+        <p class="note-cue">2:50–4:15 · 85 seconds</p>
+        <p>In the last two or three years, multimodal AI models have become very good at reading documents — printed text, and even handwriting, at a level traditional OCR and HTR never reached. Small models can now pull out named entities, people, places and organisations, well enough to catalogue a collection.</p>
+        <p>For a historian moving towards computational methods, that is the first step: sources have to be machine-readable. Corpora that were unusable for lack of OCR are now workable.</p>
+        <p>Here is the catch. When traditional OCR fails, you see it: the page comes out as garbage. When a language model fails, the output stays plausible. It may quietly correct a spelling that was wrong in the original. If a word is illegible, it may infer one, or invent one. The transcription reads well, so you conclude it is right.</p>
+        <p>The same applies further down the chain: a name match can join two different people; an index can drop what another historian would have kept.</p>
       </aside>
     </section>
 
-    <section class="evidence-slide" data-toc="Reading the map" data-timing="80">
+    <section class="ewe-slide" data-toc="Reading printed Ewé" data-timing="25">
+      <h2 class="slide-title">Reading printed Ewé</h2>
+      <div class="cols">
+        <div class="col">
+          <img class="shot tall" data-src="../../shared/assets/ocr-ewe-togopresse.jpg" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics" width="1149" height="973">
+          <p class="small muted">Togo Presse, 31 July 1976.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">Extracted text · Ewé</div>
+          <div class="scroll-panel" data-skill-src="../../shared/assets/ocr-ewe-togopresse.md">
+            <pre><code class="language-markdown">Loading the extraction…</code></pre>
+          </div>
+          <p class="scroll-hint">Printed Ewé, diacritics and all — scroll for the full extraction.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        <p class="note-cue">4:15–4:40 · 25 seconds</p>
+        <p>One example. Togo Presse, 1976, printed in Ewé, diacritics and all. The model read it in a single pass. But for a language with almost no digital tooling, that is a real opening.</p>
+      </aside>
+    </section>
+
+    <section data-toc="Coding in plain language" data-timing="50">
+      <h2 class="slide-title">Building the tools<br>used to need a team</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Until recently</div>
+          <p class="lead">A digital humanities centre, a developer, a budget.</p>
+          <p class="small">Concentrated in well-resourced universities, and rarely on the terms of the historian who knew the sources.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Now</div>
+          <p class="lead">A description in plain language, revised in conversation.</p>
+          <p class="small">Agentic tools edit files, run commands and correct their own errors across several steps.</p>
+        </div>
+      </div>
+      <div class="callout"><span class="callout-label">Andrej Karpathy · X · 24 January 2023</span><p>“The hottest new programming language is English.”</p></div>
+      <aside class="notes">
+        <p class="note-cue">4:40–5:30 · 50 seconds</p>
+        <p>One of the areas of my work as a historian that has been revolutionised by AI is coding. I can build maps, networks and entire websites myself.</p>
+        <p>Until recently, a historian who wanted an interactive map or a network needed a digital humanities centre: a developer, a budget, a place in the queue. Plenty of us never had one.</p>
+        <p>Now you can program by giving instructions in plain language. French, English, it does not matter. They call it vibe coding, or agentic AI coding. The AI writes the code. I do not write a line of it.</p>
+      </aside>
+    </section>
+
+    <section class="evidence-slide" data-toc="Reading the map" data-timing="60">
       <h2 class="slide-title">Where does the press direct our attention?</h2>
       <figure class="site-frame">
-        <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Places · All entities · Place bubbles</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration">Explore live</a></figcaption>
-        <div class="site-frame-view"><img src="assets/spatial-exploration.png" alt="IWAC place-mention map, centred on Africa: many overlapping circles in West Africa and further mentions around the Arabian Peninsula. Larger circles indicate more mentions, not population." width="998" height="560"></div>
+        <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Places · All entities · Place bubbles</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration">Open full screen</a></figcaption>
+        <div class="site-frame-view">
+          <iframe data-ready-message="iwac-embed-height" src="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration" title="Islam West Africa Collection — live place-mention map" loading="lazy"></iframe>
+          <div class="frame-fallback" hidden>
+            <img src="assets/spatial-exploration.png" alt="IWAC place-mention map, centred on Africa: many overlapping circles in West Africa and further mentions around the Arabian Peninsula. Larger circles indicate more mentions, not population." width="998" height="560">
+            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live map</button>
+          </div>
+        </div>
       </figure>
-      <div class="evidence-caption"><p>Place mentions open questions about pilgrimage, education and diplomacy.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/spatial-exploration">IWAC · 11 Sept 2026</a></p></div>
+      <div class="evidence-caption"><p>Explore the places most frequently mentioned in the IWAC—and the documents that mention them.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/spatial-exploration">IWAC · 11 Sept 2026</a></p></div>
       <aside class="notes">
-        <p class="note-cue">4:00–5:20 · 80 seconds</p>
-        <p>This map is one way into the collection. The circles locate places mentioned in its records, and their size reflects how often those places occur. We can see the concentration in West Africa and references extending towards the Arabian Peninsula.</p>
-        <p>[Point to West Africa, then the Arabian Peninsula. Stay on the saved image.]</p>
-        <p>For a historian of Islam, that opens questions about pilgrimage, educational trajectories and diplomatic relationships. We can select an actor and ask which places appear in the documents associated with them, then read those documents.</p>
-        <p>The map also requires restraint. It counts documentary mentions. It cannot tell us how many Muslims lived in a place, or establish that a person travelled there. Large circles may reflect publication coverage, indexing or collecting priorities.</p>
-        <p>Its value is to help formulate a question and locate evidence. Explaining the geography still requires knowledge of the newspapers, their audiences and the circumstances of publication.</p>
+        <p class="note-cue">5:30–6:30 · 60 seconds</p>
+        <p>Using AI, I extracted place names from thousands of documents in the collection. This map shows which places are mentioned most often: the larger the circle, the more mentions.</p>
+        <p>We can select a place to find the documents that mention it. Or we can search for a particular person—say, Imam Fofana—and see which places appear in articles about him.</p>
+        <p>So we can move from a geographical overview straight to the relevant sources.</p>
       </aside>
     </section>
 
-    <section class="evidence-slide" data-toc="Reading the network" data-timing="80">
+    <section class="evidence-slide" data-toc="Reading the network" data-timing="70">
       <h2 class="slide-title">What does a connection mean?</h2>
       <figure class="site-frame">
-        <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Entity network · All types · All links</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks">Explore live</a></figcaption>
-        <div class="site-frame-view"><img src="assets/entity-networks.png" alt="IWAC network of co-mentioned people, organisations, places, events and subjects. Coloured nodes form clusters around indexed entities; connections represent co-occurrence in collection items." width="1018" height="520"></div>
+        <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Entity network · All types · All links</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks">Open full screen</a></figcaption>
+        <div class="site-frame-view">
+          <iframe data-ready-message="iwac-embed-height" src="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks" title="Islam West Africa Collection — live entity network" loading="lazy"></iframe>
+          <div class="frame-fallback" hidden>
+            <img src="assets/entity-networks.png" alt="IWAC network of co-mentioned people, organisations, places, events and subjects. Coloured nodes form clusters around indexed entities; connections represent co-occurrence in collection items." width="1018" height="520">
+            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live network</button>
+          </div>
+        </div>
       </figure>
       <div class="evidence-caption"><p>A co-mention is a starting point for investigating a relationship.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/entity-networks">IWAC · 11 Sept 2026</a></p></div>
       <aside class="notes">
-        <p class="note-cue">5:20–6:40 · 80 seconds</p>
-        <p>A network offers a different way to navigate. Here, nodes represent indexed people, organisations, places, events and subjects. Connections record their appearance in the same items.</p>
-        <p>[Point to a cluster. The audience does not need to read every label.]</p>
-        <p>That can help us locate sources about Muslim associations and the political actors around them, or follow an organisation across different publications. We gain an entry point that a search for one exact spelling might miss.</p>
-        <p>But a co-mention leaves the nature of the connection open. An article might report cooperation, conflict, a quotation or a passing comparison. Establishing an alliance, a teaching relationship or a shared institution takes additional evidence.</p>
-        <p>The network also inherits earlier curatorial decisions. If two people have been merged under one name, their apparent connections merge too. I use the visualisation to move between a broader view and particular documents, with the historical meaning of a link still to be established.</p>
+        <p class="note-cue">6:30–7:40 · 70 seconds</p>
+        <p>A network offers a different way to navigate. Here, this network shows which people, organisations and places appear together in the same documents. We can explore those connections and go straight to the sources behind them.</p>
+        <p>[Point to a cluster]</p>
+        <p>That can help us locate sources about Muslim associations and the political actors around them, or follow an organisation across different publications.</p>
+        <p>The map and this network are just two of the interactive dashboards I’ve built for the Islam West Africa Collection. There are many more. And I didn’t write a single line of code for either of these. The AI wrote the code. I explained what I wanted, then refined it through conversation.</p>
+        <p>That’s what I mean by democratisation: being able to build tools around my own research questions, without having to write the code myself.</p>
       </aside>
     </section>
 
-    <section data-toc="Returning to the article" data-timing="85">
-      <h2 class="slide-title">What a label leaves out</h2>
-      <p class="source">La Voie · Abobo, Côte d’Ivoire · 11 June 1994</p>
-      <div class="cols">
-        <div class="col"><div class="col-head">Model classification</div><p class="lead">A favourable portrayal of Muslims.</p><p class="small">Sympathy for worshippers during police interventions at mosques.</p></div>
-        <div class="col"><div class="col-head alt">Historical reading</div><p class="lead case-question">How does that sympathy support a critique of the government?</p><p class="small">Attribution, political purpose and the newspaper’s position.</p></div>
-      </div>
-      <div class="callout"><span class="callout-label">An example from the manuscript</span><p>Classification directs attention; close reading explains the intervention.</p></div>
+    <section class="evidence-slide" data-toc="What to read next" data-timing="85">
+      <h2 class="slide-title">What should I read next?</h2>
+      <figure class="site-frame">
+        <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Sentiment analysis · Polarity · Centrality · Subjectivity</span><a class="site-frame-open" href="https://iwac.frederickmadore.com/sentiment-analysis/?urlVersion=2&amp;view=charts&amp;lang=fr&amp;dataset=luna" data-preview-link="https://iwac.frederickmadore.com/sentiment-analysis/?urlVersion=2&amp;view=charts&amp;lang=fr&amp;dataset=luna">Open full screen</a></figcaption>
+        <div class="site-frame-view">
+          <iframe data-frame-trusted src="https://iwac.frederickmadore.com/sentiment-analysis/?urlVersion=2&amp;view=charts&amp;lang=fr&amp;dataset=luna" title="IWAC sentiment analysis dashboard — polarity, centrality and subjectivity across the newspaper corpus" loading="lazy"></iframe>
+          <div class="frame-fallback" hidden>
+            <img src="assets/sentiment-analysis.png" alt="IWAC sentiment analysis dashboard: country and newspaper filters beside polarity and subjectivity distributions for the GPT-5.6 Luna annotation of 12,349 articles." width="1126" height="411">
+            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live dashboard</button>
+          </div>
+        </div>
+      </figure>
+      <div class="evidence-caption"><p>AI-assisted sentiment analysis · 12,349 newspaper articles</p><p class="source"><a href="https://iwac.frederickmadore.com/sentiment-analysis/">iwac.frederickmadore.com</a></p></div>
       <aside class="notes">
-        <p class="note-cue">6:40–8:05 · 85 seconds</p>
-        <p>One example from the article makes this movement concrete. I experimented with AI classifications of portrayals of Islam and Muslims in more than twelve thousand newspaper articles. The annotations are provisional ways of organising material for reading.</p>
-        <p>In coverage of police interventions at mosques in Abobo, published in La Voie in June 1994, most models assigned a favourable portrayal of Muslims. Another assigned a negative label even though its explanation described Muslims as innocent victims defended by the newspaper.</p>
-        <p>That disagreement helped bring the article into view. Yet resolving the label only gets us part of the way. Sympathy for worshippers also contributed to a denunciation of the police and the government.</p>
-        <p>As a historian, I want to understand how the newspaper uses that solidarity in a political argument. A positive score compresses that distinction. This example shows how an annotation can lead to a richer question. It does not establish the accuracy of classifications across the corpus or the prevalence of a portrayal in the national press.</p>
+        <p class="note-cue">7:40–9:05 · 85 seconds</p>
+        <p>So far, I’ve shown how I use AI to transcribe sources, extract information and build tools. I’ve also experimented with taking it a step further: a first pass at analysis.</p>
+        <p>I asked five AI models to analyse over twelve thousand newspaper articles along three dimensions: polarity—whether Islam and Muslims are portrayed favourably, unfavourably or neutrally; centrality—how prominently they feature; and subjectivity—how much opinion or judgement is expressed about them.</p>
+        <p>This dashboard lets me explore those assessments, compare the models and go back to the articles. For example, I can look for contrasting portrayals or articles where the models disagree.</p>
+        <p>For me, this is a form of triage. With a collection this large, I can’t read everything. These provisional assessments help me identify articles that might deserve my attention. They don’t replace close reading; they help me decide where to start.</p>
       </aside>
     </section>
 
-    <section data-toc="Who can build tools?" data-timing="70">
+    <section data-toc="Who can build tools?" data-timing="55">
       <h2 class="slide-title">More people can build.<br>Who can verify?</h2>
       <div class="cols">
         <div class="col"><div class="col-head">A lower barrier to making</div><ul><li>Describe a research need in ordinary language</li><li>Develop interfaces around a particular collection</li><li>Revise maps and networks through experimentation</li></ul></div>
         <div class="col"><div class="col-head alt">Continuing demands</div><ul><li>Check counts, filters and missing records</li><li>Read code and recognise consequential errors</li><li>Maintain software beyond the first prototype</li></ul></div>
       </div>
       <aside class="notes">
-        <p class="note-cue">8:05–9:15 · 70 seconds</p>
-        <p>I built these interfaces with coding assistance from language models. With limited formal training in computer science, I could describe what I wanted, ask for changes and develop tools suited to the collection.</p>
+        <p class="note-cue">9:05–10:00 · 55 seconds</p>
         <p>That is a meaningful expansion of participation. Historians with little programming support can take a more direct role in designing how their sources are explored.</p>
         <p>But a working chart can still count the wrong things. It may exclude undated records or compare raw totals from very unequal corpora. Those choices affect the argument even when the interface looks polished.</p>
         <p>Verification therefore needs time, some code literacy and access to help when necessary. Asking the same agent whether its work is correct gives us limited reassurance.</p>
@@ -224,7 +293,7 @@
       </div>
       <div class="callout"><span class="callout-label">A situated experience</span><p>University computing at Bayreuth expands my options. Access elsewhere differs.</p></div>
       <aside class="notes">
-        <p class="note-cue">9:15–10:40 · 85 seconds</p>
+        <p class="note-cue">10:00–11:25 · 85 seconds</p>
         <p>The same tension applies to the models themselves. In the experiment described in the article, a commercial run over the newspaper corpus cost roughly ten US dollars per model. That is the processing bill; it leaves out development and review.</p>
         <p>Services at that price are attractive to a small project. Yet they tie the work to external providers, including companies based in the United States and China. Payment arrangements, connectivity, terms of service and changes to access all matter.</p>
         <p>I have also begun running open-weight models on university computing infrastructure at Bayreuth. That gives me greater control over processing and the model version I retain.</p>
@@ -241,7 +310,7 @@
         <li><span class="idx-title">Authority</span><span class="idx-desc">Custodians need a say in description, access and reuse.</span></li>
       </ol>
       <aside class="notes">
-        <p class="note-cue">10:40–11:55 · 75 seconds</p>
+        <p class="note-cue">11:25–12:40 · 75 seconds</p>
         <p>I see three connected stakes for African Studies.</p>
         <p>First, language. Most of the textual work I have described concerns French. Experiments with Hausa recordings broaden the agenda, but establish little about performance on languages such as Dendi or Ewe. Priorities in processing can reproduce existing hierarchies of visibility.</p>
         <p>Second, labour. Faster processing of available scans leaves the work of preserving and digitising further holdings in place. Verification creates its own demands. Institutions need support for all of those tasks.</p>
@@ -257,7 +326,7 @@
       <p><a href="https://islam.zmo.de/s/westafrica/">Islam West Africa Collection</a></p>
       <div data-contact></div>
       <aside class="notes">
-        <p class="note-cue">11:55–12:50 · 55 seconds</p>
+        <p class="note-cue">12:40–13:35 · 55 seconds</p>
         <p>AI has helped me share and explore a collection that had exceeded my capacity to process it manually. That practical gain matters.</p>
         <p>My experience also brings the historian and curator together. Deciding what a name means, how a text should be transcribed, or what a connection counts as is already part of historical work.</p>
         <p>The responsibility is to make those choices visible enough for others to inspect, challenge and revise, while recognising the labour and unequal resources behind them.</p>
@@ -269,6 +338,7 @@
       <h2 class="slide-title">Sources &amp; further reading</h2>
       <p>Madore, Frédérick. “When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models.” Manuscript submitted to <em>African Studies Review</em>, version 2.</p>
       <p><a href="https://islam.zmo.de/s/westafrica/page/explore">Islam West Africa Collection: Explore</a>. Map and network captures: 11 September 2026. Visualisations retain the IWAC’s terms of use; map attribution: CARTO / OpenStreetMap contributors.</p>
+      <p>Karpathy, Andrej (2023). “The hottest new programming language is English.” <a href="https://x.com/karpathy/status/1617979122625712128">X, 24 January</a>.</p>
       <p>Birhane, Abeba (2020). “Algorithmic Colonization of Africa.” <em>SCRIPTed</em> 17 (2): 389–409.</p>
       <p>Risam, Roopika, and Alex Gil (2022). “Introduction: The Questions of Minimal Computing.” <em>Digital Humanities Quarterly</em> 16 (2).</p>
       <p>Smith, Astrid J., and Bridget Whearty (2023). “All the Work You Do Not See: Labor, Digitizers, and the Foundations of Digital Humanities.” In <em>Debates in the Digital Humanities 2023</em>, 27–46.</p>
