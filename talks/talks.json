@@ -25,6 +25,25 @@
       "eventUrl": "https://fmadore.github.io/stias-dh-ai-workshop-2026/fr/papers/mcp-servers-african-glams"
     },
     {
+      "slug": "2026-09-17-kansas-ai-and-the-work-of",
+      "date": "2026-09-17",
+      "language": "en",
+      "event": "AI and Africa Symposium · African History",
+      "venue": "University of Kansas · 17 September 2026",
+      "title": "AI and the Work of the Historian",
+      "shortTitle": "AI and the historian",
+      "description": "Historical judgement, digital curation and unequal infrastructures through the Islam West Africa Collection.",
+      "presenters": [
+        "Frédérick Madore"
+      ],
+      "tags": [
+        "AI",
+        "African history",
+        "IWAC",
+        "digital archives"
+      ]
+    },
+    {
       "slug": "2026-07-01-rhodes-reconfiguring-archive",
       "date": "2026-07-01",
       "language": "en",
