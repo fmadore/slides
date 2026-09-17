@@ -28,6 +28,9 @@ visual-diff/
 # Local scratch space (screenshots, one-off check scripts)
 /tmp/
 
+# Rehearsal scripts: the delivery notes ship inline in each deck instead
+talks/*/speaker-notes.md
+
 # Locally generated deck extras (CI builds these into _site)
 talks/*/slides.pdf
 talks/*/social-card.png
