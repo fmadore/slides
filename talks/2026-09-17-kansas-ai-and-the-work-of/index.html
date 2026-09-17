@@ -39,8 +39,14 @@
     .reveal .evidence-caption p { font-size: var(--fs-small); margin: 0; }
     .reveal .evidence-caption .source { margin-left: auto; white-space: nowrap; font-size: var(--fs-caption); }
     .reveal .case-question { max-width: 38ch; }
-    .reveal .coding-slide .callout.wide { max-width: none; }
-    .reveal .coding-slide .callout.wide p { font-size: var(--fs-body); margin: 0; }
+    .reveal .col-head.has-eg { display: flex; align-items: baseline; gap: var(--space-sm); }
+    .reveal .col-head .head-eg {
+      margin-left: auto; text-transform: none; letter-spacing: normal;
+      font-family: var(--font-serif); font-weight: normal;
+      font-size: var(--fs-caption); color: var(--ink-soft);
+    }
+    .reveal .callout.wide { max-width: none; }
+    .reveal .callout.wide p { font-size: var(--fs-body); margin: 0; }
     .reveal .abundance-slide .slide-title { margin-bottom: var(--space-md); }
     .reveal .abundance-slide .site-frame { height: 21rem; margin: 0; }
     .reveal .abundance-slide .site-frame-view { overflow: hidden; }
@@ -50,7 +56,6 @@
     .reveal .abundance-slide .frame-fallback { padding: 0; }
     .reveal .abundance-slide .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top; margin: 0; }
     .reveal .abundance-slide .frame-show { position: absolute; bottom: var(--space-md); right: var(--space-md); background: var(--paper); }
-    .reveal .references p { font-size: var(--fs-small); margin-bottom: var(--space-md); }
     .reveal .ewe-slide .scroll-panel { max-height: 25rem; }
     .reveal .ewe-slide .shot.tall { max-height: 26.5rem; }
     .reveal .ewe-slide .scroll-panel pre code { font-size: var(--fs-label); }
@@ -183,7 +188,7 @@
       </aside>
     </section>
 
-    <section class="coding-slide" data-toc="Coding in plain language" data-timing="50">
+    <section class="coding-slide" data-toc="Building the tools" data-timing="50">
       <h2 class="slide-title">Building the tools<br>used to need a team</h2>
       <div class="cols">
         <div class="col">
@@ -275,38 +280,45 @@
     <section data-toc="Access and dependence" data-timing="85">
       <h2 class="slide-title">Affordable access,<br>unequal control</h2>
       <div class="cols">
-        <div class="col"><div class="col-head">Commercial services</div><p>Low entry costs.<br>Little local hardware.</p><p class="small">External terms, connectivity, foreign-currency billing and changing services.</p></div>
-        <div class="col"><div class="col-head alt">Locally run models</div><p>Greater control over processing.<br>Retain particular model versions.</p><p class="small">Hardware, electricity, technical expertise and institutional support.</p></div>
+        <div class="col">
+          <div class="col-head has-eg">Commercial services<span class="head-eg">Gemini · ChatGPT · Claude</span></div>
+          <p class="lead">Low entry costs, little local hardware.<br>Dependence on external providers.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Open-weight models</div>
+          <p class="lead">Increasingly capable alternatives.<br>Greater control when run locally.</p>
+        </div>
       </div>
-      <div class="callout"><span class="callout-label">A situated experience</span><p>University computing at Bayreuth expands my options. Access elsewhere differs.</p></div>
+      <div class="callout"><p>Small models can run on personal computers; larger ones need substantial infrastructure.</p></div>
+      <div class="callout wide"><p>Open weights do not mean equal access to computing resources.</p></div>
       <aside class="notes">
         <p class="note-cue">8:55–10:20 · 85 seconds</p>
-        <p>The same tension applies to the models themselves. In the experiment described in the article, a commercial run over the newspaper corpus cost roughly ten US dollars per model. That is the processing bill; it leaves out development and review.</p>
-        <p>Services at that price are attractive to a small project. Yet they tie the work to external providers, including companies based in the United States and China. Payment arrangements, connectivity, terms of service and changes to access all matter.</p>
-        <p>I have also begun running open-weight models on university computing infrastructure at Bayreuth. That gives me greater control over processing and the model version I retain.</p>
-        <p>But downloadable weights still require machines, electricity, expertise and institutional support. Using those weights through a commercial host preserves the hosting dependency.</p>
-        <p>The resources available to me cannot be assumed for an archive or colleague elsewhere. For African Studies, that makes the distribution of institutional capacity central to any claim about wider access.</p>
+        <p>The same question applies to the AI models: easier access doesn’t necessarily mean more control.</p>
+        <p>Commercial services can be inexpensive. My sentiment-analysis experiment cost about ten dollars per model, just for processing. But we depend on the provider, often from the US.</p>
+        <p>Open-weight models are increasingly capable alternatives. Some are inexpensive to use and the smaller models can run on a laptop. However, running the largest models locally still requires substantial hardware and technical support. At the University of Bayreuth, I have access to powerful servers. However, most colleagues based in African universities do not have access to the same resources.</p>
+        <p>For IWAC, my choice is pragmatic. I’m processing publications intended for public circulation, not confidential records. Bots are already harvesting the collection. My response is to use AI myself to make these sources more accessible to researchers.</p>
+        <p>That doesn’t remove the dependencies. It explains why I work with these tools while also exploring locally run alternatives.</p>
       </aside>
     </section>
 
-    <section data-toc="The African Studies stakes" data-timing="75">
+    <section data-toc="What makes sources usable" data-timing="75">
       <h2 class="slide-title">Whose sources become usable?</h2>
       <ol class="index-list">
-        <li><span class="idx-title">Language</span><span class="idx-desc">French-language gains leave other needs unresolved.</span></li>
-        <li><span class="idx-title">Labour</span><span class="idx-desc">Preservation, digitisation and review need sustained support.</span></li>
-        <li><span class="idx-title">Authority</span><span class="idx-desc">Custodians need a say in description, access and reuse.</span></li>
+        <li><span class="idx-title">Digitisation</span><span class="idx-desc">Faster processing still depends on preservation and scanning.</span></li>
+        <li><span class="idx-title">Language</span><span class="idx-desc">French-language gains are only a starting point.</span></li>
+        <li><span class="idx-title">Expertise</span><span class="idx-desc">The people who know the sources remain essential.</span></li>
       </ol>
       <aside class="notes">
         <p class="note-cue">10:20–11:35 · 75 seconds</p>
-        <p>I see three connected stakes for African Studies.</p>
-        <p>First, language. Most of the textual work I have described concerns French. Experiments with Hausa recordings broaden the agenda, but establish little about performance on languages such as Dendi or Ewe. Priorities in processing can reproduce existing hierarchies of visibility.</p>
-        <p>Second, labour. Faster processing of available scans leaves the work of preserving and digitising further holdings in place. Verification creates its own demands. Institutions need support for all of those tasks.</p>
-        <p>Third, authority over circulation. Open access creates opportunities for reuse, while also exposing material to automated harvesting. The IWAC has experienced this, although we do not know whether harvested material entered model training.</p>
-        <p>These questions connect AI to longstanding concerns in African digital history: who makes sources available, who can interpret them, and who sets the conditions under which knowledge circulates.</p>
+        <p>But access to AI models is only part of the story. Which sources actually benefit?</p>
+        <p>For printed sources, that starts with preservation and digitisation. AI can help process a scan; it doesn’t replace the tedious work of keeping newspapers together or photographing them page by page.</p>
+        <p>Most of my workflows also concern French. The Ewé example is promising, and my tests with Hausa recordings are very encouraging. But Hausa is a major African language; I’d expect less reliable results for languages with fewer digital resources.</p>
+        <p>That work still needs archivists, librarians and people with the linguistic and historical knowledge to assess what the models produce.</p>
+        <p>So for me, democratisation isn’t just about making AI available. It also means supporting the collections and the people who make these sources usable. Otherwise, we risk making already digitised collections more visible while other sources remain out of reach.</p>
       </aside>
     </section>
 
-    <section class="closing" data-toc="A responsibility to make choices visible" data-timing="55">
+    <section class="closing" data-toc="Keeping the making visible" data-timing="55">
       <h2>Make the archive searchable.<br>Keep its making visible.</h2>
       <p class="lead">Historical judgement belongs throughout the process.</p>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="affil">Africa Multiple · University of Bayreuth</span></div>
@@ -321,15 +333,6 @@
       </aside>
     </section>
 
-    <section class="references" data-visibility="uncounted" data-toc="Sources and further reading">
-      <h2 class="slide-title">Sources &amp; further reading</h2>
-      <p>Madore, Frédérick. “When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models.” Manuscript submitted to <em>African Studies Review</em>, version 2.</p>
-      <p><a href="https://islam.zmo.de/s/westafrica/page/explore">Islam West Africa Collection: Explore</a>. Map and network captures: 11 September 2026. Visualisations retain the IWAC’s terms of use; map attribution: CARTO / OpenStreetMap contributors.</p>
-      <p>Karpathy, Andrej (2023). “The hottest new programming language is English.” <a href="https://x.com/karpathy/status/1617979122625712128">X, 24 January</a>.</p>
-      <p>Birhane, Abeba (2020). “Algorithmic Colonization of Africa.” <em>SCRIPTed</em> 17 (2): 389–409.</p>
-      <p>Risam, Roopika, and Alex Gil (2022). “Introduction: The Questions of Minimal Computing.” <em>Digital Humanities Quarterly</em> 16 (2).</p>
-      <p>Smith, Astrid J., and Bridget Whearty (2023). “All the Work You Do Not See: Labor, Digitizers, and the Foundations of Digital Humanities.” In <em>Debates in the Digital Humanities 2023</em>, 27–46.</p>
-    </section>
 
   </div>
 </div>
