@@ -25,6 +25,9 @@ node_modules
 # Local output of tools/visual-diff.mjs (the before/after guard for design passes)
 visual-diff/
 
+# Local scratch space (screenshots, one-off check scripts)
+/tmp/
+
 # Locally generated deck extras (CI builds these into _site)
 talks/*/slides.pdf
 talks/*/social-card.png
