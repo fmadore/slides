@@ -272,6 +272,15 @@ on the iframe and have the application send that message to its parent; the
 engine verifies both origin and source. The state resets on each activation.
 Use a local screenshot when a live surface is unnecessary for the argument.
 
+A site that sends no such message but does name this deck in its CSP
+`frame-ancestors` is declared with `data-frame-trusted`, listing the deck
+origins that site admits — `data-frame-trusted="https://slides.frederickmadore.com"`.
+Served from one of them the frame goes up without a click; served from
+anywhere else the fallback stands, so a local rehearsal and the exported PDF
+keep the screenshot instead of a frame the origin would have blocked. An
+empty value trusts every origin. Confirm the site's header before relying on
+it: `curl -sSI <url> | grep -i content-security-policy`.
+
 **Figures show whole.** `.figrow` images use `object-fit: contain`, so a map,
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
 for a photo you genuinely want to bleed/fill.

@@ -812,7 +812,13 @@
      Every .site-frame-view iframe is converted to reveal's data-src form so it
      loads only when its slide becomes visible (and unloads after). A useful
      fallback stays until the user opens the live surface or an owned app
-     sends its declared readiness message. Load events are not evidence. ------ */
+     sends its declared readiness message. Load events are not evidence.
+
+     A site that cannot send a message but does name us in its CSP
+     frame-ancestors is declared with data-frame-trusted, listing the deck
+     origins that site admits. Served from one of them, the frame goes up
+     without a click; served from anywhere else the fallback stands, so a
+     local rehearsal still shows the screenshot rather than a blocked frame. */
   function lazifyFrames() {
     document.querySelectorAll(".reveal .slides .site-frame-view > iframe[src]").forEach(function (f) {
       if (!f.hasAttribute("data-src")) f.setAttribute("data-src", f.getAttribute("src"));
@@ -871,6 +877,14 @@
       }
       return fb;
     }
+    // Trusted only where the framed site admits this deck's own origin: an
+    // empty attribute trusts everywhere, a list trusts those origins alone.
+    function trustedHere(f) {
+      var declared = f.getAttribute("data-frame-trusted");
+      if (declared === null) return false;
+      var origins = declared.split(/\s+/).filter(Boolean);
+      return !origins.length || origins.indexOf(location.origin) !== -1;
+    }
     function hideFallback(f) {
       var fb = f.parentElement.querySelector(".frame-fallback, .viz-fallback, .amrc-fallback");
       if (fb) fb.hidden = true;
@@ -886,6 +900,7 @@
       if (!cur) return;
       cur.querySelectorAll("iframe").forEach(function (f) {
         var fallback = fallbackFor(f);
+        if (trustedHere(f)) { hideFallback(f); return; }
         fallback.hidden = false;
         if (fallback.matches("img")) f.style.visibility = "hidden";
         var timer = setTimeout(function () {
