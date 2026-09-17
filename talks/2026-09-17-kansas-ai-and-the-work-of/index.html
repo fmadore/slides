@@ -107,7 +107,7 @@
       <aside class="notes">
         <p class="note-cue">0:00–0:50 · 50 seconds</p>
         <p>Thank you, James, for the kind invitation to join this panel.</p>
-        <p>In about ten minutes I’ll give you the broad picture: how AI arrived in my work, and what I’m experimenting with. We can go into detail in the discussion.</p>
+        <p>I’ll focus on a few examples from IWAC: preparing sources, building research tools, and deciding what to read. We can go into more detail in the discussion.</p>
         <p>It started with a practical problem. The Islam West Africa Collection, or IWAC for short, is an online database I built, and it had grown well beyond what I could read on my own.</p>
         <p>I work in two connected roles: historian of Islam and Muslim public life in francophone West Africa, and data curator helping other researchers use those sources.</p>
         <p>Building it has made those two roles hard to separate. Decisions about transcription, names and interfaces shape the histories we can write. So: what does AI change in that work, and who has the resources to benefit?</p>
@@ -143,12 +143,12 @@
       </aside>
     </section>
 
-    <section data-toc="Curation is interpretation" data-timing="85">
+    <section data-toc="Curation is interpretation" data-timing="55">
       <h2 class="slide-title">Newly readable, still interpreted</h2>
-      <div class="col-head">What multimodal LLMs changed in two or three years</div>
+      <div class="col-head">Transcription and indexing in my workflow</div>
       <ul>
         <li>Multimodal LLMs extract text from printed and handwritten pages</li>
-        <li>Transcription quality beyond traditional OCR and HTR</li>
+        <li>Draft transcriptions to check against the original page</li>
         <li>Small LLMs identify names, places and organisations</li>
       </ul>
       <div class="flow">
@@ -160,11 +160,10 @@
       </div>
       <div class="callout"><span class="callout-label">Historical source criticism</span><p>A wrong transcription still reads well. Keep each transformation traceable to the document.</p></div>
       <aside class="notes">
-        <p class="note-cue">2:50–4:15 · 85 seconds</p>
-        <p>In the last two or three years, multimodal AI models have become very good at reading documents — printed text, and even handwriting, at a level traditional OCR and HTR never reached. Small models can now pull out named entities, people, places and organisations, well enough to catalogue a collection.</p>
-        <p>For a historian moving towards computational methods, that is the first step: sources have to be machine-readable. Corpora that were unusable for lack of OCR are now workable.</p>
-        <p>Here is the catch. When traditional OCR fails, you see it: the page comes out as garbage. When a language model fails, the output stays plausible. It may quietly correct a spelling that was wrong in the original. If a word is illegible, it may infer one, or invent one. The transcription reads well, so you conclude it is right.</p>
-        <p>The same applies further down the chain: a name match can join two different people; an index can drop what another historian would have kept.</p>
+        <p class="note-cue">2:50–3:45 · 55 seconds</p>
+        <p>In this workflow, multimodal models produce draft transcriptions from scanned pages. I also use language models to identify people, places and organisations. This makes more of the collection searchable and available for computational analysis.</p>
+        <p>The output still needs checking. A language model may produce fluent text while misreading a name, changing a spelling or filling in an illegible passage. These errors can be difficult to notice because the transcription remains readable.</p>
+        <p>The same problem occurs in indexing. A name match can merge two different people, while an omitted place or organisation may make relevant documents harder to find.</p>
       </aside>
     </section>
 
@@ -180,41 +179,38 @@
           <div class="scroll-panel" data-skill-src="../../shared/assets/ocr-ewe-togopresse.md">
             <pre><code class="language-markdown">Loading the extraction…</code></pre>
           </div>
-          <p class="scroll-hint">Printed Ewé, diacritics and all — scroll for the full extraction.</p>
+          <p class="scroll-hint">Model-generated transcription · scroll to inspect the output.</p>
         </div>
       </div>
       <aside class="notes">
-        <p class="note-cue">4:15–4:40 · 25 seconds</p>
-        <p>One example. Togo Presse, 1976, printed in Ewé, diacritics and all. The model read it in a single pass. But for a language with almost no digital tooling, that is a real opening.</p>
+        <p class="note-cue">3:45–4:10 · 25 seconds</p>
+        <p>This is a 1976 page of Togo Presse, printed in Ewé. The model produced a transcription in a single pass. To assess its accuracy, we need to compare it with the page, including the diacritics. That requires knowledge of the language.</p>
       </aside>
     </section>
 
-    <section class="coding-slide" data-toc="Building the tools" data-timing="50">
-      <h2 class="slide-title">Building the tools<br>used to need a team</h2>
+    <section class="coding-slide balance" data-toc="Building tools" data-timing="45">
+      <h2 class="slide-title">Building tools for the collection</h2>
       <div class="cols">
         <div class="col">
-          <div class="col-head">Until recently</div>
-          <p class="lead">A developer, a budget, institutional support.</p>
+          <div class="col-head">AI-assisted coding</div>
+          <p class="lead">Generating and revising code through conversation.</p>
         </div>
         <div class="col">
-          <div class="col-head alt">Now</div>
-          <p class="lead">Describe what you need.<br>Test and refine through conversation.</p>
+          <div class="col-head alt">Research decisions</div>
+          <p class="lead">Defining the task and checking what the tool counts, links and excludes.</p>
         </div>
       </div>
-      <div class="callout"><span class="callout-label">Andrej Karpathy · X · 24 January 2023</span><p>“The hottest new programming language is English.”</p></div>
-      <div class="callout wide"><p>AI writes the code. The results still need checking.</p></div>
+      <div class="callout wide"><p>The interface needs to be checked against the underlying records.</p></div>
       <aside class="notes">
-        <p class="note-cue">4:40–5:30 · 50 seconds</p>
-        <p>AI has also changed what I can build as a historian. Until recently, building an interactive map or network often meant finding a developer, a budget and institutional support.</p>
-        <p>Now, I describe what I need, test the result and ask for changes. The AI writes the code; I guide the process.</p>
-        <p>For me, that’s a form of democratisation: I can build tools around my own research questions without writing the code myself.</p>
-        <p>But a working interface isn’t necessarily a reliable one. I still need to check what it counts and what its filters exclude—and sometimes get technical help.</p>
-        <p>Let me show you two examples.</p>
+        <p class="note-cue">4:10–4:55 · 45 seconds</p>
+        <p>I also use AI to generate code for the collection’s interfaces. I describe what I need, test the result and ask for revisions. This has made it easier for me to develop tools around my own research questions.</p>
+        <p>The generated code still needs checking. A map may display correctly while counting mentions in a way I did not intend; a filter may exclude relevant documents. For some problems, I still need technical help.</p>
+        <p>Here are two examples of how I use these tools to navigate the sources.</p>
       </aside>
     </section>
 
     <section class="evidence-slide" data-toc="Reading the map" data-timing="60">
-      <h2 class="slide-title">Where does the press direct our attention?</h2>
+      <h2 class="slide-title">Where do the sources direct our attention?</h2>
       <figure class="site-frame">
         <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Places · All entities · Place bubbles</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration">Open full screen</a></figcaption>
         <div class="site-frame-view">
@@ -227,8 +223,9 @@
       </figure>
       <div class="evidence-caption"><p>Explore the places most frequently mentioned in the IWAC—and the documents that mention them.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/spatial-exploration">IWAC · 11 Sept 2026</a></p></div>
       <aside class="notes">
-        <p class="note-cue">5:30–6:30 · 60 seconds</p>
+        <p class="note-cue">4:55–5:55 · 60 seconds</p>
         <p>Using AI, I extracted place names from thousands of documents in the collection. This map shows which places are mentioned most often: the larger the circle, the more mentions.</p>
+        <p>These are places mentioned in the sources, not a measure of where Muslims live or how Islam is distributed. The pattern also reflects which publications entered IWAC and which place names were indexed.</p>
         <p>We can select a place to find the documents that mention it. Or we can search for a particular person—say, Imam Fofana—and see which places appear in articles about him.</p>
         <p>So we can move from a geographical overview straight to the relevant sources.</p>
       </aside>
@@ -248,11 +245,11 @@
       </figure>
       <div class="evidence-caption"><p>A co-mention is a starting point for investigating a relationship.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/entity-networks">IWAC · 11 Sept 2026</a></p></div>
       <aside class="notes">
-        <p class="note-cue">6:30–7:30 · 60 seconds</p>
+        <p class="note-cue">5:55–6:55 · 60 seconds</p>
         <p>A network offers a different way to navigate. Here, this network shows which people, organisations and places appear together in the same documents. We can explore those connections and go straight to the sources behind them.</p>
         <p>[Point to a cluster]</p>
         <p>That can help us locate sources about Muslim associations and the political actors around them, or follow an organisation across different publications.</p>
-        <p>The map and this network are just two of the interactive dashboards I’ve built for the Islam West Africa Collection. There are many more. And I didn’t write a single line of code for either of these. The AI wrote the code. I explained what I wanted, then refined it through conversation.</p>
+        <p>Two people appearing in the same article may be allies, opponents, or simply discussed separately. The network gives me a way to locate such articles; it does not establish the nature of the relationship. That remains a question for reading the sources.</p>
       </aside>
     </section>
 
@@ -270,15 +267,15 @@
       </figure>
       <div class="evidence-caption"><p>AI-assisted sentiment analysis · 12,349 newspaper articles</p><p class="source"><a href="https://iwac.frederickmadore.com/sentiment-analysis/">iwac.frederickmadore.com</a></p></div>
       <aside class="notes">
-        <p class="note-cue">7:30–8:55 · 85 seconds</p>
+        <p class="note-cue">6:55–8:20 · 85 seconds</p>
         <p>So far, I’ve shown how I use AI to transcribe sources, extract information and build tools. I’ve also experimented with taking it a step further: a first pass at analysis.</p>
         <p>I asked five AI models to analyse over twelve thousand newspaper articles along three dimensions: polarity—whether Islam and Muslims are portrayed favourably, unfavourably or neutrally; centrality—how prominently they feature; and subjectivity—how much opinion or judgement is expressed about them.</p>
         <p>This dashboard lets me explore those assessments, compare the models and go back to the articles. For example, I can look for contrasting portrayals or articles where the models disagree.</p>
-        <p>For me, this is a form of triage: I can’t read everything, so these provisional assessments help me decide where to start. They don’t replace close reading. Of course, using AI to guide our attention raises epistemological questions, which we can come back to in the discussion.</p>
+        <p>I use these scores to select articles for closer reading. But a negative score needs interpretation: is the article criticising Muslims, quoting someone who does, or reporting discrimination against them? Comparing models helps me identify cases worth checking, although agreement between models is not enough to validate a classification. I need to return to the article to understand what the score captures and what it leaves out.</p>
       </aside>
     </section>
 
-    <section data-toc="Access and dependence" data-timing="85">
+    <section data-toc="Access and dependence" data-timing="70">
       <h2 class="slide-title">Affordable access,<br>unequal control</h2>
       <div class="cols">
         <div class="col">
@@ -293,12 +290,11 @@
       <div class="callout"><p>Small models can run on personal computers; larger ones need substantial infrastructure.</p></div>
       <div class="callout wide"><p>Open weights do not mean equal access to computing resources.</p></div>
       <aside class="notes">
-        <p class="note-cue">8:55–10:20 · 85 seconds</p>
-        <p>The same question applies to the AI models: easier access doesn’t necessarily mean more control.</p>
-        <p>Commercial services can be inexpensive. My sentiment-analysis experiment cost about ten dollars per model, just for processing. But we depend on the provider, often from the US.</p>
-        <p>Open-weight models are increasingly capable alternatives. Some are inexpensive to use and the smaller models can run on a laptop. However, running the largest models locally still requires substantial hardware and technical support. At the University of Bayreuth, I have access to powerful servers. However, most colleagues based in African universities do not have access to the same resources.</p>
-        <p>For IWAC, my choice is pragmatic. I’m processing publications intended for public circulation, not confidential records. Bots are already harvesting the collection. My response is to use AI myself to make these sources more accessible to researchers.</p>
-        <p>That doesn’t remove the dependencies. It explains why I work with these tools while also exploring locally run alternatives.</p>
+        <p class="note-cue">8:20–9:30 · 70 seconds</p>
+        <p>These experiments also raise a practical question: what resources make them possible?</p>
+        <p>My sentiment-analysis experiment cost about ten dollars per model for processing. That figure does not include the work of preparing the corpus or assessing the results. Commercial services limit what I need to run on my own hardware, but they leave me dependent on an external provider.</p>
+        <p>Locally run open-weight models offer more control, with hardware requirements that vary by model. At Bayreuth, I have access to powerful servers. I cannot assume that colleagues elsewhere, including at African universities, have access to comparable resources.</p>
+        <p>For IWAC, I am processing publications intended for public circulation, not confidential research records. This is relevant to my choice of tools, but it does not settle every question about reuse or provider dependence. I use commercial services while also exploring locally run alternatives.</p>
       </aside>
     </section>
 
@@ -310,7 +306,7 @@
         <li><span class="idx-title">Expertise</span><span class="idx-desc">The people who know the sources remain essential.</span></li>
       </ol>
       <aside class="notes">
-        <p class="note-cue">10:20–11:35 · 75 seconds</p>
+        <p class="note-cue">9:30–10:45 · 75 seconds</p>
         <p>But access to AI models is only part of the story. Which sources actually benefit?</p>
         <p>For printed sources, that starts with preservation and digitisation. AI can help process a scan; it doesn’t replace the tedious work of keeping newspapers together or photographing them page by page.</p>
         <p>Most of my workflows also concern French. The Ewé example is promising, and my tests with Hausa recordings are very encouraging. But Hausa is a major African language; I’d expect less reliable results for languages with fewer digital resources.</p>
@@ -328,7 +324,7 @@
       <p><a href="https://islam.zmo.de/s/westafrica/">Islam West Africa Collection</a></p>
       <div data-contact></div>
       <aside class="notes">
-        <p class="note-cue">11:35–12:20 · 45 seconds</p>
+        <p class="note-cue">10:45–11:30 · 45 seconds</p>
         <p>AI has helped me make more sources accessible, build my own tools and find starting points for close reading.</p>
         <p>That expands what I can do as a historian. But historical judgement belongs throughout the process—not just at the end.</p>
         <p>For me, this opens possibilities for democratisation. Yet wider participation still depends on support for collections, people and infrastructure.</p>
