@@ -1177,10 +1177,13 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
 .reveal .chrome-bar {
   flex: none; display: flex; align-items: center; gap: 0.5rem;
   padding: 0.5rem 0.9rem; background: var(--sunken); border-bottom: 1px solid var(--line);
-  /* The bar must span the frame. If authored as a <figcaption>, it would otherwise
-     inherit `.reveal figcaption { max-width: 52ch }` and clamp to ~413px, truncating
-     the URL — so pin it open regardless of the element used. */
-  max-width: none;
+  /* The bar must span the frame. If authored as a <figcaption>, it inherits the
+     generic caption styling — `max-width: 52ch` clamps it to ~413px and truncates
+     the URL, `margin-top` opens a strip of paper above it inside the frame's own
+     rounded border, and the italic serif is a caption voice, not chrome. The bar
+     is the same device whatever element carries it, so neutralise all three here
+     rather than leaving each variant to rediscover them. */
+  max-width: none; margin-top: 0; font-style: normal;
 }
 .reveal .site-frame-bar .dot,
 .reveal .chrome-dot {
