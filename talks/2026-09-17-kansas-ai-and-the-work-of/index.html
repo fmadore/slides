@@ -39,6 +39,8 @@
     .reveal .evidence-caption p { font-size: var(--fs-small); margin: 0; }
     .reveal .evidence-caption .source { margin-left: auto; white-space: nowrap; font-size: var(--fs-caption); }
     .reveal .case-question { max-width: 38ch; }
+    .reveal .coding-slide .callout.wide { max-width: none; }
+    .reveal .coding-slide .callout.wide p { font-size: var(--fs-body); margin: 0; }
     .reveal .abundance-slide .slide-title { margin-bottom: var(--space-md); }
     .reveal .abundance-slide .site-frame { height: 21rem; margin: 0; }
     .reveal .abundance-slide .site-frame-view { overflow: hidden; }
@@ -181,26 +183,27 @@
       </aside>
     </section>
 
-    <section data-toc="Coding in plain language" data-timing="50">
+    <section class="coding-slide" data-toc="Coding in plain language" data-timing="50">
       <h2 class="slide-title">Building the tools<br>used to need a team</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Until recently</div>
-          <p class="lead">A digital humanities centre, a developer, a budget.</p>
-          <p class="small">Concentrated in well-resourced universities, and rarely on the terms of the historian who knew the sources.</p>
+          <p class="lead">A developer, a budget, institutional support.</p>
         </div>
         <div class="col">
           <div class="col-head alt">Now</div>
-          <p class="lead">A description in plain language, revised in conversation.</p>
-          <p class="small">Agentic tools edit files, run commands and correct their own errors across several steps.</p>
+          <p class="lead">Describe what you need.<br>Test and refine through conversation.</p>
         </div>
       </div>
       <div class="callout"><span class="callout-label">Andrej Karpathy · X · 24 January 2023</span><p>“The hottest new programming language is English.”</p></div>
+      <div class="callout wide"><p>AI writes the code. The results still need checking.</p></div>
       <aside class="notes">
         <p class="note-cue">4:40–5:30 · 50 seconds</p>
-        <p>One of the areas of my work as a historian that has been revolutionised by AI is coding. I can build maps, networks and entire websites myself.</p>
-        <p>Until recently, a historian who wanted an interactive map or a network needed a digital humanities centre: a developer, a budget, a place in the queue. Plenty of us never had one.</p>
-        <p>Now you can program by giving instructions in plain language. French, English, it does not matter. They call it vibe coding, or agentic AI coding. The AI writes the code. I do not write a line of it.</p>
+        <p>AI has also changed what I can build as a historian. Until recently, building an interactive map or network often meant finding a developer, a budget and institutional support.</p>
+        <p>Now, I describe what I need, test the result and ask for changes. The AI writes the code; I guide the process.</p>
+        <p>For me, that’s a form of democratisation: I can build tools around my own research questions without writing the code myself.</p>
+        <p>But a working interface isn’t necessarily a reliable one. I still need to check what it counts and what its filters exclude—and sometimes get technical help.</p>
+        <p>Let me show you two examples.</p>
       </aside>
     </section>
 
@@ -225,7 +228,7 @@
       </aside>
     </section>
 
-    <section class="evidence-slide" data-toc="Reading the network" data-timing="70">
+    <section class="evidence-slide" data-toc="Reading the network" data-timing="60">
       <h2 class="slide-title">What does a connection mean?</h2>
       <figure class="site-frame">
         <figcaption class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">IWAC · Entity network · All types · All links</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks" data-preview-link="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks">Open full screen</a></figcaption>
@@ -239,12 +242,11 @@
       </figure>
       <div class="evidence-caption"><p>A co-mention is a starting point for investigating a relationship.</p><p class="source"><a href="https://islam.zmo.de/s/westafrica/page/entity-networks">IWAC · 11 Sept 2026</a></p></div>
       <aside class="notes">
-        <p class="note-cue">6:30–7:40 · 70 seconds</p>
+        <p class="note-cue">6:30–7:30 · 60 seconds</p>
         <p>A network offers a different way to navigate. Here, this network shows which people, organisations and places appear together in the same documents. We can explore those connections and go straight to the sources behind them.</p>
         <p>[Point to a cluster]</p>
         <p>That can help us locate sources about Muslim associations and the political actors around them, or follow an organisation across different publications.</p>
         <p>The map and this network are just two of the interactive dashboards I’ve built for the Islam West Africa Collection. There are many more. And I didn’t write a single line of code for either of these. The AI wrote the code. I explained what I wanted, then refined it through conversation.</p>
-        <p>That’s what I mean by democratisation: being able to build tools around my own research questions, without having to write the code myself.</p>
       </aside>
     </section>
 
@@ -262,26 +264,11 @@
       </figure>
       <div class="evidence-caption"><p>AI-assisted sentiment analysis · 12,349 newspaper articles</p><p class="source"><a href="https://iwac.frederickmadore.com/sentiment-analysis/">iwac.frederickmadore.com</a></p></div>
       <aside class="notes">
-        <p class="note-cue">7:40–9:05 · 85 seconds</p>
+        <p class="note-cue">7:30–8:55 · 85 seconds</p>
         <p>So far, I’ve shown how I use AI to transcribe sources, extract information and build tools. I’ve also experimented with taking it a step further: a first pass at analysis.</p>
         <p>I asked five AI models to analyse over twelve thousand newspaper articles along three dimensions: polarity—whether Islam and Muslims are portrayed favourably, unfavourably or neutrally; centrality—how prominently they feature; and subjectivity—how much opinion or judgement is expressed about them.</p>
         <p>This dashboard lets me explore those assessments, compare the models and go back to the articles. For example, I can look for contrasting portrayals or articles where the models disagree.</p>
-        <p>For me, this is a form of triage. With a collection this large, I can’t read everything. These provisional assessments help me identify articles that might deserve my attention. They don’t replace close reading; they help me decide where to start.</p>
-      </aside>
-    </section>
-
-    <section data-toc="Who can build tools?" data-timing="55">
-      <h2 class="slide-title">More people can build.<br>Who can verify?</h2>
-      <div class="cols">
-        <div class="col"><div class="col-head">A lower barrier to making</div><ul><li>Describe a research need in ordinary language</li><li>Develop interfaces around a particular collection</li><li>Revise maps and networks through experimentation</li></ul></div>
-        <div class="col"><div class="col-head alt">Continuing demands</div><ul><li>Check counts, filters and missing records</li><li>Read code and recognise consequential errors</li><li>Maintain software beyond the first prototype</li></ul></div>
-      </div>
-      <aside class="notes">
-        <p class="note-cue">9:05–10:00 · 55 seconds</p>
-        <p>That is a meaningful expansion of participation. Historians with little programming support can take a more direct role in designing how their sources are explored.</p>
-        <p>But a working chart can still count the wrong things. It may exclude undated records or compare raw totals from very unequal corpora. Those choices affect the argument even when the interface looks polished.</p>
-        <p>Verification therefore needs time, some code literacy and access to help when necessary. Asking the same agent whether its work is correct gives us limited reassurance.</p>
-        <p>I would describe this as a partial democratisation of tool building. The threshold for producing an interface has fallen, while the ability to assess and maintain it remains unevenly distributed.</p>
+        <p>For me, this is a form of triage: I can’t read everything, so these provisional assessments help me decide where to start. They don’t replace close reading. Of course, using AI to guide our attention raises epistemological questions, which we can come back to in the discussion.</p>
       </aside>
     </section>
 
@@ -293,7 +280,7 @@
       </div>
       <div class="callout"><span class="callout-label">A situated experience</span><p>University computing at Bayreuth expands my options. Access elsewhere differs.</p></div>
       <aside class="notes">
-        <p class="note-cue">10:00–11:25 · 85 seconds</p>
+        <p class="note-cue">8:55–10:20 · 85 seconds</p>
         <p>The same tension applies to the models themselves. In the experiment described in the article, a commercial run over the newspaper corpus cost roughly ten US dollars per model. That is the processing bill; it leaves out development and review.</p>
         <p>Services at that price are attractive to a small project. Yet they tie the work to external providers, including companies based in the United States and China. Payment arrangements, connectivity, terms of service and changes to access all matter.</p>
         <p>I have also begun running open-weight models on university computing infrastructure at Bayreuth. That gives me greater control over processing and the model version I retain.</p>
@@ -310,7 +297,7 @@
         <li><span class="idx-title">Authority</span><span class="idx-desc">Custodians need a say in description, access and reuse.</span></li>
       </ol>
       <aside class="notes">
-        <p class="note-cue">11:25–12:40 · 75 seconds</p>
+        <p class="note-cue">10:20–11:35 · 75 seconds</p>
         <p>I see three connected stakes for African Studies.</p>
         <p>First, language. Most of the textual work I have described concerns French. Experiments with Hausa recordings broaden the agenda, but establish little about performance on languages such as Dendi or Ewe. Priorities in processing can reproduce existing hierarchies of visibility.</p>
         <p>Second, labour. Faster processing of available scans leaves the work of preserving and digitising further holdings in place. Verification creates its own demands. Institutions need support for all of those tasks.</p>
@@ -326,7 +313,7 @@
       <p><a href="https://islam.zmo.de/s/westafrica/">Islam West Africa Collection</a></p>
       <div data-contact></div>
       <aside class="notes">
-        <p class="note-cue">12:40–13:35 · 55 seconds</p>
+        <p class="note-cue">11:35–12:30 · 55 seconds</p>
         <p>AI has helped me share and explore a collection that had exceeded my capacity to process it manually. That practical gain matters.</p>
         <p>My experience also brings the historian and curator together. Deciding what a name means, how a text should be transcribed, or what a connection counts as is already part of historical work.</p>
         <p>The responsibility is to make those choices visible enough for others to inspect, challenge and revise, while recognising the labour and unequal resources behind them.</p>
