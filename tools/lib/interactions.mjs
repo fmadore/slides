@@ -81,11 +81,28 @@ export async function checkInteractions(browser, base) {
     await page.keyboard.press('Escape');
     await page.locator('.toc-overlay').waitFor({ state: 'hidden' });
     assert.equal(await page.locator('.toc-overlay').isVisible(), false);
+    // The dialog's footer advertises T and O: both must act from inside it.
+    await page.keyboard.press('t');
+    await page.locator('.toc-overlay').waitFor({ state: 'visible' });
+    await page.keyboard.press('t');
+    await page.locator('.toc-overlay').waitFor({ state: 'hidden' });
+    await page.keyboard.press('t');
+    await page.locator('.toc-overlay').waitFor({ state: 'visible' });
+    await page.keyboard.press('o');
+    await page.locator('.toc-overlay').waitFor({ state: 'hidden' });
+    assert.equal(await page.evaluate(() => Reveal.isOverview()), true);
+    await page.evaluate(() => Reveal.toggleOverview(false));
     let copied;
     await page.exposeFunction('recordCopiedLink', value => { copied = value; });
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { value: { writeText: window.recordCopiedLink } }));
     await page.locator('.copy-link').click();
     assert.ok(copied?.includes('#/'));
+    // Confirmation a sighted presenter can see, announced, then reset so the
+    // next copy is shown and announced again.
+    await page.locator('.copy-link.is-copied').waitFor();
+    assert.ok((await page.locator('.deck-status').textContent()).length > 0);
+    await page.locator('.copy-link:not(.is-copied)').waitFor({ timeout: 5000 });
+    assert.equal(await page.locator('.deck-status').textContent(), '');
 
     await page.goto(base);
     const totalTalks = await page.locator('li.talk').count();

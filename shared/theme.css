@@ -993,6 +993,11 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   color: var(--ond-text);
 }
 .deck-footer.on-dark .deck-btn:hover { background: var(--ond-mark); color: var(--ond-mark-ink); border-color: var(--ond-mark); }
+/* Copy-link confirmation: the link icon turns to a tick for a moment. Colour
+   and glyph carry it — no movement — so it reads the same under reduced
+   motion, and it takes the mark of whichever field the footer sits on. */
+.deck-btn.copy-link.is-copied { color: var(--green-deep); border-color: var(--green); }
+.deck-footer.on-dark .deck-btn.copy-link.is-copied { color: var(--ond-mark); border-color: var(--ond-mark); }
 
 /* Progress bar (reveal built-in, a confident 3px green rule). It sits on the
    viewport, not the slide, so on a green divider a green bar was drawing

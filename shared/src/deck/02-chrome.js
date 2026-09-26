@@ -25,27 +25,42 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
-    var copyLabel = LANG === "fr" ? "Copier le lien de cette diapositive" : "Copy link to this slide";
     var copy = document.createElement("button");
     copy.className = "deck-btn copy-link";
     copy.type = "button";
-    copy.title = copyLabel;
-    copy.setAttribute("aria-label", copyLabel);
-    copy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg>';
+    copy.title = STR.copyLink;
+    copy.setAttribute("aria-label", STR.copyLink);
+    copy.innerHTML = ICON.link;
     var status = document.createElement("span");
     status.className = "deck-status";
     status.setAttribute("role", "status");
     footer.querySelector(".deck-nav").append(copy, status);
+    /* The status line is for screen readers only, so on its own a sighted
+       presenter clicked and saw nothing happen. The button answers for itself:
+       its icon turns to a tick for a moment. Both then reset, so a second copy
+       is announced and shown again rather than landing on text already there. */
+    var copiedTimer = null;
+    function resetCopied() {
+      clearTimeout(copiedTimer);
+      copiedTimer = null;
+      copy.classList.remove("is-copied");
+      copy.innerHTML = ICON.link;
+      status.textContent = "";
+    }
     copy.addEventListener("click", async function () {
+      resetCopied();
       var canonical = document.querySelector('link[rel="canonical"]');
       var url = new URL(canonical ? canonical.href : location.href);
       url.search = "";
       url.hash = "/" + encodeURIComponent(Reveal.getCurrentSlide().id);
       try {
         await navigator.clipboard.writeText(url.href);
-        status.textContent = LANG === "fr" ? "Lien copié" : "Link copied";
+        copy.classList.add("is-copied");
+        copy.innerHTML = ICON.check;
+        status.textContent = STR.linkCopied;
+        copiedTimer = setTimeout(resetCopied, 2400);
       } catch (error) {
-        window.prompt(copyLabel, url.href);
+        window.prompt(STR.copyLink, url.href);
       }
     });
   }

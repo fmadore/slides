@@ -41,7 +41,7 @@
         var openLink = f.closest(".site-frame") && f.closest(".site-frame").querySelector(".site-frame-open");
         var href = f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || f.getAttribute("data-src") || "";
         fb = elem('<div class="frame-fallback" role="status"><p></p></div>');
-        fb.querySelector("p").textContent = LANG === "fr" ? "Ce site utilise une connexion réseau." : "This website uses a network connection.";
+        fb.querySelector("p").textContent = STR.frameNetwork;
         if (href) {
           var link = document.createElement("a");
           link.href = href;
@@ -53,7 +53,7 @@
         var show = document.createElement("button");
         show.type = "button";
         show.className = "frame-show";
-        show.textContent = LANG === "fr" ? "Afficher le site ici" : "Show the site here";
+        show.textContent = STR.frameShow;
         show.addEventListener("click", function () {
           clearTimeout(fallbackTimers.get(f));
           fb.hidden = true;

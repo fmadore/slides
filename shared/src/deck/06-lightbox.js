@@ -42,13 +42,13 @@
       var alt = img.getAttribute("alt") || "";
       lbImg.setAttribute("alt", alt);
       lbImg.hidden = true;
-      lbCap.textContent = LANG === "fr" ? "Chargement de l’image…" : "Loading image…";
+      lbCap.textContent = STR.imageLoading;
       lbCap.style.display = "";
       var current = ++request;
       loadImage(img).then(function () {
         if (current !== request) return;
         if (!img.naturalWidth) {
-          lbCap.textContent = LANG === "fr" ? "Image indisponible. Essayez une autre image." : "Image unavailable. Try another image.";
+          lbCap.textContent = STR.imageUnavailable;
           return;
         }
         lbImg.src = imageSource(img);

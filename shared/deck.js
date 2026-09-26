@@ -23,16 +23,24 @@
   CFG.links = CFG.links || {};
 
   /* ---- engine UI strings, language-aware (from <html lang>; default English).
-     Add a language by extending I18N; decks opt in via <html lang="xx">. -------- */
+     Add a language by extending I18N; decks opt in via <html lang="xx">. Every
+     string the engine shows or announces lives here — a string spelled out
+     at its call site is one a new language silently misses. -------------- */
   var LANG = (CFG.lang || document.documentElement.lang || "en").slice(0, 2).toLowerCase();
   var I18N = {
     en: { contents: "Contents", overview: "overview", close: "close", prev: "Previous slide", next: "Next slide", tocOpen: "Open table of contents", tocAria: "Table of contents", closeAria: "Close", deckNav: "Slide navigation",
+          copyLink: "Copy link to this slide", linkCopied: "Link copied",
           imageViewer: "Image viewer", imageClose: "Close image", imageView: "View image full screen", imagePrev: "Previous image", imageNext: "Next image",
+          imageLoading: "Loading image…", imageUnavailable: "Image unavailable. Try another image.",
           embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
+          frameNetwork: "This website uses a network connection.", frameShow: "Show the site here",
           frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
     fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer", deckNav: "Navigation des diapositives",
+          copyLink: "Copier le lien de cette diapositive", linkCopied: "Lien copié",
           imageViewer: "Visionneuse d’images", imageClose: "Fermer l’image", imageView: "Afficher l’image en plein écran", imagePrev: "Image précédente", imageNext: "Image suivante",
+          imageLoading: "Chargement de l’image…", imageUnavailable: "Image indisponible. Essayez une autre image.",
           embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
+          frameNetwork: "Ce site utilise une connexion réseau.", frameShow: "Afficher le site ici",
           frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
   };
   var STR = I18N[LANG] || I18N.en;
@@ -92,6 +100,8 @@
     next: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
     toc:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="4" cy="6" r="1.4" fill="currentColor" stroke="none"/><line x1="9" y1="6" x2="20" y2="6"/><circle cx="4" cy="12" r="1.4" fill="currentColor" stroke="none"/><line x1="9" y1="12" x2="20" y2="12"/><circle cx="4" cy="18" r="1.4" fill="currentColor" stroke="none"/><line x1="9" y1="18" x2="20" y2="18"/></svg>',
     close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7"/></svg>',
     github:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
     globe:'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M3 12h18M12 2.8c2.6 2.6 3.9 6.2 3.9 9.2s-1.3 6.6-3.9 9.2c-2.6-2.6-3.9-6.2-3.9-9.2S9.4 5.4 12 2.8z"/></svg>',
     mail: '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.2"/><path d="M3 6.5l9 6 9-6"/></svg>',
@@ -158,27 +168,42 @@
     btnPrev.addEventListener("click", function () { Reveal.prev(); });
     btnNext.addEventListener("click", function () { Reveal.next(); });
     footer.querySelector(".toc-btn").addEventListener("click", toggleTOC);
-    var copyLabel = LANG === "fr" ? "Copier le lien de cette diapositive" : "Copy link to this slide";
     var copy = document.createElement("button");
     copy.className = "deck-btn copy-link";
     copy.type = "button";
-    copy.title = copyLabel;
-    copy.setAttribute("aria-label", copyLabel);
-    copy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2"/></svg>';
+    copy.title = STR.copyLink;
+    copy.setAttribute("aria-label", STR.copyLink);
+    copy.innerHTML = ICON.link;
     var status = document.createElement("span");
     status.className = "deck-status";
     status.setAttribute("role", "status");
     footer.querySelector(".deck-nav").append(copy, status);
+    /* The status line is for screen readers only, so on its own a sighted
+       presenter clicked and saw nothing happen. The button answers for itself:
+       its icon turns to a tick for a moment. Both then reset, so a second copy
+       is announced and shown again rather than landing on text already there. */
+    var copiedTimer = null;
+    function resetCopied() {
+      clearTimeout(copiedTimer);
+      copiedTimer = null;
+      copy.classList.remove("is-copied");
+      copy.innerHTML = ICON.link;
+      status.textContent = "";
+    }
     copy.addEventListener("click", async function () {
+      resetCopied();
       var canonical = document.querySelector('link[rel="canonical"]');
       var url = new URL(canonical ? canonical.href : location.href);
       url.search = "";
       url.hash = "/" + encodeURIComponent(Reveal.getCurrentSlide().id);
       try {
         await navigator.clipboard.writeText(url.href);
-        status.textContent = LANG === "fr" ? "Lien copié" : "Link copied";
+        copy.classList.add("is-copied");
+        copy.innerHTML = ICON.check;
+        status.textContent = STR.linkCopied;
+        copiedTimer = setTimeout(resetCopied, 2400);
       } catch (error) {
-        window.prompt(copyLabel, url.href);
+        window.prompt(STR.copyLink, url.href);
       }
     });
   }
@@ -374,6 +399,18 @@
     if (!overlay || !overlay.classList.contains("open")) return;
     if (e.key === "Tab") { trapTOCFocus(e); e.stopPropagation(); return; }
     if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); closeTOC(); return; }
+    // The dialog's own footer names T and O, so both have to work from inside
+    // it rather than be swallowed with every other key: T is the same toggle
+    // that opened the contents, and O hands over to reveal's overview.
+    if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+      var letter = String(e.key || "").toLowerCase();
+      if (letter === "t" || letter === "o") {
+        e.preventDefault(); e.stopPropagation();
+        closeTOC();
+        if (letter === "o") Reveal.toggleOverview(true);
+        return;
+      }
+    }
     var f = Array.prototype.slice.call(
       overlay.querySelectorAll(".toc-item")
     ).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
@@ -745,13 +782,13 @@
       var alt = img.getAttribute("alt") || "";
       lbImg.setAttribute("alt", alt);
       lbImg.hidden = true;
-      lbCap.textContent = LANG === "fr" ? "Chargement de l’image…" : "Loading image…";
+      lbCap.textContent = STR.imageLoading;
       lbCap.style.display = "";
       var current = ++request;
       loadImage(img).then(function () {
         if (current !== request) return;
         if (!img.naturalWidth) {
-          lbCap.textContent = LANG === "fr" ? "Image indisponible. Essayez une autre image." : "Image unavailable. Try another image.";
+          lbCap.textContent = STR.imageUnavailable;
           return;
         }
         lbImg.src = imageSource(img);
@@ -851,7 +888,7 @@
         var openLink = f.closest(".site-frame") && f.closest(".site-frame").querySelector(".site-frame-open");
         var href = f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || f.getAttribute("data-src") || "";
         fb = elem('<div class="frame-fallback" role="status"><p></p></div>');
-        fb.querySelector("p").textContent = LANG === "fr" ? "Ce site utilise une connexion réseau." : "This website uses a network connection.";
+        fb.querySelector("p").textContent = STR.frameNetwork;
         if (href) {
           var link = document.createElement("a");
           link.href = href;
@@ -863,7 +900,7 @@
         var show = document.createElement("button");
         show.type = "button";
         show.className = "frame-show";
-        show.textContent = LANG === "fr" ? "Afficher le site ici" : "Show the site here";
+        show.textContent = STR.frameShow;
         show.addEventListener("click", function () {
           clearTimeout(fallbackTimers.get(f));
           fb.hidden = true;

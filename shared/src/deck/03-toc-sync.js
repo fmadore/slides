@@ -98,6 +98,18 @@
     if (!overlay || !overlay.classList.contains("open")) return;
     if (e.key === "Tab") { trapTOCFocus(e); e.stopPropagation(); return; }
     if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); closeTOC(); return; }
+    // The dialog's own footer names T and O, so both have to work from inside
+    // it rather than be swallowed with every other key: T is the same toggle
+    // that opened the contents, and O hands over to reveal's overview.
+    if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+      var letter = String(e.key || "").toLowerCase();
+      if (letter === "t" || letter === "o") {
+        e.preventDefault(); e.stopPropagation();
+        closeTOC();
+        if (letter === "o") Reveal.toggleOverview(true);
+        return;
+      }
+    }
     var f = Array.prototype.slice.call(
       overlay.querySelectorAll(".toc-item")
     ).filter(function (el) { return !el.disabled && el.offsetParent !== null; });
