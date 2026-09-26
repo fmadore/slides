@@ -1,5 +1,5 @@
 {
-  "$comment": "Talk manifest — one structured record per published talk, newest first. The landing page's static list is generated from this file by tools/build-index.py (run it after editing), and tools/audit.py validates that every entry has a deck folder and every published deck has an entry. tools/new-talk.py appends entries automatically. Optional per-talk fields: video, pdf, eventUrl.",
+  "$comment": "Talk manifest — one structured record per published talk, newest first. The landing page's static list is generated from this file by tools/build-index.py (run it after editing), and tools/audit.py validates that every entry has a deck folder and every published deck has an entry. tools/new-talk.py appends entries automatically. Optional per-talk fields: deckTitle (a fuller in-deck and citation title), video, pdf, eventUrl.",
   "site": "https://slides.frederickmadore.com",
   "talks": [
     {

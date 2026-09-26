@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import json
 import re
+from urllib.parse import urlparse
 
 from .manifest import Talk
 
@@ -21,13 +22,70 @@ def _json_script(value) -> str:
     return json.dumps(value, ensure_ascii=False).replace("</", "<\\/")
 
 
+# The site's owner and publisher. Co-presenters are named from the manifest
+# alone; the owner's record also carries the identifiers a citation manager or
+# a knowledge graph can resolve the owner by.
+OWNER = {
+    "name": "Frédérick Madore",
+    "url": "https://www.frederickmadore.com/",
+    "orcid": "https://orcid.org/0000-0003-0959-2092",
+}
+
+
+def _person(name: str) -> dict:
+    person = {"@type": "Person", "name": name}
+    if name == OWNER["name"]:
+        person.update(url=OWNER["url"], sameAs=OWNER["orcid"])
+    return person
+
+
+def pdf_url(talk: Talk, site: str) -> str:
+    """Absolute URL of the talk's PDF: the manifest's `pdf` override, resolved
+    against the site root as the landing page resolves it, else the
+    slides.pdf the deploy generates beside the deck."""
+    override = talk.optional.get("pdf")
+    if override:
+        if urlparse(override).scheme in {"http", "https"}:
+            return override
+        return f"{site.rstrip('/')}/{override.lstrip('/')}"
+    return talk.canonical_url(site) + "slides.pdf"
+
+
+def render_citation(talk: Talk, site: str) -> list[str]:
+    """Highwire Press tags, which Zotero's connector and Google Scholar read.
+
+    citation_conference_title is what makes Zotero file a talk as a conference
+    paper named for its event — with citation_title alone it guesses "journal
+    article" — and citation_pdf_url attaches the exported slides in place of a
+    snapshot of a page that needs JavaScript to show anything.
+    """
+    lines = [f'  <meta name="citation_title" content="{_esc(talk.display_title)}">']
+    lines += [f'  <meta name="citation_author" content="{_esc(name)}">' for name in talk.presenters]
+    lines += [
+        f'  <meta name="citation_publication_date" content="{talk.date.replace("-", "/")}">',
+        f'  <meta name="citation_conference_title" content="{_esc(talk.event)}">',
+        f'  <meta name="citation_language" content="{_esc(talk.language)}">',
+        f'  <meta name="citation_pdf_url" content="{_esc(pdf_url(talk, site))}">',
+    ]
+    lines += [f'  <meta name="citation_keywords" content="{_esc(tag)}">' for tag in talk.tags]
+    return lines
+
+
 def render_head(talk: Talk, site: str) -> str:
     url = talk.canonical_url(site)
     locale = "fr_FR" if talk.language.startswith("fr") else "en_US"
     author_label = talk.presenters[0] if len(talk.presenters) == 1 else " & ".join(
         presenter.rsplit(" ", 1)[-1] for presenter in talk.presenters
     )
-    authors = [{"@type": "Person", "name": presenter} for presenter in talk.presenters]
+    authors = [_person(presenter) for presenter in talk.presenters]
+    # The card is a capture of the cover slide (tools/export-pdf.mjs).
+    # A colon rather than quotation marks: titles carry quotes of their own.
+    cover_alt = (f"Diapositive de couverture : {talk.display_title}"
+                 if talk.language.startswith("fr")
+                 else f"Cover slide: {talk.display_title}")
+    event = {"@type": "Event", "name": talk.event, "startDate": talk.date}
+    if talk.optional.get("eventUrl"):
+        event["url"] = talk.optional["eventUrl"]
     structured = {
         "@context": "https://schema.org",
         "@type": "PresentationDigitalDocument",
@@ -38,16 +96,14 @@ def render_head(talk: Talk, site: str) -> str:
         "datePublished": talk.date,
         "author": authors,
         "keywords": ", ".join(talk.tags),
-        "publisher": {
-            "@type": "Person",
-            "name": "Frédérick Madore",
-            "url": "https://www.frederickmadore.com/",
+        "image": f"{url}social-card.png",
+        "encoding": {
+            "@type": "MediaObject",
+            "contentUrl": pdf_url(talk, site),
+            "encodingFormat": "application/pdf",
         },
-        "releasedEvent": {
-            "@type": "Event",
-            "name": talk.event,
-            "startDate": talk.date,
-        },
+        "publisher": _person(OWNER["name"]),
+        "releasedEvent": event,
     }
     return "\n".join([
         HEAD_START,
@@ -62,10 +118,12 @@ def render_head(talk: Talk, site: str) -> str:
         f'  <meta property="og:image" content="{_esc(url)}social-card.png">',
         '  <meta property="og:image:width" content="1280">',
         '  <meta property="og:image:height" content="720">',
+        f'  <meta property="og:image:alt" content="{_esc(cover_alt)}">',
         f'  <meta property="og:locale" content="{locale}">',
         '  <meta name="twitter:card" content="summary_large_image">',
         f'  <script type="application/ld+json">{_json_script(structured)}</script>',
         f'  <meta name="author" content="{_esc(", ".join(talk.presenters))}">',
+        *render_citation(talk, site),
         HEAD_END,
     ])
 
