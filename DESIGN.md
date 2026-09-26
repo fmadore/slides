@@ -453,6 +453,14 @@ drift rather than a later sweep finding it. The rules the checks cannot read —
 measure, register, hierarchy, whether a composition is authored or template —
 are still read by eye.
 
+The site pages outside `talks/` — the landing page and the 404 — hand-roll
+their CSS the same way, and a `transition: all` on the landing page's Open cue
+outlived every deck's. They are not slides: they size against the viewport,
+keep their own type scale and have no motion switch, so only the two rules that
+hold on any page are checked there — `transition: all` and a corporate colour
+spelled out by hand (a `:root` token *defining* the palette is the exception
+the rule exists to point at).
+
 Two things the hand sweep got wrong before it was folded in, recorded so the
 next check does not repeat them. A rule parser that never resets its brace
 depth reads **one** rule out of a stylesheet and reports every deck clean, so

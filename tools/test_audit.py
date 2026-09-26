@@ -849,12 +849,33 @@ class EndToEnd(AuditCase):
                    "</style></head></html>")
         self.assertEqual(self.run_audit([]), 1)
 
-    def test_only_a_deck_own_css_is_held_to_the_theme_rules(self):
-        """The landing page is not a slide, and the theme has its own pass."""
-        drift = "<style>.reveal .x { transition: all 220ms; }</style>"
+    def landing(self, css):
         self.write("index.html",
-                   f'<html>{drift}<a href="talks/{TALK["slug"]}/">t</a>'
+                   f'<html><style>{css}</style><a href="talks/{TALK["slug"]}/">t</a>'
                    '<script src="shared/highlight.min.js"></script></html>')
+
+    def test_a_site_page_is_not_held_to_the_canvas_rules(self):
+        """The landing page is not a slide: it sizes against the viewport,
+        takes its own type scale and floats nothing over a hall."""
+        self.landing(".mast { font-size: clamp(3rem, 11vw, 8rem); }"
+                     ".tag { font-size: 0.68rem; }"
+                     ".x { box-shadow: 0 2px 8px black; animation: spin 1s; }")
+        self.assertEqual(self.run_audit([]), 0)
+
+    def test_a_site_page_is_held_to_the_page_wide_rules(self):
+        """…but `transition: all` fades a focus ring on any page, and a
+        hand-spelled corporate colour drifts from its token on any page."""
+        for css in (".go { transition: all 220ms; }",
+                    ".go { transition-property: all; }",
+                    ".go { color: #009260; }",
+                    ".go { border-bottom: 3px solid #00268A; }"):
+            with self.subTest(css=css):
+                self.landing(css)
+                self.assertEqual(self.run_audit([]), 1)
+
+    def test_a_site_page_may_define_the_palette_as_tokens(self):
+        self.landing(":root { --green: #009260; --navy: #00268a; }"
+                     ".go { color: var(--green); transition: opacity 220ms, transform 220ms; }")
         self.assertEqual(self.run_audit([]), 0)
 
     def test_tampered_vendor_file_fails_the_audit(self):

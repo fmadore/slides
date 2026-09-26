@@ -15,6 +15,8 @@ Static checks (no browser, stdlib only):
     in-flow content, the retired card shape, type under the chrome floor,
     corporate hex where a token exists, hand-patched hero centring, and
     animations no stiller can reach
+  • the site pages outside talks/ (landing, 404) against the two of those
+    rules that hold on any page: `transition: all` and hand-spelled hex
   • orphaned assets and exact duplicate files (warnings)
   • image weight: no WebP, nothing over 1800px or 600 KB (warnings)
   • with --site DIR: the publication build carries no speaker notes, no
@@ -66,7 +68,7 @@ PRUNED_DIRS = {".git", ".claude", "node_modules", "_site"}
 # tools/strip-notes.py).
 DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
             "DESIGN.md", ".impeccable",
-            "serve-deck.py", "tools", ".github", "roadmap.md",
+            "serve-deck.py", "tools", ".github", "roadmap.md", "docs", "scratchpad",
             os.path.join("talks", "_template"), os.path.join("talks", "_showcase"),
             os.path.join("shared", "src"),
             os.path.join("shared", "vendor-manifest.json")]
@@ -525,20 +527,32 @@ def _corporate_hex(value):
     return None, None
 
 
-def check_css_declaration(decl, selector, rep, rel):
-    """The rules that can be read one declaration at a time."""
+def check_css_declaration(decl, selector, rep, rel, page=False):
+    """The rules that can be read one declaration at a time.
+
+    page=True is a site page outside talks/ (the landing page, the 404): it
+    has no scaled canvas, no hall to read it and no motion switch, so only the
+    rules that hold on any page apply there — `transition: all` and a
+    corporate colour spelled out by hand.
+    """
     where = f"{selector} " if selector else "inline style "
     at = f"{{{decl.prop}: {decl.value}}} (line {decl.line})"
-    if _in_canvas(selector) and (VIEWPORT_UNIT_RE.search(decl.value)
-                                 or re.search(r"\bclamp\s*\(", decl.value, re.I)):
-        rep.error(rel, f"{where}{at} — sizing against the viewport inside the scaled canvas; "
-                       f"the stage is a fixed 1280x720 that reveal scales as a whole, so size "
-                       f"in rem. vw/vh/clamp() belong to the unscaled chrome only")
     if decl.prop in ("transition", "transition-property") and \
             re.search(r"(?<![\w-])all(?![\w-])", decl.value, re.I):
         rep.error(rel, f"{where}{at} — `all` sweeps outline-color and outline-offset in too, so "
                        f"the focus ring fades up over the duration instead of landing with "
                        f"focus; name the properties")
+    raw, token = _corporate_hex(decl.value)
+    if raw:
+        rep.error(rel, f"{where}{at} — {raw} spells a corporate colour out by hand; use "
+                       f"var({token}), which follows the theme when it moves")
+    if page:
+        return
+    if _in_canvas(selector) and (VIEWPORT_UNIT_RE.search(decl.value)
+                                 or re.search(r"\bclamp\s*\(", decl.value, re.I)):
+        rep.error(rel, f"{where}{at} — sizing against the viewport inside the scaled canvas; "
+                       f"the stage is a fixed 1280x720 that reveal scales as a whole, so size "
+                       f"in rem. vw/vh/clamp() belong to the unscaled chrome only")
     if decl.prop == "box-shadow" and not _is_overlay(selector) \
             and _keyword(decl.value) not in KEYWORDS and "inset" not in decl.value.lower():
         rep.error(rel, f"{where}{at} — a shadow on in-flow slide content; slide content is "
@@ -552,10 +566,6 @@ def check_css_declaration(decl, selector, rep, rel):
                            f"{floor:.2f}rem floor for " + ("the canvas" if canvas else "chrome")
                            + "; take " + ("var(--fs-caption) or var(--fs-label), which are sized "
                                           "for the hall" if canvas else "var(--fs-footer)"))
-    raw, token = _corporate_hex(decl.value)
-    if raw:
-        rep.error(rel, f"{where}{at} — {raw} spells a corporate colour out by hand; use "
-                       f"var({token}), which follows the theme when it moves")
     if decl.prop in ("animation", "animation-duration") and \
             _keyword(decl.value) not in KEYWORDS and not DRAW_RUN_RE.search(decl.value):
         rep.error(rel, f"{where}{at} — the duration does not come from var(--draw-run); print, "
@@ -606,6 +616,28 @@ def audit_deck_css(path, rep):
         # everything a deck writes one on lives inside .slides.
         for decl in iter_css_declarations(declarations, line):
             check_css_declaration(decl, "", rep, rel)
+
+
+def audit_page_css(path, rep):
+    """A site page's own CSS (landing, 404), held to the page-wide rules.
+
+    The landing page is where a reader arrives, and it hand-rolls its styles
+    like a deck does — which is how a `transition: all` survived on its Open
+    cue after every deck had been swept clean of it.
+    """
+    rel = os.path.relpath(path, ROOT)
+    with open(path, encoding="utf-8") as handle:
+        parser = DeckParser()
+        parser.feed(handle.read())
+    blocks = [(rule.selector, iter_css_declarations(rule.body, rule.line))
+              for source, first_line in parser.styles
+              for rule in iter_css_rules(source, first_line)
+              if not rule.selector.startswith("@")]
+    blocks += [("", iter_css_declarations(declarations, line))
+               for declarations, line in parser.inline_styles]
+    for selector, declarations in blocks:
+        for decl in declarations:
+            check_css_declaration(decl, selector, rep, rel, page=True)
 
 
 def file_digest(path, algorithm="md5"):
@@ -920,6 +952,8 @@ def main(argv=None):
         audit_html(path, rep, published_deck=in_talks and not underscore)
         if in_talks:
             audit_deck_css(path, rep)
+        else:
+            audit_page_css(path, rep)
     for dirpath, dirnames, filenames in os.walk(ROOT):
         dirnames[:] = [d for d in dirnames if d not in PRUNED_DIRS]
         for name in filenames:
