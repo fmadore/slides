@@ -77,7 +77,9 @@ slides/
 │   ├── fetch-highlight.py    regenerate the slim highlight.js bundle
 │   ├── fetch-fonts.py        transactionally re-vendor fonts + checksums
 │   ├── lib/                  shared Node runtime/server/cache helpers
-│   └── slideslib/            validated manifest + generated deck metadata
+│   ├── slideslib/            validated manifest + generated deck metadata
+│   └── test_*.py test-*.mjs  unit tests (Python unittest, node --test)
+├── docs/audits/              dated repository reviews and what came of them
 ├── package.json lock         pinned browser/visual tooling and local scripts
 ├── requirements-dev.txt      pinned QR-generation dependency
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
@@ -121,6 +123,16 @@ DECK_CONFIG metadata blocks are generated from the manifest; use optional
 `deckTitle` when the in-deck title should be longer than the landing-page title.
 Edit slide content outside those generated markers.
 
+**Citation metadata.** The same generated block makes every deck citable by
+machine as well as by eye. Highwire `citation_*` tags (title, each presenter,
+date, event, language, keywords and the PDF) are what Zotero's browser
+connector and Google Scholar read: Zotero saves a deck as a *conference paper*
+named for its event, with `slides.pdf` attached — `citation_conference_title`
+is what stops it guessing "journal article". The JSON-LD block names the
+presenters (the site owner with an ORCID), the event, the social card and the PDF.
+A manifest `pdf` override (absolute, or relative to the site root) is followed
+everywhere the PDF is named.
+
 ---
 
 ## Preview locally
@@ -132,8 +144,11 @@ python serve-deck.py          # no-cache server → http://localhost:8742
 ```
 
 Open `http://localhost:8742/` for the landing page (rendered statically from
-`talks/talks.json`, with client-side search and language/year/topic filters
-whose state lives in the URL), or a talk directly at `/talks/<slug>/`. The no-cache server guarantees reloads always show your latest edits.
+`talks/talks.json`, with client-side search over titles, events, people and
+topics, and language/year/topic filters whose state lives in the URL), or a
+talk directly at `/talks/<slug>/`. The no-cache server guarantees reloads always
+show your latest edits. `--port N` picks another port; `--host 0.0.0.0` serves
+the repo to other devices on the network (a phone checking the narrow layout).
 (For just viewing, any static server works, e.g. `python -m http.server`.)
 
 ---
@@ -317,7 +332,9 @@ chrome), a corporate colour spelled out in hex where a token exists, hero
 centring the theme already owns at `.present`, and an animation that does not
 take its duration from `var(--draw-run)` (so no stiller can reach it). Each
 check has a known-bad fixture in `tools/test_audit.py` that proves it still
-fires.
+fires. The landing and 404 pages are held to the two of those rules that hold
+on any page — `transition: all` and a hand-spelled corporate hex — but not to
+the canvas rules, since they are not slides.
 
 **Customise the look:** edit the focused files under `shared/src/`, then run
 `npm run build:shared`. The public `shared/theme.css` and `shared/deck.js` names

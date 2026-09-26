@@ -6,16 +6,19 @@ heuristic caching and keep serving stale CSS/JS during rapid edits. This
 variant sends no-store on every response AND ignores conditional requests,
 so a reload always shows the latest files.
 
-Usage (from the repo root):   python serve-deck.py
+Usage (from anywhere):   python serve-deck.py [--port 8742] [--host 127.0.0.1]
 Then open http://localhost:8742  (landing page; talks at /talks/<slug>/)
+
+--host 0.0.0.0 serves the deck to other devices on the network — a phone
+checking the narrow layout, or a lectern machine — so it is opt-in.
 
 For just presenting a finished deck, any static server is fine.
 """
+import argparse
 import http.server
 import os
 import socketserver
 
-PORT = 8742
 os.chdir(os.path.dirname(os.path.abspath(__file__)))  # serve this folder
 
 
@@ -40,5 +43,20 @@ class Server(socketserver.ThreadingTCPServer):
     daemon_threads = True
 
 
-print(f"Serving slides/ (no-cache) at http://localhost:{PORT}")
-Server(("127.0.0.1", PORT), NoCacheHandler).serve_forever()
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--port", type=int, default=8742, help="port to listen on (default 8742)")
+    ap.add_argument("--host", default="127.0.0.1",
+                    help="interface to bind (default 127.0.0.1; 0.0.0.0 for the local network)")
+    args = ap.parse_args(argv)
+    shown = "localhost" if args.host in ("127.0.0.1", "0.0.0.0") else args.host
+    with Server((args.host, args.port), NoCacheHandler) as server:
+        print(f"Serving slides/ (no-cache) at http://{shown}:{args.port}  — Ctrl+C to stop")
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\nstopped")
+
+
+if __name__ == "__main__":
+    main()

@@ -27,6 +27,7 @@ visual-diff/
 
 # Local scratch space (screenshots, one-off check scripts)
 /tmp/
+/scratchpad/
 
 # Rehearsal scripts: the delivery notes ship inline in each deck instead
 talks/*/speaker-notes.md
