@@ -113,7 +113,21 @@ export async function checkInteractions(browser, base) {
     await page.locator('#clear-filters').click();
     assert.equal(await page.locator('li.talk:visible').count(), totalTalks);
     assert.equal(await page.locator('#f-q').inputValue(), '');
-    console.log('ok    interactions: reduced motion, lazy gallery, print aliases/negative geometry, iframe lifecycle, escaped TOC, copy link, catalogue filters');
+    // Topic tags are searchable, not only filterable, and the query is
+    // mirrored into the URL so a filtered view can be shared.
+    await page.locator('#f-q').fill('OCR');
+    assert.equal(await page.locator('li.talk:visible a.talk-row[href*="dga-dormant-collections"]').count(), 1);
+    assert.equal(new URL(page.url()).searchParams.get('q'), 'OCR');
+    // …and a shared filtered URL restores its state on load.
+    await page.goto(`${base}/?tag=AMIRA`);
+    assert.equal(await page.locator('#f-tag').inputValue(), 'AMIRA');
+    const tagged = await page.locator('li.talk').evaluateAll(items =>
+      items.filter(li => !li.hidden).map(li => li.dataset.tags.split('|').includes('AMIRA')));
+    assert.ok(tagged.length > 0 && tagged.every(Boolean));
+    // One outline: h1 masthead, h2 sections, h3 talk titles — no skipped level.
+    const levels = await page.locator('h1, h2, h3, h4, h5, h6').evaluateAll(hs => hs.map(h => +h.tagName[1]));
+    assert.ok(levels.every((level, i) => i === 0 || level <= levels[i - 1] + 1), `heading levels skip: ${levels}`);
+    console.log('ok    interactions: reduced motion, lazy gallery, print aliases/negative geometry, iframe lifecycle, escaped TOC, TOC keys, copy-link feedback, catalogue search/filters/URL state/outline');
   } finally {
     await ctx.close();
   }
