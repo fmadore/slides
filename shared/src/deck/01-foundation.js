@@ -33,6 +33,7 @@
           imageViewer: "Image viewer", imageClose: "Close image", imageView: "View image full screen", imagePrev: "Previous image", imageNext: "Next image",
           imageLoading: "Loading image…", imageUnavailable: "Image unavailable. Try another image.",
           embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
+          scrollRegion: "Scrollable excerpt",
           frameNetwork: "This website uses a network connection.", frameShow: "Show the site here",
           frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
     fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer", deckNav: "Navigation des diapositives",
@@ -40,6 +41,7 @@
           imageViewer: "Visionneuse d’images", imageClose: "Fermer l’image", imageView: "Afficher l’image en plein écran", imagePrev: "Image précédente", imageNext: "Image suivante",
           imageLoading: "Chargement de l’image…", imageUnavailable: "Image indisponible. Essayez une autre image.",
           embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
+          scrollRegion: "Extrait défilant",
           frameNetwork: "Ce site utilise une connexion réseau.", frameShow: "Afficher le site ici",
           frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
   };

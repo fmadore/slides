@@ -441,6 +441,13 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   text-decoration-thickness: 1.5px;
   transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
+/* A link on a slide carries its rule at rest, not only on hover: green
+   against the ink around it measures 1.4–2.9:1, under the 3:1 at which colour
+   alone may mark a link (WCAG 1.4.1), so the rule is what tells it from the
+   words beside it — in a paragraph, a list or a callout alike. The links that
+   stand alone as components keep their own treatment: contact rows, the frame
+   bar's open link and the offline fallback's. */
+.reveal .slides a:not(.site-frame-open, .liveshot-open, .contact a, .frame-fallback a) { text-decoration-line: underline; }
 .reveal a:hover { color: var(--green); text-decoration-line: underline; text-decoration-color: var(--green); }
 .reveal a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: var(--radius-sm); }
 
@@ -1145,6 +1152,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   scrollbar-width: thin;
   scrollbar-color: var(--green) transparent;
 }
+/* Focusable so a keyboard can scroll it (deck.js initScrollRegions); the ring
+   is the theme's own, and :focus-visible keeps it off a mouse click. */
+.reveal .scroll-panel:focus-visible,
+.reveal [data-scroll-region]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .reveal .scroll-panel::-webkit-scrollbar { width: 11px; }
 .reveal .scroll-panel::-webkit-scrollbar-thumb {
   background: color-mix(in oklch, var(--green), var(--paper) 18%);

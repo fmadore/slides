@@ -33,6 +33,7 @@
           imageViewer: "Image viewer", imageClose: "Close image", imageView: "View image full screen", imagePrev: "Previous image", imageNext: "Next image",
           imageLoading: "Loading image…", imageUnavailable: "Image unavailable. Try another image.",
           embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
+          scrollRegion: "Scrollable excerpt",
           frameNetwork: "This website uses a network connection.", frameShow: "Show the site here",
           frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
     fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer", deckNav: "Navigation des diapositives",
@@ -40,6 +41,7 @@
           imageViewer: "Visionneuse d’images", imageClose: "Fermer l’image", imageView: "Afficher l’image en plein écran", imagePrev: "Image précédente", imageNext: "Image suivante",
           imageLoading: "Chargement de l’image…", imageUnavailable: "Image indisponible. Essayez une autre image.",
           embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
+          scrollRegion: "Extrait défilant",
           frameNetwork: "Ce site utilise une connexion réseau.", frameShow: "Afficher le site ici",
           frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
   };
@@ -724,7 +726,9 @@
             try { hl.highlightElement(code); } catch (e) {}
           }
           panel.removeAttribute("aria-busy");
-          panel.removeAttribute("role");
+          // A loaded panel is a scroll region again (initScrollRegions).
+          if (panel.matches(SCROLL_REGIONS)) panel.setAttribute("role", "region");
+          else panel.removeAttribute("role");
           refitAfterLoad(panel);
         })
         .catch(function () {
@@ -736,6 +740,37 @@
           refitAfterLoad(panel);
         });
     }));
+  }
+
+  /* ---- scroll regions: reachable from the keyboard -----------------------
+     A panel that scrolls its own content — .scroll-panel, or any per-deck
+     scroller that opts in with data-scroll-region="its name" — was somewhere
+     a mouse wheel could reach and a keyboard could not: nothing in it takes
+     focus (WCAG 2.1.1). Each becomes a named, focusable region. While one has
+     focus the vertical arrows scroll it rather than reaching reveal, but
+     Left/Right, Page Up/Down and Space still drive the deck — those are what
+     presenter remotes send, so a panel clicked mid-talk can never capture the
+     clicker. Focus is released when the slide changes, so a panel the room
+     can no longer see never keeps the keys. */
+  var SCROLL_REGIONS = ".scroll-panel, [data-scroll-region]";
+  function initScrollRegions() {
+    var regions = document.querySelectorAll(".reveal .slides :is(" + SCROLL_REGIONS + ")");
+    if (!regions.length) return;
+    regions.forEach(function (region) {
+      if (!region.hasAttribute("tabindex")) region.setAttribute("tabindex", "0");
+      if (!region.hasAttribute("aria-label") && !region.hasAttribute("aria-labelledby")) {
+        region.setAttribute("aria-label", region.getAttribute("data-scroll-region") || STR.scrollRegion);
+      }
+      // A file embed still loading holds role=status; it takes region on load.
+      if (!region.hasAttribute("role")) region.setAttribute("role", "region");
+      region.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") e.stopPropagation();
+      });
+    });
+    Reveal.on("slidechanged", function () {
+      var active = document.activeElement;
+      if (active && active.matches && active.matches(SCROLL_REGIONS)) active.blur();
+    });
   }
 
   /* ---- image lightbox: view a figure/screenshot full-screen ----------------
@@ -1050,6 +1085,7 @@
       buildRunhead(reveal);
       buildTOC(reveal);
       fileEmbedsReady = loadFileEmbeds();
+      initScrollRegions();
       buildLightbox();
       initFrameFallbacks();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)

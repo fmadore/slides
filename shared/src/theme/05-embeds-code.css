@@ -43,6 +43,10 @@
   scrollbar-width: thin;
   scrollbar-color: var(--green) transparent;
 }
+/* Focusable so a keyboard can scroll it (deck.js initScrollRegions); the ring
+   is the theme's own, and :focus-visible keeps it off a mouse click. */
+.reveal .scroll-panel:focus-visible,
+.reveal [data-scroll-region]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .reveal .scroll-panel::-webkit-scrollbar { width: 11px; }
 .reveal .scroll-panel::-webkit-scrollbar-thumb {
   background: color-mix(in oklch, var(--green), var(--paper) 18%);

@@ -54,10 +54,12 @@
     .reveal .chart-hub .shot { max-height: 21rem; width: auto; max-width: 100%; margin-inline: auto; }
     /* The caption names the tool that drew the chart, so it sits under the whole
        figure: max-width:none defeats the theme's prose measure, which would
-       otherwise centre it over half the band and break it across two lines. */
+       otherwise centre it over half the band and break it across two lines.
+       --ink-soft, not --ink-faint: on the band's tint the faint tier measured
+       4.38:1, under AA for a caption. */
     .reveal .chart-cap { font-family: var(--font-label); font-size: var(--fs-caption);
       font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--ink-faint); margin: var(--space-sm) 0 0; max-width: none; text-align: center; }
+      color: var(--ink-soft); margin: var(--space-sm) 0 0; max-width: none; text-align: center; }
 
 
   </style>

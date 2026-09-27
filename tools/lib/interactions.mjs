@@ -65,6 +65,27 @@ export async function checkInteractions(browser, base) {
     await page.evaluate(() => { Reveal.slide(1); Reveal.slide(2); });
     assert.equal(await page.locator('.present .frame-fallback').isVisible(), true);
 
+    // A scroll panel is reachable from the keyboard: the vertical arrows
+    // scroll it in place, while a presenter remote's Page Down still advances
+    // the deck and takes focus off the panel it leaves behind.
+    await open('2026-09-17-kansas-ai-and-the-work-of');
+    const panelSlide = await page.evaluate(async () => {
+      const { h } = Reveal.getIndices(document.querySelector('.scroll-panel').closest('section'));
+      Reveal.slide(h, 0);
+      await window.DeckRuntime.settle();
+      return h;
+    });
+    const panel = page.locator('.present .scroll-panel');
+    assert.equal(await panel.getAttribute('tabindex'), '0');
+    assert.equal(await panel.getAttribute('role'), 'region');
+    await panel.focus();
+    await page.keyboard.press('ArrowDown');
+    await page.waitForFunction(() => document.querySelector('.present .scroll-panel')?.scrollTop > 0);
+    assert.equal(await page.evaluate(() => Reveal.getIndices().h), panelSlide);
+    await page.keyboard.press('PageDown');
+    await page.waitForFunction(h => Reveal.getIndices().h === h + 1, panelSlide);
+    assert.equal(await page.evaluate(() => document.activeElement.classList.contains('scroll-panel')), false);
+
     await page.addInitScript(() => {
       let config;
       Object.defineProperty(window, 'DECK_CONFIG', { configurable: true, get: () => config, set: value => {
@@ -127,7 +148,7 @@ export async function checkInteractions(browser, base) {
     // One outline: h1 masthead, h2 sections, h3 talk titles — no skipped level.
     const levels = await page.locator('h1, h2, h3, h4, h5, h6').evaluateAll(hs => hs.map(h => +h.tagName[1]));
     assert.ok(levels.every((level, i) => i === 0 || level <= levels[i - 1] + 1), `heading levels skip: ${levels}`);
-    console.log('ok    interactions: reduced motion, lazy gallery, print aliases/negative geometry, iframe lifecycle, escaped TOC, TOC keys, copy-link feedback, catalogue search/filters/URL state/outline');
+    console.log('ok    interactions: reduced motion, lazy gallery, print aliases/negative geometry, iframe lifecycle, keyboard scroll panel, escaped TOC, TOC keys, copy-link feedback, catalogue search/filters/URL state/outline');
   } finally {
     await ctx.close();
   }

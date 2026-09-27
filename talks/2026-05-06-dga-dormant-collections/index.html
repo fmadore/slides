@@ -82,8 +82,10 @@
     .reveal .extract-scroll p { font-size: 1rem; line-height: 1.42; margin: 0 0 0.6em; }
     .reveal .extract-scroll p:last-child { margin-bottom: 0; }
     .reveal .extract-scroll .doc-head { font-weight: 700; }
+    /* --ink-soft, not --ink-faint: on the extract's Sunken ground the faint
+       tier measured 4.26:1, under AA for text this size. */
     .reveal .extract-scroll .doc-ref { font-family: var(--font-mono); font-size: var(--fs-caption);
-      color: var(--ink-faint); letter-spacing: .04em; }
+      color: var(--ink-soft); letter-spacing: .04em; }
     .reveal .extract-scroll .doc-list { margin: 0 0 0.6em; padding-left: 1.1em; }
     .reveal .extract-scroll .doc-list li { font-size: 1rem; line-height: 1.42; margin: 0.1em 0; }
     .reveal .extract-scroll::-webkit-scrollbar { width: 8px; }
@@ -372,7 +374,7 @@
         <div class="col">
           <div class="extract">
             <span class="extract-label">Transcribed text · French</span>
-            <div class="extract-scroll">
+            <div class="extract-scroll" data-scroll-region="Transcribed text">
               <p class="doc-ref">3 H 1 a</p>
               <p class="doc-head">Des musulmans du Burkina Faso,</p>
               <ul class="doc-list">

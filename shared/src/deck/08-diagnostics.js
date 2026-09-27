@@ -78,6 +78,7 @@
       buildRunhead(reveal);
       buildTOC(reveal);
       fileEmbedsReady = loadFileEmbeds();
+      initScrollRegions();
       buildLightbox();
       initFrameFallbacks();
       highlightAll();   // highlight code via global hljs (works without the bundled plugin)

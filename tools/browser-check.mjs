@@ -4,7 +4,9 @@
  * For each deck (every talks/<dir>/index.html) plus the landing page:
  *   • 1280×720  — no JS/page errors, no failed local resources, no slide
  *                 auto-fitted below the readability threshold (data-fit-fail),
- *                 no raw overflow on unfitted slides
+ *                 no raw overflow on unfitted slides, and no WCAG 2.2 A/AA
+ *                 failure axe-core can prove on any slide, its footer or the
+ *                 open contents dialog (tools/lib/a11y.mjs)
  *   • 844×390   — the persistent footer never covers slide content
  *   • 390×844   — reveal's scroll view stays off; the canvas fits horizontally;
  *                 no slide auto-fitted below the threshold under the narrow
@@ -13,6 +15,8 @@
  *
  * Then once, on the component catalogue: the motion switch — .no-draw must
  * zero --draw-run and reach every animated mark and every counting numeral.
+ * The landing page (1280×720 and 390×844) and the 404 page get the same axe
+ * pass as the slides.
  *
  * Usage:
  *   node tools/browser-check.mjs [--root DIR] [--screenshots DIR] [--decks a,b]
@@ -28,6 +32,7 @@
 import { existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { auditDeck, axeFindings } from './lib/a11y.mjs';
 import { checkInteractions } from './lib/interactions.mjs';
 import {
   intArg,
@@ -135,6 +140,13 @@ async function checkDeck(deck) {
       for (const o of report.overflows) fail(where, `slide overflows the 1280×720 canvas: ${o}`);
       ok(where, `1280×720 — ${report.fits.length ? 'auto-fitted: ' + report.fits.join(', ') : 'no slide needed fitting'}`);
     }
+    try {
+      const findings = await auditDeck(page);
+      for (const [slide, finding] of findings) fail(where, `a11y ${slide}: ${finding}`);
+      if (!findings.length) ok(where, '1280×720 — no WCAG A/AA failures on any slide or the contents dialog');
+    } catch (error) {
+      fail(where, `could not run the accessibility check: ${error.message}`);
+    }
     for (const e of errors) fail(where, `console: ${e}`);
     await ctx.close();
   }
@@ -203,7 +215,7 @@ if (decks.includes('_showcase')) {
   catch (error) { fail('interactions', error.stack || String(error)); }
 }
 
-// ---- landing page ---------------------------------------------------------
+// ---- landing page and 404 ---------------------------------------------------
 {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   const { page, errors } = await openPage(ctx, `${BASE}/`);
@@ -211,6 +223,20 @@ if (decks.includes('_showcase')) {
   if (talks < 1) fail('index.html', 'landing page lists no talks');
   else ok('index.html', `landing page lists ${talks} talks`);
   for (const e of errors) fail('index.html', `console: ${e}`);
+  await ctx.close();
+}
+for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.html', 1280, 720]]) {
+  const where = path === '/' ? 'index.html' : path.slice(1);
+  if (!existsSync(join(ROOT, path === '/' ? 'index.html' : path.slice(1)))) continue;
+  const ctx = await browser.newContext({ viewport: { width, height } });
+  const { page } = await openPage(ctx, `${BASE}${path}`);
+  try {
+    const findings = await axeFindings(page);
+    for (const finding of findings) fail(where, `a11y ${width}×${height}: ${finding}`);
+    if (!findings.length) ok(where, `${width}×${height} — no WCAG A/AA failures`);
+  } catch (error) {
+    fail(where, `could not run the accessibility check: ${error.message}`);
+  }
   await ctx.close();
 }
 
