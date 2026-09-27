@@ -3,7 +3,8 @@ version: 2
 # Browser and visual-test tooling is pinned in package-lock.json. Runtime
 # dependencies (reveal.js, highlight.js and fonts) remain vendored under
 # shared/ with checksums in vendor-manifest.json. GitHub Actions use major tags
-# and are proposed separately below.
+# and are proposed separately below; so is the one Python pin, the QR
+# generator in requirements-dev.txt (authoring only, hence monthly).
 #
 # Everything is grouped into a single pull request so an actions bump arrives
 # as one review, not five. CI runs on it like any other PR — the audit, the
@@ -25,7 +26,10 @@ updates:
       - dependencies
 
   - package-ecosystem: github-actions
-    directory: /
+    # The workflows, and the local composite action they share.
+    directories:
+      - /
+      - /.github/actions/*
     schedule:
       interval: weekly
       day: monday
@@ -36,5 +40,14 @@ updates:
           - "*"
     commit-message:
       prefix: ci
+    labels:
+      - dependencies
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: deps
     labels:
       - dependencies

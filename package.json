@@ -14,7 +14,8 @@
     "check:visual": "node tools/visual-diff.mjs",
     "export": "node tools/export-pdf.mjs",
     "test:node": "node --test tools/test-*.mjs",
-    "test": "npm run check:shared && npm run test:node"
+    "test": "npm run check:shared && npm run test:node",
+    "validate": "node tools/validate.mjs"
   },
   "devDependencies": {
     "pixelmatch": "7.2.0",

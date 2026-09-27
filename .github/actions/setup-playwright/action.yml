@@ -1,0 +1,25 @@
+name: Set up Playwright's Chromium
+description: >-
+  Install the Chromium build the pinned Playwright expects, restoring the
+  browser download from the cache while package-lock.json is unchanged. The
+  system packages Chromium needs live outside the cache, so they are
+  installed on every run either way. Run after `npm ci`.
+
+runs:
+  using: composite
+  steps:
+    - name: Restore the Playwright browser cache
+      id: cache
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Install Chromium (or only its system packages, on a cache hit)
+      shell: bash
+      run: |
+        if [ "${{ steps.cache.outputs.cache-hit }}" = "true" ]; then
+          npx playwright install-deps chromium
+        else
+          npx playwright install --with-deps chromium
+        fi

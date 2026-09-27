@@ -11,7 +11,8 @@ name: Validate and deploy
 #
 # All actions used here are first-party (actions/*), referenced by major
 # version tag; .github/dependabot.yml proposes the bumps. If supply-chain
-# policy tightens, pin each to a full commit SHA instead.
+# policy tightens, pin each to a full commit SHA instead. The one local
+# action, .github/actions/setup-playwright, installs Chromium from a cache.
 #
 # External links are deliberately NOT checked here — see
 # .github/workflows/link-check.yml, which does that weekly and off the merge
@@ -63,8 +64,7 @@ jobs:
           python3 tools/strip-notes.py /tmp/site-check
           python3 tools/audit.py --site /tmp/site-check --strict
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
 
       - name: Browser checks (1280×720, 844×390, 390×844)
         run: node tools/browser-check.mjs
@@ -106,12 +106,17 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install pinned tooling and Playwright browser
+      - name: Install pinned Node tooling
         if: steps.engine.outputs.changed == 'true'
-        run: |
-          npm ci
-          npx playwright install --with-deps chromium
+        run: npm ci
 
+      - uses: ./.github/actions/setup-playwright
+        if: steps.engine.outputs.changed == 'true'
+
+      # The screenshots always come from the component catalogue (talks/_showcase,
+      # or talks/_template in trees older than the split). --decks _template only
+      # narrows the fit checks that run alongside them to the smallest deck, so
+      # this job spends its time on the capture rather than re-running validate.
       - name: Capture merge-base screenshots
         if: steps.engine.outputs.changed == 'true'
         run: |
@@ -156,10 +161,10 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install pinned tooling and Playwright browser
-        run: |
-          npm ci
-          npx playwright install --with-deps chromium
+      - name: Install pinned Node tooling
+        run: npm ci
+
+      - uses: ./.github/actions/setup-playwright
 
       # PDFs + social cards are expensive: restore the last run's outputs and
       # let export-pdf's content-hash check skip every unchanged deck.
