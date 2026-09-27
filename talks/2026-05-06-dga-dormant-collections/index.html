@@ -136,8 +136,10 @@
     .reveal #s-colab .demo-qr img { width: 116px; height: 116px; }
 
     /* ---- Per-slide height fits (keep every slide inside the 1280×720 canvas) ---- */
-    /* 3 · scanning party — two framed covers + a callout below */
-    .reveal #s-scan .shot.tall { max-height: 292px; }
+    /* 3 · scanning party — two framed covers + a callout below. 220px, not 292:
+       at 292 the slide auto-fitted to ×0.868 and every word on it shrank to
+       make room for two pictures the lightbox shows full size anyway. */
+    .reveal #s-scan .shot.tall { max-height: 220px; }
     .reveal #s-scan .callout { margin-top: var(--space-sm); }
     /* 4 · backlog/triage — the 2×2 stat grid overflows the narrow 2fr column (the big
        figures + labels can't fit two columns); lay it out as a single-column ledger
@@ -155,9 +157,12 @@
     /* 12 · knowledge base — tighten the lead and the 2×2 grid */
     .reveal #s-kb .lead { font-size: var(--fs-body); margin-bottom: var(--space-xs); max-width: none; }
     .reveal #s-kb .kb-grid .shot img { height: 156px; }
-    /* 14 · NotebookLM — trim the QR block */
-    .reveal #s-nb .demo-qr { margin-top: var(--space-xs); }
-    .reveal #s-nb .demo-qr img { width: 110px; height: 110px; }
+    /* 14 · NotebookLM — the QR sits beside its label rather than over it. Stacked,
+       it ran under the footer and the slide auto-fitted to ×0.886; as a row the
+       bullets keep their size (×0.958) and the code still reads across a room. */
+    .reveal #s-nb ul { margin-bottom: var(--space-sm); }
+    .reveal #s-nb .demo-qr { flex-direction: row; align-items: center; gap: var(--space-sm); margin-top: 0; }
+    .reveal #s-nb .demo-qr img { width: 88px; height: 88px; }
     /* 16 · closing — rein in the big headline and the list */
     .reveal #s-close h2 { font-size: 2.7rem; line-height: 1.08; margin-bottom: var(--space-sm); }
     .reveal #s-close ul { font-size: var(--fs-small); }
@@ -194,7 +199,7 @@
   <div class="slides">
 
     <!-- ════════ 1 · COVER ═══════════════════════════════════════ -->
-    <section class="cover" data-footer="light" data-fit-allow="cover artwork uses the full canvas">
+    <section class="cover" data-footer="light">
       <p class="eyebrow">Deutsche Gesellschaft für Asienforschung · Roundtable: DH &amp; KI in den Regionalwissenschaften</p>
       <h1>Dormant Digital Collections, AI Triage</h1>
       <p class="subtitle">Lessons from the Islam West Africa Collection and beyond</p>
@@ -206,7 +211,9 @@
       <!-- Institution wordmark sits with the affiliation (the cluster is hosted at Bayreuth). -->
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
-      <div class="slides-qr">
+      <!-- In the corner, as on the closing: stacked under the contact row it
+           pushed the cover to ×0.861, shrinking the title the room reads first. -->
+      <div class="slides-qr corner">
         <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="656" height="656">
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
       </div>
@@ -248,7 +255,7 @@
     </section>
 
     <!-- ════════ 3 · THE SCANNING PARTY (reading room vs backroom) ═ -->
-    <section data-toc="The scanning party" id="s-scan" data-fit-allow="photographic collage is intentionally edge-to-edge">
+    <section data-toc="The scanning party" id="s-scan">
       <p class="kicker warm">The allure of the archive</p>
       <h2 class="slide-title">From the reading room to the "scanning party"</h2>
       <div class="cols">
@@ -522,7 +529,7 @@
     </section>
 
     <!-- ════════ 14 · USE 6 · NOTEBOOKLM ═════════════════════════ -->
-    <section data-toc="6 · NotebookLM" id="s-nb" data-fit-allow="embedded product demo requires the full frame">
+    <section data-toc="6 · NotebookLM" id="s-nb">
       <p class="kicker navy">Use 6 · Chat with your sources</p>
       <h2 class="slide-title">NotebookLM: the lowest-friction entry point</h2>
       <div class="cols ratio-3-2">
