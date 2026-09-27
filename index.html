@@ -107,8 +107,8 @@
       font-family: var(--mono); font-size: 0.85rem; color: var(--ink-faint);
       font-variant-numeric: tabular-nums;
     }
-    ol.talks { list-style: none; margin: 0.4rem 0 0; padding: 0; counter-reset: talk; }
-    li.talk { counter-increment: talk; border-top: 1px solid var(--line); }
+    ol.talks { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+    li.talk { border-top: 1px solid var(--line); }
     li.talk:first-child { border-top: 2px solid var(--rule); }
     li.talk:last-child { border-bottom: 2px solid var(--rule); }
     a.talk-row {
@@ -130,7 +130,10 @@
     }
     a.talk-row::before {
       grid-area: num; justify-self: start;
-      content: counter(talk, decimal-leading-zero);
+      /* The talk's own number, counted from the first talk (build-index.py):
+         a CSS counter renumbered the whole archive whenever a talk was added,
+         and again whenever the list was filtered. */
+      content: attr(data-no);
       font-family: var(--display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 1.9rem);
       color: var(--green-deep); letter-spacing: -0.02em; line-height: 1;
       font-variant-numeric: tabular-nums;
@@ -324,7 +327,7 @@
       </div>
       <ol class="talks" id="talk-list">
       <li class="talk" data-lang="fr" data-year="2026" data-tags="MCP|GLAM|IWAC|AMIRA|IA" data-search="les serveurs mcp pour les glam africains les serveurs mcp pour les glam africains : ouvrir l&#x27;accès, garder la maîtrise ? humanités numériques et ia en études africaines · stias, stellenbosch atelier point sud · stias, stellenbosch · 23 septembre 2026 deux serveurs mcp — iwac et amira — pour organiser l’accès des assistants aux collections, à leurs sources et aux savoirs documentaires. frédérick madore mcp glam iwac amira ia">
-        <a class="talk-row" href="talks/2026-09-23-stellenbosch-mcp-glam-africains/">
+        <a class="talk-row" href="talks/2026-09-23-stellenbosch-mcp-glam-africains/" data-no="07">
           <p class="talk-event">Humanités numériques et IA en études africaines · STIAS, Stellenbosch</p>
           <span class="talk-date">23 Sep 2026</span>
           <h3 class="talk-title">Les serveurs MCP pour les GLAM africains</h3>
@@ -334,7 +337,7 @@
         <p class="talk-extras"><span class="talk-presenters">Frédérick Madore</span> · <span class="talk-lang" title="Français">FR</span> · <a href="talks/2026-09-23-stellenbosch-mcp-glam-africains/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-09-23-stellenbosch-mcp-glam-africains/slides.pdf">PDF</a> · <a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/fr/papers/mcp-servers-african-glams" target="_blank" rel="noopener">Event</a></p>
       </li>
       <li class="talk" data-lang="en" data-year="2026" data-tags="AI|African history|IWAC|digital archives" data-search="ai and the work of the historian  ai and africa symposium · african history university of kansas · 17 september 2026 historical judgement, digital curation and unequal infrastructures through the islam west africa collection. frédérick madore ai african history iwac digital archives">
-        <a class="talk-row" href="talks/2026-09-17-kansas-ai-and-the-work-of/">
+        <a class="talk-row" href="talks/2026-09-17-kansas-ai-and-the-work-of/" data-no="06">
           <p class="talk-event">AI and Africa Symposium · African History</p>
           <span class="talk-date">17 Sep 2026</span>
           <h3 class="talk-title">AI and the Work of the Historian</h3>
@@ -344,7 +347,7 @@
         <p class="talk-extras"><span class="talk-presenters">Frédérick Madore</span> · <span class="talk-lang" title="English">EN</span> · <a href="talks/2026-09-17-kansas-ai-and-the-work-of/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-09-17-kansas-ai-and-the-work-of/slides.pdf">PDF</a></p>
       </li>
       <li class="talk" data-lang="en" data-year="2026" data-tags="digital humanities|archives|AMIRA" data-search="reconfiguring the archive  reimagining the archive · rhodes university reimagining the archive · rhodes university · 1 july 2026 relationality and discovery in the africa multiple interactive research atlas (amira). frédérick madore digital humanities archives amira">
-        <a class="talk-row" href="talks/2026-07-01-rhodes-reconfiguring-archive/">
+        <a class="talk-row" href="talks/2026-07-01-rhodes-reconfiguring-archive/" data-no="05">
           <p class="talk-event">Reimagining the Archive · Rhodes University</p>
           <span class="talk-date">01 Jul 2026</span>
           <h3 class="talk-title">Reconfiguring the Archive</h3>
@@ -354,7 +357,7 @@
         <p class="talk-extras"><span class="talk-presenters">Frédérick Madore</span> · <span class="talk-lang" title="English">EN</span> · <a href="talks/2026-07-01-rhodes-reconfiguring-archive/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-07-01-rhodes-reconfiguring-archive/slides.pdf">PDF</a></p>
       </li>
       <li class="talk" data-lang="fr" data-year="2026" data-tags="digital humanities|AI|African studies" data-search="humanités numériques, ia et études africaines humanités numériques, ia et études africaines : retour sur une note de synthèse rencontres des études africaines en france · paris 9es reaf · paris · 30 juin 2026 retour sur une note de synthèse collective (hanovre, février 2026). vincent hiribarren frédérick madore digital humanities ai african studies">
-        <a class="talk-row" href="talks/2026-06-30-paris-reaf-dh-ia-afrique/">
+        <a class="talk-row" href="talks/2026-06-30-paris-reaf-dh-ia-afrique/" data-no="04">
           <p class="talk-event">Rencontres des études africaines en France · Paris</p>
           <span class="talk-date">30 Jun 2026</span>
           <h3 class="talk-title">Humanités numériques, IA et études africaines</h3>
@@ -364,7 +367,7 @@
         <p class="talk-extras"><span class="talk-presenters">Vincent Hiribarren · Frédérick Madore</span> · <span class="talk-lang" title="Français">FR</span> · <a href="talks/2026-06-30-paris-reaf-dh-ia-afrique/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-06-30-paris-reaf-dh-ia-afrique/slides.pdf">PDF</a></p>
       </li>
       <li class="talk" data-lang="en" data-year="2026" data-tags="Islam|AI|archives|Central Asia|West Africa" data-search="islam&#x27;s “peripheries” islam&#x27;s “peripheries”: digital humanities, algorithmic analysis, and ai in west africa and central asia digital history in/of central asia · fau erlangen-nürnberg digital history in/of central asia · fau erlangen-nürnberg · 29 june 2026 comparing two locked multilingual archives — west africa and central asia — with ai-driven dh. aksana ismailbekova frédérick madore islam ai archives central asia west africa">
-        <a class="talk-row" href="talks/2026-06-29-erlangen-islam-peripheries/">
+        <a class="talk-row" href="talks/2026-06-29-erlangen-islam-peripheries/" data-no="03">
           <p class="talk-event">Digital History in/of Central Asia · FAU Erlangen-Nürnberg</p>
           <span class="talk-date">29 Jun 2026</span>
           <h3 class="talk-title">Islam&#x27;s “Peripheries”</h3>
@@ -374,7 +377,7 @@
         <p class="talk-extras"><span class="talk-presenters">Aksana Ismailbekova · Frédérick Madore</span> · <span class="talk-lang" title="English">EN</span> · <a href="talks/2026-06-29-erlangen-islam-peripheries/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-06-29-erlangen-islam-peripheries/slides.pdf">PDF</a></p>
       </li>
       <li class="talk" data-lang="en" data-year="2026" data-tags="IWAC|AI|semantic search|MCP" data-search="beyond keywords  digital humanities &amp; history · c²dh, luxembourg c²dh · luxembourg · 15 june 2026 opening the islam west africa collection to ai on its own terms. frédérick madore iwac ai semantic search mcp">
-        <a class="talk-row" href="talks/2026-06-15-luxembourg-beyond-keywords/">
+        <a class="talk-row" href="talks/2026-06-15-luxembourg-beyond-keywords/" data-no="02">
           <p class="talk-event">Digital Humanities &amp; History · C²DH, Luxembourg</p>
           <span class="talk-date">15 Jun 2026</span>
           <h3 class="talk-title">Beyond Keywords</h3>
@@ -384,7 +387,7 @@
         <p class="talk-extras"><span class="talk-presenters">Frédérick Madore</span> · <span class="talk-lang" title="English">EN</span> · <a href="talks/2026-06-15-luxembourg-beyond-keywords/?view=scroll&amp;scrollLayout=compact">Read</a> · <a href="talks/2026-06-15-luxembourg-beyond-keywords/slides.pdf">PDF</a></p>
       </li>
       <li class="talk" data-lang="en" data-year="2026" data-tags="IWAC|AI|OCR|collections" data-search="dormant digital collections, ai triage  german society of asia studies · berlin deutsche gesellschaft für asienforschung · 6 may 2026 lessons from the islam west africa collection and beyond. frédérick madore iwac ai ocr collections">
-        <a class="talk-row" href="talks/2026-05-06-dga-dormant-collections/">
+        <a class="talk-row" href="talks/2026-05-06-dga-dormant-collections/" data-no="01">
           <p class="talk-event">German Society of Asia Studies · Berlin</p>
           <span class="talk-date">06 May 2026</span>
           <h3 class="talk-title">Dormant Digital Collections, AI Triage</h3>

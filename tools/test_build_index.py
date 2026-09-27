@@ -91,6 +91,18 @@ class BuildBlock(unittest.TestCase):
         self.assertIn('data-total="2">02 talks<', block)
         self.assertIn('data-total="1">01 talk<', build_index.build_block({"talks": [talk()]}))
 
+    def test_each_talk_keeps_its_own_number_counted_from_the_first(self):
+        """Newest first on the page, but numbered from the first talk, so a
+        new talk takes the next number instead of renumbering the archive."""
+        older = [talk(slug="2025-01-01-first", date="2025-01-01"),
+                 talk(slug="2025-06-01-second", date="2025-06-01")]
+        before = build_index.build_block({"talks": older})
+        after = build_index.build_block({"talks": older + [talk(slug="2026-05-05-third", date="2026-05-05")]})
+        for block in (before, after):
+            self.assertIn('href="talks/2025-01-01-first/" data-no="01"', block)
+            self.assertIn('href="talks/2025-06-01-second/" data-no="02"', block)
+        self.assertIn('href="talks/2026-05-05-third/" data-no="03"', after)
+
     def test_no_unread_data_island_is_shipped(self):
         """The filters read each row's data-* attributes; a JSON copy of the
         manifest had no reader and only doubled the payload."""

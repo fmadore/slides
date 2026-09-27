@@ -50,7 +50,10 @@ def esc(s):
     return html.escape(str(s), quote=True)
 
 
-def render_talk(t):
+def render_talk(t, number=1):
+    """One row. `number` is the talk's place in the archive counted from the
+    first talk, so it stays the talk's own when later talks are added or the
+    list is filtered — a number that identifies, not a position."""
     slug = esc(t["slug"])
     tags = "|".join(t.get("tags", []))
     # Everything a reader might remember a talk by: the fuller in-deck title,
@@ -68,7 +71,7 @@ def render_talk(t):
     if t.get("eventUrl"):
         extras.append(f'<a href="{esc(t["eventUrl"])}" target="_blank" rel="noopener">Event</a>')
     return f"""      <li class="talk" data-lang="{esc(t['language'])}" data-year="{t['date'][:4]}" data-tags="{esc(tags)}" data-search="{esc(search)}">
-        <a class="talk-row" href="talks/{slug}/">
+        <a class="talk-row" href="talks/{slug}/" data-no="{number:02d}">
           <p class="talk-event">{esc(t['event'])}</p>
           <span class="talk-date">{fmt_date(t['date'])}</span>
           <h3 class="talk-title">{esc(t['title'])}</h3>
@@ -82,7 +85,7 @@ def render_talk(t):
 def build_block(manifest):
     talks = sorted(manifest["talks"], key=lambda t: t["date"], reverse=True)
     n = len(talks)
-    rows = "\n".join(render_talk(t) for t in talks)
+    rows = "\n".join(render_talk(t, n - i) for i, t in enumerate(talks))
     return f"""{START}
       <div class="index-head">
         <h2 class="label">The talks</h2>

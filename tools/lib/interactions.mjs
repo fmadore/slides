@@ -136,8 +136,13 @@ export async function checkInteractions(browser, base) {
     assert.equal(await page.locator('#f-q').inputValue(), '');
     // Topic tags are searchable, not only filterable, and the query is
     // mirrored into the URL so a filtered view can be shared.
+    const numberOf = href => page.locator(`a.talk-row[href*="${href}"]`)
+      .evaluate(a => getComputedStyle(a, '::before').content);
+    const dgaNumber = await numberOf('dga-dormant-collections');
     await page.locator('#f-q').fill('OCR');
     assert.equal(await page.locator('li.talk:visible a.talk-row[href*="dga-dormant-collections"]').count(), 1);
+    // A talk's number is its own: filtering the list does not renumber it.
+    assert.equal(await numberOf('dga-dormant-collections'), dgaNumber);
     assert.equal(new URL(page.url()).searchParams.get('q'), 'OCR');
     // …and a shared filtered URL restores its state on load.
     await page.goto(`${base}/?tag=AMIRA`);
