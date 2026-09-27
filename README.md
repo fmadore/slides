@@ -53,6 +53,7 @@ slides/
 │   │   └── deck/             focused JS partials: TOC, fitting, embeds, diagnostics…
 │   ├── highlight.min.js      slim vendored highlight.js (see vendor-manifest.json)
 │   ├── logo-*.{png,svg}      Africa Multiple, Bayreuth, KCL marks
+│   ├── favicon.svg (+ PNGs)  the tab icon: the house mark, not an institution's
 │   ├── assets/               images used by more than one talk
 │   ├── fonts/                self-hosted EB Garamond + Libre Franklin + JetBrains Mono
 │   └── reveal/               vendored reveal.js v6 + plugins (offline)
@@ -70,6 +71,7 @@ slides/
 │   ├── browser-check.mjs     Playwright checks at 3 viewport sizes
 │   ├── visual-diff.mjs       tolerant screenshot comparison (CI)
 │   ├── build-shared.mjs      assemble/check the stable shared bundles
+│   ├── validate.mjs          `npm run validate`: every CI check in one command
 │   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png, and the
 │   │                         landing page's own card (CI)
 │   ├── check-links.py        external links in published decks (weekly, not CI)
@@ -202,7 +204,11 @@ for a worked example of each layout.
 data-embed-src="assets/file.md">` (the older `data-skill-src` still works) loads
 and syntax-highlights a vendored file you can scroll on stage. Optional
 `data-source-url` adds a link to the failure message and `data-error-message`
-replaces it; loading and failure states are announced to screen readers. GitHub pages can't be `<iframe>`d, so vendor the file (also keeps it
+replaces it; loading and failure states are announced to screen readers. The
+panel is a named, focusable region: Tab reaches it and the up/down arrows scroll
+it, while ←/→, Page Up/Down and Space still drive the deck, so a presenter
+remote is never captured by a panel clicked mid-talk. A deck's own scroller
+opts into the same behaviour with `data-scroll-region="what it holds"`. GitHub pages can't be `<iframe>`d, so vendor the file (also keeps it
 offline). Refresh the IWAC skill snapshot with:
 
 ```bash
@@ -364,7 +370,10 @@ stale placeholders, the landing-page/manifest sync check, the **per-deck CSS
 rules** below and the **vendored checksums** in
 [`shared/vendor-manifest.json`](shared/vendor-manifest.json) —
 and finally Playwright browser checks of every deck at 1280×720, 844×390 and
-390×844 (console errors, auto-fit failures, footer overlap), plus one pass over
+390×844 (console errors, auto-fit failures, footer overlap, and an
+[axe-core](https://github.com/dequelabs/axe-core) WCAG 2.2 A/AA pass over every
+slide, its footer and the open contents dialog, plus the landing and 404
+pages — see `tools/lib/a11y.mjs`), plus one pass over
 the catalogue proving the motion switch still works: `.no-draw` has to zero
 `--draw-run` and reach every animated mark and every counting numeral. Pull requests
 that touch the shared engine also get a screenshot-based visual regression
@@ -382,16 +391,21 @@ Deployment happens only from `main`. Live at
 > though they are absent from the live site. Truly confidential notes must
 > live outside this repository.
 
-Run the same validation locally:
+Run the same validation locally, in one command:
 
 ```bash
 npm ci
-npm test
-python3 -m unittest discover -s tools -p 'test_*.py' -v
-python3 tools/build-index.py --check
-python3 tools/audit.py --strict
-npm run check:browser             # Playwright; uses installed Chrome/Edge as fallback
+npm run validate                  # unit tests, sync check, strict audits, publication build
+npm run validate -- --browser     # … plus the Playwright + axe browser checks
 ```
+
+Every step runs even after one fails, so one pass reports everything. The
+Python steps use the first of `python3`, `python` or (on Windows) `py -3` that
+reports Python 3; set `SLIDES_PYTHON` to choose another. The browser checks use
+Playwright's Chromium, or an installed Chrome/Edge as a fallback
+(`SLIDES_CHROMIUM_PATH` points them at any other build). In CI the Chromium
+download is cached against `package-lock.json`
+(`.github/actions/setup-playwright`).
 
 **Link rot** is checked separately by
 [`.github/workflows/link-check.yml`](.github/workflows/link-check.yml), on a

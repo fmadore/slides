@@ -127,14 +127,64 @@ tree. The footer logo (22× oversample) and the per-deck CSS sweep are resolved:
 the logo is now 780×192 / 18 KB, and the sweep became the audit's CSS rules.
 Two notes were still open:
 
-- **Stocked but unused vocabulary.** `.chrome-open` is used nowhere.
+- **Stocked but unused vocabulary.** `.chrome-open` has already been removed
+  from the theme; only a comment in `05-embeds-code.css` records it.
   `.panel.sunken`, `.chrome` and `.no-draw` appear only in `_showcase`.
   `.panel.sunken` is DESIGN.md's reference surface, and `.no-draw` is exercised
-  by the motion-switch check, so "unused" does not mean "delete". Only
-  `.chrome-open` has no documentary role.
+  by the motion-switch check, so "unused" does not mean "delete".
 - **Parked passes** (`delight`, a data-viz pass on `07-data-viz.css`,
   `extract`) remain parked until a deck gives one a reason.
 
 Validation for this pass: all Python and Node tests, `build-index.py --check`,
 `audit.py --strict` on the source and on a stripped build, and the full browser
 check at three viewports, including the interaction journeys.
+
+## Follow-up — 27 September 2026
+
+The first batch deployed cleanly. Six of the seven recommendations were then
+taken up; the seventh is left with the author.
+
+1. **Favicon.** The tab icon is now the house mark (`shared/favicon.svg`, with
+   32px and 180px PNG fallbacks): a paper page, the green marker bar and a
+   near-black headline. It was chosen over ink-ground and green-ground drafts
+   because it is the only one that stays legible at 16px on light and dark tab
+   strips alike. Every page, the starter template included, links it.
+2. **Four slides under the 0.90 floor.** None of the four exemption reasons
+   described its slide ("cover artwork", "photographic collage", "network
+   diagram" — there were none). Three are fixed by layout alone, every word
+   kept:
+   - the DGA cover moves its QR to the corner, as its closing already does:
+     ×0.861 → no fitting at all;
+   - "The scanning party" caps its two zoomable images at 220px instead of
+     292px: ×0.868 → ×0.969;
+   - "NotebookLM" sets its demo QR beside its label: ×0.886 → ×0.958.
+
+   The fourth, Rhodes "The Cluster", stays exempt, now with an honest reason.
+   Its six-line lead at the 30ch measure makes the left column 85px taller than
+   the safe area. Tightening spacing reaches only ×0.905, which is too close to
+   the floor to hold across machines. Clearing it needs either a shorter lead
+   (it restates the callout beside it) or a measure DESIGN.md forbids outside
+   the closing. Both are the author's call.
+3. **Automated accessibility checks.** `axe-core` (pinned) runs in
+   `browser-check.mjs` over every slide with its fragments shown, its footer,
+   the open contents dialog, the landing page at two widths and the 404. It
+   awaits every finite animation first, so a fade is never measured halfway.
+   Its first pass found three kinds of failure, all now fixed:
+   - scroll panels a keyboard could not reach (WCAG 2.1.1);
+   - links marked by colour alone, the underline having been designed but set
+     to `none` (1.4.1, Level A);
+   - two captions in `--ink-faint` on tinted grounds (4.26 and 4.38:1).
+   Run against the previous engine, the check reports those failures. The
+   ghosted folio, an aria-hidden decoration, is the only exclusion.
+4. **One validation command.** `npm run validate` runs every CI check in
+   order and keeps going after a failure. It finds Python on any platform
+   (`python3`, `python`, Windows `py -3`, or `SLIDES_PYTHON`).
+5. **CI.** `.github/actions/setup-playwright` restores Chromium from a cache
+   keyed on the lockfile; the system packages are still installed each run.
+   The visual job's `--decks _template` now carries a comment saying what it
+   narrows.
+6. **Landing-page numbering.** Each talk's number is now its own, counted from
+   the first talk and rendered by `build-index.py`. A new talk takes the next
+   number, and filtering no longer renumbers the list.
+7. **Dependabot** now proposes monthly bumps for `requirements-dev.txt`, and
+   watches the new local action as well as the workflows.

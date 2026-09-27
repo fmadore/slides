@@ -416,6 +416,8 @@ Two surfaces were brought back under this rule in the last pass, and both are it
 - **Do** step a list with `.fragment` when the room should be walked through it — the scaffold seeds a stepped list, and deleting the classes is the right call when the points need to be compared rather than delivered one at a time.
 - **Do** measure a gutter that must align across type sizes against the container (`calc(0.9 * var(--fs-small))` on table cells) rather than against each cell's own em.
 - **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
+- **Do** let a link on a slide carry its underline at rest, not only on hover. Green against the surrounding ink measures 1.4–2.9:1, under the 3:1 at which colour alone may mark a link (WCAG 1.4.1), so the rule — 1.5px, the link's own colour at 50%, offset 0.16em — is what tells it from the words beside it. The links that stand alone as components are excepted: contact rows, the frame bar's open link, the offline fallback's.
+- **Do** make anything that scrolls its own content reachable from the keyboard: `.scroll-panel` is a focusable, named region by default, and a deck's own scroller opts in with `data-scroll-region`. Only the vertical arrows are kept for the panel; ←/→, Page Up/Down and Space stay with the deck, because those are what presenter remotes send.
 
 ### Don't:
 - **Don't** resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.

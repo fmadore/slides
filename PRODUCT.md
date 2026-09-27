@@ -90,7 +90,10 @@ own CI. The author is the credit; the university is an affiliation.
 - The exact six-colour University of Bayreuth corporate palette is binding:
   green #009260, navy #00268a, gold #cca352, amber #f59c08, brown #d57912,
   sky #44b8f2. The Africa Multiple / Bayreuth wordmarks are the identity
-  assets (`shared/logo-*.{png,svg}`).
+  assets (`shared/logo-*.{png,svg}`). The browser-tab icon is the house mark
+  instead (`shared/favicon.svg`: a paper page, the green marker bar, a
+  headline): a 780×192 wordmark squeezed into 16px was about 4px tall, and the
+  tab is where the author, not the institution, is the credit.
 - Voice: authored by a historian — must never read as template-made or
   AI-generated. Standing anti-references (retired tells, do not resurrect):
   the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway
@@ -124,5 +127,8 @@ own CI. The author is the credit; the university is an affiliation.
 WCAG 2.2 AA is the binding bar for the published site (confirmed 2026-08-17):
 contrast on the colour fields, visible focus states, `prefers-reduced-motion`
 honoured (the motion signature already stills under it), alt/title enforced by
-`tools/audit.py`. Projection legibility — distance and weak beamers — is an
+`tools/audit.py`, and every slide, the contents dialog, the landing page and the
+404 checked with axe-core on every pull request (`tools/lib/a11y.mjs`) — which
+also covers keyboard reach into scroll panels and links told apart by more than
+colour. Projection legibility — distance and weak beamers — is an
 additional product-specific requirement on top of AA, not a substitute for it.
