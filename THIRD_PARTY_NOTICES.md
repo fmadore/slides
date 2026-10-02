@@ -6,8 +6,11 @@ vendored builds are recorded in [`shared/vendor-manifest.json`](shared/vendor-ma
 
 ## reveal.js — MIT
 
-Vendored at `shared/reveal/` (v6.0.1, dist build + notes/zoom/search plugins).
+Vendored at `shared/reveal/` (v6.0.2, dist build + notes/zoom/search plugins).
 <https://revealjs.com> · <https://github.com/hakimel/reveal.js>
+
+Reproduce with `python3 tools/fetch-reveal.py 6.0.2`. The official npm
+archive integrity and upstream commit are pinned in the vendor manifest.
 
 ```text
 Copyright (C) 2011-2026 Hakim El Hattab, http://hakim.se, and reveal.js contributors

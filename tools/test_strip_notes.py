@@ -158,7 +158,7 @@ class BuildTree(unittest.TestCase):
             "shared/theme.css": "css",
             "shared/src/theme/01.css": "source css",
             "shared/vendor-manifest.json": "{}",
-            "shared/notes.js": "plugin",
+            "shared/notes.js": "application-owned code",
             "talks/2026-01-01-demo/index.html": deck,
             "talks/_template/index.html": "<html>template</html>",
             "tools/strip-notes.py": "tool",
@@ -174,14 +174,14 @@ class BuildTree(unittest.TestCase):
             dest = os.path.join(tmp, "_site")
             counts = strip_notes.build(src, dest)
             # published
-            for keep in ("index.html", "CNAME", ".nojekyll", "shared/theme.css",
+            for keep in ("index.html", "CNAME", ".nojekyll", "shared/theme.css", "shared/notes.js",
                          "talks/2026-01-01-demo/index.html"):
                 self.assertTrue(os.path.exists(os.path.join(dest, keep)), keep)
             # excluded
             for gone in ("README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
                          "DESIGN.md", ".impeccable",
                          "serve-deck.py", "tools", ".github", "talks/_template",
-                         "shared/notes.js", "shared/src", "shared/vendor-manifest.json"):
+                         "shared/reveal/plugin/notes.js", "shared/src", "shared/vendor-manifest.json"):
                 self.assertFalse(os.path.exists(os.path.join(dest, gone)), gone)
             with open(os.path.join(dest, "talks/2026-01-01-demo/index.html")) as fh:
                 html = fh.read()
@@ -191,6 +191,43 @@ class BuildTree(unittest.TestCase):
             self.assertEqual(counts["aside"], 1)
             self.assertEqual(counts["attr"], 1)
             self.assertEqual(counts["plugin"], 1)
+
+    def test_talk_src_assets_and_app_notes_js_are_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            assets = os.path.join(src, 'talks/2026-01-01-demo/assets/src')
+            os.makedirs(assets)
+            with open(os.path.join(assets, 'notes.js'), 'w') as handle:
+                handle.write('/* app code */')
+            with open(os.path.join(src, 'talks/2026-01-01-demo/index.html'), 'a') as handle:
+                handle.write('<script src="assets/src/notes.js"></script>')
+            dest = os.path.join(tmp, 'site')
+            strip_notes.build(src, dest)
+            self.assertTrue(os.path.isfile(os.path.join(dest, 'talks/2026-01-01-demo/assets/src/notes.js')))
+
+    def test_dropped_runtime_reference_fails_before_replacing_build(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            dest = os.path.join(tmp, 'site')
+            strip_notes.build(src, dest)
+            with open(os.path.join(src, 'talks/2026-01-01-demo/index.html'), 'a') as handle:
+                handle.write('<script src="../../shared/src/private.js"></script>')
+            with self.assertRaisesRegex(ValueError, 'missing published script'):
+                strip_notes.build(src, dest)
+            with open(os.path.join(dest, 'talks/2026-01-01-demo/index.html')) as handle:
+                self.assertNotIn('private.js', handle.read())
+
+    def test_external_symlinks_are_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self.make_repo(tmp)
+            outside = os.path.join(tmp, 'private.txt')
+            with open(outside, 'w') as handle:
+                handle.write('private outside file')
+            link = os.path.join(src, 'shared/leak.txt')
+            os.symlink(outside, link)
+            with self.assertRaisesRegex(ValueError, 'refusing symlink'):
+                strip_notes.build(src, os.path.join(tmp, 'site'))
+            self.assertFalse(os.path.exists(os.path.join(tmp, 'site')))
 
     def test_assertion_catches_a_surviving_data_notes(self):
         # The post-build scan is the safety net: if stripping ever regressed,

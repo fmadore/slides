@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the landing page's talk list from the manifest (talks/talks.json).
+"""Render the catalogue, deck metadata and static reading editions.
 
 The static <ol class="talks"> in index.html is generated, so the list works
 without JavaScript; the client-side search/filter enhancement reads the data-*
@@ -9,9 +9,12 @@ attributes each row carries. The block sits between marker comments:
     …
     <!-- TALKS:END -->
 
+Each published talk also receives read.html generated from its public slide
+content, with local assets and text embeds. Edit index.html, never read.html.
+
 Usage:
-  python3 tools/build-index.py           # regenerate index.html in place
-  python3 tools/build-index.py --check   # exit 1 if index.html is out of date
+  python3 tools/build-index.py           # regenerate catalogue and readers
+  python3 tools/build-index.py --check   # exit 1 if generated output is stale
 """
 import argparse
 import html
@@ -25,6 +28,7 @@ if TOOLS not in sys.path:
 
 from slideslib.deck_metadata import sync_deck_html
 from slideslib.manifest import ManifestValidationError, atomic_write, load_manifest
+from slideslib.reader import render_reader
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX = os.path.join(ROOT, "index.html")
@@ -55,17 +59,23 @@ def render_talk(t, number=1):
     first talk, so it stays the talk's own when later talks are added or the
     list is filtered — a number that identifies, not a position."""
     slug = esc(t["slug"])
-    tags = "|".join(t.get("tags", []))
+    topic_tags = list(dict.fromkeys("AI" if tag.upper() in {"AI", "IA"} else tag for tag in t.get("tags", [])))
+    tags = "|".join(topic_tags)
     # Everything a reader might remember a talk by: the fuller in-deck title,
     # the venue line and the topic tags as well as what the row shows.
     search = " ".join([t.get("title", ""), t.get("deckTitle", ""), t.get("event", ""),
                        t.get("venue", ""), t.get("description", ""),
-                       " ".join(t.get("presenters", [])), " ".join(t.get("tags", []))]).lower()
+                       " ".join(t.get("presenters", [])), " ".join(t.get("tags", [])),
+                       "AI IA artificial intelligence intelligence artificielle" if "AI" in topic_tags else ""]).lower()
     lang_label = {"en": "English", "fr": "Français"}.get(t["language"], t["language"])
     extras = [f'<span class="talk-presenters">{esc(" · ".join(t.get("presenters", [])))}</span>',
               f'<span class="talk-lang" title="{esc(lang_label)}">{esc(t["language"].upper())}</span>',
-              f'<a href="talks/{slug}/?view=scroll&amp;scrollLayout=compact">Read</a>',
+              f'<a href="talks/{slug}/read.html">Read</a>',
               f'<a href="{esc(t.get("pdf") or "talks/" + t["slug"] + "/slides.pdf")}">PDF</a>']
+    if t.get("slideCount") is not None:
+        extras.insert(2, f'<span class="talk-length">{t["slideCount"]} slide{"s" if t["slideCount"] != 1 else ""}</span>')
+    if t.get("durationMinutes"):
+        extras.insert(2, f'<span class="talk-duration">{t["durationMinutes"]} min</span>')
     if t.get("video"):
         extras.append(f'<a href="{esc(t["video"])}" target="_blank" rel="noopener">Video</a>')
     if t.get("eventUrl"):
@@ -107,6 +117,8 @@ def build_sitemap(manifest):
     urls = [f"  <url><loc>{site}/</loc>{newest}</url>"]
     urls += [f"  <url><loc>{site}/talks/{esc(t['slug'])}/</loc><lastmod>{t['date']}</lastmod></url>"
              for t in talks]
+    urls += [f"  <url><loc>{site}/talks/{esc(t['slug'])}/read.html</loc><lastmod>{t['date']}</lastmod></url>"
+             for t in talks]
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             + "\n".join(urls) + "\n</urlset>\n")
@@ -115,7 +127,7 @@ def build_sitemap(manifest):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true",
-                    help="verify index.html is in sync with talks/talks.json")
+                    help="verify catalogue, metadata and reading editions are in sync")
     args = ap.parse_args(argv)
 
     try:
@@ -131,10 +143,6 @@ def main(argv=None):
     if START not in page or END not in page:
         sys.exit(f"error: {START!r} / {END!r} markers not found in index.html")
 
-    block = build_block(manifest)
-    new_page = re.sub(re.escape(START) + r".*?" + re.escape(END), lambda _: block,
-                      page, count=1, flags=re.DOTALL)
-
     sitemap = build_sitemap(manifest)
     sitemap_path = os.path.join(ROOT, "sitemap.xml")
     old_sitemap = ""
@@ -142,8 +150,8 @@ def main(argv=None):
         with open(sitemap_path, encoding="utf-8") as fh:
             old_sitemap = fh.read()
 
-    deck_updates = []
-    for talk in manifest_model.talks:
+    deck_updates, reader_updates = [], []
+    for talk, row in zip(manifest_model.talks, manifest["talks"]):
         path = os.path.join(ROOT, "talks", talk.slug, "index.html")
         if not os.path.exists(path):
             continue  # tools/audit.py reports the missing deck more precisely
@@ -151,21 +159,36 @@ def main(argv=None):
             original = fh.read()
         try:
             rendered = sync_deck_html(original, talk, manifest_model.site, adopt_legacy=True)
+            reader, slide_count = render_reader(rendered, talk, manifest_model.site,
+                                               source_dir=os.path.dirname(path), root_dir=ROOT)
         except ValueError as exc:
             print(f"error: talks/{talk.slug}/index.html: {exc}")
             return 2
         if rendered != original:
             deck_updates.append((path, rendered))
+        row["slideCount"] = slide_count
+        reader_path = os.path.join(ROOT, "talks", talk.slug, "read.html")
+        old_reader = ""
+        if os.path.exists(reader_path):
+            with open(reader_path, encoding="utf-8") as fh:
+                old_reader = fh.read()
+        if reader != old_reader:
+            reader_updates.append((reader_path, reader))
+
+    block = build_block(manifest)
+    new_page = re.sub(re.escape(START) + r".*?" + re.escape(END), lambda _: block,
+                      page, count=1, flags=re.DOTALL)
 
     if args.check:
-        if new_page != page or sitemap != old_sitemap or deck_updates:
+        if new_page != page or sitemap != old_sitemap or deck_updates or reader_updates:
             stale = ["index.html/sitemap.xml"] if new_page != page or sitemap != old_sitemap else []
             stale.extend(os.path.relpath(path, ROOT) for path, _ in deck_updates)
+            stale.extend(os.path.relpath(path, ROOT) for path, _ in reader_updates)
             print("generated files OUT OF DATE — run: python3 tools/build-index.py")
             for path in stale:
                 print(f"  {path}")
             return 1
-        print("index.html, sitemap.xml and deck metadata are in sync with talks/talks.json")
+        print("index.html, sitemap.xml, deck metadata and reading editions are in sync")
         return 0
 
     if new_page != page:
@@ -180,6 +203,9 @@ def main(argv=None):
     for path, rendered in deck_updates:
         atomic_write(path, rendered)
         print(f"{os.path.relpath(path, ROOT)} metadata regenerated")
+    for path, rendered in reader_updates:
+        atomic_write(path, rendered)
+        print(f"{os.path.relpath(path, ROOT)} reading edition regenerated")
     return 0
 
 

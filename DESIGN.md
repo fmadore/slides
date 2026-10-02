@@ -473,3 +473,23 @@ it reads the OKLCH components as RGB and invents failures. Paint the colour and
 read the pixel back, and measure it against the WCAG threshold that applies —
 `--green` at 24px/700 is large text, so it answers to 3:1, and its 3.87:1
 passes.
+
+### Readable evidence
+
+An audience should be able to read the observation without deciphering a
+full dashboard screenshot. Pair a native text or bar-chart extract with the
+complete, zoomable source. Label the date, unit and limits of an extract;
+do not silently turn an incomplete distribution into percentages of a whole.
+The Stellenbosch aggregate and relationship slides demonstrate this pattern.
+
+- `.evidence-pair` gives an archival source and its transcription equal
+  columns, separated by a rule. Kansas's Ewé transcription is the example.
+- `.evidence-reference` holds the complete source image and its caption
+  beneath a readable interpretation. The image remains whole and zoomable.
+- `.evidence-reading` uses a semantic definition list for a selected
+  observation, with its type, value and context visible at projection size.
+  A separate callout states the interpretive limit.
+
+Reading editions use the same typefaces, colour tokens and ruled hierarchy,
+but normal document flow and mobile-sized text. They do not inherit the
+fixed canvas or auto-fit transforms of the projected presentation.

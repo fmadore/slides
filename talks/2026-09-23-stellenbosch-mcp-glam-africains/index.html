@@ -317,9 +317,26 @@
     <section>
       <p class="kicker navy">Cadrer avant de chercher</p>
       <h2 class="slide-title">Situer la collection avant d’interpréter ses résultats</h2>
-      <div class="chart-band">
-        <img class="shot" data-src="assets/chart-amira-apercu.png" alt="Aperçu du serveur AMIRA : huit compteurs (3 975 items de recherche, 93 projets, 1 643 personnes, 542 institutions, 555 publications, 140 vidéos, 43 épisodes de podcast, 87 revues), puis quatre classements en barres — par université, section de recherche, type de ressource et langue — et, en dernière ligne, l’avertissement du serveur sur la couverture inégale de la collection" width="1800" height="489">
-        <p class="chart-cap">get_collection_overview · aperçu du 16 septembre 2026 · cliquer pour agrandir</p>
+      <div class="cols evidence-summary">
+        <div class="col">
+          <h3 class="col-label">Les trois langues les plus représentées</h3>
+          <ul class="share-bars">
+            <li><div class="share-head"><span>Anglais</span><b>1 910</b></div><div class="share-track" style="--p:100%" aria-hidden="true"></div></li>
+            <li><div class="share-head"><span>Français</span><b>662</b></div><div class="share-track" style="--p:34.7%" aria-hidden="true"></div></li>
+            <li><div class="share-head"><span>Allemand</span><b>177</b></div><div class="share-track" style="--p:9.3%" aria-hidden="true"></div></li>
+          </ul>
+          <p class="small muted">Nombre d’items · extrait de la distribution, sans les autres langues.</p>
+        </div>
+        <div class="col">
+          <div class="callout navy">
+            <span class="callout-label">Une collection constituée</span>
+            Ces chiffres décrivent les ressources réunies dans AMIRA, avec une couverture inégale. Ils ne mesurent pas la recherche africaine dans son ensemble.
+          </div>
+          <figure class="evidence-reference">
+            <img class="shot" data-src="assets/chart-amira-apercu.png" alt="Aperçu complet AMIRA : 3 975 items, huit compteurs et distributions par université, section, type de ressource et langue" width="1800" height="489">
+            <figcaption>Source complète · get_collection_overview · 16 septembre 2026 · agrandir</figcaption>
+          </figure>
+        </div>
       </div>
       <aside class="notes">[Support de secours : à présenter si nécessaire pendant la démo.] Cet aperçu donne les dimensions d’AMIRA et la répartition de ses ressources. Il permet de savoir dans quel ensemble on cherche avant d’interpréter un résultat. L’avertissement accompagne les chiffres : ils décrivent une collection constituée, avec une couverture inégale, et non la recherche africaine dans son ensemble. Documenter cette limite fait partie du travail de curation.</aside>
     </section>
@@ -358,20 +375,20 @@
     <section>
       <p class="kicker navy">Explorer les associations décrites autour d’une entité</p>
       <h2 class="slide-title">Explorer les relations décrites dans la collection</h2>
-      <div class="cols ratio-3-2">
+      <div class="cols evidence-summary">
+        <div class="col">
+          <dl class="evidence-reading">
+            <div><dt>Point de départ · lieu</dt><dd>Nigeria <span>304 items</span></dd></div>
+            <div><dt>Sujet associé</dt><dd>Archives <span>45 items partagés</span></dd></div>
+          </dl>
+          <div class="callout navy">
+            <span class="callout-label">Une piste à vérifier dans les documents</span>
+            Une association dans les métadonnées ne suffit pas à établir une relation historique.
+          </div>
+        </div>
         <div class="col chart-hub">
           <img class="shot" data-src="assets/chart-amira-relations.png" alt="Graphique relationnel du serveur AMIRA : « Nigeria » au centre avec 304 items, entouré de secteurs étiquetés — sujets, personnes, projets, sections, formats et pays — dont la longueur des rayons donne le nombre d’items partagés" width="1800" height="1452">
-          <p class="chart-cap">find_related · six types de relation · cliquer pour agrandir</p>
-        </div>
-        <div class="col">
-          <p>À partir d’un sujet, d’un lieu ou d’une personne, l’outil retrouve les éléments associés aux mêmes notices et distingue les <strong>types de liens</strong>.</p>
-          <ul>
-            <li>« Nigeria » comme point de départ : <strong>304 items</strong></li>
-          </ul>
-          <div class="callout navy">
-            <span class="callout-label">Une traduction documentaire de la relationalité</span>
-            Rendre les associations explorables, sans confondre un lien dans les métadonnées avec une relation établie dans les sources.
-          </div>
+          <p class="chart-cap">Source complète · find_related · cliquer pour agrandir</p>
         </div>
       </div>
       <aside class="notes">[Support de secours : à présenter si nécessaire pendant la démo. Poursuivre ensuite à la diapositive 15.] À partir du Nigeria, l’outil retrouve les notices associées, puis les sujets, personnes et projets présents dans cet ensemble. Il peut aussi tenir compte de la hiérarchie géographique, par exemple des ressources rattachées à Lagos. Ces associations offrent des chemins de recherche. Elles proviennent des métadonnées : une relation sociale ou historique doit ensuite être examinée dans les documents.</aside>

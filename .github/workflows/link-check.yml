@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Probe every external link in the published decks
         id: check
@@ -52,7 +52,7 @@ jobs:
           echo "fingerprint=$(sed -n 's/.*fingerprint=\([0-9a-z]*\).*/\1/p' report.md | head -1)" >> "$GITHUB_OUTPUT"
 
       - name: Upload the report
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: link-check-report
           path: |

@@ -29,6 +29,8 @@
   height: 2px; background: var(--rule);
 }
 .deck-footer .foot-left { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
+.deck-footer .foot-logo { pointer-events: auto; }
+.deck-footer .foot-logo:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
 .deck-footer .foot-left img { height: 1.15rem; width: auto; opacity: 0.9; }
 .deck-footer .foot-title {
   min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;

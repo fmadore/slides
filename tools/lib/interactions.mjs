@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
 import { settlePrint, printGeometry } from './slides.mjs';
+import { checkRuntimeRegressions } from './runtime-regressions.mjs';
 
 /** Focused failure journeys, isolated from remote services. */
-export async function checkInteractions(browser, base) {
+export async function checkInteractions(browser, base, diagnostics = null) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: 'reduce' });
-  await ctx.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
-  const page = await ctx.newPage();
-  const open = async (deck, query = '') => {
-    await page.emulateMedia({ media: 'screen' });
-    await page.goto(`${base}/talks/${deck}/${query}`);
-    await page.evaluate(() => window.DeckRuntime.ready);
-    await page.evaluate(() => window.DeckRuntime.settle());
-  };
   try {
+    if (diagnostics) await diagnostics.attach(ctx, 'interactions');
+    await ctx.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+    const page = await ctx.newPage();
+    const open = async (deck, query = '') => {
+      await page.emulateMedia({ media: 'screen' });
+      await page.goto(`${base}/talks/${deck}/${query}`);
+      await page.evaluate(() => window.DeckRuntime.ready);
+      await page.evaluate(() => window.DeckRuntime.settle());
+    };
     await open('_showcase');
     assert.equal(await page.evaluate(() => Reveal.getConfig().autoAnimate), false);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -153,7 +155,11 @@ export async function checkInteractions(browser, base) {
     // One outline: h1 masthead, h2 sections, h3 talk titles — no skipped level.
     const levels = await page.locator('h1, h2, h3, h4, h5, h6').evaluateAll(hs => hs.map(h => +h.tagName[1]));
     assert.ok(levels.every((level, i) => i === 0 || level <= levels[i - 1] + 1), `heading levels skip: ${levels}`);
+    await checkRuntimeRegressions(browser, base, diagnostics);
     console.log('ok    interactions: reduced motion, lazy gallery, print aliases/negative geometry, iframe lifecycle, keyboard scroll panel, escaped TOC, TOC keys, copy-link feedback, catalogue search/filters/URL state/outline');
+  } catch (error) {
+    diagnostics?.capture('interactions', error.stack || String(error));
+    throw error;
   } finally {
     await ctx.close();
   }

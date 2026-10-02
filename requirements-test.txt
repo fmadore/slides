@@ -1,0 +1,4 @@
+# The production publisher and static audit remain stdlib-only.
+-r requirements-dev.txt
+# Independent decoder verifies the PNG produced by the real authoring workflow.
+zxing-cpp==3.1.1

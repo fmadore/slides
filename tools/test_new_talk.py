@@ -4,6 +4,8 @@ import importlib.util
 import io
 import json
 import subprocess
+import shutil
+import builtins
 import tempfile
 import unittest
 from pathlib import Path
@@ -106,6 +108,47 @@ class NewTalkTransaction(unittest.TestCase):
         for path, expected in before.items():
             self.assertEqual(path.read_text(encoding="utf-8"), expected)
         self.assertFalse((self.root / "talks" / "2099-03-04-test-city-archives-ai").exists())
+
+    def test_real_qr_scaffold_and_regeneration_decodes_canonical_url(self):
+        import zxingcpp
+        from PIL import Image
+        # Run the real generator and real landing-page subprocess against an
+        # isolated copy of the current authoring template and tools.
+        shutil.copytree(HERE / "slideslib", self.root / "tools" / "slideslib", ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copy2(HERE / "build-index.py", self.root / "tools" / "build-index.py")
+        shutil.copy2(HERE.parent / "talks" / "_template" / "index.html", self.template / "index.html")
+        shutil.copy2(HERE.parent / "index.html", self.root / "index.html")
+        args = [value for value in self.args() if value != '--no-qr']
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(new_talk.main(args), 0)
+        deck = self.root / 'talks' / '2099-03-04-test-city-archives-ai'
+        with Image.open(deck / 'assets' / 'qr-slides.png') as picture:
+            barcode = zxingcpp.read_barcode(picture)
+        self.assertIsNotNone(barcode)
+        self.assertEqual(barcode.text, 'https://slides.example.test/talks/2099-03-04-test-city-archives-ai/')
+        self.assertIn('2099-03-04-test-city-archives-ai', (self.root / 'index.html').read_text())
+        self.assertIn('2099-03-04-test-city-archives-ai', (self.root / 'sitemap.xml').read_text())
+        self.assertTrue((deck / 'read.html').is_file())
+
+    def test_qr_failure_leaves_no_registration_or_partial_deck(self):
+        before = self.manifest.read_bytes()
+        args = [value for value in self.args() if value != '--no-qr']
+        with patch.object(new_talk, 'write_qr', side_effect=OSError('image write failed')), self.assertRaises(OSError):
+            new_talk.main(args)
+        self.assertEqual(self.manifest.read_bytes(), before)
+        self.assertFalse((self.root / 'talks' / '2099-03-04-test-city-archives-ai').exists())
+
+    def test_missing_qr_dependency_fails_before_mutation(self):
+        before = self.manifest.read_bytes()
+        original_import = builtins.__import__
+        def without_qrcode(name, *args, **kwargs):
+            if name == 'qrcode':
+                raise ImportError('not installed')
+            return original_import(name, *args, **kwargs)
+        with patch('builtins.__import__', side_effect=without_qrcode), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            new_talk.main([value for value in self.args() if value != '--no-qr'])
+        self.assertEqual(self.manifest.read_bytes(), before)
+        self.assertFalse((self.root / 'talks' / '2099-03-04-test-city-archives-ai').exists())
 
 
 if __name__ == "__main__":

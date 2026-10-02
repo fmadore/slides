@@ -57,7 +57,7 @@ class RenderTalk(unittest.TestCase):
 
     def test_extras_link_the_reader_view_pdf_and_optional_media(self):
         plain = build_index.render_talk(talk())
-        self.assertIn('href="talks/2026-03-04-demo-talk/?view=scroll&amp;scrollLayout=compact">Read', plain)
+        self.assertIn('href="talks/2026-03-04-demo-talk/read.html">Read', plain)
         self.assertIn('href="talks/2026-03-04-demo-talk/slides.pdf">PDF', plain)
         self.assertNotIn(">Video<", plain)
         self.assertNotIn(">Event<", plain)
@@ -74,6 +74,17 @@ class RenderTalk(unittest.TestCase):
         self.assertIn('data-tags="OCR|archives"', row)
         self.assertIn('title="Français">FR<', row)
         self.assertIn("04 Mar 2026", row)
+
+    def test_topic_aliases_share_one_filter_and_both_search_terms(self):
+        row = build_index.render_talk(talk(tags=["IA", "AI", "MCP"]))
+        self.assertIn('data-tags="AI|MCP"', row)
+        self.assertIn('ai ia artificial intelligence intelligence artificielle', row)
+
+    def test_slide_count_and_authored_duration_are_visible(self):
+        row = build_index.render_talk(talk(slideCount=21, durationMinutes=15))
+        self.assertIn('21 slides</span>', row)
+        self.assertIn('15 min</span>', row)
+        self.assertNotIn('talk-duration', build_index.render_talk(talk()))
 
 
 class BuildBlock(unittest.TestCase):
@@ -170,6 +181,30 @@ class CheckMode(unittest.TestCase):
         self.assertIn("valid YYYY-MM-DD", out)
         with open(self.index, encoding="utf-8") as handle:
             self.assertNotIn("talk-row", handle.read())
+
+    def test_reader_is_generated_and_checked_against_public_slide_content(self):
+        slug = talk()["slug"]
+        directory = os.path.join(build_index.ROOT, "talks", slug)
+        os.makedirs(directory)
+        deck = os.path.join(directory, "index.html")
+        with open(deck, "w", encoding="utf-8") as handle:
+            handle.write('''<!DOCTYPE html><html lang="fr"><head>
+  <!-- DECK_META:START (generated from talks/talks.json) -->
+  <!-- DECK_META:END -->
+</head><body><script>window.DECK_CONFIG = {
+    // DECK_CONFIG_META:START (generated from talks/talks.json)
+    // DECK_CONFIG_META:END
+};</script><div class="reveal"><div class="slides"><section><h1>Public</h1><aside class="notes">PRIVATE NOTE</aside></section></div></div></body></html>''')
+        self.assertEqual(self.run_main([])[0], 0)
+        reader = os.path.join(directory, "read.html")
+        with open(reader, encoding="utf-8") as handle:
+            self.assertNotIn("PRIVATE NOTE", handle.read())
+        self.assertEqual(self.run_main(["--check"])[0], 0)
+        with open(reader, "a", encoding="utf-8") as handle:
+            handle.write("stale")
+        status, output = self.run_main(["--check"])
+        self.assertEqual(status, 1)
+        self.assertIn("read.html", output)
 
 
 if __name__ == "__main__":

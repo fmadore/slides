@@ -49,6 +49,9 @@ test('rendering options invalidate cached output; temporary failures expire', as
   assert.equal(reusableEvidence(evidence, now + 3600001), false);
   assert.equal(reusableEvidence({ ...evidence, frames: [{ captured: true }] }, now + 3600001), true);
   assert.equal(reusableEvidence(null), false);
+  assert.equal(reusableEvidence({ ...evidence, createdAt: 'invalid' }), false);
+  assert.equal(reusableEvidence({ ...evidence, createdAt: new Date(now + 1000).toISOString() }, now), false);
+  assert.equal(reusableEvidence({ ...evidence, frames: [{ captured: true, status: 503 }] }, now + 3600001), false);
 });
 
 test('export cache hash changes with deck, shared, and tool dependencies', async t => {

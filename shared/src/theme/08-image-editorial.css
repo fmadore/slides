@@ -98,3 +98,30 @@
 .reveal section.closing .colophon { border-top-color: var(--ond-rule); }
 .reveal section.closing .colophon .col-item { color: color-mix(in oklch, var(--paper), transparent 30%); }
 .reveal section.closing .colophon .col-item b { color: color-mix(in oklch, var(--paper), transparent 8%); }
+
+/* EVIDENCE — keep a source beside its reading, with equal visual status.
+   The original remains whole and zoomable; readable observations are native
+   text, never a tiny crop that a room must decipher. */
+.reveal .evidence-pair > .col + .col {
+  border-left: 3px solid var(--rule); padding-left: var(--space-xl);
+}
+.reveal .evidence-reference { margin: var(--space-lg) 0 0; }
+.reveal .evidence-reference .shot { max-height: 9rem; width: auto; max-width: 100%; }
+.reveal .evidence-reference figcaption {
+  font-family: var(--font-serif); font-size: var(--fs-caption);
+  line-height: 1.35; color: var(--ink-soft); margin-top: var(--space-xs);
+}
+.reveal .evidence-reading { margin: 0 0 var(--space-lg); }
+.reveal .evidence-reading > div { border-top: 3px solid var(--rule); padding: var(--space-sm) 0; }
+.reveal .evidence-reading dt {
+  font-family: var(--font-label); font-size: var(--fs-caption); font-weight: 700;
+  text-transform: uppercase; letter-spacing: var(--track-hall); color: var(--navy);
+}
+.reveal .evidence-reading dd {
+  margin: var(--space-xs) 0 0; font-family: var(--font-display);
+  font-size: var(--fs-h3); font-weight: 800; line-height: 1.15;
+}
+.reveal .evidence-reading dd span {
+  display: block; margin-top: var(--space-xs); font-family: var(--font-serif);
+  font-size: var(--fs-body); font-weight: 400; color: var(--ink-soft);
+}

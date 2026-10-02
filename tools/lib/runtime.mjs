@@ -29,8 +29,10 @@ export function valueArg(args, name, dflt = undefined) {
 
 export function intArg(args, name, dflt) {
   const raw = valueArg(args, name, String(dflt));
-  const value = Number.parseInt(raw, 10);
-  if (!Number.isInteger(value) || value < 1) throw new Error(`${name} must be a positive integer`);
+  const value = Number(raw);
+  if (!/^[0-9]+$/.test(raw) || !Number.isSafeInteger(value) || value < 1) {
+    throw new Error(`${name} must be a positive integer`);
+  }
   return value;
 }
 
@@ -85,7 +87,9 @@ export function listDecks(root, { includeDrafts = true, only = null } = {}) {
     .map(entry => entry.name)
     .sort();
   if (only) {
-    const wanted = new Set(Array.isArray(only) ? only : String(only).split(','));
+    const wanted = new Set((Array.isArray(only) ? only : String(only).split(',')).map(name => name.trim()));
+    const unknown = [...wanted].filter(name => !decks.includes(name));
+    if (unknown.length) throw new Error(`unknown decks: ${unknown.map(name => name || '(empty)').join(', ')}`);
     decks = decks.filter(deck => wanted.has(deck));
   }
   return decks;

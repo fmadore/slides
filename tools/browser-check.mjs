@@ -19,7 +19,7 @@
  * pass as the slides.
  *
  * Usage:
- *   node tools/browser-check.mjs [--root DIR] [--screenshots DIR] [--decks a,b]
+ *   node tools/browser-check.mjs [--root DIR] [--screenshots DIR] [--decks a,b] [--artifacts DIR]
  *
  * --root defaults to the repository root (checks the source tree); pass a
  * build directory (e.g. _site) to check the publication build instead.
@@ -33,6 +33,8 @@ import { existsSync, mkdirSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { auditDeck, axeFindings } from './lib/a11y.mjs';
+import { browserDiagnostics } from './lib/browser-diagnostics.mjs';
+import { checkReaders } from './lib/reader-check.mjs';
 import { checkInteractions } from './lib/interactions.mjs';
 import {
   intArg,
@@ -48,6 +50,7 @@ const args = process.argv.slice(2);
 const ROOT = resolve(valueArg(args, '--root', REPO));
 const SHOT_DIR = valueArg(args, '--screenshots', null);
 const ONLY = valueArg(args, '--decks', null)?.split(',');
+const diagnostics = browserDiagnostics(valueArg(args, '--artifacts', null));
 const CONCURRENCY = intArg(args, '--concurrency', 2);
 const EXECUTABLE_PATH = valueArg(args, '--executable-path', null);
 const BROWSER_CHANNEL = valueArg(args, '--browser-channel', null);
@@ -61,13 +64,17 @@ const BASE = staticSite.base;
 const decks = listDecks(ROOT, { includeDrafts: true, only: ONLY });
 
 const failures = [];
-function fail(where, msg) { failures.push({ where, msg }); console.log(`FAIL  ${where}: ${msg}`); }
+function fail(where, msg) { failures.push({ where, msg }); diagnostics.capture(where, msg); console.log(`FAIL  ${where}: ${msg}`); }
 function ok(where, msg) { console.log(`ok    ${where}: ${msg}`); }
 
 const browser = await launchChromium(chromium, {
   executablePath: EXECUTABLE_PATH,
   channel: BROWSER_CHANNEL,
 });
+
+async function newContext(options) {
+  return diagnostics.attach(await browser.newContext(options));
+}
 
 // True when a console message is about our own origin rather than a third party.
 function isLocal(text) { return text.includes('127.0.0.1') || text.includes('localhost'); }
@@ -110,7 +117,7 @@ async function checkDeck(deck) {
 
   // ---- 1280×720: errors, fit failures, raw overflow --------------------
   {
-    const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+    const ctx = await newContext({ viewport: { width: 1280, height: 720 } });
     const { page, errors } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     const report = await page.evaluate(async () => {
@@ -153,7 +160,7 @@ async function checkDeck(deck) {
 
   // ---- 844×390: footer must never cover slide content -------------------
   {
-    const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
+    const ctx = await newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
     const { page } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     const bad = await page.evaluate(async () => {
@@ -175,7 +182,7 @@ async function checkDeck(deck) {
 
   // ---- 390×844: fixed canvas, no scroll view, no horizontal clipping ----
   {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const ctx = await newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
     const { page } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     // Auto-fit only measures once webfonts settle; wait so the walk below sees
@@ -210,14 +217,15 @@ async function checkDeck(deck) {
 }
 
 await mapLimit(decks, CONCURRENCY, checkDeck);
+await checkReaders({ browser, root: ROOT, base: BASE, fail, ok, diagnostics });
 if (decks.includes('_showcase')) {
-  try { await checkInteractions(browser, BASE); }
+  try { await checkInteractions(browser, BASE, diagnostics); }
   catch (error) { fail('interactions', error.stack || String(error)); }
 }
 
 // ---- landing page and 404 ---------------------------------------------------
 {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+  const ctx = await newContext({ viewport: { width: 1280, height: 720 } });
   const { page, errors } = await openPage(ctx, `${BASE}/`);
   const talks = await page.evaluate(() => document.querySelectorAll('li.talk').length);
   if (talks < 1) fail('index.html', 'landing page lists no talks');
@@ -228,7 +236,7 @@ if (decks.includes('_showcase')) {
 for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.html', 1280, 720]]) {
   const where = path === '/' ? 'index.html' : path.slice(1);
   if (!existsSync(join(ROOT, path === '/' ? 'index.html' : path.slice(1)))) continue;
-  const ctx = await browser.newContext({ viewport: { width, height } });
+  const ctx = await newContext({ viewport: { width, height } });
   const { page } = await openPage(ctx, `${BASE}${path}`);
   try {
     const findings = await axeFindings(page);
@@ -250,7 +258,7 @@ for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.h
 {
   const stillDeck = existsSync(join(ROOT, 'talks', '_showcase', 'index.html')) ? '_showcase' : '_template';
   const where = `talks/${stillDeck}`;
-  const ctx = await browser.newContext({
+  const ctx = await newContext({
     viewport: { width: 1280, height: 720 },
     reducedMotion: 'no-preference',   // the switch under test must be the only one thrown
   });
@@ -352,7 +360,7 @@ if (SHOT_DIR) {
     { name: 'closing', index: 23 },
   ];
   for (const [w, h] of [[1280, 720], [844, 390], [390, 844]]) {
-    const ctx = await browser.newContext({ viewport: { width: w, height: h } });
+    const ctx = await newContext({ viewport: { width: w, height: h } });
     const { page } = await openPage(ctx, `${BASE}/talks/${shotDeck}/`);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     const markedShots = await page.evaluate(() => Reveal.getHorizontalSlides()

@@ -25,163 +25,59 @@
  * --no-frame-snapshots to disable this or --frame-timeout-ms N to tune it.
  * --force regenerates everything; --decks a,b restricts the set.
  */
-import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { deckExtrasHash, treeDigest, reusableEvidence } from './lib/export-cache.mjs';
-import { slideInventory, settlePrint, printGeometry } from './lib/slides.mjs';
-import { captureLiveFrames, installPrintFrameSnapshots } from './lib/pdf-frames.mjs';
+import { treeDigest } from './lib/export-cache.mjs';
+import { exportDeck, exportLandingCard } from './lib/export-deck.mjs';
 import { intArg, launchChromium, listDecks, startStaticServer, valueArg } from './lib/runtime.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const args = process.argv.slice(2);
-const ROOT = resolve(valueArg(args, '--root', REPO));
-const FORCE = args.includes('--force');
-const REFRESH = args.includes('--refresh-frames');
-const ONLY = valueArg(args, '--decks', null)?.split(',');
-const EXECUTABLE_PATH = valueArg(args, '--executable-path', null);
-const BROWSER_CHANNEL = valueArg(args, '--browser-channel', null);
-const FRAME_SNAPSHOTS = !args.includes('--no-frame-snapshots');
-const FRAME_TIMEOUT_MS = intArg(args, '--frame-timeout-ms', 12000);
 
-const { chromium } = await import('playwright');
-
-const staticSite = await startStaticServer(ROOT);
-const BASE = staticSite.base;
-const sharedDigest = treeDigest(join(ROOT, 'shared'));
-const CACHE_DEPENDENCIES = [
-  'package-lock.json',
-  'tools/export-pdf.mjs',
-  'tools/lib/export-cache.mjs',
-  'tools/lib/pdf-frames.mjs',
-  'tools/lib/runtime.mjs',
-  'tools/lib/slides.mjs',
-];
-
-const decks = listDecks(ROOT, { includeDrafts: false, only: ONLY });
-const browser = await launchChromium(chromium, {
-  executablePath: EXECUTABLE_PATH,
-  channel: BROWSER_CHANNEL,
-});
-let failures = 0;
-console.log(`info  browser: Chromium ${browser.version()}`);
-
-for (const slug of decks) {
-  const deckDir = join(ROOT, 'talks', slug);
-  const hashFile = join(deckDir, '.extras-hash');
-  const hash = deckExtrasHash({
-    root: ROOT,
-    repo: REPO,
-    slug,
-    sharedDigest,
-    dependencyFiles: CACHE_DEPENDENCIES,
-    options: { frameSnapshots: FRAME_SNAPSHOTS, frameTimeoutMs: FRAME_TIMEOUT_MS, browser: browser.version() },
-  });
-  const evidenceFile = join(deckDir, 'export-evidence.json');
-  let evidence;
-  try { evidence = JSON.parse(readFileSync(evidenceFile, 'utf8')); } catch { /* rebuild old/incomplete caches */ }
-  if (!FORCE && !REFRESH && reusableEvidence(evidence) && existsSync(hashFile) && readFileSync(hashFile, 'utf8') === hash &&
-      existsSync(join(deckDir, 'slides.pdf')) && existsSync(join(deckDir, 'social-card.png'))) {
-    console.log(`ok    ${slug}: unchanged — reusing cached slides.pdf + social-card.png`);
-    continue;
-  }
-
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
-  const page = await ctx.newPage();
-  const deckUrl = `${BASE}/talks/${slug}/`;
-  const hasFrames = /<iframe\b/i.test(readFileSync(join(deckDir, 'index.html'), 'utf8'));
-  let frameCaptures = [];
-  await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
-  await page.evaluate(() => window.DeckRuntime.ready);
-  const expectedSlides = await slideInventory(page);
-  const expectedFrames = await page.evaluate(() => [...document.querySelectorAll('.slides iframe')].map(f => ({
-    title: f.title, url: f.getAttribute('data-src') || f.getAttribute('src'), captured: false,
-    error: 'Capture did not complete',
-  })));
-
-  if (FRAME_SNAPSHOTS && hasFrames) {
-    try {
-      await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
-      await page.evaluate(() => document.fonts ? document.fonts.ready : null);
-      await page.waitForFunction(
-        () => window.Reveal?.isReady && window.Reveal.isReady(),
-        null,
-        { timeout: 15000 },
-      ).catch(() => {});
-      frameCaptures = await captureLiveFrames(page, { timeoutMs: FRAME_TIMEOUT_MS });
-      const captured = frameCaptures.filter(frame => frame.dataUrl).length;
-      console.log(`info  ${slug}: captured ${captured}/${frameCaptures.length} live frame(s) for PDF`);
-      for (const frame of frameCaptures.filter(item => !item.dataUrl)) {
-        console.warn(`warn  ${slug}: ${frame.title} — ${frame.error}; using labelled placeholder`);
+export async function main(args = process.argv.slice(2)) {
+  const root = resolve(valueArg(args, '--root', REPO));
+  const only = valueArg(args, '--decks', null)?.split(',');
+  const frameTimeoutMs = intArg(args, '--frame-timeout-ms', 12000);
+  // Validate selection before allocating a server or starting a browser.
+  const decks = listDecks(root, { includeDrafts: false, only });
+  const sharedDigest = treeDigest(join(root, 'shared'));
+  const { chromium } = await import('playwright');
+  let site, browser, failures = 0;
+  try {
+    site = await startStaticServer(root);
+    browser = await launchChromium(chromium, {
+      executablePath: valueArg(args, '--executable-path', null),
+      channel: valueArg(args, '--browser-channel', null),
+    });
+    console.log(`info  browser: Chromium ${browser.version()}`);
+    for (const slug of decks) {
+      try {
+        await exportDeck({ browser, root, repo: REPO, base: site.base, slug, sharedDigest,
+          force: args.includes('--force'), refreshFrames: args.includes('--refresh-frames'),
+          frameSnapshots: !args.includes('--no-frame-snapshots'), frameTimeoutMs });
+      } catch (error) {
+        failures += 1;
+        console.error(`FAIL  ${slug}: ${error.message}`);
       }
-    } catch (error) {
-      console.warn(`warn  ${slug}: live-frame capture failed (${error.message}); using labelled placeholders`);
-      frameCaptures = [];
     }
+    if (!only) {
+      try {
+        await exportLandingCard({ browser, root, base: site.base });
+        console.log('ok    landing page: social-card.png');
+      } catch (error) {
+        failures += 1;
+        console.error(`FAIL  landing page: ${error.message}`);
+      }
+    }
+  } finally {
+    try { await browser?.close(); } finally { await site?.close(); }
   }
-
-  // ---- PDF (?print-pdf → one page per slide, backgrounds on) --------------
-  await page.goto(`${deckUrl}?print-pdf`, { waitUntil: 'load', timeout: 60000 });
-  await page.evaluate(() => document.fonts ? document.fonts.ready : null);
-  await page.waitForSelector('.reveal .pdf-page', { timeout: 30000 });
-  if (FRAME_SNAPSHOTS && hasFrames) {
-    const installed = await installPrintFrameSnapshots(page, frameCaptures);
-    console.log(`info  ${slug}: PDF uses ${installed.screenshots} frame screenshot(s), ` +
-      `${installed.placeholders} labelled placeholder(s)`);
-  }
-  await settlePrint(page);
-  const geometryErrors = await printGeometry(page);
-  if (geometryErrors.length) {
-    geometryErrors.forEach(error => console.error(`FAIL  ${slug}: ${error}`));
-    failures++;
-    await ctx.close();
-    continue;
-  }
-  const slideCount = await page.evaluate(() => document.querySelectorAll('.reveal .pdf-page').length);
-  const pdf = await page.pdf({ printBackground: true, preferCSSPageSize: true });
-  const pageCount = (pdf.toString('latin1').match(/\/Type[\s]*\/Page[^s]/g) || []).length;
-  if (pageCount !== slideCount || slideCount !== expectedSlides.length) {
-    console.log(`FAIL  ${slug}: PDF has ${pageCount} pages for ${slideCount} slides`);
-    failures++;
-    await ctx.close();
-    continue;
-  }
-  writeFileSync(join(deckDir, 'slides.pdf'), pdf);
-
-  // ---- social card (cover screenshot) --------------------------------------
-  await page.emulateMedia({ media: 'screen' });
-  await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
-  await page.evaluate(() => document.fonts ? document.fonts.ready : null);
-  await page.waitForTimeout(1500); // let the cover's rules draw + webfonts paint
-  await page.screenshot({ path: join(deckDir, 'social-card.png') });
-
-  writeFileSync(hashFile, hash);
-  writeFileSync(evidenceFile, JSON.stringify({ version: 1, createdAt: new Date().toISOString(), sourceDigest: hash,
-    browser: browser.version(), pages: pageCount, options: { frameSnapshots: FRAME_SNAPSHOTS, frameTimeoutMs: FRAME_TIMEOUT_MS },
-    frames: FRAME_SNAPSHOTS ? (frameCaptures.length ? frameCaptures.map(({ title, url, dataUrl, error }) => ({ title, url, captured: !!dataUrl, error })) : expectedFrames) : [],
-    geometry: 'passed', slides: expectedSlides,
-  }, null, 2) + '\n');
-  console.log(`ok    ${slug}: slides.pdf (${slideCount} pages, ${(pdf.length / 1024 / 1024).toFixed(1)} MB) + social-card.png`);
-  await ctx.close();
+  console.log(failures ? `\nexport-pdf: ${failures} failure(s)` : '\nexport-pdf: done');
+  return failures ? 1 : 0;
 }
 
-// ---- landing-page social card ---------------------------------------------
-// Deliberately outside the .extras-hash cache: one screenshot costs a couple
-// of seconds against minutes of PDF export, and leaving it uncached keeps the
-// workflow's cache glob scoped to talks/, where the expensive artifacts live.
-// Skipped under --decks, which asks for a restricted set.
-if (!ONLY) {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
-  const page = await ctx.newPage();
-  await page.goto(`${BASE}/`, { waitUntil: 'load', timeout: 60000 });
-  await page.evaluate(() => document.fonts ? document.fonts.ready : null);
-  await page.waitForTimeout(1500); // let the masthead rules draw + webfonts paint
-  await page.screenshot({ path: join(ROOT, 'social-card.png') });
-  console.log('ok    landing page: social-card.png');
-  await ctx.close();
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().then(code => { process.exitCode = code; }).catch(error => {
+    console.error(`export-pdf: ${error.message}`);
+    process.exitCode = 1;
+  });
 }
-
-await browser.close();
-await staticSite.close();
-console.log(failures ? `\nexport-pdf: ${failures} failure(s)` : '\nexport-pdf: done');
-process.exit(failures ? 1 : 0);
