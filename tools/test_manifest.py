@@ -70,6 +70,37 @@ class ManifestModel(unittest.TestCase):
             with self.assertRaisesRegex(ManifestValidationError, "unreadable manifest"):
                 load_manifest(path)
 
+    def test_duration_is_optional_positive_integer_and_round_trips(self):
+        parsed = parse_manifest({"site": "https://slides.example.test", "talks": [talk(durationMinutes=20)]})
+        self.assertEqual(parsed.talks[0].duration_minutes, 20)
+        self.assertEqual(parsed.to_dict()["talks"][0]["durationMinutes"], 20)
+        for value in [True, 0, -1, 2.5, "20"]:
+            with self.subTest(value=value), self.assertRaisesRegex(ManifestValidationError, 'positive integer'):
+                parse_manifest({"site": "https://slides.example.test", "talks": [talk(durationMinutes=value)]})
+
+    def test_unknown_fields_fail_instead_of_disappearing_on_regeneration(self):
+        for raw in [
+            {"site": "https://slides.example.test", "talks": [talk()], "siteTitle": "oops"},
+            {"site": "https://slides.example.test", "talks": [talk(eventURL="https://event.example.test")]},
+        ]:
+            with self.assertRaisesRegex(ManifestValidationError, 'unknown'):
+                parse_manifest(raw)
+
+    def test_urls_reject_active_schemes_and_malformed_addresses(self):
+        for field in ['video', 'eventUrl', 'pdf']:
+            for url in ['javascript:alert(1)', 'https://[bad', 'https://user:pass@example.test', '//evil.test/file', 'https://example.test/with space']:
+                with self.subTest(field=field, url=url), self.assertRaises(ManifestValidationError):
+                    parse_manifest({"site": "https://slides.example.test", "talks": [talk(**{field: url})]})
+        with self.assertRaises(ManifestValidationError):
+            parse_manifest({"site": "https://[bad", "talks": [talk()]})
+
+    def test_pdf_paths_remain_supported_without_parent_traversal(self):
+        for url in ['files/paper.pdf', '/files/paper.pdf']:
+            parse_manifest({"site": "https://slides.example.test", "talks": [talk(pdf=url)]})
+        for url in ['../paper.pdf', 'files/%2e%2e/paper.pdf']:
+            with self.assertRaises(ManifestValidationError):
+                parse_manifest({"site": "https://slides.example.test", "talks": [talk(pdf=url)]})
+
 
 class GeneratedDeckMetadata(unittest.TestCase):
     TEMPLATE = f'''<!doctype html>

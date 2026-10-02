@@ -9,7 +9,7 @@ import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 REQUIRED_TEXT = (
     "slug", "date", "language", "event", "venue", "title",
@@ -40,6 +40,7 @@ class Talk:
     tags: tuple[str, ...] = ()
     deck_title: str | None = None
     optional: dict[str, str] = field(default_factory=dict)
+    duration_minutes: int | None = None
 
     @property
     def display_title(self) -> str:
@@ -64,6 +65,8 @@ class Talk:
         if self.deck_title:
             value["deckTitle"] = self.deck_title
         value.update(self.optional)
+        if self.duration_minutes is not None:
+            value["durationMinutes"] = self.duration_minutes
         return value
 
 
@@ -89,14 +92,40 @@ class TalkManifest:
 
 
 def _valid_http_url(value: str) -> bool:
-    parsed = urlparse(value)
-    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+    if any(char.isspace() or ord(char) < 32 for char in value):
+        return False
+    try:
+        parsed = urlparse(value)
+        return (parsed.scheme in {"http", "https"} and bool(parsed.hostname)
+                and parsed.port != 0 and not parsed.username and not parsed.password)
+    except ValueError:
+        return False
+
+
+def _valid_asset_url(value: str) -> bool:
+    """Allow http(s) and site-relative asset paths; reject active URL schemes."""
+    if _valid_http_url(value):
+        return True
+    try:
+        parsed = urlparse(value)
+    except ValueError:
+        return False
+    return (not parsed.scheme and not parsed.netloc and not value.startswith("//")
+            and bool(parsed.path) and "\\" not in value
+            and not any(char.isspace() or ord(char) < 32 for char in value)
+            and ".." not in unquote(parsed.path).split("/"))
 
 
 def parse_manifest(data: Any) -> TalkManifest:
     errors: list[str] = []
     if not isinstance(data, dict):
         raise ManifestValidationError(["manifest root must be a JSON object"])
+
+    unknown = set(data) - {"$comment", "site", "talks"}
+    if unknown:
+        errors.append("unknown manifest field(s): " + ", ".join(sorted(unknown)))
+    if "$comment" in data and not isinstance(data["$comment"], str):
+        errors.append("field '$comment' must be a string")
 
     site = data.get("site")
     if not isinstance(site, str) or not site.strip():
@@ -117,6 +146,9 @@ def parse_manifest(data: Any) -> TalkManifest:
             errors.append(f"talk #{index + 1}: entry must be an object")
             continue
         label = raw.get("slug") if isinstance(raw.get("slug"), str) else "?"
+        unknown = set(raw) - set(REQUIRED_TEXT) - set(OPTIONAL_TEXT) - {"presenters", "tags", "durationMinutes"}
+        if unknown:
+            errors.append(f"{label}: unknown field(s): " + ", ".join(sorted(unknown)))
         for name in REQUIRED_TEXT:
             if not isinstance(raw.get(name), str) or not raw[name].strip():
                 errors.append(f"{label}: missing field {name!r}")
@@ -155,7 +187,15 @@ def parse_manifest(data: Any) -> TalkManifest:
             if value is not None and (not isinstance(value, str) or not value.strip()):
                 errors.append(f"{label}: optional field {name!r} must be a non-empty string")
             elif name not in {"deckTitle"} and isinstance(value, str):
+                if not (_valid_asset_url(value) if name == "pdf" else _valid_http_url(value)):
+                    errors.append(f"{label}: {name} must be " + (
+                        "an http(s) URL or site-relative asset path" if name == "pdf"
+                        else "an absolute http(s) URL"))
                 optional[name] = value
+
+        duration = raw.get("durationMinutes")
+        if duration is not None and (type(duration) is not int or duration <= 0):
+            errors.append(f"{label}: durationMinutes must be a positive integer")
 
         if all(isinstance(raw.get(name), str) and raw[name].strip() for name in REQUIRED_TEXT) \
                 and presenters:
@@ -172,6 +212,7 @@ def parse_manifest(data: Any) -> TalkManifest:
                 tags=tuple(item.strip() for item in tags),
                 deck_title=raw.get("deckTitle"),
                 optional=optional,
+                duration_minutes=duration,
             ))
 
     if len(raw_slugs) != len(set(raw_slugs)):

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les serveurs MCP pour les GLAM africains — Lecture</title>
+  <meta name="description" content="Deux serveurs MCP — IWAC et AMIRA — pour organiser l’accès des assistants aux collections, à leurs sources et aux savoirs documentaires.">
+  <meta name="citation_title" content="Les serveurs MCP pour les GLAM africains : ouvrir l&#x27;accès, garder la maîtrise ?">
+  <meta name="citation_author" content="Frédérick Madore">
+  <meta name="citation_publication_date" content="2026/09/23">
+  <meta name="citation_conference_title" content="Humanités numériques et IA en études africaines · STIAS, Stellenbosch">
+  <meta name="citation_language" content="fr">
+  <meta name="citation_pdf_url" content="https://slides.frederickmadore.com/talks/2026-09-23-stellenbosch-mcp-glam-africains/slides.pdf">
+  <meta name="citation_keywords" content="MCP">
+  <meta name="citation_keywords" content="GLAM">
+  <meta name="citation_keywords" content="IWAC">
+  <meta name="citation_keywords" content="AMIRA">
+  <meta name="citation_keywords" content="IA">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-09-23-stellenbosch-mcp-glam-africains/read.html">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../shared/fonts/fonts.css">
+  <link rel="stylesheet" href="../../shared/reader.css">
+</head>
+<body id="top">
+  <a class="reader-skip" href="#content">Aller au contenu</a>
+  <header class="reader-header">
+    <nav aria-label="Navigation"><a href="../../index.html">Toutes les présentations</a><a href="index.html">Diapositives</a><a href="slides.pdf">PDF</a></nav>
+    <p class="reader-label">Lecture</p>
+    <h1>Les serveurs MCP pour les GLAM africains : ouvrir l&#x27;accès, garder la maîtrise ?</h1>
+    <p class="reader-byline">Frédérick Madore</p>
+    <p>Atelier Point Sud · STIAS, Stellenbosch · 23 septembre 2026</p>
+    <p class="reader-meta">17 diapositives</p>
+  </header>
+  <main id="content">
+    <details class="reader-contents"><summary>Sommaire</summary><nav aria-label="Sommaire"><ol><li><a href="#slide-1">Les serveurs MCP pour les GLAM africains</a></li><li><a href="#slide-2">Les collections ouvertes sous double pression</a></li><li><a href="#slide-3">Diapositive 3</a></li><li><a href="#slide-4">Deux collections</a></li><li><a href="#slide-5">Une archive ouverte, bâtie par un historien</a></li><li><a href="#slide-6">Explorer les recherches du Cluster Africa Multiple à Bayreuth</a></li><li><a href="#slide-7">Organiser l’accès des assistants</a></li><li><a href="#slide-8">Pouvoir vérifier les réponses en remontant aux sources</a></li><li><a href="#slide-9">MCP : relier un assistant aux outils de la collection</a></li><li><a href="#slide-10">Deux collections, deux serveurs pour les interroger</a></li><li><a href="#slide-11">Interroger les collections en pratique</a></li><li><a href="#slide-12">Situer la collection avant d’interpréter ses résultats</a></li><li><a href="#slide-13">Chercher avec les catégories de la collection</a></li><li><a href="#slide-14">Explorer les relations décrites dans la collection</a></li><li><a href="#slide-15">Formaliser le savoir du curateur et de l’historien</a></li><li><a href="#slide-16">Qui contrôle la médiation ?</a></li><li><a href="#slide-17">Conclusion</a></li></ol></nav></details>
+    <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
+<p class="reader-folio"><a href="index.html#/0">Diapositive 1</a></p>
+<p class="eyebrow">Atelier Point Sud · Humanités numériques et IA en études africaines · STIAS, Stellenbosch</p>
+      <h2 id="slide-1-title">Les serveurs MCP pour les GLAM africains</h2>
+      <p class="subtitle">Ouvrir l’accès, garder la maîtrise ?</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="role">Curateur de données</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      <img class="org-logo" alt="Université de Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+      <div></div>
+</section>
+<section class="reader-slide" id="slide-2" aria-labelledby="slide-2-title">
+<p class="reader-folio"><a href="index.html#/1">Diapositive 2</a></p>
+<p class="kicker warm">Le contexte</p>
+      <h2 class="slide-title" id="slide-2-title">Les collections ouvertes sous double pression</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="../../shared/assets/glam-e-lab.jpg"><img class="shot" alt="Rapport du GLAM-E Lab par Michael Weinberg, juin 2025 : « Are AI Bots Knocking Cultural Heritage Offline? »" width="1800" height="851" src="../../shared/assets/glam-e-lab.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Weinberg, <em>GLAM-E Lab</em>, 2025. <a href="https://www.glamelab.org/products/are-ai-bots-knocking-cultural-heritage-offline/">Lire le rapport ↗</a></p>
+        </div>
+        <div class="col">
+          <div class="col-head">Une pression sur les infrastructures</div>
+          <ul>
+            <li><strong>39 institutions sur 43</strong> signalent une hausse du trafic</li>
+            <li><strong>27 d’entre elles</strong> l’attribuent, au moins en partie, aux robots</li>
+            <li>De nombreux robots ne respectent pas les consignes du <code>robots.txt</code></li>
+          </ul>
+          <div class="col-head alt">Une pression sur la médiation</div>
+          <ul>
+            <li>Des réponses peuvent être produites dans un assistant IA sans consultation du site source</li>
+            <li>L’enjeu : rester repérable, contextualisé et correctement cité</li>
+          </ul>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-3" aria-labelledby="slide-3-title">
+<p class="reader-folio"><a href="index.html#/2">Diapositive 3</a></p>
+<h2 id="slide-3-title" class="reader-fallback-title">Diapositive 3</h2>
+      <p class="statement-body">L’utilisateur obtient sa réponse dans le chatbot, sans nécessairement <span class="accent">visiter la collection</span>.</p>
+      <p class="attribution">À mesure que la recherche passe par les assistants, les sources mobilisées risquent de devenir moins visibles et moins consultées. <a href="https://lp.chartbeat.com/hubfs/Chartbeat-Report-2026Q1.pdf">Chartbeat, 2026 ↗</a></p>
+</section>
+<section class="reader-slide" id="slide-4" aria-labelledby="slide-4-title">
+<p class="reader-folio"><a href="index.html#/3">Diapositive 4</a></p>
+<p class="sec-no">01</p>
+      <h2 id="slide-4-title">Deux collections</h2>
+      <p class="sec-sub">Deux modes de constitution et de description, un même enjeu de médiation.</p>
+</section>
+<section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
+<p class="reader-folio"><a href="index.html#/4">Diapositive 5</a></p>
+<p class="kicker">Collection Islam Afrique de l’Ouest (CIAO)</p>
+      <h2 class="slide-title" id="slide-5-title">Une archive ouverte, bâtie par un historien</h2>
+      <div class="cols">
+        <div class="col">
+          <p class="lead">Une collection issue de quinze ans de recherche sur l’islam en Afrique de l’Ouest, ouverte en 2023.</p>
+          <ul>
+            <li>Coupures de presse et publications islamiques : revues, brochures, tracts</li>
+            <li>Six pays, surtout en français, mais aussi en arabe, haoussa, kabyé, ewé et dendi</li>
+            <li>Sur <a href="https://islam.zmo.de/s/afrique_ouest/">islam.zmo.de</a>, hébergée au ZMO à Berlin</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">Chiffres au 16 septembre 2026</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">15 812</span><span class="stat-label">articles de presse</span></div>
+              <div class="stat"><span class="stat-num">1 501</span><span class="stat-label">publications islamiques</span></div>
+              <div class="stat"><span class="stat-num">1 790</span><span class="stat-label">items audiovisuels</span></div>
+              <div class="stat"><span class="stat-num">5 041</span><span class="stat-label">notices d’autorité</span></div>
+              <div class="stat"><span class="stat-num">867</span><span class="stat-label">références scientifiques</span></div>
+              <div class="stat"><span class="stat-num">81</span><span class="stat-label">titres de presse</span></div>
+            </div>
+            <hr class="rule">
+            <p class="small muted">25 067 notices de plusieurs types, dont plus de 17 000 articles de presse et publications islamiques · avril 1961 – août 2026</p>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-6" aria-labelledby="slide-6-title">
+<p class="reader-folio"><a href="index.html#/5">Diapositive 6</a></p>
+<p class="kicker navy">Africa Multiple Interactive Research Atlas (AMIRA)</p>
+      <h2 class="slide-title" id="slide-6-title">Explorer les recherches du Cluster Africa Multiple à Bayreuth</h2>
+      <div class="cols">
+        <div class="col">
+          <p>Coordonnée à l’Université de Bayreuth, AMIRA présente les recherches du Cluster Africa Multiple avec ses centres partenaires.</p>
+          <ul>
+            <li>Items, projets, personnes, institutions, publications</li>
+            <li>Podcasts et vidéos, en partie accompagnés de transcriptions interrogeables</li>
+          </ul>
+          <div class="callout navy">
+            <span class="callout-label">Une découverte distribuée</span>
+            AMIRA décrit les données conservées dans les dépôts partenaires et y renvoie.
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">Chiffres au 16 septembre 2026</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">3 975</span><span class="stat-label">items de recherche</span></div>
+              <div class="stat"><span class="stat-num">93</span><span class="stat-label">projets</span></div>
+              <div class="stat"><span class="stat-num">1 643</span><span class="stat-label">personnes</span></div>
+              <div class="stat"><span class="stat-num">555</span><span class="stat-label">publications</span></div>
+              <div class="stat"><span class="stat-num">140</span><span class="stat-label">vidéos · 91 transcrites</span></div>
+              <div class="stat"><span class="stat-num">43</span><span class="stat-label">podcasts transcrits</span></div>
+            </div>
+            <hr class="rule">
+            <p class="small muted"><a href="https://data.africamultiple.uni-bayreuth.de">https://data.africamultiple.uni-bayreuth.de</a></p>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-7" aria-labelledby="slide-7-title">
+<p class="reader-folio"><a href="index.html#/6">Diapositive 7</a></p>
+<p class="sec-no">02</p>
+      <h2 id="slide-7-title">Organiser l’accès des assistants</h2>
+      <p class="sec-sub">Définir les outils de recherche et le contexte transmis avec les résultats.</p>
+</section>
+<section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
+<p class="reader-folio"><a href="index.html#/7">Diapositive 8</a></p>
+<p class="kicker warm">L’objectif</p>
+      <h2 class="slide-title" id="slide-8-title">Pouvoir vérifier les réponses en remontant aux sources</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <div class="panel">
+            <p class="kicker">Extrait de la réponse de Gemini</p>
+            <p lang="en">« Kpalimé hosted a highly dynamic, visible, and economically influential Muslim minority. »</p>
+            <p class="small muted">Référence affichée : <em>The Christian Chronicle</em>.</p>
+          </div>
+          <p class="small muted">Des références peu pertinentes pour la question sur Kpalimé dans les années 1990. <a href="../../shared/assets/gemini-kpalime.jpg">Voir la capture ↗</a> · <a href="https://gemini.google.com/share/45316f371e89">Conversation ↗</a></p>
+        </div>
+        <div class="col">
+          <p>Des réponses souvent génériques, des références parfois peu fiables — alors que nos collections sont déjà moissonnées par des bots.</p>
+          <ul>
+            <li>Ancrer les réponses dans des sources identifiables et citées</li>
+            <li>Revenir aux documents pour vérifier les affirmations</li>
+          </ul>
+          <div class="callout warm">
+            Le lien permet de contrôler une affirmation ; il ne prouve pas qu’elle est correcte.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
+<p class="reader-folio"><a href="index.html#/8">Diapositive 9</a></p>
+<p class="kicker navy">Model Context Protocol · norme ouverte, novembre 2024</p>
+      <h2 class="slide-title" id="slide-9-title">MCP : relier un assistant aux outils de la collection</h2>
+      <p>Un protocole ouvert permettant à une application d’interroger des outils décrits par un serveur. <a href="https://modelcontextprotocol.io/">modelcontextprotocol.io</a></p>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">Du côté de l’assistant</div>
+          <p>Interpréter la demande, sélectionner des outils, formuler les requêtes et rédiger une réponse.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">Du côté de la collection</div>
+          <p>Définir les opérations disponibles, exécuter les recherches et les calculs, renvoyer des résultats documentés.</p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">La connexion ne suffit pas</span>
+        La qualité des réponses dépend des métadonnées de la collection, des outils proposés par le serveur et de la manière dont l’IA les utilise.
+      </div>
+</section>
+<section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
+<p class="reader-folio"><a href="index.html#/9">Diapositive 10</a></p>
+<p class="kicker navy">Deux serveurs, une même norme</p>
+      <h2 class="slide-title" id="slide-10-title">Deux collections, deux serveurs pour les interroger</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">IWAC MCP Server</div>
+          <p class="small muted">Collection Islam Afrique de l’Ouest</p>
+          <ul>
+            <li>Chercher des articles sur un sujet</li>
+            <li>Lire les textes disponibles et retrouver leurs notices</li>
+            <li>Repérer les lieux et les personnes dans l’index</li>
+            <li><a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">AMIRA MCP Server</div>
+          <p class="small muted">Africa Multiple Interactive Research Atlas</p>
+          <ul>
+            <li>Obtenir un aperçu des ressources de la collection</li>
+            <li>Chercher dans les transcriptions de vidéos et de podcasts</li>
+            <li>Explorer les liens entre sujets, personnes et projets</li>
+            <li><a class="small" href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server">https://github.com/AM-Digital-Research-Environment/<br>amira-mcp-server</a></li>
+          </ul>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
+<p class="reader-folio"><a href="index.html#/10">Diapositive 11</a></p>
+<p class="sec-no">03</p>
+      <h2 id="slide-11-title">Interroger les collections en pratique</h2>
+      <p class="sec-sub">Situer un corpus, chercher avec ses catégories, explorer ses relations.</p>
+</section>
+<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
+<p class="reader-folio"><a href="index.html#/11">Diapositive 12</a></p>
+<p class="kicker navy">Cadrer avant de chercher</p>
+      <h2 class="slide-title" id="slide-12-title">Situer la collection avant d’interpréter ses résultats</h2>
+      <div class="cols evidence-summary">
+        <div class="col">
+          <h3 class="col-label">Les trois langues les plus représentées</h3>
+          <ul class="share-bars">
+            <li><div class="share-head"><span>Anglais</span><b>1 910</b></div></li>
+            <li><div class="share-head"><span>Français</span><b>662</b></div></li>
+            <li><div class="share-head"><span>Allemand</span><b>177</b></div></li>
+          </ul>
+          <p class="small muted">Nombre d’items · extrait de la distribution, sans les autres langues.</p>
+        </div>
+        <div class="col">
+          <div class="callout navy">
+            <span class="callout-label">Une collection constituée</span>
+            Ces chiffres décrivent les ressources réunies dans AMIRA, avec une couverture inégale. Ils ne mesurent pas la recherche africaine dans son ensemble.
+          </div>
+          <figure class="evidence-reference">
+            <a class="reader-image" href="assets/chart-amira-apercu.png"><img class="shot" alt="Aperçu complet AMIRA : 3 975 items, huit compteurs et distributions par université, section, type de ressource et langue" width="1800" height="489" src="assets/chart-amira-apercu.png" loading="lazy" decoding="async"></a>
+            <figcaption>Source complète · get_collection_overview · 16 septembre 2026 · agrandir</figcaption>
+          </figure>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
+<p class="reader-folio"><a href="index.html#/12">Diapositive 13</a></p>
+<p class="kicker">Serveur CIAO · sujets, lieux, personnes</p>
+      <h2 class="slide-title" id="slide-13-title">Chercher avec les catégories de la collection</h2>
+      <div class="cols evidence-summary">
+        <div class="col">
+          <h3 class="col-label">Les villes les plus citées</h3>
+          <ul class="share-bars green">
+            <li><div class="share-head"><span>Ouagadougou</span><b>3 243</b></div><div class="share-track"></div></li>
+            <li><div class="share-head"><span>La Mecque</span><b>1 810</b></div><div class="share-track"></div></li>
+            <li><div class="share-head"><span>Abidjan</span><b>1 484</b></div><div class="share-track"></div></li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3 class="col-label">Les lieux du pèlerinage</h3>
+          <ul class="share-bars">
+            <li><div class="share-head"><span>La Mecque</span><b>1 810</b></div><div class="share-track"></div></li>
+            <li><div class="share-head"><span>Arabie saoudite</span><b>1 686</b></div><div class="share-track"></div></li>
+            <li><div class="share-head"><span>Médine</span><b>515</b></div><div class="share-track"></div></li>
+          </ul>
+        </div>
+      </div>
+      <p class="chart-cap">Articles rattachés aux entrées géographiques de l’index — extrait de la distribution.</p>
+      <div class="callout warm">
+        <span class="callout-label">Une collection ouest-africaine, des références transrégionales</span>
+        L’Arabie saoudite et les villes du pèlerinage occupent une place importante dans cet index. Une piste à explorer dans les articles, plutôt qu’une conclusion tirée des seuls comptages.
+      </div>
+</section>
+<section class="reader-slide" id="slide-14" aria-labelledby="slide-14-title">
+<p class="reader-folio"><a href="index.html#/13">Diapositive 14</a></p>
+<p class="kicker navy">Explorer les associations décrites autour d’une entité</p>
+      <h2 class="slide-title" id="slide-14-title">Explorer les relations décrites dans la collection</h2>
+      <div class="cols evidence-summary">
+        <div class="col">
+          <dl class="evidence-reading">
+            <div><dt>Point de départ · lieu</dt><dd>Nigeria <span>304 items</span></dd></div>
+            <div><dt>Sujet associé</dt><dd>Archives <span>45 items partagés</span></dd></div>
+          </dl>
+          <div class="callout navy">
+            <span class="callout-label">Une piste à vérifier dans les documents</span>
+            Une association dans les métadonnées ne suffit pas à établir une relation historique.
+          </div>
+        </div>
+        <div class="col chart-hub">
+          <a class="reader-image" href="assets/chart-amira-relations.png"><img class="shot" alt="Graphique relationnel du serveur AMIRA : « Nigeria » au centre avec 304 items, entouré de secteurs étiquetés — sujets, personnes, projets, sections, formats et pays — dont la longueur des rayons donne le nombre d’items partagés" width="1800" height="1452" src="assets/chart-amira-relations.png" loading="lazy" decoding="async"></a>
+          <p class="chart-cap">Source complète · find_related · cliquer pour agrandir</p>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-15" aria-labelledby="slide-15-title">
+<p class="reader-folio"><a href="index.html#/14">Diapositive 15</a></p>
+<p class="kicker">IWAC MCP Server · le savoir mis en instructions</p>
+      <h2 class="slide-title" id="slide-15-title">Formaliser le savoir du curateur et de l’historien</h2>
+      <p>Un <strong>SKILL.md</strong> est un fichier d’instructions qui guide l’assistant dans une tâche. Ici, il formalise une connaissance située de la collection.</p>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Connaître la collection</div>
+          <ul>
+            <li>Langues et variantes : « médersa », « madrasa »</li>
+            <li>Biais et lacunes selon les pays, les périodes et les langues</li>
+            <li>Choix d’indexation et limites des textes disponibles</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Guider l’interprétation</div>
+          <ul>
+            <li>Situer les journaux dans leur contexte politique</li>
+            <li>Croiser presse généraliste, publications islamiques et travaux scientifiques</li>
+            <li>Distinguer absence de résultat et absence du phénomène</li>
+          </ul>
+        </div>
+      </div>
+      <p class="small muted">Des savoirs explicités, dont l’application par l’IA reste à vérifier. <a href="https://github.com/fmadore/iwac-mcp-server/blob/main/.agents/skills/iwac-mcp/SKILL.md">Consulter le skill ↗</a></p>
+</section>
+<section class="reader-slide" id="slide-16" aria-labelledby="slide-16-title">
+<p class="reader-folio"><a href="index.html#/15">Diapositive 16</a></p>
+<h2 id="slide-16-title" class="reader-fallback-title">Qui contrôle la médiation ?</h2>
+      <p class="statement-body">Qui contrôle la manière dont l’IA <span class="accent">cherche, interprète et cite</span> les collections ?</p>
+      <p class="attribution">Les institutions définissent les outils et documentent les collections ; les fournisseurs de modèles influencent leur utilisation dans les réponses.</p>
+</section>
+<section class="reader-slide" id="slide-17" aria-labelledby="slide-17-title">
+<p class="reader-folio"><a href="index.html#/16">Diapositive 17</a></p>
+<h2 id="slide-17-title">Conclusion</h2>
+      <p class="lead">Relier la souplesse des assistants à la connaissance des collections.</p>
+      <p><strong>L’apport :</strong> explorer des sources identifiables avec une méthode et des limites explicites.</p>
+      <p><strong>L’enjeu :</strong> garder une prise sur la recherche, l’interprétation et la citation.</p>
+      <p><strong>À essayer :</strong> <a href="https://islam.zmo.de/s/afrique_ouest/page/acces-ia">IWAC MCP Server</a> · <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server#install-end-users">AMIRA MCP Server</a>.</p>
+      <p><strong>À développer :</strong> un chatbot sur le site, avec un modèle à poids ouverts, sans service de chatbot commercial.</p>
+      <div></div>
+      
+      <img class="org-logo" alt="Université de Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+</section>
+  </main>
+  <footer class="reader-footer"><a href="#top">Haut de page</a> · <a href="index.html">Diapositives</a> · <a href="../../index.html">Toutes les présentations</a></footer>
+</body>
+</html>

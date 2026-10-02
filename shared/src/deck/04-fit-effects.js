@@ -12,7 +12,7 @@
      ?no-fit / ?audit disables fitting entirely so raw overflow can be seen. --- */
   var FIT_WARN = 0.95, FIT_FAIL = 0.90;
   var fitReady = !(document.fonts && document.fonts.ready);
-  var FIT_SEEN = (typeof WeakSet === "function") ? new WeakSet() : null;
+  var FIT_SEEN = new WeakMap();
   /* Layouts that centre content vertically: their .fit box spans the whole safe
      area and keeps the content centred while it scales. */
   var CENTERED = ["cover", "section", "statement", "closing", "metric", "center", "balance"];
@@ -26,21 +26,25 @@
   }
   function fitSlide(sec, force) {
     if (!sec || !fitReady || NO_FIT) return;
-    if (!force && FIT_SEEN && FIT_SEEN.has(sec)) return;
-    if (force) unwrapFit(sec);
-    else if (sec.querySelector(":scope > .fit")) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
     var cs = getComputedStyle(sec);
+    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    // The narrow chrome changes the slide's padding and footer reserve. Cache
+    // the safe area's geometry, not just the slide: a rotation must not leave
+    // an old fit in place, or leave a previously fitting slide overflowing.
+    var geometry = [sec.clientWidth, sec.clientHeight, cs.paddingTop, cs.paddingBottom,
+      cs.paddingLeft, cs.paddingRight, rem].join("|");
+    if (!force && FIT_SEEN.get(sec) === geometry) return;
+    unwrapFit(sec);
     var padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
     var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
     var hasRule = sec.classList.contains("section") || sec.classList.contains("closing");  // gold plate-rule at top
-    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     var clearance = hasRule ? 1.8 * rem : 0;   // breathing room below the gold plate-rule
     var kids = [].slice.call(sec.children).filter(function (c) {
       if (c.nodeName === "ASIDE" || (c.classList && c.classList.contains("fit")) || c.offsetParent === null) return false;
       var pos = getComputedStyle(c).position;   // leave absolutely-placed decor (QR, media fill) in place
       return pos !== "absolute" && pos !== "fixed";
     });
-    if (!kids.length) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
+    if (!kids.length) { FIT_SEEN.set(sec, geometry); return; }
     var topMost = Infinity, botMost = -Infinity, leftMost = Infinity, rightMost = -Infinity;
     kids.forEach(function (c) {
       topMost = Math.min(topMost, c.offsetTop);
@@ -84,7 +88,7 @@
         console.warn("deck: slide " + slideRef(sec) + " auto-fitted to ×" + k.toFixed(3) + " — consider trimming it.");
       }
     }
-    if (FIT_SEEN) FIT_SEEN.add(sec);
+    FIT_SEEN.set(sec, geometry);
     if (checkModeUpdate) checkModeUpdate();
   }
   function slideRef(sec) {

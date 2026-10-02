@@ -271,6 +271,14 @@ inventory and a rough estimate from notes at 130 words/minute. The report lists
 live dependencies, local asset failures and QR images; it does not decode QR
 targets or replace rehearsal. Add `--exports _site` to include export evidence.
 
+Create a portable, notes-free copy with
+`python tools/offline-pack.py rehearsal.zip --decks <slug>` (omit `--decks`
+for every talk). Unzip it and run the included `serve.py`, then disconnect the
+network and rehearse. The archive includes reading editions, shared fonts and
+runtime, and authored fallback images. Its readiness inventory distinguishes
+missing assets, network dependencies and unverified live frames; packaging
+alone does not establish that a live demo or QR destination works.
+
 **Publication safety and evidence.** `strip-notes.py` builds into a fresh
 staging directory and replaces only an output marked `.slides-build.json`
 for this source repository. It rejects source inputs and unmarked existing
@@ -293,14 +301,23 @@ on the iframe and have the application send that message to its parent; the
 engine verifies both origin and source. The state resets on each activation.
 Use a local screenshot when a live surface is unnecessary for the argument.
 
-A site that sends no such message but does name this deck in its CSP
-`frame-ancestors` is declared with `data-frame-trusted`, listing the deck
-origins that site admits — `data-frame-trusted="https://slides.frederickmadore.com"`.
-Served from one of them the frame goes up without a click; served from
-anywhere else the fallback stands, so a local rehearsal and the exported PDF
-keep the screenshot instead of a frame the origin would have blocked. An
-empty value trusts every origin. Confirm the site's header before relying on
-it: `curl -sSI <url> | grep -i content-security-policy`.
+Framing permission is not evidence that an application loaded. The legacy
+`data-frame-trusted` attribute no longer dismisses the fallback automatically,
+even on an allowed origin. Applications without a ready-message contract keep
+their screenshot and recovery controls until the audience explicitly chooses
+“Show the site here”. The PDF exporter records the final URL, HTTP status and
+capture mode; an error page is a failed capture, with the authored local image
+retained when available. Failed captures remain eligible for retry.
+
+**Reading editions.** Each published talk has a generated `read.html` with
+ordinary, reflowing text, headings, figures and source-slide links. The landing
+page's Read link opens this edition; it works without JavaScript or a network
+connection once the local files are available. Speaker notes are excluded.
+Edit the original slide HTML, then run `python tools/build-index.py` to update
+the catalogue, metadata, sitemap and reading editions. Slide counts come from
+the source; optional `durationMinutes` in `talks/talks.json` is an authored
+estimate, never inferred from the number of slides. AI and IA share one topic
+filter while each talk keeps its original language and labels.
 
 **Figures show whole.** `.figrow` images use `object-fit: contain`, so a map,
 manuscript or chart keeps its edges rather than being cropped. Add `class="figrow crop"`
@@ -376,8 +393,13 @@ slide, its footer and the open contents dialog, plus the landing and 404
 pages — see `tools/lib/a11y.mjs`), plus one pass over
 the catalogue proving the motion switch still works: `.no-draw` has to zero
 `--draw-run` and reach every animated mark and every counting numeral. Pull requests
-that touch the shared engine also get a screenshot-based visual regression
-check, with diff images uploaded as workflow artifacts.
+that touch the shared engine, fonts, site pages or talk HTML also get a
+screenshot-based visual regression check. Both sides use the merge-base
+component fixture; archive, 404 and representative public decks retain their
+actual content. Intentional differences require a reviewed entry in
+`tools/visual-approvals.json`, tied to the exact merge base and resulting image
+hash. Missing images and changed dimensions cannot be approved this way.
+Failures retain screenshots, traces and diffs as workflow artifacts.
 
 Only after validation passes does the **build** run: an allowlisted copy of
 the site with **speaker notes stripped** (`tools/strip-notes.py` — the repo
@@ -395,9 +417,23 @@ Run the same validation locally, in one command:
 
 ```bash
 npm ci
+python3 -m pip install -r requirements-test.txt
 npm run validate                  # unit tests, sync check, strict audits, publication build
-npm run validate -- --browser     # … plus the Playwright + axe browser checks
+npm run validate -- --browser     # … plus source/publication/reader/export browser checks
 ```
+
+`npm run test:export` exercises real browser failures (HTTP errors, denied
+frames, offline and blank responses, missing images and interrupted exports).
+`npm run check:publication -- --root _site --exports` checks the built site
+and its PDF/card links. The CI browser smoke also runs Firefox and
+WebKit. Dependency freshness has its own scheduled report:
+`python tools/check-vendors.py --json`; refresh reveal.js reproducibly with
+`python tools/fetch-reveal.py <exact-version>` and commit its manifest hashes.
+
+Python audit checks are separated into `tools/slideslib/html_refs.py`,
+`css_audit.py`, `asset_audit.py`, `vendor_audit.py` and `publication.py`.
+`tools/audit.py` remains the public command; publication and rehearsal builds
+share the same local-reference and exclusion rules.
 
 Every step runs even after one fails, so one pass reports everything. The
 Python steps use the first of `python3`, `python` or (on Windows) `py -3` that

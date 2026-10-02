@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beyond Keywords — Reading edition</title>
+  <meta name="description" content="Opening the Islam West Africa Collection to AI on its own terms.">
+  <meta name="citation_title" content="Beyond Keywords">
+  <meta name="citation_author" content="Frédérick Madore">
+  <meta name="citation_publication_date" content="2026/06/15">
+  <meta name="citation_conference_title" content="Digital Humanities &amp; History · C²DH, Luxembourg">
+  <meta name="citation_language" content="en">
+  <meta name="citation_pdf_url" content="https://slides.frederickmadore.com/talks/2026-06-15-luxembourg-beyond-keywords/slides.pdf">
+  <meta name="citation_keywords" content="IWAC">
+  <meta name="citation_keywords" content="AI">
+  <meta name="citation_keywords" content="semantic search">
+  <meta name="citation_keywords" content="MCP">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-06-15-luxembourg-beyond-keywords/read.html">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../shared/fonts/fonts.css">
+  <link rel="stylesheet" href="../../shared/reader.css">
+</head>
+<body id="top">
+  <a class="reader-skip" href="#content">Skip to content</a>
+  <header class="reader-header">
+    <nav aria-label="Navigation"><a href="../../index.html">All talks</a><a href="index.html">Slides</a><a href="slides.pdf">PDF</a></nav>
+    <p class="reader-label">Reading edition</p>
+    <h1>Beyond Keywords</h1>
+    <p class="reader-byline">Frédérick Madore</p>
+    <p>C²DH · Luxembourg · 15 June 2026</p>
+    <p class="reader-meta">19 slides</p>
+  </header>
+  <main id="content">
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Beyond Keywords</a></li><li><a href="#slide-2">An open archive, built by one historian</a></li><li><a href="#slide-3">An overview of the collection</a></li><li><a href="#slide-4">Why keyword search falls short</a></li><li><a href="#slide-5">Generic answers, dubious sources</a></li><li><a href="#slide-6">Two layers: plumbing and intelligence</a></li><li><a href="#slide-7">Why build a server at all?</a></li><li><a href="#slide-8">What is a skill.md?</a></li><li><a href="#slide-9">The IWAC MCP server</a></li><li><a href="#slide-10">Search by meaning, not words</a></li><li><a href="#slide-11">Keyword vs. meaning — in the slide itself</a></li><li><a href="#slide-12">A five-phase research method</a></li><li><a href="#slide-13">Discipline, disclosure — and a new role</a></li><li><a href="#slide-14">iwac-mcp · SKILL.md</a></li><li><a href="#slide-15">From a plain question to cited sources</a></li><li><a href="#slide-16">Brief — the default depth</a></li><li><a href="#slide-17">Extended — the full method</a></li><li><a href="#slide-18">Whose infrastructure? African collections and AI extraction</a></li><li><a href="#slide-19">Conclusion</a></li></ol></nav></details>
+    <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
+<p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
+<p class="eyebrow">Eighth Conference on Digital Humanities and Digital History · C²DH, University of Luxembourg</p>
+      <h2 id="slide-1-title">Beyond Keywords</h2>
+      <p class="subtitle">AI-Mediated Access to the Islam West Africa Collection through an MCP Server and Agent Skill</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="role">Data Curator</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      
+      <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+      <div></div>
+</section>
+<section class="reader-slide" id="slide-2" aria-labelledby="slide-2-title">
+<p class="reader-folio"><a href="index.html#/1">Slide 2</a></p>
+<p class="kicker">The Islam West Africa Collection (IWAC)</p>
+      <h2 class="slide-title" id="slide-2-title">An open archive, built by one historian</h2>
+      <div class="cols">
+        <div class="col">
+          <p class="lead">Fifteen years of fieldwork and library work — Benin, Burkina Faso, Côte d&#x27;Ivoire, Togo — turned into an open-access collection.</p>
+          <ul>
+            <li>Mostly newspaper clippings and Islamic publications: magazines, brochures, tracts</li>
+            <li>Behind it, a personal library of <strong>30,000+ Zotero items</strong></li>
+            <li>Online at <a href="https://islam.zmo.de/s/westafrica/">islam.zmo.de</a></li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">In numbers</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">14,700+</span><span class="stat-label">documents</span></div>
+              <div class="stat"><span class="stat-num">28.1M</span><span class="stat-label">words</span></div>
+              <div class="stat"><span class="stat-num">68,122</span><span class="stat-label">pages</span></div>
+              <div class="stat"><span class="stat-num">13</span><span class="stat-label">document types</span></div>
+              <div class="stat"><span class="stat-num">9,315</span><span class="stat-label">audiovisual minutes</span></div>
+              <div class="stat"><span class="stat-num">864</span><span class="stat-label">references</span></div>
+            </div>
+            <hr class="rule">
+            <p class="small muted">Six countries · mostly French — also Arabic &amp; Hausa · open access since 2023</p>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-3" aria-labelledby="slide-3-title">
+<p class="reader-folio"><a href="index.html#/2">Slide 3</a></p>
+<p class="kicker">The Islam West Africa Collection (IWAC)</p>
+      <h2 class="slide-title no-rule" id="slide-3-title">An overview of the collection</h2>
+      
+      <div class="liveshot">
+        <div class="liveshot-figure">
+          <a class="reader-image" href="assets/iwac-home.jpg"><img class="shot" alt="The Islam West Africa Collection homepage at islam.zmo.de — featured items, a search box, and browse-by-country links" width="1800" height="977" src="assets/iwac-home.jpg" loading="lazy" decoding="async"></a>
+        </div>
+        <aside class="liveshot-meta">
+          
+          <a class="liveshot-open" href="https://islam.zmo.de/s/westafrica/page/home">islam.zmo.de ↗</a>
+        </aside>
+      </div>
+</section>
+<section class="reader-slide" id="slide-4" aria-labelledby="slide-4-title">
+<p class="reader-folio"><a href="index.html#/3">Slide 4</a></p>
+<p class="kicker warm">The &quot;El Hadj&quot; problem</p>
+      <h2 class="slide-title" id="slide-4-title">Why keyword search falls short</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <a class="reader-image" href="assets/iwac-search.jpg"><img class="shot" alt="The IWAC faceted search interface — year slider, type, newspaper and language filters" width="1800" height="1018" src="assets/iwac-search.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">The faceted search of the IWAC.</p>
+        </div>
+        <div class="col">
+          <p class="lead">Keyword search has built-in problems. I mitigated what I could:</p>
+          <ul>
+            <li><strong>Spelling variants</strong> → authority files merge 20+ forms</li>
+            <li><strong>Forming a query</strong> → autocomplete and facets guide you</li>
+            <li><strong>Polysemy</strong> → &quot;hadj&quot; = pilgrimage <em>and</em> the &quot;El Hadj&quot; honorific</li>
+          </ul>
+          <div class="callout warm">
+            <span class="callout-label">The real gap</span>
+            The search box assumes you already know it.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
+<p class="reader-folio"><a href="index.html#/4">Slide 5</a></p>
+<p class="kicker warm">Why not just ask AI?</p>
+      <h2 class="slide-title" id="slide-5-title">Generic answers, dubious sources</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="../../shared/assets/gemini-kpalime.jpg"><img class="shot tall" alt="A Gemini chat answering a question about Islam in Kpalimé, Togo in the 1990s — a long, fluent reply citing obscure sources" width="1284" height="1432" src="../../shared/assets/gemini-kpalime.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Gemini on Islam in Kpalimé: generic and dubiously sourced. <a href="https://gemini.google.com/share/45316f371e89">See the chat ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li><strong>People now ask AI directly</strong>, not a search box</li>
+            <li><strong>Chatbots often invent citations</strong> — worse for Africa, with far less training data</li>
+            <li><strong>Web search helps</strong>, but the sources are often random</li>
+            <li><strong>The IWAC?</strong> Crawled by AI bots, yet barely used and badly cited</li>
+          </ul>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-6" aria-labelledby="slide-6-title">
+<p class="reader-folio"><a href="index.html#/5">Slide 6</a></p>
+<p class="kicker navy">An approach</p>
+      <h2 class="slide-title no-rule" id="slide-6-title">Two layers: plumbing and intelligence</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">The MCP server — plumbing</div>
+          <p>Structured, <strong>read-only</strong> access to the collection that any AI assistant can call.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">The agent skill — intelligence</div>
+          <p>The methodology for using it <em>well</em> — a historian&#x27;s method, written down.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="callout-label">The claim to hold onto</span>
+        The skill is where the real contribution lives. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a>
+      </div>
+</section>
+<section class="reader-slide" id="slide-7" aria-labelledby="slide-7-title">
+<p class="reader-folio"><a href="index.html#/6">Slide 7</a></p>
+<p class="kicker navy">Model Context Protocol · open standard, Nov 2024</p>
+      <h2 class="slide-title" id="slide-7-title">Why build a server at all?</h2>
+      <p class="mcp-intro">An MCP server connects an AI assistant to one outside system. Like an app to your accounts:</p>
+      <div class="mcp-uses">
+        <span class="chip">Gmail</span>
+        <span class="chip">Google Calendar</span>
+        <span class="chip">Google Drive</span>
+        <span class="chip">Slack</span>
+        <span class="chip">GitHub</span>
+        
+        <span class="chip green">IWAC</span>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">RAG</div>
+          <p><strong>Retrieval-augmented generation.</strong> Proven for GLAM, but it chunks records, and retrieves by a similarity the user never sees.</p>
+        </div>
+        <div class="col">
+          <div class="col-head"><img class="mcp-mark" alt="Model Context Protocol logo" width="96" height="96" src="../../shared/assets/logo-mcp.png" loading="lazy" decoding="async">MCP</div>
+          <p>Ingests <strong>nothing</strong>. The data stays put; the server holds the logic; the model just asks and answers. <a href="https://modelcontextprotocol.io/">modelcontextprotocol.io</a></p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">The analogy</span>
+        Like IIIF for images: a shared interface, without handing over the originals. Build the server once — Claude, ChatGPT, or open-source models all connect.
+      </div>
+</section>
+<section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
+<p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
+<p class="kicker">Agent skills</p>
+      <h2 class="slide-title" id="slide-8-title">What is a skill.md?</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <p>A skill is a <strong>methods handbook for a machine reader</strong> — loaded only when a request matches its purpose.</p>
+          <ul>
+            <li>Competence gained by <strong>reading</strong>, with no retraining</li>
+            <li>Versioned, reviewed, refined — a prompt is typed once and lost</li>
+            <li>An open standard across agents — no vendor lock-in, like MCP</li>
+            <li><strong>Born in coding agents</strong> — the format fits any domain</li>
+          </ul>
+        </div>
+        <div class="col">
+          <pre tabindex="0" role="region" aria-label="Source text"><code class="language-bash">my-skill/
+├── SKILL.md          # Required: metadata + instructions
+├── scripts/          # Optional: executable code
+├── references/       # Optional: documentation
+├── assets/           # Optional: templates, resources
+└── ...               # Any additional files or directories</code></pre>
+          <p class="small muted">The standard layout of an agent skill — SKILL.md is the only required file.</p>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
+<p class="reader-folio"><a href="index.html#/8">Slide 9</a></p>
+<p class="kicker navy">What you can ask it</p>
+      <h2 class="slide-title" id="slide-9-title">The IWAC MCP server</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul class="query-list">
+            <li>
+              <span class="q">&quot;Newspaper articles on Islam in <strong>Abidjan</strong>, in the 1990s&quot;</span>
+              <span class="q-map"><span class="chip green">articles</span>place · period</span>
+            </li>
+            <li>
+              <span class="q">&quot;Islamic publications on <strong>secularism</strong> in Togo and Benin&quot;</span>
+              <span class="q-map"><span class="chip green">publications</span>subject · country</span>
+            </li>
+            <li>
+              <span class="q">&quot;Academic references on <strong>Muslim women</strong> in Burkina Faso&quot;</span>
+              <span class="q-map"><span class="chip green">references</span>subject · country</span>
+            </li>
+          </ul>
+          <p class="small muted">One plain-language request; the model picks the tools and combines the filters.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">22 tools · 6 subsets</div>
+          <ul>
+            <li><strong>Read-only</strong>: search, full text, authority records, sentiment, stats</li>
+            <li><strong>Verifiable</strong>: every call a lookup, no AI at query time</li>
+            <li><strong>Traceable</strong>: every result links to its canonical record</li>
+            <li><strong>Two ways in</strong>: one-click for Claude Desktop, a hosted URL for ChatGPT</li>
+          </ul>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
+<p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
+<p class="kicker navy">Inside the server · semantic search</p>
+      <h2 class="slide-title" id="slide-10-title">Search by meaning, not words</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="step-n">1 · Ask</span>
+          <span class="step-h">Your question</span>
+          <p class="step-q">« Islam et laïcité au Burkina Faso »</p>
+          <p>Plain language — and any language works.</p>
+        </div>
+        
+        <div class="flow-step">
+          <span class="step-n">2 · Embed</span>
+          <span class="step-h">Turned into coordinates</span>
+          <p>An embedding model (Gemini) maps the text to <strong>768 numbers</strong> — one point in a space of meaning.</p>
+          <span class="step-vec">laïcité → [0.07, -0.12, 0.93, …]</span>
+          <p>Every article was mapped the same way, in advance.</p>
+        </div>
+        
+        <div class="flow-step">
+          <span class="step-n">3 · Match</span>
+          <span class="step-h">Nearest points win</span>
+          <p>Cosine similarity ranks all <strong>12,000+</strong> articles by how close they sit in that space.</p>
+        </div>
+      </div>
+      <div class="callout navy">
+        <span class="callout-label">Why it matters</span>
+        Finds the right articles even when they never say <em>« laïcité »</em> — secularism, Franco-Arabic schools, family-code debates. The one tool that runs a model live, just to turn your question into coordinates.
+      </div>
+</section>
+<section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
+<p class="reader-folio"><a href="index.html#/10">Slide 11</a></p>
+<p class="kicker navy">Search the collection · offline demo</p>
+      <h2 class="slide-title" id="slide-11-title">Keyword vs. meaning — in the slide itself</h2>
+      <div class="kvm">
+        <div class="kvm-query">
+          
+          <span class="kvm-q">laïcité au Burkina Faso</span>
+          <div class="kvm-toggle">
+            
+            
+          </div>
+        </div>
+
+        
+        <div class="kvm-panel kvm-keyword">
+          <div class="kvm-head"><span class="kvm-count poor">2 documents · exact-string match only</span></div>
+          <div class="kvm-rows">
+            <div class="kvm-kwrow"><span class="kvm-excerpt">« … le débat sur la <mark>laïcité</mark> au Burkina Faso … »</span><div class="kvm-src">L’Observateur Paalga · 1994</div></div>
+            <div class="kvm-kwrow"><span class="kvm-excerpt">« … la <mark>laïcité</mark> de l’État et les écoles … »</span><div class="kvm-src">Sidwaya · 2002</div></div>
+          </div>
+          <div class="kvm-blind">
+            <span class="kvm-blind-label">The blind spot</span>
+            <p>Dozens of articles are <em>about</em> secularism but never type the word — schooling, family-code debates, the Arabic press. Keyword search cannot see them. Click <strong>By meaning</strong>.</p>
+          </div>
+        </div>
+
+        
+        <div class="kvm-panel kvm-meaning">
+          <div class="kvm-head">
+            <span class="kvm-count">7 documents · ranked by meaning · across languages</span>
+            <span class="kvm-metric">cosine similarity</span>
+          </div>
+          <div class="kvm-rows">
+            <div class="kvm-row"><span class="kvm-title">Écoles franco-arabes et le programme national</span><span class="kvm-tag">education · state</span><span class="kvm-score">0.89</span></div>
+            <div class="kvm-row"><span class="kvm-title">Le code de la famille relance la controverse</span><span class="kvm-tag">family law</span><span class="kvm-score">0.86</span></div>
+            <div class="kvm-row"><span class="kvm-title">L’État et les associations islamiques</span><span class="kvm-tag">religion · state</span><span class="kvm-score">0.84</span></div>
+            <div class="kvm-row"><span class="kvm-title rtl" lang="ar">النظام العلماني ودوره في التعليم</span><span class="kvm-tag cross">Arabic · cross-lang</span><span class="kvm-score">0.81</span></div>
+            <div class="kvm-row"><span class="kvm-title">Neutralité religieuse de l’administration publique</span><span class="kvm-tag">governance</span><span class="kvm-score">0.79</span></div>
+          </div>
+          <p class="kvm-note">None contain the word <em>laïcité</em> — all are about the idea, including the Arabic record keyword search would never reach. <span class="kvm-illus">· illustrative slice</span></p>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
+<p class="reader-folio"><a href="index.html#/11">Slide 12</a></p>
+<p class="kicker">The IWAC skill in motion</p>
+      <h2 class="slide-title" id="slide-12-title">A five-phase research method</h2>
+      <p class="small muted">Two depths, chosen up front:</p>
+      <div class="depths">
+        <div class="depth">
+          <span class="depth-name">Brief<span class="depth-tag">default</span></span>
+          <span class="depth-desc">a quick scan and a few close reads</span>
+        </div>
+        <div class="depth is-full">
+          <span class="depth-name">Extended</span>
+          <span class="depth-desc">the full five-phase analysis below</span>
+        </div>
+      </div>
+      <div class="cols">
+        <div class="col">
+          <ol>
+            <li><strong>Scoping</strong> — what does the collection even hold for this question, before any keyword?</li>
+            <li><strong>Systematic searching</strong> — French + transliteration variants (Tabaski = Eid al-Adha); log every search, including null results</li>
+            <li><strong>Deep reading</strong> — full text and sentiment, article by article</li>
+          </ol>
+        </div>
+        <div class="col">
+          <ol start="4">
+            <li><strong>Triangulation</strong> — cross-check articles, publications, references, index entries</li>
+            <li><strong>Synthesis</strong> — findings with source attribution and confidence grades</li>
+          </ol>
+          <div class="callout">
+            <span class="callout-label">The point</span>
+            Twenty-two tools give reach. The &quot;judgement&quot; lives in the skill.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
+<p class="reader-folio"><a href="index.html#/12">Slide 13</a></p>
+<p class="kicker">What a server never could</p>
+      <h2 class="slide-title" id="slide-13-title">Discipline, disclosure — and a new role</h2>
+      <ul>
+        <li><strong>Linguistic discipline</strong> — search the French corpus in French, whatever language the question is in</li>
+        <li><strong>Bias disclosure</strong> — every synthesis states the skew: francophone tilt, missing <em>Arabisants</em>, thin Niger and Nigeria</li>
+        <li><strong>Evidential discipline</strong> — claims tagged primary / secondary / AI-derived; <em>absence of evidence ≠ evidence of absence</em></li>
+      </ul>
+      <div class="callout navy">
+        <span class="callout-label">The role shift</span>
+        Cataloguer, then API designer — now <strong>author of research methods a machine can follow.</strong> The server took a weekend; the skill is where the expertise lives.
+      </div>
+</section>
+<section class="reader-slide" id="slide-14" aria-labelledby="slide-14-title">
+<p class="reader-folio"><a href="index.html#/13">Slide 14</a></p>
+<p class="kicker">The curator&#x27;s method, in full</p>
+      <h2 class="slide-title" id="slide-14-title">iwac-mcp · SKILL.md</h2>
+      
+      <pre tabindex="0" role="region" aria-label="Source text"><code>---
+name: iwac-mcp
+description: |
+  Structured academic research workflow for the Islam West Africa Collection (IWAC) MCP server.
+  Use this skill when:
+  - Conducting research queries through the IWAC MCP server (iwac-mcp-server tools)
+  - Investigating questions about Islam and Muslims in West Africa using IWAC data
+  - Performing systematic searches across IWAC articles, publications, index, references, or documents
+  - Analyzing sentiment or temporal patterns in West African press coverage
+  - Comparing coverage across countries, newspapers, or time periods
+  - Building structured research outputs with source attribution and confidence grading
+  This skill provides a five-phase research methodology, search strategy guidance for francophone sources, bias awareness, and documentation conventions. It complements the iwac-data skill (data schemas + Omeka S API).
+---
+
+# IWAC MCP Research Workflow
+
+Structured methodology for academic research using the IWAC MCP server&#x27;s 22 tools (20 core + 2 optional semantic). Adapted from ALA-compliant archival research practices. Applies to server **v0.6.0+** — all matching is accent- and case-insensitive, and result objects use short English keys (`id`, `date`, `polarity`, `centrality`, `subjectivity`, `description_ai`, `url`).
+
+## Prerequisites
+
+Load reference files **as needed**, not all upfront:
+
+1. **references/tools-by-phase.md** — all 22 tools with parameters, defaults, and verified filter vocabularies. Read before the first search of a session.
+2. **references/research-domains.md** — French search terms and transliteration variants by domain. Read when crafting search-term variants (Extended mode, or when a Brief search comes back thin).
+3. **references/biases-and-limitations.md** — collection biases, coverage gaps, sentiment caveats. Read before writing the synthesis.
+4. **references/capabilities-overview.md** — plain-language description of the collection and recommended ways into the data. Read when the user asks what you can do (see &quot;Capability Questions&quot; below).
+
+For data schema and Omeka S API details, defer to the `iwac-data` skill.
+
+## Capability Questions
+
+When the user asks what you can do with IWAC (&quot;what can you do?&quot;, &quot;qu&#x27;est-ce que tu peux faire ?&quot;, &quot;what&#x27;s in this collection?&quot;, &quot;how could I search this?&quot;), do **not** launch the research workflow, present the depth choice, or enumerate the 22 tools. Read **references/capabilities-overview.md** and answer in plain language, in the user&#x27;s language:
+
+1. One short paragraph on what the collection is and covers.
+2. The main ways into the data (keyword, curated themes, people/organizations, semantic, sentiment, periodicals, scholarship) — described as research moves, not tool names.
+3. Three to five example research questions, tailored to anything the user has already mentioned.
+
+Close by inviting a research question. Present the Brief/Extended choice only once an actual question is on the table.
+
+## Research Depth
+
+**Before any research, present the user with an explicit choice:**
+
+&gt; How deep should I go?
+&gt; - [ ] **Brief** -- Quick overview: article counts, key titles, top actors, plus a close reading of 2-3 key articles.
+&gt; - [ ] **Extended** -- Full 5-phase analysis: multiple search variants, full-text reading, sentiment comparison, cross-subset triangulation, confidence grading. Takes considerably more time — and tokens — than Brief.
+
+Do not attach time estimates to the options. Wait for the user to choose before proceeding.
+
+### Brief mode workflow
+1. Run Phase 1 scoping (stats, country comparison, relevant subjects) in a single parallel batch — but only the calls the question actually needs. Corpus sizes, country lists, and filter vocabularies are already documented in this skill and tools-by-phase.md; don&#x27;t spend calls rediscovering them.
+2. Run Phase 2 with **one primary search per filter combination** (e.g., subject tag + country + date range). Skip keyword variants and supplementary searches. Use `limit=10` and `with_description=true` so each hit carries its AI abstract.
+3. Run a **lightweight Phase 3**: pick the 2-3 most relevant articles (triage on `description_ai`) and call `get_article` to read their OCR text. Skip `get_sentiment_distribution`.
+4. Skip Phase 4 (triangulation).
+5. Produce a Phase 5 synthesis that draws on both metadata and the articles read. Keep it concise but substantive.
+
+### Extended mode workflow
+Follow the full five-phase workflow described below. Use multiple search term variants, read key articles in full, run topic-specific sentiment analysis, and produce a detailed synthesis with confidence grading.
+
+If the user does not specify, **default to Brief mode** and mention that an extended analysis is available.
+
+## Token Budget
+
+Comprehensiveness has a token price — spend deliberately. The goal is a well-evidenced answer, not an exhaustive dump.
+
+- **Brief** should stay around ≤25k tokens of tool output: one scoping batch, a handful of searches at limit 10, 2-3 full articles.
+- **Extended** typically lands at 50-120k tokens of tool output. Past that, returns diminish — stop searching and synthesize what you have.
+- **Stop rules:** when two consecutive search variants surface no new items, that dimension is saturated — move on. When `total_matches` exceeds ~50, analyze the metadata (counts, dates, newspapers, sentiment) instead of reading items; read only the triaged finalists.
+- **Counting ≠ fetching.** `total_matches` and the stats/distribution tools answer &quot;how much / when / what tone&quot; without retrieving rows. Never page through a large result set, and never set limit=100 &quot;just in case&quot;.
+- **Full text is the expensive part** (`get_article` ≈ 1-7k tokens; `get_publication_fulltext` up to ~7k, plus ~1.6k when the issue has a TOC). Cap full reads at 2-3 (Brief) / 6-8 (Extended), always triaged on `description_ai` first.
+- If a question genuinely requires bulk reading (dozens of full articles), say what it will cost and confirm with the user before doing it.
+
+## Critical Search Rules
+
+1. **Articles and publications are French-language sources** — develop keyword terms in French. **References are bilingual** (537 FR / 300 EN): always search them with French AND English terms. Semantic search tools accept queries in any language.
+2. **Accents no longer matter for matching** (server ≥ 0.6.0 folds accents and case on both sides): `pelerinage` finds `pèlerinage`, `Bénin` finds `Benin`, `These` finds `Thèse de doctorat`. Still write proper French in outputs.
+3. **Country filters take exact names** — `Benin`, `Burkina Faso`, `Côte d&#x27;Ivoire`, `Niger`, `Togo` (+ `Nigeria` in references/index/audiovisual only). Partial names (&quot;Burkina&quot;) return nothing. Niger no longer over-matches Nigeria.
+4. **Know each tool&#x27;s keyword scope.** Articles: title + OCR + AI abstract. Publications: title + subject + OCR. References: title + abstract, **one term per call** (substring match — &quot;pèlerinage Mecque&quot; as one string misses everything). For curated themes, prefer the `subject` parameter over `keyword`.
+5. **Tables of contents now cover part of the publications corpus** (verified June 2026): 325/1,501 issues (~22%) have a TOC + embedding — complete for 17 of the 25 series (the smaller magazines: Le Rendez-Vous, Plume Libre, L&#x27;Appel, Alif, La Preuve, An-Nasr Trimestriel, Le CERFIste…), but absent for the three largest (Islam Info 695 issues, An-Nasr Vendredi 318, Islam Hebdo 122). `search_publications` keyword also matches TOCs and returns the matching entries as `matching_toc_entries`; `semantic_search_publications` is genuinely useful for the TOC-covered series. For the big three series, navigate via `list_periodicals`, `subject` (87% tagged), country, and year; use OCR `keyword` for content, and `get_publication_fulltext` (capped keyword excerpts) to read inside one long issue.
+6. **Triage on AI abstracts before reading OCR.** `search_articles(with_description=true, limit≤10)` returns each article&#x27;s ~500-char `description_ai` — usually enough to pick the 2-3 articles worth a full `get_article` (~1k tokens each).
+7. **Niger and Nigeria are dramatically underrepresented.** Always disclose this in cross-country comparisons (see biases-and-limitations.md §2).
+
+## The Five-Phase Workflow
+
+### Phase 1 -- Scoping
+
+**Goal:** Establish what IWAC contains for the research question and identify coverage boundaries.
+
+**Actions:**
+1. Use `get_collection_stats` to understand overall scale (articles, publications, index entries)
+2. Use `get_country_comparison` to assess geographic coverage relevant to the question
+3. Use `get_newspaper_stats` with country filter to identify which newspapers cover the topic
+4. Use `list_subjects` to discover relevant subject terms; `list_periodicals` if Islamic publications are in scope
+5. Identify which subsets are relevant: articles (press), publications (Islamic media), references (scholarship), documents (association papers), index (authority records)
+
+**Constraint:** Keep `limit` low (5-10) during scoping to save tokens. Use brief queries first, then drill down.
+
+### Phase 2 -- Systematic Search
+
+**Goal:** Map the search space using structured queries, building a record of what exists and what is absent.
+
+**Actions:**
+1. Develop search terms in French (primary) with transliteration variants for Arabic/Islamic terminology
+2. Search incrementally -- one term or filter combination at a time
+3. Use `search_articles` with keyword, country, newspaper, subject, and date range filters. Results include Gemini sentiment (`polarity`, `centrality`, `subjectivity`) inline; add `with_description=true` for AI abstracts.
+4. Use `semantic_search_articles` (if enabled) for conceptual or thematic queries where exact keywords may miss relevant articles -- queries can be in any language. Use alongside keyword search, not as a replacement.
+5. Use `search_index` to find persons, organizations, places, and events; note the canonical form, then search articles with it
+6. Use `search_by_sentiment` for specific polarity/centrality patterns (supports `subject` for topic-specific slices)
+7. Use `search_publications` (series/subject/country/year filters; keyword matches title + subject + TOC + OCR, with TOC hits returned as `matching_toc_entries`) for Islamic community media; `semantic_search_publications` (if enabled) works for the 17 TOC-covered series
+8. Use `search_references` for academic literature -- French AND English terms, one keyword per call; drill into promising hits with `get_reference` (full abstract, 51% have one)
+9. Use `search_documents` when grassroots/association sources could matter (26 items, mostly Burkina Faso)
+10. **Record every search and its result count**, including zero-result searches -- null results constrain interpretation
+11. Use `date_from`/`date_to` for temporal filtering -- articles take `YYYY-MM-DD` or `YYYY` (day precision); publications and references take years
+
+**Constraint:** Substring matching only -- no wildcards, fuzzy, or Boolean operators. Accent/case differences are handled by the server.
+
+### Phase 3 -- Deep Reading
+
+**Goal:** Examine individual items in detail for high-value hits.
+
+**Actions:**
+1. Use `get_article` for full article detail: metadata, `description_ai`, sentiment, OCR text (capped at 25k chars)
+2. Use `get_reference` for the full scholarly abstract and host-work details
+3. Use `get_publication_fulltext` with a `keyword` for capped excerpts inside a long issue (`match_count` tells you the total; `excerpts_returned` what you got)
+4. Use `get_index_entry` / `get_document` for authority records and archival documents
+5. Cross-reference article subjects and spatial fields with index entries
+6. Note the IWAC URL for each item to enable verification against the original source
+
+**Constraint:** Triage on `description_ai` first; request full OCR only for the finalists.
+
+### Phase 4 -- Triangulation
+
+**Goal:** Verify findings against multiple evidence types and identify gaps.
+
+**Actions:**
+1. Cross-reference MCP findings across subsets (articles vs. publications vs. references vs. documents vs. index)
+2. Use `get_sentiment_distribution` with `subject` filter to compare topic-specific sentiment against the collection baseline (e.g., `subject=&quot;Laïcité&quot;, country=&quot;Burkina Faso&quot;` vs. the whole BF corpus)
+3. Use `search_articles` results (which include sentiment inline) to build topic-specific sentiment tables without extra calls
+4. Flag coverage gaps: which countries, time periods, or languages are underrepresented for this question?
+
+### Phase 5 -- Synthesis
+
+**Goal:** Produce structured findings with explicit source attribution and confidence grading.
+
+**Actions:**
+1. Tag every claim with its **source type**: MCP article, MCP index, MCP publication, MCP reference, MCP document, MCP sentiment analysis, external source
+2. Tag every claim with its **evidence strength** using the three-tier scale below
+3. Document null results alongside positive findings
+4. Separate primary evidence (articles, publications, documents) from secondary evidence (references, index metadata) from AI-derived evidence (sentiment, description_ai)
+5. Note any limitations specific to the research question (see biases-and-limitations.md)
+6. **Offer follow-up questions.** End every synthesis with 2-4 concrete follow-up research questions the user could explore next. These should branch naturally from the findings -- e.g., drilling into a specific actor, comparing with another country, examining a different time period, or exploring a related theme the data surfaced. Frame them as actionable prompts the user can pick up directly.
+
+## Confidence Grading
+
+| Grade | Meaning | IWAC Example |
+|-------|---------|-------------|
+| **Strong** | Direct attestation in multiple primary sources | Article OCR text names a person/event, corroborated by index entry and other articles |
+| **Moderate** | Supported by clear but indirect evidence | Sentiment trend across multiple articles suggests a pattern; single article attestation |
+| **Weak** | Inferred from limited evidence or argument from silence | Subject absent from coverage (may reflect collection gaps, not historical absence) |
+
+## Documentation Conventions
+
+**For MCP article citations:** Item ID, title, newspaper, date, country, IWAC URL. Example: `#5736, &quot;La communauté musulmane célèbre le Maouloud&quot;, Togo-Presse, 2005-04-23, Togo, https://islam.zmo.de/s/westafrica/item/5736`
+
+**For MCP index citations:** Entry ID, title, type, frequency. Example: `Index #1234, &quot;CERFI&quot;, Organisation, frequency: 45`
+
+**For null results:** `Search for [term] in [tool] with [parameters] returned 0 results.`
+
+**For AI sentiment findings:** All sentiment data uses Gemini; the result keys are `polarity`, `centrality`, `subjectivity`. When comparing topics or countries, use `get_sentiment_distribution` with `subject` filter for aggregate data, or tabulate the sentiment columns from `search_articles` results.
+
+## Arabic-Islamic Transliteration Variants
+
+Account for French transliterations when searching:
+- Mawlid = Maouloud, Maoulid, Mouloud
+- Sharia = charia, chari&#x27;a
+- Eid al-Adha = Tabaski, Aïd el-Kébir
+- Eid al-Fitr = Aïd el-Fitr, Korité
+
+See **references/research-domains.md** for comprehensive term lists by domain.
+
+## Key Constraints
+
+1. **Never present search results as exhaustive.** IWAC is a curated collection, not a complete archive. Absence of evidence is not evidence of absence.
+2. **Always disclose the francophone bias.** ~96% French-language sources specifically reflect Western-educated Muslim perspectives (those who followed French-speaking, secular, or Christian school curricula). *Arabisants* -- leaders trained in madrasas who use Arabic or national languages -- are underrepresented as direct voices, though the French press regularly reports on their activities.
+3. **Always disclose the Niger/Nigeria gap.** Niger has thin coverage (one newspaper, 2018+) with inconsistent subject tagging. Nigeria has no press articles at all (audiovisual only). These gaps must be stated in any cross-country analysis.
+4. **Always distinguish source types.** MCP tool outputs, AI sentiment labels, AI abstracts (`description_ai`), and OCR text have different evidential status.
+5. **AI sentiment is interpretive, not factual.** Gemini sentiment labels are analytical signals, not ground truth. Use topic-specific sentiment (via `subject` filter) rather than whole-corpus baselines when comparing themes.
+6. **Search incrementally.** Keep limits low, search one dimension at a time, avoid retrieving full OCR text unless needed.
+7. **Publications are mostly entire issues.** Individual articles within an issue are not separated; use the table of contents where one exists (17 of 25 series) and `get_publication_fulltext` keyword excerpts to localise content inside an issue.
+8. **Mind the 1990-91 press-system break.** Pre-1991 articles (~11% of the corpus) come almost entirely from state or single-party organs; the private press only emerges with political liberalisation. Temporal comparisons crossing 1990 compare two different press systems (see biases-and-limitations.md §6).
+</code></pre><p class="source"><a href="https://github.com/fmadore/iwac-mcp-server">https://github.com/fmadore/iwac-mcp-server</a></p>
+</section>
+<section class="reader-slide" id="slide-15" aria-labelledby="slide-15-title">
+<p class="reader-folio"><a href="index.html#/14/0">Slide 15</a></p>
+<p class="kicker navy">Live demo</p>
+        <h2 class="slide-title" id="slide-15-title">From a plain question to cited sources</h2>
+        <div class="cols ratio-2-3">
+          <div class="col">
+            <a class="reader-image" href="../../shared/assets/iwac-mcp-server.png"><img class="shot tall" alt="The IWAC MCP server installed as an extension in Claude Desktop — read-only, ~22 tools, no API key for the core tools" width="617" height="681" src="../../shared/assets/iwac-mcp-server.png" loading="lazy" decoding="async"></a>
+            <p class="small muted">Installed as a Claude Desktop extension — read-only, no API key for the core tools.</p>
+          </div>
+          <div class="col">
+            <p class="lead">One real question, and the skill runs the method live.</p>
+            <ul>
+              <li>Scopes the collection, then searches it in French</li>
+              <li>Reads the strongest hits in full</li>
+              <li>Answers with every claim linked to its IWAC record</li>
+            </ul>
+            
+          </div>
+        </div>
+</section>
+<section class="reader-slide" id="slide-16" aria-labelledby="slide-16-title">
+<p class="reader-folio"><a href="index.html#/14/1">Slide 16</a></p>
+<p class="kicker navy">Saved run · secularism in Côte d&#x27;Ivoire</p>
+        <h2 class="slide-title" id="slide-16-title">Brief — the default depth</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              
+              <span class="site-frame-url">claude.ai/share/d37cbcb6…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/d37cbcb6-7257-4ffd-82b5-595bc80aabfc">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <a class="reader-image" href="../../shared/assets/demo-brief.jpg"><img alt="A Claude conversation: asked in English what the Islam West Africa Collection says about secularism in Côte d&#x27;Ivoire, the iwac-mcp skill reads its method files and then offers a Brief-or-Extended depth choice, defaulting to Brief" width="1641" height="1174" src="../../shared/assets/demo-brief.jpg" loading="lazy" decoding="async"></a>
+            </div>
+          </figure>
+          <p class="small muted">Claude Sonnet 4.6 · high effort</p>
+        </div>
+</section>
+<section class="reader-slide" id="slide-17" aria-labelledby="slide-17-title">
+<p class="reader-folio"><a href="index.html#/14/2">Slide 17</a></p>
+<p class="kicker navy">Saved run · Islam in Kpalimé, Togo</p>
+        <h2 class="slide-title" id="slide-17-title">Extended — the full method</h2>
+        <div class="demo-wrap">
+          <figure class="demo-shot">
+            <figcaption class="site-frame-bar">
+              
+              <span class="site-frame-url">claude.ai/share/2bdf2009…</span>
+              <a class="site-frame-open" href="https://claude.ai/share/2bdf2009-d54a-4f93-9ef9-a7eb7dc21b8c">Full chat ↗</a>
+            </figcaption>
+            <div class="demo-shot-view">
+              <a class="reader-image" href="../../shared/assets/demo-extended.jpg"><img alt="A Claude conversation: asked about Islam in Kpalimé, Togo, the user answers &#x27;extended&#x27;, and the iwac-mcp skill begins its five-phase analysis with Phase 1 scoping" width="1719" height="1225" src="../../shared/assets/demo-extended.jpg" loading="lazy" decoding="async"></a>
+            </div>
+          </figure>
+          <p class="small muted">The same question we put to Gemini earlier, now answered from the IWAC.</p>
+        </div>
+</section>
+<section class="reader-slide" id="slide-18" aria-labelledby="slide-18-title">
+<p class="reader-folio"><a href="index.html#/15">Slide 18</a></p>
+<p class="kicker warm">The stakes</p>
+      <h2 class="slide-title" id="slide-18-title">Whose infrastructure? African collections and AI extraction</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="../../shared/assets/glam-e-lab.jpg"><img class="shot" alt="GLAM-E Lab report by Michael Weinberg, June 2025 — &#x27;Are AI Bots Knocking Cultural Heritage Offline?&#x27;" width="1800" height="851" src="../../shared/assets/glam-e-lab.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted"><strong>39 of 43</strong> heritage institutions hit by AI-bot traffic spikes (Weinberg, GLAM-E Lab, 2025); Wikimedia: <strong>65%</strong> of its costliest traffic is bots. <a href="https://www.glamelab.org/products/are-ai-bots-knocking-cultural-heritage-offline/">Read it ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>The default is <strong>extraction</strong> — public institutions and open-access labour subsidising commercial AI</li>
+            <li><strong>MCP, a third path</strong> — the collection stays put; the institution decides what the AI sees</li>
+          </ul>
+          <div class="callout warm">
+            <span class="callout-label">Yékú&#x27;s paradox · 2026</span>
+            Un-digitised, an African archive is invisible to AI; digitised, it&#x27;s exposed to scraping — the incomplete corpus becomes the <em>single story</em>, the colonial library rebuilt in the training set. <a href="https://jamesyeku.com/2026/04/16/my-unpackable-library-ai-erasures-and-the-african-archive/">Read the essay ↗</a>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-19" aria-labelledby="slide-19-title">
+<p class="reader-folio"><a href="index.html#/16">Slide 19</a></p>
+<h2 id="slide-19-title">Conclusion</h2>
+        <p class="lead">A new way in for <strong>a wider public</strong> — but no replacement for archival research. It finds what you ask for, not what you weren’t looking for: the unexpected find that slow reading turns up.</p>
+        <p><strong>Try it:</strong> connect Claude or ChatGPT to the collection — how-to on the <a href="https://islam.zmo.de/s/westafrica/page/ai-access">IWAC AI-access page</a>.</p>
+        <p><strong>Next:</strong> a small open-source model on the server itself, answering on the website — no install, no account. <a href="https://github.com/fmadore/iwac-mcp-server">github.com/fmadore/iwac-mcp-server</a></p>
+        <div></div>
+        
+        <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+</section>
+  </main>
+  <footer class="reader-footer"><a href="#top">Back to top</a> · <a href="index.html">Slides</a> · <a href="../../index.html">All talks</a></footer>
+</body>
+</html>

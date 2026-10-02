@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-export const EXTRAS_CACHE_VERSION = '2';
+export const EXTRAS_CACHE_VERSION = '3';
 const GENERATED = new Set(['slides.pdf', 'social-card.png', '.extras-hash', 'export-evidence.json']);
 
 export function hashTree(dir, hash, base = dir) {
@@ -44,8 +44,10 @@ export function deckExtrasHash({ root, repo, slug, sharedDigest, dependencyFiles
 
 export function reusableEvidence(evidence, now = Date.now()) {
   if (!evidence || evidence.version !== 1) return false;
-  if (evidence.frames?.some(frame => !frame.captured)) {
-    return now - Date.parse(evidence.createdAt) < 60 * 60 * 1000;
+  const age = now - Date.parse(evidence.createdAt);
+  if (!Number.isFinite(age) || age < 0) return false;
+  if (evidence.frames?.some(frame => !frame.captured || frame.status >= 400)) {
+    return age < 60 * 60 * 1000;
   }
   return true;
 }

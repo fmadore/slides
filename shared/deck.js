@@ -335,7 +335,7 @@
     }).join("");
 
     overlay = elem(
-      '<div class="toc-overlay" role="dialog" aria-modal="true" aria-label="' + STR.tocAria + '">' +
+      '<div class="toc-overlay" data-prevent-swipe role="dialog" aria-modal="true" aria-label="' + STR.tocAria + '">' +
         '<div class="toc-panel">' +
           '<button class="toc-close" aria-label="' + STR.closeAria + '">' + ICON.close + "</button>" +
           '<div class="toc-head"><div>' +
@@ -516,7 +516,7 @@
      ?no-fit / ?audit disables fitting entirely so raw overflow can be seen. --- */
   var FIT_WARN = 0.95, FIT_FAIL = 0.90;
   var fitReady = !(document.fonts && document.fonts.ready);
-  var FIT_SEEN = (typeof WeakSet === "function") ? new WeakSet() : null;
+  var FIT_SEEN = new WeakMap();
   /* Layouts that centre content vertically: their .fit box spans the whole safe
      area and keeps the content centred while it scales. */
   var CENTERED = ["cover", "section", "statement", "closing", "metric", "center", "balance"];
@@ -530,21 +530,25 @@
   }
   function fitSlide(sec, force) {
     if (!sec || !fitReady || NO_FIT) return;
-    if (!force && FIT_SEEN && FIT_SEEN.has(sec)) return;
-    if (force) unwrapFit(sec);
-    else if (sec.querySelector(":scope > .fit")) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
     var cs = getComputedStyle(sec);
+    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    // The narrow chrome changes the slide's padding and footer reserve. Cache
+    // the safe area's geometry, not just the slide: a rotation must not leave
+    // an old fit in place, or leave a previously fitting slide overflowing.
+    var geometry = [sec.clientWidth, sec.clientHeight, cs.paddingTop, cs.paddingBottom,
+      cs.paddingLeft, cs.paddingRight, rem].join("|");
+    if (!force && FIT_SEEN.get(sec) === geometry) return;
+    unwrapFit(sec);
     var padT = parseFloat(cs.paddingTop) || 0, padB = parseFloat(cs.paddingBottom) || 0;
     var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
     var hasRule = sec.classList.contains("section") || sec.classList.contains("closing");  // gold plate-rule at top
-    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     var clearance = hasRule ? 1.8 * rem : 0;   // breathing room below the gold plate-rule
     var kids = [].slice.call(sec.children).filter(function (c) {
       if (c.nodeName === "ASIDE" || (c.classList && c.classList.contains("fit")) || c.offsetParent === null) return false;
       var pos = getComputedStyle(c).position;   // leave absolutely-placed decor (QR, media fill) in place
       return pos !== "absolute" && pos !== "fixed";
     });
-    if (!kids.length) { if (FIT_SEEN) FIT_SEEN.add(sec); return; }
+    if (!kids.length) { FIT_SEEN.set(sec, geometry); return; }
     var topMost = Infinity, botMost = -Infinity, leftMost = Infinity, rightMost = -Infinity;
     kids.forEach(function (c) {
       topMost = Math.min(topMost, c.offsetTop);
@@ -588,7 +592,7 @@
         console.warn("deck: slide " + slideRef(sec) + " auto-fitted to ×" + k.toFixed(3) + " — consider trimming it.");
       }
     }
-    if (FIT_SEEN) FIT_SEEN.add(sec);
+    FIT_SEEN.set(sec, geometry);
     if (checkModeUpdate) checkModeUpdate();
   }
   function slideRef(sec) {
@@ -792,11 +796,18 @@
 
   var lightbox, lbImg;
   function buildLightbox() {
-    var imgs = Array.prototype.filter.call(
-      document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"),
-      function (img) { return !img.closest(PREVIEW_OWNED); }
-    );
-    if (!imgs.length) return;
+    var seen = new Set();
+    var list = Array.from(document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"))
+      .map(function (trigger) {
+        // A screenshot may use .shot on its frame rather than on the image.
+        // Keep that frame as the control, but load and describe the image.
+        return { trigger: trigger, img: trigger.matches("img") ? trigger : trigger.querySelector("img") };
+      }).filter(function (entry) {
+        if (!entry.img || entry.img.closest(PREVIEW_OWNED) || seen.has(entry.img)) return false;
+        seen.add(entry.img);
+        return true;
+      });
+    if (!list.length) return;
     lightbox = elem(
       '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="' + STR.imageViewer + '">' +
         '<button class="lightbox-close" aria-label="' + STR.imageClose + '">' + ICON.close + "</button>" +
@@ -808,12 +819,11 @@
     lbImg = lightbox.querySelector("img");
     var lbCap = lightbox.querySelector("figcaption");
     var lbClose = lightbox.querySelector(".lightbox-close");
-    var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
     var curIdx = -1, lbLastFocus = null, request = 0;
     lbCap.setAttribute("aria-live", "polite");
     function showAt(i) {
       curIdx = (i + list.length) % list.length;
-      var img = list[curIdx];
+      var img = list[curIdx].img;
       var alt = img.getAttribute("alt") || "";
       lbImg.setAttribute("alt", alt);
       lbImg.hidden = true;
@@ -831,7 +841,7 @@
         lbCap.textContent = alt;
       });
       if (!lightbox.classList.contains("open")) {
-        lbLastFocus = document.activeElement;
+        lbLastFocus = list[curIdx].trigger;
         lightbox.classList.add("open");
         setDialogHidden(lightbox, false);
         focusWhenVisible(lbClose);
@@ -847,17 +857,18 @@
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
       lbLastFocus = null;
     }
-    list.forEach(function (img, i) {
-      img.classList.add("is-zoomable");
-      img.setAttribute("tabindex", "0");
-      img.setAttribute("role", "button");
-      var alt = img.getAttribute("alt") || "";
-      img.setAttribute("aria-label", STR.imageView + (alt ? ": " + alt : ""));
-      img.addEventListener("click", function (e) {
+    list.forEach(function (entry, i) {
+      var trigger = entry.trigger;
+      trigger.classList.add("is-zoomable");
+      trigger.setAttribute("tabindex", "0");
+      trigger.setAttribute("role", "button");
+      var alt = entry.img.getAttribute("alt") || "";
+      trigger.setAttribute("aria-label", STR.imageView + (alt ? ": " + alt : ""));
+      trigger.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();
         showAt(i);
       });
-      img.addEventListener("keydown", function (e) {
+      trigger.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
           e.preventDefault(); e.stopPropagation();
           showAt(i);
@@ -886,11 +897,10 @@
      fallback stays until the user opens the live surface or an owned app
      sends its declared readiness message. Load events are not evidence.
 
-     A site that cannot send a message but does name us in its CSP
-     frame-ancestors is declared with data-frame-trusted, listing the deck
-     origins that site admits. Served from one of them, the frame goes up
-     without a click; served from anywhere else the fallback stands, so a
-     local rehearsal still shows the screenshot rather than a blocked frame. */
+     Permission to embed a site is not evidence that it loaded. In particular,
+     legacy data-frame-trusted declarations must not hide a saved screenshot
+     when the network is unavailable. Sites without a readiness handshake
+     keep their fallback until the presenter explicitly opens the live view. */
   function lazifyFrames() {
     document.querySelectorAll(".reveal .slides .site-frame-view > iframe[src]").forEach(function (f) {
       if (!f.hasAttribute("data-src")) f.setAttribute("data-src", f.getAttribute("src"));
@@ -949,14 +959,6 @@
       }
       return fb;
     }
-    // Trusted only where the framed site admits this deck's own origin: an
-    // empty attribute trusts everywhere, a list trusts those origins alone.
-    function trustedHere(f) {
-      var declared = f.getAttribute("data-frame-trusted");
-      if (declared === null) return false;
-      var origins = declared.split(/\s+/).filter(Boolean);
-      return !origins.length || origins.indexOf(location.origin) !== -1;
-    }
     function hideFallback(f) {
       var fb = f.parentElement.querySelector(".frame-fallback, .viz-fallback, .amrc-fallback");
       if (fb) fb.hidden = true;
@@ -972,7 +974,6 @@
       if (!cur) return;
       cur.querySelectorAll("iframe").forEach(function (f) {
         var fallback = fallbackFor(f);
-        if (trustedHere(f)) { hideFallback(f); return; }
         fallback.hidden = false;
         if (fallback.matches("img")) f.style.visibility = "hidden";
         var timer = setTimeout(function () {
@@ -1115,6 +1116,19 @@
       // have settled, in case the deck initialised before it had real size.
       window.addEventListener("load", function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
+      // Reveal's resize event only fires when its scale changes. A CSS
+      // breakpoint can change our safe area even at the same scale, so listen
+      // to the viewport itself. Other slides re-check their geometry on entry.
+      var resizeFitFrame = null;
+      window.addEventListener("resize", function () {
+        if (PRINT) return;
+        if (resizeFitFrame !== null) cancelAnimationFrame(resizeFitFrame);
+        resizeFitFrame = requestAnimationFrame(function () {
+          resizeFitFrame = null;
+          Reveal.layout();
+          fitSlide(Reveal.getCurrentSlide());
+        });
+      });
 
       // PDF export (?print-pdf): every slide prints, so every slide needs the
       // overflow fit — not just the current one. Re-fit them all (force: the

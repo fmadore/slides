@@ -11,9 +11,11 @@
     "build:shared": "node tools/build-shared.mjs",
     "check:shared": "node tools/build-shared.mjs --check",
     "check:browser": "node tools/browser-check.mjs",
+    "check:publication": "node tools/browser-smoke.mjs --publication",
     "check:visual": "node tools/visual-diff.mjs",
     "export": "node tools/export-pdf.mjs",
     "test:node": "node --test tools/test-*.mjs",
+    "test:export": "node tools/browser-export-regression.mjs",
     "test": "npm run check:shared && npm run test:node",
     "validate": "node tools/validate.mjs"
   },

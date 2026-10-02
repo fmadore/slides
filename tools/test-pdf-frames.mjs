@@ -28,6 +28,11 @@ test('uniform iframe captures are treated as blank', () => {
   assert.equal(pngHasVisibleContent(blank), false);
 });
 
+test('a decorative iframe border does not make a blank document valid', () => {
+  const bordered = image(100, 60, (x, y) => x < 2 || y < 2 || x >= 98 || y >= 58 ? [0, 0, 0] : [255, 255, 255]);
+  assert.equal(pngHasVisibleContent(bordered), false);
+});
+
 test('a capture with rendered content is retained', () => {
   const rendered = image(100, 60, (x, y) => (
     x > 20 && x < 80 && y > 24 && y < 36 ? [12, 85, 54] : [250, 250, 250]

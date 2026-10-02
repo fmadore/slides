@@ -7,6 +7,27 @@ function errorSummary(error) {
   return message.split(/\r?\n/, 1)[0];
 }
 
+function responseEvidence(response, url, captureMode) {
+  return { status: response?.status() ?? null, finalUrl: response?.url() || url, captureMode };
+}
+
+function checkResponse(response, url, captureMode) {
+  const evidence = responseEvidence(response, url, captureMode);
+  if (!response || !response.ok()) {
+    throw Object.assign(new Error(response ? `HTTP ${evidence.status}` : 'no document response'), evidence);
+  }
+  return evidence;
+}
+
+async function settleFonts(page, timeoutMs) {
+  // Third-party font requests can stay pending indefinitely. Bound this wait
+  // inside the browser; closing a failed capture must not leave work behind.
+  await page.evaluate(timeout => Promise.race([
+    document.fonts?.ready || Promise.resolve(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('font readiness timed out')), timeout)),
+  ]), timeoutMs);
+}
+
 export function frameKey(url, occurrence) {
   return `${url || ''}${KEY_SEPARATOR}${occurrence}`;
 }
@@ -20,11 +41,16 @@ export function pngHasVisibleContent(buffer) {
     return false;
   }
   if (!png.width || !png.height) return false;
-  const reference = [png.data[0], png.data[1], png.data[2], png.data[3]];
+  // An iframe's decorative border is not evidence that its document painted.
+  const inset = Math.min(4, Math.floor(Math.min(png.width, png.height) / 4));
+  const first = (inset * png.width + inset) * 4;
+  const reference = [...png.data.subarray(first, first + 4)];
   let different = 0;
-  const pixels = png.width * png.height;
+  const pixels = (png.width - inset * 2) * (png.height - inset * 2);
   const needed = Math.max(24, Math.ceil(pixels * 0.0002));
   for (let offset = 0; offset < png.data.length; offset += 4) {
+    const pixel = offset / 4, x = pixel % png.width, y = Math.floor(pixel / png.width);
+    if (x < inset || y < inset || x >= png.width - inset || y >= png.height - inset) continue;
     const delta = Math.max(
       Math.abs(png.data[offset] - reference[0]),
       Math.abs(png.data[offset + 1] - reference[1]),
@@ -40,17 +66,22 @@ async function captureTopLevel(page, item, dimensions, { timeoutMs, settleMs }) 
   const parsed = new URL(item.url);
   if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('frame URL is not http(s)');
   const direct = await page.context().newPage();
+  let evidence = { status: null, finalUrl: item.url, captureMode: 'top-level' };
   try {
     await direct.setViewportSize({
       width: Math.max(320, Math.min(1600, dimensions.width)),
       height: Math.max(180, Math.min(1200, dimensions.height)),
     });
-    await direct.goto(item.url, { waitUntil: 'domcontentloaded', timeout: timeoutMs });
-    await direct.evaluate(() => document.fonts?.ready || Promise.resolve()).catch(() => {});
+    const response = await direct.goto(item.url, { waitUntil: 'domcontentloaded', timeout: timeoutMs });
+    evidence = responseEvidence(response, item.url, 'top-level');
+    checkResponse(response, item.url, 'top-level');
+    await settleFonts(direct, timeoutMs);
     await direct.waitForTimeout(settleMs);
     const png = await direct.screenshot({ type: 'png', animations: 'disabled', timeout: timeoutMs });
     if (!pngHasVisibleContent(png)) throw new Error('top-level capture was visually blank');
-    return png;
+    return { png, ...evidence };
+  } catch (error) {
+    throw Object.assign(error, evidence);
   } finally {
     await direct.close();
   }
@@ -65,17 +96,17 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
   const metadata = await page.evaluate(separator => {
     const seen = new Map();
     return [...document.querySelectorAll('.reveal .slides iframe')].map((frame, id) => {
-      const url = frame.getAttribute('src') || frame.getAttribute('data-src') || '';
-      const occurrence = seen.get(url) || 0;
-      seen.set(url, occurrence + 1);
+      const sourceUrl = frame.getAttribute('data-src') || frame.getAttribute('src') || '';
+      const occurrence = seen.get(sourceUrl) || 0;
+      seen.set(sourceUrl, occurrence + 1);
       frame.dataset.pdfCaptureId = String(id);
       const slide = frame.closest('section');
       const indices = window.Reveal?.getIndices(slide) || { h: 0, v: 0 };
       const rect = frame.getBoundingClientRect();
       return {
         id,
-        key: `${url}${separator}${occurrence}`,
-        url,
+        key: `${sourceUrl}${separator}${occurrence}`,
+        url: new URL(sourceUrl, document.baseURI).href,
         title: frame.getAttribute('title') || 'Live web content',
         h: indices.h || 0,
         v: indices.v || 0,
@@ -89,6 +120,7 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
   for (const item of metadata) {
     const locator = page.locator(`iframe[data-pdf-capture-id="${item.id}"]`);
     let dimensions = { width: item.width, height: item.height };
+    let embeddedEvidence = { status: null, finalUrl: item.url, captureMode: 'embedded' };
     try {
       await page.evaluate(({ id, h, v }) => {
         window.Reveal?.slide(h, v);
@@ -113,12 +145,15 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
       if (!child || child.url() === 'about:blank' || child.url().startsWith('chrome-error://')) {
         throw new Error('frame did not load');
       }
-      await child.waitForLoadState('domcontentloaded', { timeout: Math.max(1000, deadline - Date.now()) });
-      await child.evaluate(() => document.fonts?.ready || Promise.resolve()).catch(() => {});
+      // Reload the document to obtain its real navigation response even if it
+      // loaded before capture began. A load event also fires for HTTP errors.
+      const response = await child.goto(item.url, { waitUntil: 'domcontentloaded', timeout: timeoutMs });
+      embeddedEvidence = checkResponse(response, item.url, 'embedded');
+      await settleFonts(child, timeoutMs);
       await page.waitForTimeout(settleMs);
 
       const fallbackVisible = await locator.evaluate(frame => Boolean(
-        frame.parentElement?.querySelector('.frame-fallback:not([hidden]), .viz-fallback:not([hidden])'),
+        frame.parentElement?.querySelector('.frame-fallback:not([hidden]), .viz-fallback:not([hidden]), .amrc-fallback:not([hidden])'),
       ));
       if (fallbackVisible) throw new Error('deck fallback is visible');
 
@@ -127,22 +162,26 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
       captures.push({
         ...item,
         ...dimensions,
+        ...embeddedEvidence,
         dataUrl: `data:image/png;base64,${png.toString('base64')}`,
       });
     } catch (embeddedError) {
       try {
-        const png = await captureTopLevel(page, item, dimensions, { timeoutMs, settleMs });
+        const { png, ...evidence } = await captureTopLevel(page, item, dimensions, { timeoutMs, settleMs });
         captures.push({
           ...item,
           ...dimensions,
           dataUrl: `data:image/png;base64,${png.toString('base64')}`,
-          captureMode: 'top-level',
+          ...evidence,
         });
       } catch (directError) {
         captures.push({
           ...item,
           ...dimensions,
           dataUrl: null,
+          status: directError.status ?? embeddedError.status ?? embeddedEvidence.status,
+          finalUrl: directError.finalUrl || embeddedError.finalUrl || embeddedEvidence.finalUrl,
+          captureMode: 'top-level',
           error: `${errorSummary(embeddedError)}; direct capture failed: ${errorSummary(directError)}`,
         });
       }
@@ -153,11 +192,12 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
 
 /** Replace print-view iframes with captured images or a useful static notice. */
 export async function installPrintFrameSnapshots(page, captures) {
-  const result = await page.evaluate(({ records, separator }) => {
+  const result = await page.evaluate(async ({ records, separator }) => {
     const byKey = new Map(records.map(record => [record.key, record]));
     const seen = new Map();
     let screenshots = 0;
     let placeholders = 0;
+    let authoredFallbacks = 0;
 
     const style = document.createElement('style');
     style.id = 'pdf-frame-snapshot-styles';
@@ -189,18 +229,37 @@ export async function installPrintFrameSnapshots(page, captures) {
     document.head.appendChild(style);
 
     for (const frame of [...document.querySelectorAll('.reveal .slides iframe')]) {
-      const url = frame.getAttribute('src') || frame.getAttribute('data-src') || '';
+      const url = frame.getAttribute('data-src') || frame.getAttribute('src') || '';
       const occurrence = seen.get(url) || 0;
       seen.set(url, occurrence + 1);
       const record = byKey.get(`${url}${separator}${occurrence}`);
       const height = Math.max(120, record?.height || frame.getBoundingClientRect().height || frame.clientHeight || 360);
       let replacement;
+      const fallbacks = [...frame.parentElement.querySelectorAll('.frame-fallback, .viz-fallback, .amrc-fallback')];
+      const authored = fallbacks.map(fallback => fallback.matches('img') ? fallback : fallback.querySelector('img'))
+        .find(image => image && (image.getAttribute('data-src') || image.getAttribute('src')));
+      let authoredImage;
+      if (!record?.dataUrl && authored) {
+        const source = new URL(authored.getAttribute('data-src') || authored.getAttribute('src'), document.baseURI);
+        // Prefer a checked local screenshot over an unavailable live site.
+        if (source.origin === location.origin || source.protocol === 'data:') {
+          const candidate = new Image();
+          candidate.src = source.href;
+          try { await candidate.decode(); if (candidate.naturalWidth) authoredImage = candidate; } catch { /* labelled fallback below */ }
+        }
+      }
       if (record?.dataUrl) {
         replacement = document.createElement('img');
         replacement.src = record.dataUrl;
         replacement.alt = frame.getAttribute('title') || 'Snapshot of live web content';
         replacement.className = `${frame.className || ''} pdf-frame-capture`.trim();
         screenshots += 1;
+      } else if (authoredImage) {
+        replacement = authoredImage;
+        replacement.alt = authored.alt || frame.title || 'Saved view of live web content';
+        replacement.className = `${frame.className || ''} pdf-frame-capture`.trim();
+        replacement.style.objectFit = 'contain';
+        authoredFallbacks += 1;
       } else {
         replacement = document.createElement('div');
         replacement.className = `${frame.className || ''} pdf-frame-placeholder`.trim();
@@ -215,10 +274,11 @@ export async function installPrintFrameSnapshots(page, captures) {
         placeholders += 1;
       }
       replacement.style.height = `${height}px`;
-      replacement.dataset.pdfFrameState = record?.dataUrl ? 'screenshot' : 'placeholder';
+      replacement.dataset.pdfFrameState = record?.dataUrl ? 'screenshot' : authoredImage ? 'authored-fallback' : 'placeholder';
+      fallbacks.forEach(fallback => { fallback.hidden = true; });
       frame.replaceWith(replacement);
     }
-    return { screenshots, placeholders };
+    return { screenshots, authoredFallbacks, placeholders };
   }, { records: captures, separator: KEY_SEPARATOR });
 
   await page.evaluate(async () => {

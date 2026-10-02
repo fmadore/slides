@@ -32,7 +32,7 @@
     }).join("");
 
     overlay = elem(
-      '<div class="toc-overlay" role="dialog" aria-modal="true" aria-label="' + STR.tocAria + '">' +
+      '<div class="toc-overlay" data-prevent-swipe role="dialog" aria-modal="true" aria-label="' + STR.tocAria + '">' +
         '<div class="toc-panel">' +
           '<button class="toc-close" aria-label="' + STR.closeAria + '">' + ICON.close + "</button>" +
           '<div class="toc-head"><div>' +

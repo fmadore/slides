@@ -17,11 +17,18 @@
 
   var lightbox, lbImg;
   function buildLightbox() {
-    var imgs = Array.prototype.filter.call(
-      document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"),
-      function (img) { return !img.closest(PREVIEW_OWNED); }
-    );
-    if (!imgs.length) return;
+    var seen = new Set();
+    var list = Array.from(document.querySelectorAll(".reveal .slides .shot, .reveal .slides .site-frame-view > img"))
+      .map(function (trigger) {
+        // A screenshot may use .shot on its frame rather than on the image.
+        // Keep that frame as the control, but load and describe the image.
+        return { trigger: trigger, img: trigger.matches("img") ? trigger : trigger.querySelector("img") };
+      }).filter(function (entry) {
+        if (!entry.img || entry.img.closest(PREVIEW_OWNED) || seen.has(entry.img)) return false;
+        seen.add(entry.img);
+        return true;
+      });
+    if (!list.length) return;
     lightbox = elem(
       '<div class="deck-lightbox" role="dialog" aria-modal="true" aria-label="' + STR.imageViewer + '">' +
         '<button class="lightbox-close" aria-label="' + STR.imageClose + '">' + ICON.close + "</button>" +
@@ -33,12 +40,11 @@
     lbImg = lightbox.querySelector("img");
     var lbCap = lightbox.querySelector("figcaption");
     var lbClose = lightbox.querySelector(".lightbox-close");
-    var list = Array.prototype.slice.call(imgs);  // navigation order across the deck
     var curIdx = -1, lbLastFocus = null, request = 0;
     lbCap.setAttribute("aria-live", "polite");
     function showAt(i) {
       curIdx = (i + list.length) % list.length;
-      var img = list[curIdx];
+      var img = list[curIdx].img;
       var alt = img.getAttribute("alt") || "";
       lbImg.setAttribute("alt", alt);
       lbImg.hidden = true;
@@ -56,7 +62,7 @@
         lbCap.textContent = alt;
       });
       if (!lightbox.classList.contains("open")) {
-        lbLastFocus = document.activeElement;
+        lbLastFocus = list[curIdx].trigger;
         lightbox.classList.add("open");
         setDialogHidden(lightbox, false);
         focusWhenVisible(lbClose);
@@ -72,17 +78,18 @@
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
       lbLastFocus = null;
     }
-    list.forEach(function (img, i) {
-      img.classList.add("is-zoomable");
-      img.setAttribute("tabindex", "0");
-      img.setAttribute("role", "button");
-      var alt = img.getAttribute("alt") || "";
-      img.setAttribute("aria-label", STR.imageView + (alt ? ": " + alt : ""));
-      img.addEventListener("click", function (e) {
+    list.forEach(function (entry, i) {
+      var trigger = entry.trigger;
+      trigger.classList.add("is-zoomable");
+      trigger.setAttribute("tabindex", "0");
+      trigger.setAttribute("role", "button");
+      var alt = entry.img.getAttribute("alt") || "";
+      trigger.setAttribute("aria-label", STR.imageView + (alt ? ": " + alt : ""));
+      trigger.addEventListener("click", function (e) {
         e.preventDefault(); e.stopPropagation();
         showAt(i);
       });
-      img.addEventListener("keydown", function (e) {
+      trigger.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
           e.preventDefault(); e.stopPropagation();
           showAt(i);

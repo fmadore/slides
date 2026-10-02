@@ -18,6 +18,9 @@ test('argument helpers validate missing and invalid values', () => {
   assert.throws(() => valueArg(['--root'], '--root'), /requires a value/);
   assert.equal(intArg(['--concurrency', '3'], '--concurrency', 1), 3);
   assert.throws(() => intArg(['--concurrency', '0'], '--concurrency', 1), /positive integer/);
+  for (const value of ['1.5', '3junk', '-2', '1e3', ' 3', '9007199254740992']) {
+    assert.throws(() => intArg(['--concurrency', value], '--concurrency', 1), /positive integer/);
+  }
 });
 
 test('served paths stay inside the configured root', () => {
@@ -40,6 +43,9 @@ test('deck discovery is sorted, filterable, and ignores folders without an index
   assert.deepEqual(listDecks(root), ['2026-a', '2026-b', '_template']);
   assert.deepEqual(listDecks(root, { includeDrafts: false }), ['2026-a', '2026-b']);
   assert.deepEqual(listDecks(root, { only: ['2026-b'] }), ['2026-b']);
+  assert.throws(() => listDecks(root, { only: ['2026-b', 'typo'] }), /unknown decks: typo/);
+  assert.throws(() => listDecks(root, { only: [''] }), /unknown decks/);
+  assert.throws(() => listDecks(root, { includeDrafts: false, only: ['_template'] }), /unknown decks/);
 });
 
 test('static server returns files, MIME headers, cache policy, and safe 404s', async t => {

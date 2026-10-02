@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "base": "8a89125a40cea6bdd4b27e8d09d7545aeb5e4b91",
+  "snapshots": [
+    {
+      "name": "catalogue-closing-390x844.png",
+      "afterSha256": "b09383175762265dc2188cf6583eb26d2ceffabeeff59baa07fae11ec79fc8a6",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "catalogue-divider-390x844.png",
+      "afterSha256": "040b2b83720c4d922db93bfc729c2f246d86c0ccc0e01c02b7b5b68db11f6322",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "catalogue-index-390x844.png",
+      "afterSha256": "38c10dd7d8999eacb72431e5c56f112f42c63d727e53688477f256170cd1d18f",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-05-06-dga-dormant-collections-closing-390x844.png",
+      "afterSha256": "8a83628baee22d949441714c6b781296dde815e69af0b76c0ad9a07084b34ced",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-05-06-dga-dormant-collections-content-390x844.png",
+      "afterSha256": "0c029abe5d20ead4d59def4c33389b57a1cf80d59d8b93bb32ee09ef0b7db75b",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-05-06-dga-dormant-collections-cover-390x844.png",
+      "afterSha256": "b83523f25be66abce1bc69f4b42b423b3954b91ba3b7d2918d36b19b59c1dc94",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-06-30-paris-reaf-dh-ia-afrique-closing-390x844.png",
+      "afterSha256": "b95274adc77c68bd209a802775ebc602d9e498abd9d6f3f7895a4327dda77378",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-06-30-paris-reaf-dh-ia-afrique-content-390x844.png",
+      "afterSha256": "a80365ac30f86f27f1017a69315cac0a92ab4ab365efb37dc76dc5864245260b",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-06-30-paris-reaf-dh-ia-afrique-cover-390x844.png",
+      "afterSha256": "834614bbd3574f0e693363efa48a41dc718a395a79bdba82f9e33bc751a54652",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-09-23-stellenbosch-mcp-glam-africains-closing-390x844.png",
+      "afterSha256": "8035fa0e9a71553faa14978e104444ee5150551c0743876bb5174f073befab3d",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-09-23-stellenbosch-mcp-glam-africains-content-390x844.png",
+      "afterSha256": "790a835772992f663be088c2a2005e20c2accfb3240c005a62025d6e3e131cfa",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    },
+    {
+      "name": "deck-2026-09-23-stellenbosch-mcp-glam-africains-cover-390x844.png",
+      "afterSha256": "1f06b12af85af100a8f8700ddd9c37d99e811acc532448ac82995e25002bc319",
+      "reason": "Reviewed before/after: reveal.js 6.0.2 adds a small safe canvas inset at 390px; authored content, readable layout and footer remain intact. Desktop rendering is unchanged."
+    }
+  ]
+}

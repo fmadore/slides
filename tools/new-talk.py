@@ -200,7 +200,8 @@ def main(argv=None):
         generated = (
             ROOT / "index.html",
             ROOT / "sitemap.xml",
-            *(ROOT / "talks" / item.slug / "index.html" for item in manifest.talks),
+            *(ROOT / "talks" / item.slug / filename
+              for item in manifest.talks for filename in ("index.html", "read.html")),
         )
         backups = {
             path: path.read_text(encoding="utf-8") if path.exists() else None

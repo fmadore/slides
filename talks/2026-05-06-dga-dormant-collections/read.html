@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dormant Digital Collections, AI Triage — Reading edition</title>
+  <meta name="description" content="Lessons from the Islam West Africa Collection and beyond.">
+  <meta name="citation_title" content="Dormant Digital Collections, AI Triage">
+  <meta name="citation_author" content="Frédérick Madore">
+  <meta name="citation_publication_date" content="2026/05/06">
+  <meta name="citation_conference_title" content="German Society of Asia Studies · Berlin">
+  <meta name="citation_language" content="en">
+  <meta name="citation_pdf_url" content="https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/slides.pdf">
+  <meta name="citation_keywords" content="IWAC">
+  <meta name="citation_keywords" content="AI">
+  <meta name="citation_keywords" content="OCR">
+  <meta name="citation_keywords" content="collections">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/read.html">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../shared/fonts/fonts.css">
+  <link rel="stylesheet" href="../../shared/reader.css">
+</head>
+<body id="top">
+  <a class="reader-skip" href="#content">Skip to content</a>
+  <header class="reader-header">
+    <nav aria-label="Navigation"><a href="../../index.html">All talks</a><a href="index.html">Slides</a><a href="slides.pdf">PDF</a></nav>
+    <p class="reader-label">Reading edition</p>
+    <h1>Dormant Digital Collections, AI Triage</h1>
+    <p class="reader-byline">Frédérick Madore</p>
+    <p>Deutsche Gesellschaft für Asienforschung · 6 May 2026</p>
+    <p class="reader-meta">17 slides</p>
+  </header>
+  <main id="content">
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Dormant Digital Collections, AI Triage</a></li><li><a href="#slide-2">A historian, working with AI</a></li><li><a href="#slide-s-scan">From the reading room to the &quot;scanning party&quot;</a></li><li><a href="#slide-s-triage">One historian, no team</a></li><li><a href="#slide-5">Six uses of AI in the research workflow</a></li><li><a href="#slide-6">Multimodal LLMs read the page like a person</a></li><li><a href="#slide-7">Reading printed Ewé</a></li><li><a href="#slide-8">Reading cursive French</a></li><li><a href="#slide-s-av">Audio and video transcription</a></li><li><a href="#slide-10">Cleaner than the source</a></li><li><a href="#slide-11">Entities and topics: who, where, what, about what</a></li><li><a href="#slide-s-kb">From text repository to knowledge base</a></li><li><a href="#slide-13">Sentiment analysis, without writing code</a></li><li><a href="#slide-s-nb">NotebookLM: the lowest-friction entry point</a></li><li><a href="#slide-s-colab">The same workflows, in your browser</a></li><li><a href="#slide-16">Western tools, non-Western sources</a></li><li><a href="#slide-s-close">The scans on our hard drives are the raw material</a></li></ol></nav></details>
+    <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
+<p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
+<p class="eyebrow">Deutsche Gesellschaft für Asienforschung · Roundtable: DH &amp; KI in den Regionalwissenschaften</p>
+      <h2 id="slide-1-title">Dormant Digital Collections, AI Triage</h2>
+      <p class="subtitle">Lessons from the Islam West Africa Collection and beyond</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="role">Data Curator</span>
+        <span class="affil">Africa Multiple Cluster of Excellence</span>
+      </div>
+      
+      <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+      <div></div>
+</section>
+<section class="reader-slide" id="slide-2" aria-labelledby="slide-2-title">
+<p class="reader-folio"><a href="index.html#/1">Slide 2</a></p>
+<p class="kicker">Who I am</p>
+      <h2 class="slide-title" id="slide-2-title">A historian, working with AI</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>Data Curator, Cluster of Excellence <strong>&quot;Africa Multiple&quot;</strong>, University of Bayreuth</li>
+            <li>Historian of Islam in Francophone West Africa since the 1960s — youth, women, politics, education</li>
+            <li>Developer of the <strong>Islam West Africa Collection</strong> (IWAC) since 2021</li>
+            <li>Coordinator, <em>Digital Humanities and AI in African Studies</em></li>
+            <li>Edited volume forthcoming, Bielefeld University Press (2027)</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="bio-gallery">
+            <figure>
+              <a class="reader-image" href="assets/book-campuses.jpg"><img alt="Book cover: Religious Activism on Campuses in Togo and Benin by Frédérick Madore (De Gruyter)" width="331" height="492" src="assets/book-campuses.jpg" loading="lazy" decoding="async"></a>
+              <figcaption>Monograph · 2025</figcaption>
+            </figure>
+            <figure>
+              <a class="reader-image" href="assets/book-religiosity.jpg"><img alt="Book cover: Religiosity on University Campuses in Africa, edited by Sounaye and Madore (LIT)" width="342" height="492" src="assets/book-religiosity.jpg" loading="lazy" decoding="async"></a>
+              <figcaption>Co-edited · 2023</figcaption>
+            </figure>
+            <figure>
+              <a class="reader-image" href="assets/dh-bielefeld-hero.jpg"><img alt="Blog: Charting New Territory — Digital Humanities und Künstliche Intelligenz in den African Studies, by Frédérick Madore and Vincent Hiribarren" width="492" height="492" src="assets/dh-bielefeld-hero.jpg" loading="lazy" decoding="async"></a>
+              <figcaption>DH &amp; AI initiative</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-scan" aria-labelledby="slide-s-scan-title">
+<p class="reader-folio"><a href="index.html#/s-scan">Slide 3</a></p>
+<p class="kicker warm">The allure of the archive</p>
+      <h2 class="slide-title" id="slide-s-scan-title">From the reading room to the &quot;scanning party&quot;</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">The reading room</div>
+          <a class="reader-image" href="assets/farge-allure.jpg"><img class="shot tall" alt="Book cover: The Allure of the Archives by Arlette Farge — a magnifying glass over an old handwritten manuscript" width="224" height="358" src="assets/farge-allure.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Farge (1989): the slow, tactile encounter — &quot;touching the real&quot;.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">The scanning party</div>
+          <a class="reader-image" href="assets/scanning-party.jpg"><img class="shot tall" alt="An unsorted backroom: stacks of old newspapers and bound volumes piled on tables, chairs and a sofa, with a scanner in the foreground — awaiting digitisation" width="306" height="204" src="assets/scanning-party.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">An unsorted backroom, photographed in three days.</p>
+        </div>
+      </div>
+      <div class="callout warm">
+        <span class="callout-label">The shift</span>
+        Thousands of JPEGs and hours of recordings, half-named, untouched for years — affect moves from slow intimacy to frantic accumulation.
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-triage" aria-labelledby="slide-s-triage-title">
+<p class="reader-folio"><a href="index.html#/s-triage">Slide 4</a></p>
+<p class="kicker">From backlog to triage</p>
+      <h2 class="slide-title" id="slide-s-triage-title">One historian, no team</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>Fieldwork across West Africa, plus libraries in Berlin, Paris, Washington</li>
+            <li>Public side: the open-access IWAC — <a href="https://islam.zmo.de/s/westafrica/">islam.zmo.de</a></li>
+            <li>Cataloguing it all by hand is impossible</li>
+          </ul>
+          <div class="callout">
+            <span class="callout-label">The question I put to AI</span>
+            Not &quot;read this for me&quot; — but <strong>where is close reading worth my time?</strong>
+          </div>
+        </div>
+        <div class="col">
+          <div class="panel">
+            <div class="kicker">A digital hoarder, in numbers</div>
+            <div class="stat-grid">
+              <div class="stat"><span class="stat-num">30,000+</span><span class="stat-label">items collected (Zotero)</span></div>
+              <div class="stat"><span class="stat-num">~15,000</span><span class="stat-label">still unprocessed</span></div>
+              <div class="stat"><span class="stat-num">14,500+</span><span class="stat-label">open access (IWAC)</span></div>
+              <div class="stat"><span class="stat-num">1</span><span class="stat-label">historian, no team</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
+<p class="reader-folio"><a href="index.html#/4">Slide 5</a></p>
+<p class="kicker navy">The shape of the talk</p>
+      <h2 class="slide-title" id="slide-5-title">Six uses of AI in the research workflow</h2>
+      <div class="roadmap">
+        <div class="ruse"><span class="n">1</span><span><b>Text extraction</b><span class="d">OCR and HTR with multimodal models</span></span></div>
+        <div class="ruse"><span class="n">2</span><span><b>Audio &amp; video transcription</b><span class="d">including under-resourced languages</span></span></div>
+        <div class="ruse"><span class="n">3</span><span><b>Entity &amp; topic extraction</b><span class="d">who, where, what, about what</span></span></div>
+        <div class="ruse"><span class="n">4</span><span><b>&quot;No-code&quot; visualisation</b><span class="d">through AI-assisted coding</span></span></div>
+        <div class="ruse"><span class="n">5</span><span><b>First-pass analysis at scale</b><span class="d">sentiment, classification, triage</span></span></div>
+        <div class="ruse"><span class="n">6</span><span><b>NotebookLM</b><span class="d">chat with your own sources</span></span></div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-6" aria-labelledby="slide-6-title">
+<p class="reader-folio"><a href="index.html#/5">Slide 6</a></p>
+<p class="kicker navy">Use 1 · Text extraction</p>
+      <h2 class="slide-title" id="slide-6-title">Multimodal LLMs read the page like a person</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="assets/ocr-newspaper-annotated.jpg"><img class="shot tall" alt="A multi-column Ivorian newspaper article, &#x27;Les imams se battent&#x27;, overlaid with red numbered markers showing the reading order that traditional OCR scrambles — labelled &#x27;Layout recognition failure&#x27;" width="1600" height="1397" src="assets/ocr-newspaper-annotated.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Layout recognition failure: traditional OCR scrambles a multi-column page.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Traditional OCR breaks on multi-column papers, tables, handwriting, quick phone scans</li>
+            <li>Even a <strong>5–10% error rate</strong> matters: one typo in a name hides a document</li>
+            <li>&quot;Ouédraogo&quot; → &quot;Oueclaoqo&quot;: the source is there, but no one will find it</li>
+            <li>Multimodal AI handles it in one pass: printed &amp; handwritten, French &amp; Arabic, messy layout</li>
+          </ul>
+          <div class="callout navy">
+            <span class="callout-label">Strongest so far</span>
+            <span class="model-tag"><img alt="" src="assets/logo-gemini-mark.svg" loading="lazy" decoding="async">Google Gemini 3 Pro</span> — the best model I have tested for this.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-7" aria-labelledby="slide-7-title">
+<p class="reader-folio"><a href="index.html#/6">Slide 7</a></p>
+<p class="kicker navy">Use 1 · in practice</p>
+      <h2 class="slide-title" id="slide-7-title">Reading printed Ewé</h2>
+      <div class="cols ratio-1-2">
+        <div class="col">
+          <a class="reader-image" href="../../shared/assets/ocr-ewe-togopresse.jpg"><img class="shot tall" alt="A 1976 page of the Togolese newspaper Togo Presse, printed in the Ewé language with full diacritics" width="1149" height="973" src="../../shared/assets/ocr-ewe-togopresse.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Togo Presse, 31 July 1976.</p>
+        </div>
+        <div class="col">
+          
+          <div class="col-head">Extracted text · Ewé</div>
+          <pre tabindex="0" role="region" aria-label="Source text"><code>MIAFE ŊUTIFAFAFIA EYADEMA KPE TA KPLE MƆSLEMTƆWO FE ƉEKAWƆWƆ DƆDZIKPƆHA LA
+
+Mia nɔvi Mɔslem hamea ngɔnɔlawo se nya xɔasiwo tso Togo yeyea fofo nu
+
+«Woayra amesiwo léa avu la, elabena woayɔwo be Mawuviwo»
+
+Enye Togo yeyea fofo avafiawodzifia Gnassingbe Eyadema fe didi vevi be amesiame nanɔ dzidzɔ kple ŋutifafa me lle yefe Denyigba la katã dzi, Dzre, fuéle kple mamãwo manɔ amewo kple habɔbɔwo domo o. Eyaŋuti dukplɔla Eyadema anukwaretɔ la lɔna ɖɔɖɔɖowo wɔwɔ edziedzi le dukɔmeviwo dome ɖo.
+
+Ete ŋu dze edzi be miafe tatɔ nutefewɔla la do go kple mia nɔvi Mɔslem Hame fe amegãwo nyitsɔ le RPT fea me hena wodome nyawo sese,
+
+Tototɔ kple dzre ɖo Mɔslem Hamea fe dɔdzikpɔha la me etefe didi. Ale mamã kple fuléle ɖo wo dome.
+
+Le wofe anyinɔnɔa kple numeɖeɖeawo me na To o yeyea fofo vɔ megbe la, miafe ŋutifafa anukwaretɔ Eyadema ɖo asi Hamea fe dɔdzikpɔha la dzi elabenà ŋutif fa kple lɔlɔ̃ mele wo dome o
+
+Eɖe nu me na Xɔsetɔawo be ɖekawɔwɔ kple ŋutifafa dim yele le yefe anyigba la dzi..,
+
+Mlɔeba la dukplɔla la ɖo dɔléɖeasihaa ɖe, si me ame 17 le la na mia nɔviawo bena woadzra Mɔslemtɔwo fe takpekpe gã. si wɔ ge woala la le Lome le Dasiãmime 4 lia dzi la fe dɔwɔwɔwo ɖo,
+
+Avafiawo Menveyinoyu Dzafalo, dũdɔnunɔla Lãmesẽ kple Hadomegbɛnɔnya-wogbɔkpɔla kple Ayaovi Asila, Togo tuakɔwo fe tatɔ kpeɖeŋutɔ hekpe ɖe dukplɔla fe dɔwɔfe dzikpɔla afɛtɔ Kpotivi Têvi Dzidzagbe Lacle ŋu woenɔ tatɔ Eyadema ŋu le Mɔslem Hamea fe nyawodɔdrɔ̃ me. Eye afɛtɔ Mama Fuseni kple Kasim Mensa, siwo nye Hamea fe bubu &#x27;mewo la hã nɔ Takpekpea me nyitsɔ ma,</code></pre>
+          
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
+<p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
+<p class="kicker navy">Use 1 · in practice</p>
+      <h2 class="slide-title" id="slide-8-title">Reading cursive French</h2>
+      <div class="cols ratio-1-2">
+        <div class="col">
+          <a class="reader-image" href="assets/ocr-handwritten-burkina.jpg"><img class="shot tall" alt="A handwritten 1991 letter in French from Muslim associations in Burkina Faso addressed to the Minister of Information and Culture" width="636" height="883" src="assets/ocr-handwritten-burkina.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Handwritten letter, Burkina Faso, 1991.</p>
+        </div>
+        <div class="col">
+          <div class="extract">
+            <span class="extract-label">Transcribed text · French</span>
+            <div class="extract-scroll">
+              <p class="doc-ref">3 H 1 a</p>
+              <p class="doc-head">Des musulmans du Burkina Faso,</p>
+              <ul class="doc-list">
+                <li>Communauté Musulmane</li>
+                <li>Mouvement <span class="typo" title="should read “Sunnite” (one n)">Sunite</span></li>
+                <li>Association de la Tidjania.</li>
+              </ul>
+              <p>au Camarade Ministre de l&#x27;Information et de la Culture, Ouagadougou</p>
+              <p>Nous venons, par cette mise en garde, vous entretenir d&#x27;un sujet qui nous tourmente depuis des années. La goutte d&#x27;eau fait déborder le vase dit-on et c&#x27;est la raison pour laquelle nous pensons qu&#x27;il est temps de vous sensibiliser, de vous mettre en garde.</p>
+              <p>Mardi 16 avril 1991. Fête de fin du jeûne musulman. Journée chômée et payée en raison d&#x27;une loi de l&#x27;État.</p>
+              <p>Mardi 25 décembre 1990 Fête de la nativité, fête chrétienne Journée chômée et payée en raison d&#x27;une loi de l&#x27;État.</p>
+              <p>Il y a là une coïncidence heureuse mais <span class="typo" title="should read “fâcheuse” (missing circumflex)">facheuse</span> à l&#x27;analyse.</p>
+              <p>Mardi 25 <span class="typo" title="should read “Décembre” — yet “décembre” is correctly accented two lines above">Decembre</span> 1990. Jour de la semaine coïncidant avec une fête ; cette fête est chrétienne, le ministère décide : les mass media, patrimoine de tous les Burkinabè, sont à la disposition des chrétiens. La télévision qui d&#x27;ordinaire n&#x27;émet que les seuls samedis et dimanches dans la journée s&#x27;organise et dès 12h30, elle émet et diffuse le message <span class="typo" title="should read “chrétien” (missing accent)">chretien</span> jusqu&#x27;à la nuit.</p>
+              <p>Mardi 16 avril 1991 <span class="typo" title="should read “Également” (missing accent)">Egalement</span> jour de la semaine coïncidant avec une fête. Cette fête est musulmane. Le ministère occulte : la direction de l&#x27;information fait comme bon lui semble. La Télé</p>
+            </div>
+            <p class="typo-legend"><span class="swatch"></span>Highlighted: the writer&#x27;s own spelling slips, kept verbatim — the model didn&#x27;t silently correct them.</p>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-av" aria-labelledby="slide-s-av-title">
+<p class="reader-folio"><a href="index.html#/s-av">Slide 9</a></p>
+<p class="kicker navy">Use 2 · Transcription</p>
+      <h2 class="slide-title" id="slide-s-av-title">Audio and video transcription</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>The same multimodal logic extends to audio and video</li>
+            <li>Transcripts return with <strong>timestamps and speaker labels</strong></li>
+            <li>IWAC corpus: <strong>~155 hours</strong> of Nigerian preachers, mostly Hausa &amp; Arabic</li>
+            <li>Early tests in Hausa, Arabic, Kurmanji Kurdish — promising as a first draft</li>
+          </ul>
+        </div>
+        <div class="col">
+          <figure>
+            <a class="reader-image" href="assets/av-demokuradiyyah.png"><img class="shot" alt="A video still from the IWAC audiovisual corpus: a preacher delivering a sermon titled Demokuradiyyah" width="395" height="259" src="assets/av-demokuradiyyah.png" loading="lazy" decoding="async"></a>
+            <a class="reader-image" href="assets/av-transcript.png"><img class="shot" alt="A timestamped, speaker-labelled transcript of a Hausa and Arabic sermon, generated with Google gemini-3-pro" width="785" height="418" src="assets/av-transcript.png" loading="lazy" decoding="async"></a>
+            <figcaption class="small muted">A sermon and its machine transcript — timestamps, speaker labels.</figcaption>
+          </figure>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
+<p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
+<p class="kicker warm">A caution</p>
+      <h2 class="slide-title" id="slide-10-title">Cleaner than the source</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li>AI-OCR and audio-to-text open previously unusable material</li>
+            <li>The model silently <strong>modernises spellings</strong>, standardises toponyms, smooths regional variants</li>
+            <li>It can also <strong>hallucinate</strong>: invent text that was never there</li>
+            <li>The failure mode is harder to spot: a fluent paragraph with invented detail</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout warm">
+            <span class="callout-label">The discipline</span>
+            Keep the original image alongside the text. <strong>Verify against the scan before you quote.</strong>
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
+<p class="reader-folio"><a href="index.html#/10">Slide 11</a></p>
+<p class="kicker navy">Use 3 · Extraction at scale</p>
+      <h2 class="slide-title" id="slide-11-title">Entities and topics: who, where, what, about what</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="assets/kb-network.png"><img class="shot tall" alt="A network graph from the IWAC dashboard linking a central figure to the people, organisations and places that co-occur with him across the corpus" width="1045" height="966" src="assets/kb-network.png" loading="lazy" decoding="async"></a>
+          <p class="small muted">Entities linked across the corpus.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Manual keyword tagging: unworkable across thousands of documents</li>
+            <li>Standard DH tools trained on Western text — they miss local names</li>
+            <li>OCR noise compounds the problem</li>
+            <li>LLMs extract entities and, given the right prompt, <strong>topics</strong></li>
+          </ul>
+          <div class="callout navy">
+            <span class="callout-label">A feasible query, now</span>
+            &quot;Find me every document that discusses <strong>secularism</strong> or the <strong>pilgrimage</strong>.&quot;
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-kb" aria-labelledby="slide-s-kb-title">
+<p class="reader-folio"><a href="index.html#/s-kb">Slide 12</a></p>
+<p class="kicker navy">Use 4 · &quot;No-code&quot; visualisation</p>
+      <h2 class="slide-title" id="slide-s-kb-title">From text repository to knowledge base</h2>
+      <p class="lead">An explorable layer over the documents — built without hand-written code.</p>
+      <div class="kb-grid">
+        <figure>
+          <span class="shot"><a class="reader-image" href="assets/kb-map-world.png"><img alt="A world map from the IWAC dashboard with article counts plotted by location, concentrated in West Africa" width="857" height="593" src="assets/kb-map-world.png" loading="lazy" decoding="async"></a></span>
+          <figcaption><b>Mapped</b> · articles by place</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><a class="reader-image" href="assets/kb-network.png"><img alt="A network graph linking people, organisations and places that co-occur across the IWAC corpus" width="1045" height="966" src="assets/kb-network.png" loading="lazy" decoding="async"></a></span>
+          <figcaption><b>Linked</b> · who appears with whom</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><a class="reader-image" href="assets/kb-heatmap.png"><img alt="A heat-map matrix showing how themes such as radicalisation, extremism, terrorism and jihadism co-occur across articles" width="626" height="312" src="assets/kb-heatmap.png" loading="lazy" decoding="async"></a></span>
+          <figcaption><b>Co-occurrence</b> · themes that travel together</figcaption>
+        </figure>
+        <figure>
+          <span class="shot"><a class="reader-image" href="assets/kb-wordcloud.png"><img alt="A word cloud of the most frequent terms across the corpus, led by musulmans, président and pays" width="551" height="209" src="assets/kb-wordcloud.png" loading="lazy" decoding="async"></a></span>
+          <figcaption><b>Topics</b> · the corpus at a glance</figcaption>
+        </figure>
+      </div>
+</section>
+<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
+<p class="reader-folio"><a href="index.html#/12">Slide 13</a></p>
+<p class="kicker navy">Use 5 · First-pass analysis</p>
+      <h2 class="slide-title" id="slide-13-title">Sentiment analysis, without writing code</h2>
+      <div class="cols ratio-2-3">
+        <div class="col">
+          <a class="reader-image" href="assets/sentiment-dashboard.jpg"><img class="shot tall" alt="The IWAC Sentiment Analysis dashboard comparing three AI models across 12,287 articles, with discrepancy counts and breakdowns by polarity and subjectivity" width="1600" height="1076" src="assets/sentiment-dashboard.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">Three models compared, article by article. <a href="https://fmadore.github.io/IWAC-sentiment-analysis/">fmadore.github.io/IWAC-sentiment-analysis ↗</a></p>
+        </div>
+        <div class="col">
+          <ul>
+            <li><strong>12,000+ articles</strong>, three LLMs, three axes: polarity towards Islam, subjectivity, centrality of religion</li>
+            <li><strong>~€35 and 24 hours</strong> of batch processing — months of manual coding avoided</li>
+            <li>Triage, not full reading; model disagreement is itself a signal</li>
+          </ul>
+          <div class="callout">
+            <span class="callout-label">A pattern I&#x27;d have missed</span>
+            Positive portrayals of Muslim communities <em>inside</em> Sahelian terrorism coverage.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-nb" aria-labelledby="slide-s-nb-title">
+<p class="reader-folio"><a href="index.html#/s-nb">Slide 14</a></p>
+<p class="kicker navy">Use 6 · Chat with your sources</p>
+      <h2 class="slide-title" id="slide-s-nb-title">NotebookLM: the lowest-friction entry point</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <a class="reader-image" href="assets/notebooklm-app.jpg"><img class="shot tall" alt="The NotebookLM interface loaded with IWAC newspaper articles: uploaded sources on the left, an answer with inline citations in the centre" width="1600" height="1067" src="assets/notebooklm-app.jpg" loading="lazy" decoding="async"></a>
+          <p class="small muted">NotebookLM over the IWAC newspaper corpus.</p>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Only knows what you upload; <strong>cites the exact passage</strong> for every answer</li>
+            <li>Your sources are not used to train models</li>
+            <li>Free tier: 50 sources per notebook (PDF, web, YouTube, audio)</li>
+            <li>Multilingual: ask in your language, it searches sources in any of 80+</li>
+          </ul>
+          
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-colab" aria-labelledby="slide-s-colab-title">
+<p class="reader-folio"><a href="index.html#/s-colab">Slide 15</a></p>
+<p class="kicker navy">Hands-on</p>
+      <h2 class="slide-title" id="slide-s-colab-title">The same workflows, in your browser</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="roadmap">
+            <div class="ruse"><span class="n">1</span><span><b>OCR &amp; HTR</b><span class="d">PDFs and images, printed or handwritten</span></span></div>
+            <div class="ruse"><span class="n">2</span><span><b>Audio &amp; video transcription</b><span class="d">interviews and lectures, with speaker labels</span></span></div>
+            <div class="ruse"><span class="n">3</span><span><b>Summaries &amp; keywords</b><span class="d">batch a whole spreadsheet of texts</span></span></div>
+          </div>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Google Colab notebooks — nothing to install</li>
+            <li>A free Gemini API key; results save to your Drive</li>
+            <li>Open to anyone; written for researchers, not developers</li>
+          </ul>
+          
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-16" aria-labelledby="slide-16-title">
+<p class="reader-folio"><a href="index.html#/15">Slide 16</a></p>
+<p class="kicker warm">The stakes</p>
+      <h2 class="slide-title" id="slide-16-title">Western tools, non-Western sources</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">The costs</div>
+          <ul>
+            <li><strong>Training data</strong> overwhelmingly Western — concepts read through European lenses</li>
+            <li><strong>Labour</strong>: Kenyan annotators paid ~$5/day; similar conditions elsewhere</li>
+            <li><strong>Infrastructure</strong>: strongest models in US firms; only China credible as an alternative</li>
+            <li><strong>Opaque</strong> and non-reproducible: the same input can yield different answers</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head">What it makes possible</div>
+          <p>Research at <strong>scales</strong>, and with <strong>documents</strong>, not previously feasible — degraded scans, under-resourced languages, corpora too large to read.</p>
+          <div class="callout warm">
+            <span class="callout-label">Held in tension</span>
+            Use the tools, and disclose what they cost.
+          </div>
+        </div>
+      </div>
+</section>
+<section class="reader-slide" id="slide-s-close" aria-labelledby="slide-s-close-title">
+<p class="reader-folio"><a href="index.html#/s-close">Slide 17</a></p>
+<p class="kicker">In closing</p>
+      <h2 id="slide-s-close-title">The scans on our hard drives are the raw material</h2>
+      <ul>
+        <li>The technology is no longer the obstacle — small teams, no deep coding required</li>
+        <li>Models you can <strong>download and run on a university server</strong> — evolving fast</li>
+        <li>AI organises; <strong>we interpret. Always.</strong></li>
+        <li>Experiment with sources you know well, so you can catch the errors</li>
+      </ul>
+      <div></div>
+      
+      <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
+</section>
+  </main>
+  <footer class="reader-footer"><a href="#top">Back to top</a> · <a href="index.html">Slides</a> · <a href="../../index.html">All talks</a></footer>
+</body>
+</html>

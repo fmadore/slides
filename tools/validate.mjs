@@ -83,13 +83,20 @@ function main(argv) {
     try {
       const built = run('notes-free publication build', py, [...pyArgs, 'tools/strip-notes.py', site]);
       steps.push(built);
-      if (built.ok) steps.push(run('publication build audit (strict)', py, [...pyArgs, 'tools/audit.py', '--site', site, '--strict']));
+      if (built.ok) {
+        steps.push(run('publication build audit (strict)', py, [...pyArgs, 'tools/audit.py', '--site', site, '--strict']));
+        if (browserArgs) steps.push(run('published-site browser smoke', node,
+          ['tools/browser-smoke.mjs', '--root', site, '--publication']));
+      }
     } finally {
       rmSync(scratch, { recursive: true, force: true });
     }
   }
 
-  if (browserArgs) steps.push(run('browser checks', node, ['tools/browser-check.mjs', ...browserArgs]));
+  if (browserArgs) {
+    steps.push(run('export browser regressions', node, ['tools/browser-export-regression.mjs']));
+    steps.push(run('browser checks', node, ['tools/browser-check.mjs', ...browserArgs]));
+  }
 
   const failed = steps.filter(step => !step.ok);
   console.log('\nvalidate:');

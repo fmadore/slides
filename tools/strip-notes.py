@@ -34,32 +34,31 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from slideslib.notes import remaining_notes, strip_html_notes
+from slideslib.publication import is_excluded, reference_errors
 
 # What gets published (relative to the source root). Talk folders are added
 # dynamically: every talks/<dir>/ that does not start with "_".
 ALLOWLIST = ["index.html", "404.html", "robots.txt", "sitemap.xml",
              "CNAME", ".nojekyll", "shared"]
 
-# Never copy these even inside allowlisted trees.
-SKIP_NAMES = {
-    ".gitkeep",
-    "notes.js",             # reveal speaker-notes plugin
-    "src",                  # source partials; generated theme.css/deck.js ship
-    "vendor-manifest.json", # development-time integrity metadata
-}
 
 def strip_notes(html, counts):
     return strip_html_notes(html, counts)
 
 
-def copy_tree(src, dest):
+def copy_tree(src, dest, relative=""):
+    if os.path.islink(src):
+        raise ValueError(f"refusing symlink in publication: {relative}")
     os.makedirs(dest, exist_ok=True)
     for name in sorted(os.listdir(src)):
-        if name in SKIP_NAMES:
+        child_relative = os.path.join(relative, name)
+        if is_excluded(child_relative):
             continue
         s, d = os.path.join(src, name), os.path.join(dest, name)
+        if os.path.islink(s):
+            raise ValueError(f"refusing symlink in publication: {child_relative}")
         if os.path.isdir(s):
-            copy_tree(s, d)
+            copy_tree(s, d, child_relative)
         else:
             shutil.copy2(s, d)
 
@@ -130,11 +129,13 @@ def populate(src, dest):
 
     for rel in entries:
         s = os.path.join(src, rel)
+        if os.path.islink(s):
+            raise ValueError(f"refusing symlink in publication: {rel}")
         if not os.path.exists(s):
             continue
         d = os.path.join(dest, rel)
         if os.path.isdir(s):
-            copy_tree(s, d)
+            copy_tree(s, d, rel)
         else:
             os.makedirs(os.path.dirname(d) or dest, exist_ok=True)
             shutil.copy2(s, d)
@@ -166,6 +167,10 @@ def populate(src, dest):
                 leftovers.append(os.path.relpath(p, dest))
     if leftovers:
         raise SystemExit("note blocks survived the strip: " + ", ".join(leftovers))
+    broken = list(reference_errors(dest))
+    if broken:
+        raise ValueError("publication references failed: " + "; ".join(
+            f"{where}: {message}" for where, message in broken))
     return counts
 
 

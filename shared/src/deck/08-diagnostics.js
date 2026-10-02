@@ -108,6 +108,19 @@
       // have settled, in case the deck initialised before it had real size.
       window.addEventListener("load", function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Reveal.layout(); fitReady = true; fitSlide(Reveal.getCurrentSlide()); });
+      // Reveal's resize event only fires when its scale changes. A CSS
+      // breakpoint can change our safe area even at the same scale, so listen
+      // to the viewport itself. Other slides re-check their geometry on entry.
+      var resizeFitFrame = null;
+      window.addEventListener("resize", function () {
+        if (PRINT) return;
+        if (resizeFitFrame !== null) cancelAnimationFrame(resizeFitFrame);
+        resizeFitFrame = requestAnimationFrame(function () {
+          resizeFitFrame = null;
+          Reveal.layout();
+          fitSlide(Reveal.getCurrentSlide());
+        });
+      });
 
       // PDF export (?print-pdf): every slide prints, so every slide needs the
       // overflow fit — not just the current one. Re-fit them all (force: the
