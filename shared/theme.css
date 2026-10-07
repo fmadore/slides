@@ -1077,7 +1077,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   padding: 0.6rem 0.4rem; color: var(--ink-soft);
   font-family: var(--font-display); font-size: clamp(1.1rem, 2.1vw, 1.5rem); font-weight: 600;
   letter-spacing: -0.01em;
-  transition: color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease);
 }
 .toc-list > li:last-child .toc-item { border-bottom: none; }
 .toc-item .toc-num { flex: none; width: 2.1rem; font-family: var(--font-label); font-size: 0.62em; font-weight: 800; color: var(--green-deep); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
@@ -1089,10 +1089,19 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
    the middle of the lowercase — reading as a rule laid over the row rather
    than as a line running along it. */
 .toc-item .toc-dots { flex: 1 1 auto; min-width: 1.5rem; border-bottom: 2px dotted var(--line-strong); position: relative; bottom: 0.12em; }
+/* The hover nudge moves the number and title in by 0.6rem and takes the same
+   0.6rem off the start of the leader, so the folio holds still and the gap
+   before the dots keeps its width. It used to animate the row's padding-left,
+   which laid the row out again on every frame and re-wrapped a two-line title
+   mid-slide; transform and clip-path only repaint. The leader starts from
+   inset(0), not none, because clip-path cannot interpolate from none. */
+.toc-item .toc-num, .toc-item .toc-label { transition: transform var(--dur) var(--ease); }
+.toc-item .toc-dots { clip-path: inset(0); transition: clip-path var(--dur) var(--ease); }
 .toc-item .toc-folio { flex: none; font-family: var(--font-label); font-size: 0.6em; font-weight: 700; color: var(--ink-faint); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
 .toc-item:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; border-radius: var(--radius-sm); }
 .toc-item:focus-visible .toc-label { color: var(--green-deep); }
-.toc-item:hover { padding-left: 1rem; }
+.toc-item:hover .toc-num, .toc-item:hover .toc-label { transform: translateX(0.6rem); }
+.toc-item:hover .toc-dots { clip-path: inset(0 0 0 0.6rem); }
 .toc-item:hover .toc-label { color: var(--green-deep); }
 .toc-item:hover .toc-dots { border-bottom-color: var(--green); }
 .toc-item.current .toc-num, .toc-item.current .toc-label, .toc-item.current .toc-folio { color: var(--green-deep); }
@@ -1475,7 +1484,8 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .toc-panel, .deck-lightbox .lightbox-figure, .reveal .fragment.fade-up { transform: none !important; }
   /* Hover and press feedback keeps its colour change and loses its 1px lift. */
   .deck-btn:hover, .deck-btn:active { transform: none; }
-  .toc-item:hover { padding-left: 0.4rem; }
+  .toc-item:hover .toc-num, .toc-item:hover .toc-label { transform: none; }
+  .toc-item:hover .toc-dots { clip-path: inset(0); }
   /* The progress bar jumps to its new position rather than sliding across. */
   .reveal .progress span { transition: none; }
 }

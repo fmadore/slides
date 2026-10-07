@@ -70,7 +70,8 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .toc-panel, .deck-lightbox .lightbox-figure, .reveal .fragment.fade-up { transform: none !important; }
   /* Hover and press feedback keeps its colour change and loses its 1px lift. */
   .deck-btn:hover, .deck-btn:active { transform: none; }
-  .toc-item:hover { padding-left: 0.4rem; }
+  .toc-item:hover .toc-num, .toc-item:hover .toc-label { transform: none; }
+  .toc-item:hover .toc-dots { clip-path: inset(0); }
   /* The progress bar jumps to its new position rather than sliding across. */
   .reveal .progress span { transition: none; }
 }
