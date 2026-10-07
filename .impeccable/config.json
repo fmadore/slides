@@ -138,6 +138,24 @@
         ],
         "createdAt": "2026-09-03T08:25:04.805Z",
         "reason": "Agent 2026-09-03, measured: the cover h1 occupies 20.9% of the 1280x720 canvas over 2 lines (84.8px), and the eyebrow, subtitle, byline, logo, contact row and QR all sit below it with clear space - the rule's failure mode (headline dominating, no room above the fold) is not present. Display-size cover titles are DESIGN.md-normative for Broadsheet (typography.display, 5.30rem/800) and identical in all four published decks, one of which carries a LONGER title (44 chars vs 40). The h1 is the talk's registered title in the Point Sud programme so it cannot be shortened, and resizing it for one deck would fork the design language the polish playbook forbids forking."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.8rem",
+        "files": [
+          "shared/src/theme/04-chrome.css"
+        ],
+        "createdAt": "2026-10-07T13:13:40.980Z",
+        "reason": "Agent 2026-10-07: TOC overlay clamp() floor (.toc-title / .toc-item). DESIGN.md line 236 and 252 reserve clamp() and responsive units for the unscaled chrome incl. the TOC overlay, so its type sits off the canvas ramp by design. Scoped to this one source file."
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.1rem",
+        "files": [
+          "shared/src/theme/04-chrome.css"
+        ],
+        "createdAt": "2026-10-07T13:13:41.302Z",
+        "reason": "Agent 2026-10-07: TOC overlay clamp() floor (.toc-title / .toc-item). DESIGN.md line 236 and 252 reserve clamp() and responsive units for the unscaled chrome incl. the TOC overlay, so its type sits off the canvas ramp by design. Scoped to this one source file."
       }
     ]
   }

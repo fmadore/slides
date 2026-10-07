@@ -994,7 +994,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
 /* The ring follows the field: green measured 1.28:1 on the green divider, so
    on any dark field --focus-ring is Paper. */
 .deck-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-.deck-btn.toc-btn { display: inline-flex; align-items: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; }
+/* justify-content is for the compact footers, which hide the label and square
+   the button off: without it the lone icon kept the pill's flex-start and sat
+   1px from the left border with 16px of empty box to its right. */
+.deck-btn.toc-btn { display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 0 0.85rem; gap: 0.5rem; font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; }
 .deck-btn.toc-btn svg { width: 0.95rem; height: 0.95rem; flex: none; }
 .deck-footer.on-dark .deck-btn {
   background: color-mix(in oklch, var(--paper), transparent 90%);
@@ -1014,7 +1017,10 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
    room has, invisible on exactly the slides that end a section. On dark it
    takes the field's spark, and the unfilled track lifts off 1.23:1. */
 .reveal .progress { height: 3px; color: var(--green); background: color-mix(in oklch, var(--ink), transparent 78%); }
-.reveal .progress span { background: var(--green); transition: width 320ms var(--ease); }
+/* Reveal fills the bar with an inline scaleX(), never width: transitioning
+   width replaced reveal's own transform transition with one that never fired,
+   so the bar jumped from slide to slide instead of drawing across. */
+.reveal .progress span { background: var(--green); transition: transform 320ms var(--ease); }
 .reveal-viewport.deck-dark .reveal .progress { background: color-mix(in oklch, var(--paper), transparent 76%); }
 .reveal-viewport.deck-dark .reveal .progress span { background: var(--ond-mark); }
 
@@ -1480,8 +1486,12 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   :root { --slide-pad-x: 1.6rem; --footer-h: 2.6rem; }
   .deck-footer .foot-title { display: none; }
   .deck-runhead { display: none !important; }
+  /* Icon-only, the contents button joins the row of square buttons, so its
+     glyph takes their size too; the 0.95rem it carries beside the label left
+     it visibly smaller than the arrows either side. */
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 2rem; padding: 0; }
+  .deck-btn.toc-btn svg { width: 1.05rem; height: 1.05rem; }
 }
 
 /* SHALLOW screens (a phone held landscape): the scaled canvas is height-limited
@@ -1503,6 +1513,7 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .deck-btn { width: 1.8rem; height: 1.8rem; }
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 1.8rem; padding: 0; }
+  .deck-btn.toc-btn svg { width: 1.05rem; height: 1.05rem; }
 }
 
 /* =============================================================================

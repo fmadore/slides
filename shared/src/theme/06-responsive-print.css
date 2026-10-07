@@ -81,8 +81,12 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   :root { --slide-pad-x: 1.6rem; --footer-h: 2.6rem; }
   .deck-footer .foot-title { display: none; }
   .deck-runhead { display: none !important; }
+  /* Icon-only, the contents button joins the row of square buttons, so its
+     glyph takes their size too; the 0.95rem it carries beside the label left
+     it visibly smaller than the arrows either side. */
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 2rem; padding: 0; }
+  .deck-btn.toc-btn svg { width: 1.05rem; height: 1.05rem; }
 }
 
 /* SHALLOW screens (a phone held landscape): the scaled canvas is height-limited
@@ -104,4 +108,5 @@ html.reveal-print .reveal .slides .pdf-page { position: relative; }
   .deck-btn { width: 1.8rem; height: 1.8rem; }
   .deck-btn.toc-btn span { display: none; }
   .deck-btn.toc-btn { width: 1.8rem; padding: 0; }
+  .deck-btn.toc-btn svg { width: 1.05rem; height: 1.05rem; }
 }
