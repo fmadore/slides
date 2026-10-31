@@ -25,6 +25,17 @@ async function visibleCount() {
 try {
   await open();
   assert.equal(await pipeline.locator('svg').count(), 5);
+  const geometry = await pipeline.evaluate(slide => {
+    const figure = slide.querySelector('.pipeline').getBoundingClientRect();
+    const list = slide.querySelector('.pipeline-steps').getBoundingClientRect();
+    const step = slide.querySelector('.pipeline-step');
+    return { widthRatio: list.width / figure.width,
+      duplicateNumber: getComputedStyle(step, '::before').content,
+      leftPadding: getComputedStyle(step).paddingLeft };
+  });
+  assert.ok(geometry.widthRatio > 0.98, 'pipeline uses the full figure width');
+  assert.equal(geometry.duplicateNumber, 'none', 'generic ordered-list counters stay off');
+  assert.equal(geometry.leftPadding, '0px', 'generic list indentation stays off');
   assert.equal(await visibleCount(), 0);
   await page.keyboard.press('ArrowRight');
   assert.equal(await visibleCount(), 1);

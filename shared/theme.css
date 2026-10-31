@@ -1814,8 +1814,9 @@ html.reveal-print .reveal { --draw-run: 0s; }
    Labels remain in authored HTML. The drawing rests at its complete state. */
 .reveal .pipeline { margin: var(--space-lg) 0 0; }
 .reveal .pipeline > figcaption { font-size: var(--fs-small); color: var(--ink-soft); margin-bottom: var(--space-lg); }
-.reveal .pipeline-steps { display: flex; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; width: 100%; }
-.reveal .pipeline-step { flex: 1 1 0; min-width: 0; margin: 0; padding-top: var(--space-sm); border-top: var(--bar) solid var(--rule); }
+.reveal .pipeline-steps { display: flex; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; width: 100%; max-width: none; }
+.reveal .pipeline-step { flex: 1 1 0; min-width: 0; margin: 0; padding: var(--space-sm) 0 0; border-top: var(--bar) solid var(--rule); }
+.reveal .pipeline-steps > li::before { content: none; }
 .reveal .pipeline-step h3 { font-size: var(--fs-small); margin: var(--space-sm) 0; }
 .reveal .pipeline-step p { font-size: var(--fs-caption); line-height: 1.35; margin: 0; }
 .reveal .pipeline-number { font-family: var(--font-label); font-size: var(--fs-label); color: var(--green-deep); font-weight: 700; }
@@ -1849,5 +1850,6 @@ html.reveal-print .reveal { --draw-run: 0s; }
 @media print {
   .reveal .pipeline-step.fragment.custom { opacity: 1; visibility: visible; }
   .reveal .pipeline-step.fragment.custom:not(.visible) [data-pipeline-art] { visibility: visible; }
-  .reveal .pipeline-controls { display: none; }
+  /* Reveal forces divs to display:block !important in native print. */
+  .reveal .pipeline-controls { display: none !important; }
 }
