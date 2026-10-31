@@ -19,6 +19,7 @@ const bundles = [
       'shared/src/theme/07-data-viz.css',
       'shared/src/theme/08-image-editorial.css',
       'shared/src/theme/09-flow-motion.css',
+      'shared/src/theme/10-pipeline.css',
     ],
   },
   {
@@ -31,6 +32,7 @@ const bundles = [
       'shared/src/deck/05-boot-embeds.js',
       'shared/src/deck/06-lightbox.js',
       'shared/src/deck/07-iframes-highlight.js',
+      'shared/src/deck/08-pipeline.js',
       'shared/src/deck/08-diagnostics.js',
     ],
   },

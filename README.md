@@ -193,6 +193,31 @@ reveal interpolates position, size and style (a heading shrinking from centre to
 growing number, an evolving diagram). Both are demonstrated in `_showcase`. Press `B` (or
 `.`) any time to black out the screen mid-talk.
 
+**Animated pipelines.** Copy the `#pipeline-example` section from
+`talks/_showcase/index.html`. Its five-stage example follows a scan through text
+and entity extraction, authority matching and human review. Each click advances
+one stage; **Play sequence** starts again from the source and advances every
+1.4 seconds. **Pause sequence**, manual navigation, leaving the slide, opening
+overview or hiding the tab stops playback. Playback ends on the final stage and
+never advances to the next slide.
+
+Author one `<figure class="pipeline" data-pipeline>` per slide, with an
+`<ol class="pipeline-steps">` containing two to five `.pipeline-step` list items.
+Use this component on a slide without other fragments. Each item has its own
+heading and description, and an optional decorative
+`<div data-pipeline-art="text" aria-hidden="true"></div>`. Available illustrations:
+`scan`, `text`, `entities`, `match`, `review`, `audio`, `table`. Edit the HTML labels
+to explain your own process; the illustrations contain no factual data. Do not
+add fragment classes yourself: the engine supplies them in presentation mode.
+
+Print/PDF, scroll view, reduced motion and `.no-draw` show the complete process
+without playback controls or extra clicker steps. Reading editions keep every
+step's text as an ordered list and omit decorative illustrations. There are no
+new runtime dependencies or network requests. The shared illustration and
+playback code lives in `shared/src/deck/08-pipeline.js`, with styles in
+`shared/src/theme/10-pipeline.css`; rebuild both bundles with `npm run build:shared`.
+Run `node tools/browser-pipeline.mjs` for playback/export regressions.
+
 **Write slides in plain HTML.** Every slide is a `<section>`; slide-level attributes
 (layout `class`, `data-toc`, `data-footer`) go on the tag, and the house classes above
 style the content. Speaker notes go in `<aside class="notes">…</aside>` (press `S`). There

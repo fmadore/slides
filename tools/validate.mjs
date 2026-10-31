@@ -94,6 +94,7 @@ function main(argv) {
   }
 
   if (browserArgs) {
+    steps.push(run('pipeline browser regressions', node, ['tools/browser-pipeline.mjs']));
     steps.push(run('export browser regressions', node, ['tools/browser-export-regression.mjs']));
     steps.push(run('browser checks', node, ['tools/browser-check.mjs', ...browserArgs]));
   }

@@ -77,6 +77,9 @@ jobs:
       - name: Publication browser smoke
         run: node tools/browser-smoke.mjs --root /tmp/site-check --publication --artifacts browser-artifacts/publication
 
+      - name: Pipeline playback regressions
+        run: node tools/browser-pipeline.mjs
+
       - name: Offline export regressions
         run: node tools/browser-export-regression.mjs
 
