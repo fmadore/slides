@@ -1,0 +1,43 @@
+/* Process illustrations: an optional, click-through extension of .flow.
+   Labels remain in authored HTML. The drawing rests at its complete state. */
+.reveal .pipeline { margin: var(--space-lg) 0 0; }
+.reveal .pipeline > figcaption { font-size: var(--fs-small); color: var(--ink-soft); margin-bottom: var(--space-lg); }
+.reveal .pipeline-steps { display: flex; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; width: 100%; max-width: none; }
+.reveal .pipeline-step { flex: 1 1 0; min-width: 0; margin: 0; padding: var(--space-sm) 0 0; border-top: var(--bar) solid var(--rule); }
+.reveal .pipeline-steps > li::before { content: none; }
+.reveal .pipeline-step h3 { font-size: var(--fs-small); margin: var(--space-sm) 0; }
+.reveal .pipeline-step p { font-size: var(--fs-caption); line-height: 1.35; margin: 0; }
+.reveal .pipeline-number { font-family: var(--font-label); font-size: var(--fs-label); color: var(--green-deep); font-weight: 700; }
+.reveal [data-pipeline-art] { height: 9rem; margin-top: var(--space-sm); }
+.reveal [data-pipeline-art] svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.reveal .pipeline-paper { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 2; }
+.reveal .pipeline-ink { fill: none; stroke: var(--ink-soft); stroke-width: 3; }
+.reveal .pipeline-link { fill: none; stroke: var(--green-deep); stroke-width: 3; }
+.reveal .pipeline-mark { fill: none; stroke: var(--green-deep); stroke-width: 7; }
+.reveal .pipeline-check { fill: none; stroke: var(--green-deep); stroke-width: 5; }
+.reveal .pipeline-step.fragment.custom { opacity: 0.25; visibility: visible; }
+.reveal .pipeline-step.fragment.custom.visible { opacity: 1; }
+.reveal .pipeline-step.fragment.custom:not(.visible) [data-pipeline-art] { visibility: hidden; }
+.reveal .pipeline-step.current-fragment .pipeline-draw,
+.reveal section.present .pipeline-step:first-child .pipeline-draw {
+  transform-box: fill-box; transform-origin: left center;
+  animation: rule-draw var(--draw-run) var(--ease) both;
+  animation-delay: calc(var(--part, 0) * var(--draw-run) / 8);
+}
+@keyframes pipeline-fan { from { transform: translateX(12px); opacity: 0.3; } }
+.reveal section.present .pipeline-step:first-child .pipeline-fan,
+.reveal .pipeline-step.current-fragment .pipeline-fan { animation: pipeline-fan var(--draw-run) var(--ease) both; }
+.reveal .pipeline-controls { display: flex; justify-content: flex-end; margin-top: var(--space-lg); }
+.reveal .pipeline-controls[hidden] { display: none; }
+.reveal .pipeline-play { font: 600 var(--fs-caption) var(--font-label); color: var(--green-deep); background: transparent; border: 0; border-bottom: 2px solid currentColor; padding: var(--space-xs) 0; cursor: pointer; }
+.reveal .pipeline-play:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 5px; border-radius: var(--radius-sm); }
+.reveal .pipeline-static .pipeline-step { opacity: 1; visibility: visible; }
+.reveal .pipeline-static [data-pipeline-art] { visibility: visible; }
+/* Native browser printing can happen after a partial sequence, independently
+   of Reveal's ?print-pdf layout. Both must print every stage. */
+@media print {
+  .reveal .pipeline-step.fragment.custom { opacity: 1; visibility: visible; }
+  .reveal .pipeline-step.fragment.custom:not(.visible) [data-pipeline-art] { visibility: visible; }
+  /* Reveal forces divs to display:block !important in native print. */
+  .reveal .pipeline-controls { display: none !important; }
+}

@@ -28,6 +28,16 @@ class Scan(HTMLParser):
 
 
 class Reader(unittest.TestCase):
+    def test_pipeline_keeps_all_authored_steps_without_runtime_or_controls(self):
+        source = (Path(__file__).resolve().parents[1] / "talks/_showcase/index.html").read_text()
+        page, _ = render_reader(source, TALK, "https://slides.example.test")
+        for label in ("Source scan", "Text extraction", "Entity extraction", "Authority matching", "Human review"):
+            self.assertIn(label, page)
+        self.assertIn("Check the context before accepting a match.", page)
+        self.assertNotIn("data-pipeline-art", page)
+        self.assertNotIn("<button", page)
+        self.assertNotIn("<script", page)
+
     def test_notes_private_hidden_slides_comments_and_scripts_are_not_published(self):
         page, count = render('''<section><h1>Public</h1><aside class="notes">Secret 1</aside>
           <p data-notes="Secret 2">Visible</p><div data-private>Secret 3</div>

@@ -40,6 +40,7 @@
   function init() {
     var reveal = document.querySelector(".reveal");
     decorateChrome();
+    initPipelines();
     lazifyFrames();   // live iframes load only when their slide becomes visible
 
     leafSlides().forEach(function (slide, i) {
