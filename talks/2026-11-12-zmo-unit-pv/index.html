@@ -147,6 +147,17 @@
       border-radius: 50%; background: var(--zmo-orange-ink); color: #ffffff; font-size: 1.25rem; vertical-align: middle;
     }
     body[data-brand="zmo"] .reveal .cols.cards .col p.q { margin: 0 0 14px; }
+
+    /* The overview: eight one-line points on a pitch that fills the text area. */
+    body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.5em; }
+    /* The people slide: a ranked list, each count set flush right. */
+    /* A flex item is no list item, so the list counts with its own counter. */
+    body[data-brand="zmo"] .reveal .callout ol.ranked { margin: 0; counter-reset: rank; }
+    body[data-brand="zmo"] .reveal .callout ol.ranked > li { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px; counter-increment: rank; }
+    body[data-brand="zmo"] .reveal .callout ol.ranked > li::before { content: counter(rank) "."; }
+    body[data-brand="zmo"] .reveal .callout ol.ranked > li:last-child { margin-bottom: 0; }
+    body[data-brand="zmo"] .reveal .callout ol.ranked strong { font-variant-numeric: tabular-nums; }
+    body[data-brand="zmo"] .reveal .callout.light p.muted { color: var(--zmo-muted); font-size: 1.222rem; margin-top: 14px; }
   </style>
 </head>
 <body data-brand="zmo">
@@ -192,28 +203,17 @@
     <!-- ░░ 2 · OVERVIEW ░░ -->
     <section data-toc="Overview">
       <h2 class="slide-title">Overview</h2>
-      <p class="lead">Two parts</p>
-      <div class="cols cards">
-        <div class="col">
-          <div class="col-head">Part 1 · Examples</div>
-          <ul>
-            <li>Framing: two workshops and a position paper</li>
-            <li>Global Heshmat: a sculptor's works on a map</li>
-            <li>Datafication, and an app to speed it up</li>
-            <li>Albani Zaria's sermons: from DVD to word counts</li>
-            <li>Toolbox: searching by meaning, which tools to use</li>
-          </ul>
-        </div>
-        <div class="col">
-          <div class="col-head alt">Part 2 · Discussion</div>
-          <ul>
-            <li>The Global South and data</li>
-            <li>The dialectics of datafication</li>
-            <li>Method, ethics, epistemology: open questions</li>
-            <li>Additional examples: ZMO Visualisations, Genocide at the Security Council</li>
-          </ul>
-        </div>
-      </div>
+      <p class="lead">Datafication in practice: what it takes, and what is at stake</p>
+      <ol class="points">
+        <li><strong>Framing:</strong> two ZMO workshops and a position paper</li>
+        <li><strong>Global Heshmat:</strong> a sculptor's works on a map</li>
+        <li><strong>Datafication:</strong> where the work lies, and Kalamu, an app to speed it up</li>
+        <li><strong>Albani Zaria's sermons:</strong> from DVD to word counts, places and people</li>
+        <li><strong>The Global South and data:</strong> who digitises what, and who has access</li>
+        <li><strong>The dialectics of datafication:</strong> what helps, what damages, what endangers</li>
+        <li><strong>Questions for the discussion:</strong> method, ethics, epistemology</li>
+        <li><strong>Two more projects:</strong> ZMO Visualisations and Genocide at the Security Council</li>
+      </ol>
     </section>
 
     <!-- ░░ 3 · SECTION ░░ -->
@@ -534,7 +534,42 @@ const artwork: Artwork = {
       </figure>
     </section>
 
-    <!-- ░░ 19 · YOUTH — live IWAC panel ░░ -->
+    <!-- ░░ 19 · THE PEOPLE NAMED — live IWAC panel ░░ -->
+    <section data-toc="The people named">
+      <h2 class="slide-title">The people named</h2>
+      <p class="lead">Seven groups, from prophets to Nigerian politicians, most named first</p>
+      <div class="cols w704">
+        <div class="col">
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed">
+              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-people" title="The people the sermons name, grouped and counted (IWAC, live)" loading="lazy"></iframe>
+              <img class="frame-fallback" src="assets/albani-people.png" alt="The people the sermons name, grouped by who they are, each with its count and the recordings it appears in">
+            </div>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="callout light">
+            <span class="callout-label">Most named, all groups</span>
+            <ol class="ranked">
+              <li>Al-Bukhari <strong>502</strong></li>
+              <li>Usman dan Fodio <strong>397</strong></li>
+              <li>Ja'afar Mahmud Adam <strong>279</strong></li>
+              <li>Abubakar Gumi <strong>252</strong></li>
+              <li>Isa (Jesus) <strong>188</strong></li>
+              <li>Abu Hurayra <strong>176</strong></li>
+            </ol>
+            <p class="muted">Al-Bukhari in 36 of 42 recordings; Usman dan Fodio in 25.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 20 · YOUTH — live IWAC panel ░░ -->
     <section>
       <h2 class="slide-title">Youth: who is being talked about?</h2>
       <p class="lead">Occurrences of the youth word list across the 42 analysed transcripts</p>
@@ -562,7 +597,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 20 · POLITICS — live IWAC panel ░░ -->
+    <!-- ░░ 21 · POLITICS — live IWAC panel ░░ -->
     <section>
       <h2 class="slide-title">Politics: the vocabulary of government</h2>
       <p class="lead">Occurrences of the political word list across the 42 analysed transcripts</p>
@@ -587,7 +622,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 21 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
+    <!-- ░░ 22 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
     <section>
       <h2 class="slide-title">Where youth meets politics</h2>
       <p class="lead">A meeting: a youth term and a political term within ten words, same speaker</p>
@@ -613,7 +648,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 22 · THE SERMONS AS A SCORE — live IWAC panel ░░ -->
+    <!-- ░░ 23 · THE SERMONS AS A SCORE — live IWAC panel ░░ -->
     <section data-toc="The sermons as a score">
       <h2 class="slide-title">The sermons as a score</h2>
       <p class="lead">Each row a recording, each cell a 20-minute segment: click one to listen to it</p>
@@ -630,7 +665,7 @@ const artwork: Artwork = {
       </figure>
     </section>
 
-    <!-- ░░ 23 · READ THE PASSAGES — live IWAC panel ░░ -->
+    <!-- ░░ 24 · READ THE PASSAGES — live IWAC panel ░░ -->
     <section>
       <h2 class="slide-title">Read the passages</h2>
       <p class="lead">On the exhibit page, every count leads back to the words it comes from</p>
@@ -653,13 +688,13 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 24 · SECTION ░░ -->
+    <!-- ░░ 25 · SECTION ░░ -->
     <section class="section" data-toc="Discussion">
       <h2>Discussion</h2>
       <p class="sec-sub">Methodological, ethical and epistemological stakes of AI and digital humanities tools</p>
     </section>
 
-    <!-- ░░ 25 · THE GLOBAL SOUTH AND DATA ░░ -->
+    <!-- ░░ 26 · THE GLOBAL SOUTH AND DATA ░░ -->
     <section class="compact">
       <h2 class="slide-title">The Global South and data</h2>
       <p class="lead">Digitisation and AI can reproduce older asymmetries</p>
@@ -674,7 +709,7 @@ const artwork: Artwork = {
       <p><span class="hl">One answer, in IWAC:</span> FAIR and CARE principles; catalogue where custodians prefer; credit rights holders.</p>
     </section>
 
-    <!-- ░░ 26 · THE DIALECTICS OF DATAFICATION ░░ -->
+    <!-- ░░ 27 · THE DIALECTICS OF DATAFICATION ░░ -->
     <section>
       <h2 class="slide-title">The dialectics of datafication</h2>
       <p class="lead">Which datafication helps, which damages, and which endangers?</p>
@@ -697,7 +732,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 27 · QUESTIONS FOR THE DISCUSSION ░░ -->
+    <!-- ░░ 28 · QUESTIONS FOR THE DISCUSSION ░░ -->
     <section class="compact questions">
       <h2 class="slide-title">Questions for the discussion</h2>
       <div class="cols cards three">
@@ -722,15 +757,9 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 28 · SECTION ░░ -->
-    <section class="section" data-toc="Additional examples">
-      <h2>Additional examples</h2>
-      <p class="sec-sub">Two more projects to explore</p>
-    </section>
-
-    <!-- ░░ 29 · TWO MORE PROJECTS — both live sites ░░ -->
-    <section class="compact">
-      <h2 class="slide-title">Two more projects</h2>
+    <!-- ░░ 29 · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
+    <section class="compact" data-toc="Two more projects to explore">
+      <h2 class="slide-title">Two more projects to explore</h2>
       <div class="cols two-sites">
         <div class="col">
           <h3>ZMO Visualisations</h3>
