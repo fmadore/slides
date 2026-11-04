@@ -49,8 +49,10 @@
     /* A row that keeps its own height instead of sharing the slide's. */
     body[data-brand="zmo"] .reveal .slides section > .cols.hold { flex: 0 0 auto; }
 
-    /* Workshop cards: meta lines, then the bullets beside a QR code. */
-    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-meta { margin: -18px 0 14px; font-size: 1.222rem; color: var(--zmo-muted); }
+    /* Workshop cards: meta lines, then the bullets beside a QR code. The text
+       sits clear of the 28 px corner, and the meta lines a step below the title. */
+    body[data-brand="zmo"] .reveal .cols.cards.ws > .col { --zmo-card-pad: 28px 36px 24px; }
+    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-meta { margin: 0 0 18px; font-size: 1.222rem; color: var(--zmo-muted); }
     body[data-brand="zmo"] .reveal .ws-body { display: grid; grid-template-columns: 1fr 128px; gap: 18px; align-items: start; }
     body[data-brand="zmo"] .reveal .ws-body img { width: 128px; height: 128px; display: block; }
     body[data-brand="zmo"] .reveal .cols.cards .col p.ws-url { margin-top: auto; padding-top: 10px; font-size: 1rem; color: var(--zmo-muted); }
@@ -149,7 +151,7 @@
     body[data-brand="zmo"] .reveal .cols.cards .col p.q { margin: 0 0 14px; }
 
     /* The overview: eight one-line points on a pitch that fills the text area. */
-    body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.5em; }
+    body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.78em; }
     /* The people slide: a ranked list, each count set flush right. */
     /* A flex item is no list item, so the list counts with its own counter. */
     body[data-brand="zmo"] .reveal .callout ol.ranked { margin: 0; counter-reset: rank; }
@@ -203,7 +205,6 @@
     <!-- ░░ 2 · OVERVIEW ░░ -->
     <section data-toc="Overview">
       <h2 class="slide-title">Overview</h2>
-      <p class="lead">Datafication in practice: what it takes, and what is at stake</p>
       <ol class="points">
         <li><strong>Framing:</strong> two ZMO workshops and a position paper</li>
         <li><strong>Global Heshmat:</strong> a sculptor's works on a map</li>
@@ -226,7 +227,7 @@
     <section class="compact" data-toc="Two workshops">
       <h2 class="slide-title">Two workshops</h2>
       <p class="lead">Both applications prepared at ZMO</p>
-      <div class="cols cards">
+      <div class="cols cards ws">
         <div class="col">
           <div class="col-head">Charting New Territory</div>
           <p class="ws-meta">Scoping workshop · VolkswagenStiftung<br>Hanover, 18–20 February 2026</p>
@@ -259,7 +260,7 @@
     <!-- ░░ 5 · WHAT CAME OUT OF IT ░░ -->
     <section data-toc="What came out of it">
       <h2 class="slide-title">What came out of it</h2>
-      <p class="lead pt17">Position paper: "For Whom and For What Purpose?" (<em>ZMO Programmatic Texts</em>, 2026)</p>
+      <p class="lead pt17">Position paper: “For Whom and For What Purpose?” (<em>ZMO Programmatic Texts</em>, 2026)</p>
       <div class="cols w682">
         <div class="col">
           <ul>
@@ -286,7 +287,7 @@
       <p class="lead">Rendering social life, objects and records into machine-readable data</p>
       <dl class="facts">
         <dt>van Dijck 2014</dt><dd>Datafication as a paradigm shift in knowledge production, and the belief in data it fosters</dd>
-        <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life; its appropriation they call data colonialism</dd>
+        <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life, whose appropriation they call data colonialism</dd>
         <dt>Drucker 2011</dt><dd>Data are capta: taken, not given</dd>
         <dt>Gitelman (ed.) 2013</dt><dd>“Raw data” is an oxymoron</dd>
       </dl>
@@ -362,7 +363,7 @@ const artwork: Artwork = {
             <img src="assets/qr-heshmat.png" alt="QR code to heshmat.zmo.de" width="348" height="348">
             <p>46 entries, each with its own page: story, photographs, sources, a citable address</p>
           </div>
-          <p class="small"><span class="hl">Gaps kept in the record:</span> a public call to report missing works.</p>
+          <p class="small"><span class="hl">Missing works keep their entries,</span> with a public call to report them.</p>
         </div>
       </div>
     </section>
@@ -375,7 +376,7 @@ const artwork: Artwork = {
         <div class="col">
           <div class="callout">
             <span class="callout-label">What the mapping showed</span>
-            <strong>A cluster nobody had noticed: Heshmat's ties to the Armenian community in Cairo.</strong>
+            <strong>An unexpected cluster: Heshmat's ties to the Armenian community in Cairo.</strong>
           </div>
           <a href="https://heshmat.zmo.de/people/shant-chant-avetisyan/" target="_blank" rel="noopener"><img class="plain" src="assets/heshmat-avetisyan.png" alt="The Global Heshmat page for Shant (Chant) Avetisyan" width="1540" height="570"></a>
         </div>
@@ -383,7 +384,7 @@ const artwork: Artwork = {
           <div class="cols cards">
             <div class="col"><div class="col-head">One file per work</div><p>Each work and each person is a typed data file: adding one is a one-file edit</p></div>
             <div class="col"><div class="col-head">Statuses</div><p>Located, to be found, relocated: a work's history becomes a field and a line on the map</p></div>
-            <div class="col"><div class="col-head">Names and scripts</div><p>Search folds Arabic vowel marks and accents: every transliteration is a choice</p></div>
+            <div class="col"><div class="col-head">Names and scripts</div><p>Search ignores Arabic vowel marks and accents, but each name still takes one chosen spelling</p></div>
             <div class="col"><div class="col-head">After the project</div><p>Who maintains the record, and who in Egypt can correct it?</p></div>
           </div>
         </div>
@@ -398,10 +399,10 @@ const artwork: Artwork = {
         <div class="callout"><span class="callout-label">Datafication</span>find · scan · transcribe · correct · describe · link</div>
         <div class="callout light"><span class="callout-label blue">Analysis</span>visualise · count · compare</div>
       </div>
-      <p><strong>AI speeds up the first part, by an order of magnitude</strong></p>
+      <p><strong>AI speeds up the first part by an order of magnitude</strong></p>
       <div class="cols cards three">
         <div class="col"><div class="col-head">Text extraction</div><p>Manuscripts, typescripts and print, in several scripts</p></div>
-        <div class="col"><div class="col-head">Transcription</div><p>Interviews, lectures and sermons, with speakers</p></div>
+        <div class="col"><div class="col-head">Transcription</div><p>Interviews, lectures and sermons, with speakers told apart</p></div>
         <div class="col"><div class="col-head">Entities</div><p>People, places and organisations, ready to link</p></div>
       </div>
       <p><span class="hl">Its own problems:</span> errors that read well, bias, cost, and extraction (whose data trains the models, and who profits?)</p>
@@ -434,7 +435,7 @@ const artwork: Artwork = {
     <!-- ░░ 13 · SECTION ░░ -->
     <section class="section" data-toc="Albani Zaria's sermons">
       <h2>Albani Zaria's sermons</h2>
-      <p class="sec-sub">From DVD to word counts: a Hausa collection in the <em>Islam West Africa Collection</em> (IWAC)</p>
+      <p class="sec-sub">From DVD to word counts: Hausa sermons in the <em>Islam West Africa Collection</em> (IWAC)</p>
     </section>
 
     <!-- ░░ 14 · WHO WAS ALBANI ZARIA? ░░ -->
@@ -488,7 +489,7 @@ const artwork: Artwork = {
     <!-- ░░ 16 · THE PIPELINE — the exhibit's animated explainer, live ░░ -->
     <section data-toc="The pipeline">
       <h2 class="slide-title">The pipeline</h2>
-      <p class="lead">Each automated step is also a choice</p>
+      <p class="lead">Five stages turn the recordings into figures and passages</p>
       <figure class="site-frame">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -512,7 +513,7 @@ const artwork: Artwork = {
         <div class="col"><div class="col-head">Common words</div><p>76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus this speaker's fillers <em>ainihin</em>, <em>wato</em></p></div>
         <div class="col"><div class="col-head">Formulae</div><p><em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
         <div class="col"><div class="col-head">Loanwords</div><p><em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
-        <div class="col"><div class="col-head">Meaning</div><p><em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, "country" or "to fail", stays out of totals</p></div>
+        <div class="col"><div class="col-head">Meaning</div><p><em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, “country” or “to fail”, stays out of totals</p></div>
         <div class="col"><div class="col-head">Speakers</div><p>Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
       </div>
     </section>
@@ -537,7 +538,7 @@ const artwork: Artwork = {
     <!-- ░░ 19 · THE PEOPLE NAMED — live IWAC panel ░░ -->
     <section data-toc="The people named">
       <h2 class="slide-title">The people named</h2>
-      <p class="lead">Seven groups, from prophets to Nigerian politicians, most named first</p>
+      <p class="lead">Seven groups of people, the most named first in each</p>
       <div class="cols w704">
         <div class="col">
           <figure class="site-frame">
@@ -684,7 +685,7 @@ const artwork: Artwork = {
         <div class="flow-step"><span class="step-n">1</span><span class="step-h">Pick a term</span><p>or search the lines: 1,814 for the youth list</p></div>
         <div class="flow-step"><span class="step-n">2</span><span class="step-h">Read it in context</span><p>the term highlighted in its sentence</p></div>
         <div class="flow-step"><span class="step-n">3</span><span class="step-h">Go to the recording</span><p>each line links to its 20-minute segment</p></div>
-        <div class="flow-step"><span class="step-n">4</span><span class="step-h">Public text only</span><p>only from transcripts public on IWAC</p></div>
+        <div class="flow-step"><span class="step-n">4</span><span class="step-h">Public text only</span><p>drawn from transcripts already public on IWAC</p></div>
       </div>
     </section>
 
@@ -751,7 +752,7 @@ const artwork: Artwork = {
         <div class="col">
           <div class="col-head"><span class="num">3</span>Epistemology</div>
           <p class="q">Is a count evidence, or only a pointer?</p>
-          <p class="q">What does automatic labelling skip that building one's own categories teaches?</p>
+          <p class="q">What does building one's own categories teach that automatic labelling skips?</p>
           <p class="q">Fieldwork, archives, AI: is it all extraction?</p>
         </div>
       </div>
@@ -763,7 +764,7 @@ const artwork: Artwork = {
       <div class="cols two-sites">
         <div class="col">
           <h3>ZMO Visualisations</h3>
-          <p>Your own institute as data: 1,985 publications by 671 authors, 1994–2026</p>
+          <p>ZMO as data: 1,985 publications by 671 authors, 1994–2026</p>
           <figure class="site-frame">
             <div class="site-frame-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
