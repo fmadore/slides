@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DECK_META:START (generated from talks/talks.json) -->
+  <title>Digital Humanities and AI in the Social Sciences — Frédérick Madore</title>
+  <meta name="description" content="Datafication in practice: two workshops, three projects and the questions they raise for the social sciences.">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="Digital Humanities and AI in the Social Sciences">
+  <meta property="og:description" content="Datafication in practice: two workshops, three projects and the questions they raise for the social sciences.">
+  <meta property="og:url" content="https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/">
+  <meta property="og:image" content="https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:image:alt" content="Cover slide: Digital Humanities and AI in the Social Sciences">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "PresentationDigitalDocument", "name": "Digital Humanities and AI in the Social Sciences", "description": "Datafication in practice: two workshops, three projects and the questions they raise for the social sciences.", "url": "https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/", "inLanguage": "en", "datePublished": "2026-11-12", "author": [{"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/", "sameAs": "https://orcid.org/0000-0003-0959-2092"}], "keywords": "digital humanities, AI, datafication, IWAC, ZMO", "image": "https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/social-card.png", "encoding": {"@type": "MediaObject", "contentUrl": "https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/slides.pdf", "encodingFormat": "application/pdf"}, "publisher": {"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/", "sameAs": "https://orcid.org/0000-0003-0959-2092"}, "releasedEvent": {"@type": "Event", "name": "Religion and Intellectual Culture Unit · ZMO", "startDate": "2026-11-12"}}</script>
+  <meta name="author" content="Frédérick Madore">
+  <meta name="citation_title" content="Digital Humanities and AI in the Social Sciences">
+  <meta name="citation_author" content="Frédérick Madore">
+  <meta name="citation_publication_date" content="2026/11/12">
+  <meta name="citation_conference_title" content="Religion and Intellectual Culture Unit · ZMO">
+  <meta name="citation_language" content="en">
+  <meta name="citation_pdf_url" content="https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/slides.pdf">
+  <meta name="citation_keywords" content="digital humanities">
+  <meta name="citation_keywords" content="AI">
+  <meta name="citation_keywords" content="datafication">
+  <meta name="citation_keywords" content="IWAC">
+  <meta name="citation_keywords" content="ZMO">
+  <!-- DECK_META:END -->
+  <link rel="icon" href="../../shared/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../shared/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+  <!-- The ZMO brand skin. It only acts with <body data-brand="zmo"> below. -->
+  <link rel="stylesheet" href="../../shared/brands/zmo/zmo.css">
+
+  <!-- Per-talk styles: the layouts this deck's PPT drew by hand. Selectors
+       carry the brand prefix because the skin's own rules do. -->
+  <style>
+    /* Three-up card grids (slides 11, 17, 24, 26). */
+    body[data-brand="zmo"] .reveal .cols.three { --cols: 3; }
+    /* A row that keeps its own height instead of sharing the slide's. */
+    body[data-brand="zmo"] .reveal .slides section > .cols.hold { flex: 0 0 auto; }
+
+    /* Workshop cards: meta lines, then the bullets beside a QR code. */
+    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-meta { margin: -18px 0 14px; font-size: 1.222rem; color: var(--zmo-muted); }
+    body[data-brand="zmo"] .reveal .ws-body { display: grid; grid-template-columns: 1fr 128px; gap: 18px; align-items: start; }
+    body[data-brand="zmo"] .reveal .ws-body img { width: 128px; height: 128px; display: block; }
+    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-url { margin-top: auto; padding-top: 10px; font-size: 1rem; color: var(--zmo-muted); }
+
+    /* Slide 7: the photograph beside its record in the site's code. */
+    body[data-brand="zmo"] .reveal .cols.record-row { grid-template-columns: 474px 1fr; gap: 38px; }
+    body[data-brand="zmo"] .reveal pre.record {
+      margin: 0; padding: 14px 18px; border-radius: 20px; background: var(--zmo-text);
+      font-size: 1rem; line-height: 1.12; white-space: pre-wrap; box-shadow: none;
+    }
+    body[data-brand="zmo"] .reveal pre.record code { color: #e5e7eb; background: none; padding: 0; font-family: var(--font-mono); font-size: 1rem; }
+
+    /* Fixed-width first columns, as the PPT placed them. */
+    body[data-brand="zmo"] .reveal .cols.w667 { grid-template-columns: 667px 1fr; gap: 50px; }
+    body[data-brand="zmo"] .reveal .cols.w397 { grid-template-columns: 397px 1fr; gap: 32px; }
+    body[data-brand="zmo"] .reveal .cols.w682 { grid-template-columns: 682px 1fr; gap: 16px; }
+    body[data-brand="zmo"] .reveal .cols.w672 { grid-template-columns: 672px 1fr; gap: 26px; }
+    body[data-brand="zmo"] .reveal .cols.w704 { grid-template-columns: 704px 1fr; gap: 32px; }
+    body[data-brand="zmo"] .reveal .cols.w653 { grid-template-columns: 653px 1fr; gap: 38px; }
+    body[data-brand="zmo"] .reveal .cols.w503 { grid-template-columns: 503px 1fr 156px; gap: 28px; }
+    body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
+    /* Slide 5: the PPT set this subtitle at 17 pt so it holds one line. */
+    body[data-brand="zmo"] .reveal .slides section .lead.pt17 { font-size: 1.889rem; }
+    body[data-brand="zmo"] .reveal .cols.split-work { grid-template-columns: 768fr 324fr; gap: 19px; }
+
+    /* A QR code with its line of text, beside or under a frame. */
+    body[data-brand="zmo"] .reveal .qr-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+    body[data-brand="zmo"] .reveal .qr-row img { width: 104px; height: 104px; flex: none; display: block; }
+    body[data-brand="zmo"] .reveal .qr-row p { margin: 0; font-size: 1.222rem; line-height: 1.25; }
+    body[data-brand="zmo"] .reveal .qr-col { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+    body[data-brand="zmo"] .reveal .qr-col img { width: 141px; height: 141px; display: block; }
+    body[data-brand="zmo"] .reveal .qr-col p { margin: 0; font-size: 1.222rem; color: var(--zmo-muted); }
+
+    /* Screenshots used as images, framed by a hairline. */
+    body[data-brand="zmo"] .reveal .slides section img.plain { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+    body[data-brand="zmo"] .reveal .slides section .cover-fit img { width: 100%; height: 100%; max-height: none; object-fit: cover; }
+
+    /* Live frames render at a larger virtual size, scaled down, as a browser
+       zoomed out would: a panel or a site then fits its frame whole instead of
+       showing its top sliver. IWAC panels at 65%, full websites at 50%. */
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed { --z: 0.65; }
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site { --z: 0.5; }
+    /* The pipeline explainer runs 650 px tall at desktop width: a little
+       further out than the other panels so all five captions fit. */
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed.explainer { --z: 0.58; }
+    /* Two sites open on a tall header; a little further out reaches their charts. */
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site:is(.shot-zmovis, .shot-genocide, .shot-iwac) { --z: 0.42; }
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed > iframe {
+      right: auto; bottom: auto; width: calc(100% / var(--z)); height: calc(100% / var(--z));
+      transform: scale(var(--z)); transform-origin: 0 0;
+    }
+
+    /* Live sites load straight into their frames (the skin hides the engine's
+       opt-in control); the screenshot under each shows while it loads. */
+    body[data-brand="zmo"] .reveal .site-frame { box-shadow: none; border-radius: 12px; }
+    body[data-brand="zmo"] .reveal .site-frame-view.has-shot {
+      background-color: var(--zmo-card); background-position: top center; background-size: cover; background-repeat: no-repeat;
+    }
+    body[data-brand="zmo"] .reveal .site-frame-view.has-shot .frame-fallback {
+      inset: auto 0 0 0; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 12px;
+      padding: 10px 14px; background: color-mix(in oklch, #ffffff, transparent 8%);
+    }
+    body[data-brand="zmo"] .reveal .site-frame-view.has-shot .frame-fallback p { font-family: var(--zmo-font); font-style: normal; font-size: 1rem; }
+    body[data-brand="zmo"] .reveal .shot-heshmat { background-image: url("assets/heshmat-map.jpg"); }
+    body[data-brand="zmo"] .reveal .shot-zmovis { background-image: url("assets/zmo-wordcloud.jpg"); }
+    body[data-brand="zmo"] .reveal .shot-genocide { background-image: url("assets/genocide-dashboard.jpg"); }
+    body[data-brand="zmo"] .reveal .shot-iwac { background-image: url("assets/iwac-home.jpg"); }
+
+    /* Slide 21: four numbered steps, no cards (the PPT drew none). */
+    body[data-brand="zmo"] .reveal .slides section > .flow.bare { flex: 0 0 auto; margin-top: 14px; }
+    body[data-brand="zmo"] .reveal .flow.bare .flow-step { background: none; padding: 4px 6px 0 56px; }
+    body[data-brand="zmo"] .reveal .flow.bare .flow-step .step-n { left: 0; top: 4px; }
+
+    /* Slide 11: the Analysis label is blue in the PPT, not orange. */
+    body[data-brand="zmo"] .reveal .callout.light .callout-label.blue { color: var(--zmo-blue); }
+    /* Slide 12: the Kalamu list is set at 14 pt. */
+    body[data-brand="zmo"] .reveal .slides section ul.kalamu-list { font-size: 1.556rem; }
+    /* Slide 14: five short rows on the PPT's 72 px pitch, 14 pt text. */
+    body[data-brand="zmo"] .reveal dl.facts.tight { --zmo-facts-pitch: 3.4rem; }
+    body[data-brand="zmo"] .reveal dl.facts.tight dd { font-size: 1.556rem; }
+    body[data-brand="zmo"] .reveal dl.facts.tight { margin-bottom: 6px; }
+    /* Slide 26: 16 pt heads over 12 pt questions. */
+    body[data-brand="zmo"] .reveal section.questions { --zmo-card-head: 1.778rem; --zmo-card-text: 1.333rem; --zmo-card-gap: 18px; }
+
+    /* The two-project slide: each column a heading, a line, the live site, a QR. */
+    body[data-brand="zmo"] .reveal .cols.two-sites .col > h3 { margin: 0 0 4px; }
+    body[data-brand="zmo"] .reveal .cols.two-sites .col > p { margin: 0 0 10px; }
+    body[data-brand="zmo"] .reveal .qr-row.small { margin-top: 10px; }
+    body[data-brand="zmo"] .reveal .qr-row.small img { width: 76px; height: 76px; }
+
+    /* Slide 26: a numbered dot before each card heading. */
+    body[data-brand="zmo"] .reveal .col-head .num {
+      display: inline-grid; place-items: center; width: 40px; height: 40px; margin-right: 14px;
+      border-radius: 50%; background: var(--zmo-orange-ink); color: #ffffff; font-size: 1.25rem; vertical-align: middle;
+    }
+    body[data-brand="zmo"] .reveal .cols.cards .col p.q { margin: 0 0 14px; }
+  </style>
+</head>
+<body data-brand="zmo">
+
+<!-- ============================================================================
+     Converted from "PV 12 November - DH and AI.pptx" on the ZMO skin. The
+     Albani figures follow the live exhibit data generated 3 November 2026
+     (42 of 45 recordings analysed); the frames show the exhibit live.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    // DECK_CONFIG_META:START (generated from talks/talks.json)
+    presenter: "Frédérick Madore",
+    talkTitle: "Digital Humanities and AI in the Social Sciences",
+    talkShort: "DH and AI in the social sciences",
+    venue:     "Religion and Intellectual Culture Unit · ZMO · 12 November 2026",
+    tocEyebrow: "Outline",
+    // DECK_CONFIG_META:END
+    transition:"fade",
+    logoMark: false,                         // the ZMO logo is part of each slide
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ░░ 1 · COVER ░░ -->
+    <section class="cover" data-footer="light">
+      <div class="cover-head">
+        <h1>Digital Humanities and AI in the Social Sciences</h1>
+        <p class="subtitle">Datafication in practice</p>
+      </div>
+      <p>Religion and Intellectual Culture Unit</p>
+      <p>12 November 2026</p>
+    </section>
+
+    <!-- ░░ 2 · OVERVIEW ░░ -->
+    <section data-toc="Overview">
+      <h2 class="slide-title">Overview</h2>
+      <p class="lead">Two parts</p>
+      <div class="cols cards">
+        <div class="col">
+          <div class="col-head">Part 1 · Examples</div>
+          <ul>
+            <li>Framing: two workshops and a position paper</li>
+            <li>Global Heshmat: a sculptor's works on a map</li>
+            <li>Datafication, and an app to speed it up</li>
+            <li>Albani Zaria's sermons: from DVD to word counts</li>
+            <li>Toolbox: searching by meaning, which tools to use</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Part 2 · Discussion</div>
+          <ul>
+            <li>The Global South and data</li>
+            <li>The dialectics of datafication</li>
+            <li>Method, ethics, epistemology: open questions</li>
+            <li>Additional examples: ZMO Visualisations, Genocide at the Security Council</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 3 · SECTION ░░ -->
+    <section class="section" data-toc="Framing">
+      <h2>Framing</h2>
+      <p class="sec-sub">Where this comes from, and what datafication means</p>
+    </section>
+
+    <!-- ░░ 4 · TWO WORKSHOPS ░░ -->
+    <section class="compact" data-toc="Two workshops">
+      <h2 class="slide-title">Two workshops</h2>
+      <p class="lead">Both applications prepared at ZMO</p>
+      <div class="cols cards">
+        <div class="col">
+          <div class="col-head">Charting New Territory</div>
+          <p class="ws-meta">Scoping workshop · VolkswagenStiftung<br>Hanover, 18–20 February 2026</p>
+          <div class="ws-body">
+            <ul>
+              <li>Convened with Vincent Hiribarren (King's College London)</li>
+              <li>26 researchers from 16 countries</li>
+              <li>Working groups and World Café rounds instead of keynotes and panels</li>
+            </ul>
+            <img src="assets/qr-hanover.png" alt="QR code to the Hanover workshop website" width="444" height="444">
+          </div>
+          <p class="ws-url"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener">fmadore.github.io/dh-ai-african-studies-2026</a></p>
+        </div>
+        <div class="col">
+          <div class="col-head">Towards Sustainable and Equitable Practices</div>
+          <p class="ws-meta">DFG Programme Point Sud · STIAS<br>Stellenbosch, 21–24 September 2026</p>
+          <div class="ws-body">
+            <ul>
+              <li>Convened with Vincent Hiribarren, Emmanuel Ngue Um and Menno van Zaanen</li>
+              <li>25 papers, 33 participants from 17 countries</li>
+              <li>Hybrid, in English and French</li>
+            </ul>
+            <img src="assets/qr-stias.png" alt="QR code to the Stellenbosch workshop website" width="444" height="444">
+          </div>
+          <p class="ws-url"><a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/" target="_blank" rel="noopener">fmadore.github.io/stias-dh-ai-workshop-2026</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 5 · WHAT CAME OUT OF IT ░░ -->
+    <section data-toc="What came out of it">
+      <h2 class="slide-title">What came out of it</h2>
+      <p class="lead pt17">Position paper: "For Whom and For What Purpose?" (<em>ZMO Programmatic Texts</em>, 2026)</p>
+      <div class="cols w682">
+        <div class="col">
+          <ul>
+            <li><strong>Situated practice:</strong> digitisation agreements as living documents, ontologies open to revision</li>
+            <li><strong>Sovereignty:</strong> design grounded in access and governance; ethics revisited throughout a project</li>
+            <li><strong>Shared problems:</strong> consent, standardisation, ill-fitting metadata, hidden labour, language bias, maintenance, all more visible in African contexts</li>
+            <li><strong>Reading as data:</strong> 217 works annotated, mapped into 145 concepts and 1,219 links</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">Next</span>
+            <h3>A special issue in preparation</h3>
+            <p><em>Journal of the Digital Humanities Association of Southern Africa</em> (JDHASA)</p>
+            <p class="muted">Articles drawn from the Stellenbosch papers</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 6 · DATAFICATION ░░ -->
+    <section data-toc="Datafication">
+      <h2 class="slide-title">Datafication</h2>
+      <p class="lead">Rendering social life, objects and records into machine-readable data</p>
+      <dl class="facts">
+        <dt>van Dijck 2014</dt><dd>Datafication as a paradigm shift in knowledge production, and the belief in data it fosters</dd>
+        <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life; its appropriation they call data colonialism</dd>
+        <dt>Drucker 2011</dt><dd>Data are capta: taken, not given</dd>
+        <dt>Gitelman (ed.) 2013</dt><dd>“Raw data” is an oxymoron</dd>
+      </dl>
+      <p><strong>Question for today:</strong> what is decided, and by whom, when a source becomes data?</p>
+    </section>
+
+    <!-- ░░ 7 · ONE OBJECT, TWO FORMS ░░ -->
+    <section data-toc="One object, two forms">
+      <h2 class="slide-title">One object, two forms</h2>
+      <p class="lead">A memorial in Hasselt, Belgium, and its record in the Global Heshmat code</p>
+      <div class="cols record-row">
+        <div class="col">
+          <figure>
+            <img class="shot" src="assets/hasselt-memorial.jpg" alt="Hassan Heshmat's memorial wall in Hasselt, Belgium, photographed in 1970" width="1200" height="900">
+            <figcaption>Hasselt memorial, 1970 (historical photo, Global Heshmat)</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+<pre class="record"><code>// artworks/018-Heilig Kruiskerk.ts
+const artwork: Artwork = {
+  id: 18,
+  slug: "heilig-kruiskerk",
+  name: 'Heilig Kruiskerk',
+  lat: 50.92058026384286,
+  lng: 5.325863864013154,
+  country: 'Belgium',
+  city: 'Hasselt',
+  status: 'located',
+  trails: ['east-west', 'faith-remembrance'],
+  address: 'Kruisherenlaan 29, 3500 Hasselt',
+  desc: 'In memory of 23 Belgian missionaries murdered
+    in Buta (Congo) in 1965, Hassan Heshmat was …',
+  images: [{src: "Mahnmal_Hasselt_Kopie.jpg",
+    caption: "Mural next to the Heilig Kruiskerk"}, … 7 more],
+  links: [{label: 'KADOC',
+    url: 'https://kadocheritage.be/items/show/11473'}]
+};</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 8 · SECTION ░░ -->
+    <section class="section" data-toc="Global Heshmat">
+      <h2>Global Heshmat</h2>
+      <p class="sec-sub">Following Hassan Heshmat's works around the world</p>
+    </section>
+
+    <!-- ░░ 9 · GLOBAL HESHMAT — the live site ░░ -->
+    <section>
+      <h2 class="slide-title">Global Heshmat</h2>
+      <p class="lead">Egyptian sculptor Hassan Heshmat (1920–2006) · a project by Sonja Hegasy</p>
+      <div class="cols w667">
+        <div class="col">
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">heshmat.zmo.de</span>
+              <a class="site-frame-open" href="https://heshmat.zmo.de/" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed site has-shot shot-heshmat">
+              <iframe data-src="https://heshmat.zmo.de/" title="Global Heshmat: the map of Hassan Heshmat's works" loading="lazy"></iframe>
+            </div>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-num">29</span><span class="stat-label">works located</span></div>
+            <div class="stat"><span class="stat-num">13</span><span class="stat-label">still to be found</span></div>
+            <div class="stat"><span class="stat-num">160</span><span class="stat-label">photographs</span></div>
+            <div class="stat"><span class="stat-num">31</span><span class="stat-label">people profiled</span></div>
+          </div>
+          <div class="qr-row">
+            <img src="assets/qr-heshmat.png" alt="QR code to heshmat.zmo.de" width="348" height="348">
+            <p>46 entries, each with its own page: story, photographs, sources, a citable address</p>
+          </div>
+          <p class="small"><span class="hl">Gaps kept in the record:</span> a public call to report missing works.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 10 · WHAT THE MAPPING SHOWED ░░ -->
+    <section class="compact">
+      <h2 class="slide-title">What the mapping showed, and what it took</h2>
+      <p class="lead">31 profiles from Sonja Hegasy's research, and the decisions behind the site</p>
+      <div class="cols w397">
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">What the mapping showed</span>
+            <strong>A cluster nobody had noticed: Heshmat's ties to the Armenian community in Cairo.</strong>
+          </div>
+          <a href="https://heshmat.zmo.de/people/shant-chant-avetisyan/" target="_blank" rel="noopener"><img class="plain" src="assets/heshmat-avetisyan.png" alt="The Global Heshmat page for Shant (Chant) Avetisyan" width="1540" height="570"></a>
+        </div>
+        <div class="col">
+          <div class="cols cards">
+            <div class="col"><div class="col-head">One file per work</div><p>Each work and each person is a typed data file: adding one is a one-file edit</p></div>
+            <div class="col"><div class="col-head">Statuses</div><p>Located, to be found, relocated: a work's history becomes a field and a line on the map</p></div>
+            <div class="col"><div class="col-head">Names and scripts</div><p>Search folds Arabic vowel marks and accents: every transliteration is a choice</p></div>
+            <div class="col"><div class="col-head">After the project</div><p>Who maintains the record, and who in Egypt can correct it?</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 11 · DATAFICATION IS WHERE THE WORK IS ░░ -->
+    <section class="compact" data-toc="Datafication and AI">
+      <h2 class="slide-title">Datafication is where the work is</h2>
+      <p class="lead">Most of the time goes into turning sources into data; analysis comes after</p>
+      <div class="cols split-work hold">
+        <div class="callout"><span class="callout-label">Datafication</span>find · scan · transcribe · correct · describe · link</div>
+        <div class="callout light"><span class="callout-label blue">Analysis</span>visualise · count · compare</div>
+      </div>
+      <p><strong>AI speeds up the first part, by an order of magnitude</strong></p>
+      <div class="cols cards three">
+        <div class="col"><div class="col-head">Text extraction</div><p>Manuscripts, typescripts and print, in several scripts</p></div>
+        <div class="col"><div class="col-head">Transcription</div><p>Interviews, lectures and sermons, with speakers</p></div>
+        <div class="col"><div class="col-head">Entities</div><p>People, places and organisations, ready to link</p></div>
+      </div>
+      <p><span class="hl">Its own problems:</span> errors that read well, bias, cost, and extraction (whose data trains the models, and who profits?)</p>
+    </section>
+
+    <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing, so the illustration stays. -->
+    <section data-toc="Kalamu">
+      <h2 class="slide-title">Kalamu</h2>
+      <p class="lead">A desktop app I am developing: the same work, without writing code</p>
+      <div class="cols w503">
+        <div class="col">
+          <img class="shot" src="assets/kalamu.jpg" alt="Illustration of Kalamu: documents, a recorder and a laptop" width="1440" height="1080">
+        </div>
+        <div class="col">
+          <ul class="kalamu-list">
+            <li>Read scanned and handwritten documents</li>
+            <li>Transcribe interviews, in the cloud or offline</li>
+            <li>Analyse texts with fields you define: people, places, themes</li>
+            <li>Check every result against its source; corrections never overwrite the AI's text</li>
+            <li>Export with a record of model, prompt and settings</li>
+          </ul>
+        </div>
+        <div class="col qr-col">
+          <img src="assets/qr-kalamu.png" alt="QR code to github.com/fmadore/Kalamu" width="396" height="396">
+          <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/<wbr>fmadore/<wbr>Kalamu</a><br>Free, open source<br>Windows and macOS</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 13 · SECTION ░░ -->
+    <section class="section" data-toc="Albani Zaria's sermons">
+      <h2>Albani Zaria's sermons</h2>
+      <p class="sec-sub">From DVD to word counts: a Hausa collection in the <em>Islam West Africa Collection</em> (IWAC)</p>
+    </section>
+
+    <!-- ░░ 14 · WHO WAS ALBANI ZARIA? ░░ -->
+    <section>
+      <h2 class="slide-title">Who was Albani Zaria?</h2>
+      <p class="lead">Muhammad Auwal Adam Albani Zaria (1960–2014)</p>
+      <div class="cols w672">
+        <div class="col">
+          <dl class="facts tight">
+            <dt>Born</dt><dd>Zaria, northern Nigeria, 27 September 1960</dd>
+            <dt>Educated</dt><dd>Barewa College, Zaria</dd>
+            <dt>Role</dt><dd>Salafi scholar and Qur'anic exegete; taught at Daarul Hadeethis Salafiyyah, Zaria</dd>
+            <dt>Languages</dt><dd>Taught in Hausa, quoting Arabic</dd>
+            <dt>Died</dt><dd>Assassinated in Zaria, 1 February 2014</dd>
+          </dl>
+        </div>
+        <div class="col">
+          <div class="callout"><strong>The collection includes the lessons he gave on the day of his death.</strong></div>
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">islam.zmo.de</span>
+              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed site has-shot shot-iwac">
+              <iframe data-src="https://islam.zmo.de/s/westafrica/page/home" title="The Islam West Africa Collection home page" loading="lazy"></iframe>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 15 · THE COLLECTION — live IWAC panel ░░ -->
+    <section>
+      <h2 class="slide-title">The collection</h2>
+      <p class="lead">45 recordings, c. 1999–2014 · 42 transcribed so far: 145 h, 1,089,269 words</p>
+      <figure class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de/s/westafrica/page/albani-zaria-sermons</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view zoomed">
+          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-corpus-timeline" title="Recordings by date and length (IWAC, live)" loading="lazy"></iframe>
+          <img class="frame-fallback" src="assets/albani-timeline.png" alt="Recordings by date and length: each dated recording placed by date and running time">
+        </div>
+      </figure>
+      <p class="source">Running time (hours) of the 15 dated recordings; the other 30 carry no date. Catalogued for IWAC by Vincent Favier and Aleksei Akseshin; 3 recordings not yet transcribed.</p>
+    </section>
+
+    <!-- ░░ 16 · THE PIPELINE — the exhibit's animated explainer, live ░░ -->
+    <section data-toc="The pipeline">
+      <h2 class="slide-title">The pipeline</h2>
+      <p class="lead">Each automated step is also a choice</p>
+      <figure class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons · how the figures are made</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view zoomed explainer">
+          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/pipeline-explainer?preset=albani-sermons" title="How the Albani Zaria sermons become figures: an animated diagram (IWAC, live)" loading="lazy"></iframe>
+          <img class="frame-fallback" src="assets/albani-pipeline.png" alt="How the Albani Zaria sermons become figures: five stages from the recordings to figures and passages">
+        </div>
+      </figure>
+      <aside class="notes">The diagram animates when the slide opens; "Replay animation" at its top right runs it again.</aside>
+    </section>
+
+    <!-- ░░ 17 · EVERY STEP IS A DECISION ░░ -->
+    <section class="compact">
+      <h2 class="slide-title">Every step is a decision</h2>
+      <p class="lead">A word list is a classification scheme</p>
+      <div class="cols cards three">
+        <div class="col"><div class="col-head">Spelling</div><p>ɓ/b, ɗ/d, ƙ/k, ƴ/y, q/k, double letters and apostrophes count as one word</p></div>
+        <div class="col"><div class="col-head">Common words</div><p>76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus this speaker's fillers <em>ainihin</em>, <em>wato</em></p></div>
+        <div class="col"><div class="col-head">Formulae</div><p><em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
+        <div class="col"><div class="col-head">Loanwords</div><p><em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
+        <div class="col"><div class="col-head">Meaning</div><p><em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, "country" or "to fail", stays out of totals</p></div>
+        <div class="col"><div class="col-head">Speakers</div><p>Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
+      </div>
+    </section>
+
+    <!-- ░░ 18 · THE PLACES NAMED — live IWAC panel ░░ -->
+    <section data-toc="The places named">
+      <h2 class="slide-title">The places named</h2>
+      <p class="lead">Each circle a place, its area proportional to how often the sermons name it</p>
+      <figure class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view zoomed">
+          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-places" title="The places the sermons name, on a map (IWAC, live)" loading="lazy"></iframe>
+          <img class="frame-fallback" src="assets/albani-places.png" alt="A map of the places the sermons name, each circle sized by how often it is named">
+        </div>
+      </figure>
+    </section>
+
+    <!-- ░░ 19 · YOUTH — live IWAC panel ░░ -->
+    <section>
+      <h2 class="slide-title">Youth: who is being talked about?</h2>
+      <p class="lead">Occurrences of the youth word list across the 42 analysed transcripts</p>
+      <div class="cols w704">
+        <div class="col">
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed">
+              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-youth-lexicon" title="The youth word list and its counts (IWAC, live)" loading="lazy"></iframe>
+              <img class="frame-fallback" src="assets/albani-youth-lexicon.png" alt="The youth word list and its counts, by term">
+            </div>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="callout light">
+            <p><strong>Yara</strong> (children) is the largest youth term: much of the theme concerns children and families.</p>
+            <p><span class="hl">Makaranta</span> (school, education theme) occurs 996 times, in 40 of 42 recordings.</p>
+            <p><strong>Almajirai</strong>, Qur'anic pupils: 164 times in 30 recordings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 20 · POLITICS — live IWAC panel ░░ -->
+    <section>
+      <h2 class="slide-title">Politics: the vocabulary of government</h2>
+      <p class="lead">Occurrences of the political word list across the 42 analysed transcripts</p>
+      <div class="cols w704">
+        <div class="col">
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed">
+              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-politics-lexicon" title="The political word list and its counts (IWAC, live)" loading="lazy"></iframe>
+              <img class="frame-fallback" src="assets/albani-politics-lexicon.png" alt="The political word list and its counts, by term">
+            </div>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="callout light"><p><strong>sarki</strong> (emir, king): 2,094 occurrences, but 1,184 left out because they refer to God, as in <em>Allah Maɗaukakin Sarki</em></p></div>
+          <div class="callout"><p>Three in four uses of <em>demokuraɗiyya</em> (201 of 263) come from a single lecture, <strong>Demokuradiyyah</strong> (9 h 33).</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 21 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
+    <section>
+      <h2 class="slide-title">Where youth meets politics</h2>
+      <p class="lead">A meeting: a youth term and a political term within ten words, same speaker</p>
+      <div class="cols w517">
+        <div class="col">
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed">
+              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-overlap-pairs" title="Which terms meet: youth terms against political terms (IWAC, live)" loading="lazy"></iframe>
+              <img class="frame-fallback" src="assets/albani-overlap-pairs.png" alt="Which terms meet: how often each youth term meets each political term">
+            </div>
+          </figure>
+        </div>
+        <div class="col">
+          <p><strong>Most frequent pairs:</strong> yara × sarki (13), yara × jihadi (12), 'ya'ya × sarki (11), almajirai × sarki (11)</p>
+          <p><strong>89 segments</strong> contain at least one meeting; the exhibit ranks them and links each to its 20 minutes of audio.</p>
+          <p><span class="hl">The count points to the 20 minutes worth hearing; the analysis comes from listening to them.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 22 · THE SERMONS AS A SCORE — live IWAC panel ░░ -->
+    <section data-toc="The sermons as a score">
+      <h2 class="slide-title">The sermons as a score</h2>
+      <p class="lead">Each row a recording, each cell a 20-minute segment: click one to listen to it</p>
+      <figure class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view zoomed">
+          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-score" title="The sermons as a score (IWAC, live)" loading="lazy"></iframe>
+          <img class="frame-fallback" src="assets/albani-score.png" alt="The sermons as a score: one row per recording, one cell per 20-minute segment, shaded by meetings">
+        </div>
+      </figure>
+    </section>
+
+    <!-- ░░ 23 · READ THE PASSAGES — live IWAC panel ░░ -->
+    <section>
+      <h2 class="slide-title">Read the passages</h2>
+      <p class="lead">On the exhibit page, every count leads back to the words it comes from</p>
+      <figure class="site-frame">
+        <div class="site-frame-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons · youth theme</span>
+          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
+        </div>
+        <div class="site-frame-view zoomed">
+          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-youth-kwic" title="Read the passages: the youth theme in context (IWAC, live)" loading="lazy"></iframe>
+          <img class="frame-fallback" src="assets/albani-youth-kwic.png" alt="Read the passages: each line with its term highlighted and a link to its recording">
+        </div>
+      </figure>
+      <div class="flow bare">
+        <div class="flow-step"><span class="step-n">1</span><span class="step-h">Pick a term</span><p>or search the lines: 1,814 for the youth list</p></div>
+        <div class="flow-step"><span class="step-n">2</span><span class="step-h">Read it in context</span><p>the term highlighted in its sentence</p></div>
+        <div class="flow-step"><span class="step-n">3</span><span class="step-h">Go to the recording</span><p>each line links to its 20-minute segment</p></div>
+        <div class="flow-step"><span class="step-n">4</span><span class="step-h">Public text only</span><p>only from transcripts public on IWAC</p></div>
+      </div>
+    </section>
+
+    <!-- ░░ 24 · SECTION ░░ -->
+    <section class="section" data-toc="Discussion">
+      <h2>Discussion</h2>
+      <p class="sec-sub">Methodological, ethical and epistemological stakes of AI and digital humanities tools</p>
+    </section>
+
+    <!-- ░░ 25 · THE GLOBAL SOUTH AND DATA ░░ -->
+    <section class="compact">
+      <h2 class="slide-title">The Global South and data</h2>
+      <p class="lead">Digitisation and AI can reproduce older asymmetries</p>
+      <div class="cols cards three">
+        <div class="col"><div class="col-head">Who digitises</div><p>Mostly Western-funded: “digital imperialism” (Breckenridge), a “digital saviour complex” (Shringarpure)</p></div>
+        <div class="col"><div class="col-head">What gets digitised</div><p>Selection deepens archival silences; keyword search sidelines what is not online</p></div>
+        <div class="col"><div class="col-head">Who has access</div><p>The digital divide: unequal internet access remains a major obstacle (Barringer &amp; Wallace 2014)</p></div>
+        <div class="col"><div class="col-head">Data colonialism</div><p>Life turned into raw material for profit, as land once was (Couldry &amp; Mejias 2019, 2024)</p></div>
+        <div class="col"><div class="col-head">Data extractivism</div><p>African texts, voices and annotation labour feed models whose value flows north</p></div>
+        <div class="col"><div class="col-head">Data flaring</div><p>The reverse: African-language data never collected or kept (Adebara 2025)</p></div>
+      </div>
+      <p><span class="hl">One answer, in IWAC:</span> FAIR and CARE principles; catalogue where custodians prefer; credit rights holders.</p>
+    </section>
+
+    <!-- ░░ 26 · THE DIALECTICS OF DATAFICATION ░░ -->
+    <section>
+      <h2 class="slide-title">The dialectics of datafication</h2>
+      <p class="lead">Which datafication helps, which damages, and which endangers?</p>
+      <div class="cols">
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">The counter-position</span>
+            <p>Some projects try to make interlocutors impossible to datafy, so that they do not end up in prison: dispersing data points to prevent mapping.</p>
+            <p>Datafication varies by region (authoritarian or not), by discipline and by goal.</p>
+          </div>
+        </div>
+        <div class="col">
+          <ul>
+            <li>Historians, already surrounded by texts, tend to see DH as a treasure</li>
+            <li>Anthropologists are often hostile: everyday experience is not data</li>
+            <li>Fieldwork is already extraction; AI changes speed and scale</li>
+            <li>What would consensual, qualitative practice look like?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 27 · QUESTIONS FOR THE DISCUSSION ░░ -->
+    <section class="compact questions">
+      <h2 class="slide-title">Questions for the discussion</h2>
+      <div class="cols cards three">
+        <div class="col">
+          <div class="col-head"><span class="num">1</span>Method</div>
+          <p class="q">Who checks the word lists, and in which language?</p>
+          <p class="q">What does a 20-minute segment cut through?</p>
+          <p class="q">Can error rates be measured for Hausa–Arabic speech?</p>
+        </div>
+        <div class="col">
+          <div class="col-head"><span class="num">2</span>Ethics</div>
+          <p class="q">Whose voice becomes data, and who decides?</p>
+          <p class="q">Should such recordings go through commercial AI services?</p>
+          <p class="q">When should material stay out of the data altogether?</p>
+        </div>
+        <div class="col">
+          <div class="col-head"><span class="num">3</span>Epistemology</div>
+          <p class="q">Is a count evidence, or only a pointer?</p>
+          <p class="q">What does automatic labelling skip that building one's own categories teaches?</p>
+          <p class="q">Fieldwork, archives, AI: is it all extraction?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ 28 · SECTION ░░ -->
+    <section class="section" data-toc="Additional examples">
+      <h2>Additional examples</h2>
+      <p class="sec-sub">Two more projects to explore</p>
+    </section>
+
+    <!-- ░░ 29 · TWO MORE PROJECTS — both live sites ░░ -->
+    <section class="compact">
+      <h2 class="slide-title">Two more projects</h2>
+      <div class="cols two-sites">
+        <div class="col">
+          <h3>ZMO Visualisations</h3>
+          <p>Your own institute as data: 1,985 publications by 671 authors, 1994–2026</p>
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">zmo-berlin.github.io/visualisations</span>
+              <a class="site-frame-open" href="https://zmo-berlin.github.io/visualisations/units_wordcloud/en/" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed site has-shot shot-zmovis">
+              <iframe data-src="https://zmo-berlin.github.io/visualisations/units_wordcloud/en/" title="ZMO Visualisations: the word explorer" loading="lazy"></iframe>
+            </div>
+          </figure>
+          <div class="qr-row small">
+            <img src="assets/qr-zmovis.png" alt="QR code to zmo-berlin.github.io/visualisations" width="444" height="444">
+            <p><a href="https://zmo-berlin.github.io/visualisations/" target="_blank" rel="noopener">zmo-berlin.github.io/visualisations</a></p>
+          </div>
+        </div>
+        <div class="col">
+          <h3>Genocide at the Security Council</h3>
+          <p>How is the word used in 167,600 UN Security Council speeches, 1946–2024?</p>
+          <figure class="site-frame">
+            <div class="site-frame-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="site-frame-url">fmadore.github.io/genocide-at-the-security-council</span>
+              <a class="site-frame-open" href="https://fmadore.github.io/genocide-at-the-security-council/" target="_blank" rel="noopener">Open ↗</a>
+            </div>
+            <div class="site-frame-view zoomed site has-shot shot-genocide">
+              <iframe data-src="https://fmadore.github.io/genocide-at-the-security-council/" title="Genocide at the Security Council: the dashboard" loading="lazy"></iframe>
+            </div>
+          </figure>
+          <div class="qr-row small">
+            <img src="assets/qr-genocide.png" alt="QR code to the Genocide at the Security Council dashboard" width="444" height="444">
+            <p><a href="https://fmadore.github.io/genocide-at-the-security-council/" target="_blank" rel="noopener">fmadore.github.io/<wbr>genocide-at-the-security-council</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js core + plugins (vendored), then the deck engine, then the skin. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+<script src="../../shared/brands/zmo/zmo.js"></script>
+
+</body>
+</html>

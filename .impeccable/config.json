@@ -156,6 +156,63 @@
         ],
         "createdAt": "2026-10-07T13:13:41.302Z",
         "reason": "Agent 2026-10-07: TOC overlay clamp() floor (.toc-title / .toc-item). DESIGN.md line 236 and 252 reserve clamp() and responsive units for the unscaled chrome incl. the TOC overlay, so its type sits off the canvas ramp by design. Scoped to this one source file."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "carlito",
+        "createdAt": "2026-11-03T17:36:37.535Z",
+        "reason": "ZMO brand skin (shared/brands/zmo): user asked it to follow the ZMO PowerPoint, which sets Calibri; Carlito is Calibri's metric-compatible open clone. Broadsheet decks never load it."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "calibri",
+        "createdAt": "2026-11-03T17:39:00.712Z",
+        "reason": "ZMO brand skin: user asked it to follow the ZMO PowerPoint, whose theme font is Calibri (ZMO Corporate Design Manual 2019). Only shared/brands/zmo and ZMO decks use it."
+      },
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "talks/_template-zmo/index.html"
+        ],
+        "createdAt": "2026-11-03T17:39:01.434Z",
+        "reason": "ZMO starter: secondary text on ZMO blue is #b8c2ce, copied from the user's ZMO deck, measured 6.05:1 (AA). User asked for PPT fidelity."
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "talks/_template-zmo/index.html"
+        ],
+        "createdAt": "2026-11-03T18:10:30.491Z",
+        "reason": "False positive: rendered check found no element with border-radius and a border >=2px on any slide; the ZMO skin sets border:0 on .callout/.flow-step/cards, overriding Broadsheet's top accent rule that the static detector reads."
+      },
+      {
+        "rule": "gray-on-color",
+        "value": "*",
+        "files": [
+          "talks/2026-11-12-zmo-unit-pv/index.html"
+        ],
+        "createdAt": "2026-11-03T18:44:00.871Z",
+        "reason": "ZMO deck: secondary text colours (#b8c2ce on ZMO blue, #5b6573 on #eef2f7) copied from the user's ZMO PowerPoint; measured 6.05:1 and 5.26:1 (AA). User asked for PPT fidelity."
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "talks/2026-11-12-zmo-unit-pv/index.html"
+        ],
+        "createdAt": "2026-11-03T19:08:11.248Z",
+        "reason": "False positive: the ZMO skin sets border:0 on .callout/.flow-step/cards, overriding Broadsheet's top accent rule the static detector reads; the same components measured on talks/_template-zmo had no rounded element with a border >= 2px. Frames carry a 1px hairline only."
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          "talks/2026-11-12-zmo-unit-pv/index.html"
+        ],
+        "createdAt": "2026-11-03T19:08:11.785Z",
+        "reason": "ZMO deck cover: the title is the user's PPT title at the PPT's own 32 pt on the blue cover field, two lines; user asked for PPT fidelity."
       }
     ]
   }
