@@ -17,6 +17,7 @@ class DeckParser(HTMLParser):
         self.imgs_without_alt = []
         self.iframes_without_title = []
         self.blank_without_noopener = []
+        self.frame_open_same_tab = []
         self.fit_allow_without_reason = []
         self.notes = 0
         self.styles = []        # (css source, first line)  per-deck <style> blocks
@@ -65,6 +66,10 @@ class DeckParser(HTMLParser):
             self.refs.append(("a", a["href"]))
             if a.get("target") == "_blank" and "noopener" not in (a.get("rel") or ""):
                 self.blank_without_noopener.append(a["href"])
+            # A frame's Open link leaves the deck: in the same tab it would
+            # navigate the presenter away from the talk.
+            if "site-frame-open" in (a.get("class") or "").split() and a.get("target") != "_blank":
+                self.frame_open_same_tab.append(a["href"])
         elif tag == "aside" and "notes" in (a.get("class") or "").split():
             self.notes += 1
         for key in ("data-skill-src", "data-embed-src"):

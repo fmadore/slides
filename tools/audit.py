@@ -5,7 +5,8 @@ Static checks (no browser, stdlib only):
   • missing local images / scripts / stylesheets / iframes / embedded files
   • duplicate HTML ids
   • <img> without alt, <iframe> without title
-  • target="_blank" links without rel="noopener"
+  • target="_blank" links without rel="noopener", and frame Open links
+    (.site-frame-open) that would open in the deck's own tab
   • vendored third-party files still match shared/vendor-manifest.json
   • manifest sync: talks/talks.json ↔ talks/ folders ↔ the landing page
   • stale placeholders (TODO/FIXME/lorem) and placeholder QR codes in
@@ -140,6 +141,11 @@ def audit_html(path, rep, published_deck):
         rep.error(rel, f"<iframe> without title: {src}")
     for href in p.blank_without_noopener:
         rep.error(rel, f'target="_blank" without rel="noopener": {href}')
+    # The reading edition is a plain document with no presentation to leave;
+    # its builder opens every link in place on purpose.
+    if os.path.basename(path) != "read.html":
+        for href in p.frame_open_same_tab:
+            rep.error(rel, f'frame Open link without target="_blank" (it would leave the deck): {href}')
 
     if published_deck:
         # Comments may legitimately say TODO in the template; a published talk

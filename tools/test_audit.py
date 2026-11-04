@@ -195,6 +195,16 @@ class HtmlChecks(AuditCase):
                    'rel="noopener noreferrer">out</a>')
         self.assertSilent()
 
+    def test_frame_open_link_in_the_same_tab(self):
+        self.audit('<a class="site-frame-open" href="https://example.org/" '
+                   'data-preview-link="https://example.org/">Open</a>')
+        self.assertReports('frame Open link without target="_blank"')
+
+    def test_frame_open_link_in_a_new_tab_is_silent(self):
+        self.audit('<a class="site-frame-open" href="https://example.org/" '
+                   'target="_blank" rel="noopener">Open</a>')
+        self.assertSilent()
+
     def test_stale_placeholders_in_a_published_deck(self):
         self.audit("<p>TODO: rewrite</p><!-- FIXME --><p>lorem ipsum dolor</p>")
         for word in ("TODO", "FIXME", "lorem ipsum"):
