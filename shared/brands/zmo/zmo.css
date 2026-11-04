@@ -1,0 +1,593 @@
+/* =============================================================================
+   ZMO · LEIBNIZ-ZENTRUM MODERNER ORIENT — brand skin for the deck engine
+   Built to <shared/brands/zmo/zmo.css> by tools/build-shared.mjs.
+
+   Broadsheet (shared/theme.css) stays the house theme. This file re-dresses
+   the same engine as the official ZMO PowerPoint template, and it is inert
+   unless BOTH hold:
+     • the deck links it after theme.css, and
+     • the deck's <body> carries data-brand="zmo".
+   Bayreuth decks do neither, so nothing here can reach them. The attribute is
+   on <body>, not <html>, because tools/slideslib/deck_metadata.py rewrites the
+   <html> tag from talks.json on every index build.
+
+   Geometry is measured from "ZMO Powerpoint.pptx" (16:9, 10 × 5.625 in) on
+   the engine's fixed 1280 × 720 canvas: 128 px per inch, 1 pt = 1.778 px. The
+   pixel literals below are those measurements, so they are kept as px rather
+   than rounded into the rem scale. Colours and type come from the ZMO
+   Corporate Design Manual (2019): ZMO-Blau 20/60/115, ZMO-Orange 235/130/65,
+   Calibri as the presentation face (Carlito, its metric-compatible open
+   clone, ships here for machines without Calibri).
+
+   Contents
+     1. Faces            5. Section divider (C · Titelfolie weiß)
+     2. Tokens           6. Cover and closing (A · B Titelfolie)
+     3. Engine chrome    7. Components (cards, callout, facts, steps, stats)
+     4. Slide master     8. Print
+   ============================================================================= */
+
+/* ----------------------------------------------------------------------------
+   1. FACES — Carlito (SIL OFL 1.1), latin + latin-ext, from Google Fonts.
+   ---------------------------------------------------------------------------- */
+/* Carlito · italic 400 · latin-ext */
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/carlito-italic-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Carlito · italic 400 · latin */
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/carlito-italic-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Carlito · italic 700 · latin-ext */
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./fonts/carlito-italic-700-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Carlito · italic 700 · latin */
+@font-face {
+  font-family: 'Carlito';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./fonts/carlito-italic-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Carlito · normal 400 · latin-ext */
+@font-face {
+  font-family: 'Carlito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/carlito-normal-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Carlito · normal 400 · latin */
+@font-face {
+  font-family: 'Carlito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/carlito-normal-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Carlito · normal 700 · latin-ext */
+@font-face {
+  font-family: 'Carlito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./fonts/carlito-normal-700-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Carlito · normal 700 · latin */
+@font-face {
+  font-family: 'Carlito';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./fonts/carlito-normal-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ----------------------------------------------------------------------------
+   2. TOKENS
+   Set on :root (through :has) rather than on <body>: theme.css derives its
+   tints on :root — --green-deep from --green and so on — and a derived token
+   is computed where it is declared, so an override one level down would leave
+   every derivative on the Bayreuth palette. Remapping the Broadsheet names
+   lets the engine's own furniture (contents overlay, lightbox, tables, charts,
+   chips, focus rings) follow ZMO without a rule each.
+   ---------------------------------------------------------------------------- */
+:root:has(> body[data-brand="zmo"]) {
+  --zmo-blue:         #143c73;   /* ZMO-Blau · RGB 20 60 115                 */
+  --zmo-orange:       #eb8241;   /* ZMO-Orange · RGB 235 130 65 — marks only */
+  /* Orange TEXT. The brand orange reads 2.69:1 on white and 2.39:1 on the card
+     fill, under the 3:1 that bold display text needs. 12% darker is the
+     lightest step that clears 3:1 on both (3.43 and 3.05), so it carries every
+     orange word; the exact brand orange stays on rules, dots and the blue field
+     (4.06:1), where it was measured. */
+  --zmo-orange-ink:   #cf7239;
+  --zmo-text:         #1f2937;   /* body text in the reference deck          */
+  --zmo-muted:        #5b6573;   /* sources and captions · 5.91:1 on white   */
+  --zmo-card:         #eef2f7;   /* the rounded card fill                    */
+  --zmo-on-blue-soft: #b8c2ce;   /* secondary text on blue · 6.05:1          */
+  --zmo-font: "Calibri", "Carlito", "Segoe UI", system-ui, sans-serif;
+
+  --green:        var(--zmo-blue);
+  --green-deep:   var(--zmo-blue);
+  --green-field:  var(--zmo-blue);
+  --green-bright: var(--zmo-blue);
+  --green-wash:   var(--zmo-card);
+  --navy:         var(--zmo-blue);
+  --navy-field:   var(--zmo-blue);
+  --navy-deep:    color-mix(in oklch, var(--zmo-blue), #04060f 30%);
+  --navy-wash:    var(--zmo-card);
+  --gold:         var(--zmo-orange);
+  --gold-bright:  var(--zmo-orange);
+  --amber:        var(--zmo-orange);
+  --amber-wash:   color-mix(in oklch, var(--zmo-orange), white 84%);
+  --brown:        var(--zmo-orange-ink);
+  --brown-deep:   var(--zmo-orange-ink);
+  --warm-field:   var(--zmo-blue);
+  --sky:          color-mix(in oklch, var(--zmo-blue), white 45%);
+
+  --paper:  #ffffff;
+  --panel:  var(--zmo-card);
+  --sunken: var(--zmo-card);
+  --ink:       var(--zmo-text);
+  --ink-bold:  var(--zmo-blue);
+  --ink-soft:  #374151;
+  --ink-faint: var(--zmo-muted);
+  --rule:      var(--zmo-blue);
+  --focus-ring: var(--zmo-orange-ink);
+
+  --font-display: var(--zmo-font);
+  --font-label:   var(--zmo-font);
+  --font-serif:   var(--zmo-font);
+  --font-body:    var(--zmo-font);
+
+  /* The PPT's point sizes on the 16px canvas rem. */
+  --fs-caption: 1.111rem;  /* 10 pt · sources, captions        */
+  --fs-small:   1.444rem;  /* 13 pt · card lists               */
+  --fs-label:   1.444rem;  /* 13 pt · orange labels            */
+  --fs-body:    1.778rem;  /* 16 pt · running text (the master) */
+  --fs-lead:    2rem;      /* 18 pt · the line under the band  */
+  --fs-h3:      2rem;      /* 18 pt · card headings            */
+  --fs-h2:      3.556rem;  /* 32 pt · band title               */
+  --fs-h1:      3.556rem;  /* 32 pt · cover title              */
+  --lh-body:    1.2;
+  --lh-snug:    1.2;
+
+  --r-heading-font-weight: 700;
+  --r-heading-letter-spacing: 0;
+  --r-selection-background-color: color-mix(in oklch, var(--zmo-orange), transparent 62%);
+}
+
+/* ----------------------------------------------------------------------------
+   3. ENGINE CHROME
+   The PPT master has no running head, rule or progress bar, and its logo and
+   URL belong to the slide (section 4), not to the window. The engine's footer
+   keeps only its navigation, out of sight until a pointer or keyboard reaches
+   for it; touch screens, which cannot hover, keep it visible.
+   ---------------------------------------------------------------------------- */
+body[data-brand="zmo"].reveal-viewport,
+body[data-brand="zmo"].reveal-viewport.deck-dark { background-color: #ffffff; }
+/* reveal writes the progress bar's display inline, hence !important. */
+body[data-brand="zmo"] .deck-runhead { display: none; }
+body[data-brand="zmo"] .reveal .progress { display: none !important; }
+body[data-brand="zmo"] .deck-footer { justify-content: flex-end; padding: 0 0.75rem; }
+body[data-brand="zmo"] .deck-footer::before { content: none; }
+body[data-brand="zmo"] .deck-footer .foot-left { visibility: hidden; }
+body[data-brand="zmo"] .deck-nav {
+  background: #ffffff; border-radius: 999px; padding: 0.25rem 0.4rem 0.25rem 0.9rem;
+  box-shadow: var(--shadow-2);
+  opacity: 0; transition: opacity var(--dur) var(--ease);
+}
+body[data-brand="zmo"] .deck-nav:hover,
+body[data-brand="zmo"] .deck-nav:focus-within { opacity: 1; }
+@media (hover: none) {
+  body[data-brand="zmo"] .deck-nav { opacity: 1; }
+}
+/* The nav pill is white on every slide, so the on-dark register never applies. */
+body[data-brand="zmo"] .deck-footer.on-dark { color: var(--ink-soft); }
+body[data-brand="zmo"] .deck-footer.on-dark .deck-nav .counter .cur { color: var(--zmo-blue); }
+body[data-brand="zmo"] .deck-footer.on-dark .deck-btn {
+  background: transparent; border-color: var(--line-strong); color: var(--ink-soft);
+}
+body[data-brand="zmo"] .deck-footer.on-dark .deck-btn:hover {
+  background: var(--zmo-blue); border-color: var(--zmo-blue); color: #ffffff;
+}
+body[data-brand="zmo"] .deck-footer.on-dark .deck-btn.copy-link.is-copied { color: var(--zmo-blue); border-color: var(--zmo-blue); }
+body[data-brand="zmo"] .deck-btn.toc-btn { text-transform: none; letter-spacing: 0.02em; }
+
+/* ----------------------------------------------------------------------------
+   4. SLIDE MASTER — "Titel und Inhalt"
+   Every slide except the hero layouts carries the master: the blue band with
+   the extended-square motif, the logo at the foot left, the URL at the foot
+   right. The text area is the PPT's: x 64→1175, y 166→606.
+   ---------------------------------------------------------------------------- */
+body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) {
+  padding: 176px 105px 114px 64px;
+  color: var(--zmo-text);
+  background:
+    url("./logo-zmo.png") 64.4px 622.6px / 94px auto no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 137'%3E%3Crect width='1280' height='137' fill='%23143c73'/%3E%3Cpath d='M1175 33v71M1245 0v104M1174 34h106M1174 103h72' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") 0 0 / 1280px 137px no-repeat;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media)::after {
+  content: "www.leibniz-zmo.de";
+  position: absolute; right: 105px; top: 667px; height: 38px;
+  display: flex; align-items: center;
+  font: 400 16px/1 var(--zmo-font); letter-spacing: 0; color: var(--zmo-blue);
+  pointer-events: none;
+}
+
+/* Fill the text area, as the PPT's shapes do. In the reference deck cards,
+   step rows and lone callouts run to the foot of the text area (y 606) and a
+   closing takeaway line sits at the foot; top-packed, the same content left a
+   band of white above the logo. The slide is a column: .cols, dl.facts and
+   .flow grow into the space left, and a final paragraph after them drops to
+   the foot. Growers never shrink below their content, so an overfull slide
+   still reads as overfull to the engine's auto-fit. reveal writes
+   display:block inline on the present slide, hence !important (Broadsheet
+   does the same for its hero layouts). */
+body[data-brand="zmo"] .reveal .slides section.present:not(.stack, .cover, .brand-logo, .media),
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section:not(.stack, .cover, .brand-logo, .media) {
+  display: flex !important; flex-direction: column;
+}
+body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) > * { flex-shrink: 0; }
+body[data-brand="zmo"] .reveal .slides section > :is(.cols, .flow) { flex: 1 0 auto; min-height: auto; }
+body[data-brand="zmo"] .reveal .slides section > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table) ~ p:nth-last-child(1 of :not(aside)) {
+  margin-top: auto; margin-bottom: 0;
+}
+body[data-brand="zmo"] .reveal .cols { align-items: stretch; }
+body[data-brand="zmo"] .reveal .cols > .col { display: flex; flex-direction: column; min-width: 0; }
+body[data-brand="zmo"] .reveal .cols > .col > :is(.callout, .card, .panel):only-child { flex: 1 0 auto; margin: 0; }
+
+/* Base type: Calibri, single-spaced, the reference deck's ink. */
+body[data-brand="zmo"] .reveal .slides section {
+  font-family: var(--zmo-font); font-size: var(--fs-body); line-height: 1.2;
+}
+body[data-brand="zmo"] .reveal .slides section p,
+body[data-brand="zmo"] .reveal .slides section li { font-family: var(--zmo-font); line-height: 1.2; max-width: none; }
+body[data-brand="zmo"] .reveal h1,
+body[data-brand="zmo"] .reveal h2,
+body[data-brand="zmo"] .reveal h3,
+body[data-brand="zmo"] .reveal h4 { font-family: var(--zmo-font); letter-spacing: 0; text-transform: none; text-wrap: wrap; }
+/* Text boxes in the PPT sit 0.1 in inside their frame; cards, callouts and
+   figures sit on the frame edge. */
+body[data-brand="zmo"] .reveal .slides section > :is(p, ul, ol, dl, h3, .stat-grid) { margin-inline: 12.8px; }
+
+/* The band title: white, 32 pt, top-anchored in the band. zmo.js shrinks a
+   title that would wrap, the way PowerPoint's "shrink text on overflow" does. */
+body[data-brand="zmo"] .reveal .slides section .slide-title {
+  position: absolute; left: 64px; top: 25px; width: 1024px; box-sizing: border-box;
+  margin: 0; padding: 0 12.8px; max-width: none;
+  font: 400 var(--fs-h2)/1.2 var(--zmo-font); letter-spacing: 0; color: #ffffff;
+}
+body[data-brand="zmo"] .reveal .slides section .slide-title::before,
+body[data-brand="zmo"] .reveal .slides section .slide-title::after { content: none; }
+
+/* The line under the band (the PPT's "Textplatzhalter"), blue, 18 pt. */
+body[data-brand="zmo"] .reveal .slides section .lead {
+  font: 400 var(--fs-lead)/1.2 var(--zmo-font); color: var(--zmo-blue);
+  margin-top: 0; margin-bottom: 16px; max-width: none;
+}
+
+/* Lists: round bullets in the text colour, single-spaced items. */
+body[data-brand="zmo"] .reveal ul,
+body[data-brand="zmo"] .reveal ol { max-width: none; }
+body[data-brand="zmo"] .reveal ul > li { padding-left: 1.05em; margin: 0 0 0.6em; }
+body[data-brand="zmo"] .reveal ul > li::before {
+  content: "•"; top: 0; left: 0; width: auto; height: auto; border-radius: 0;
+  background: none; color: currentColor; font-weight: 400;
+}
+body[data-brand="zmo"] .reveal li ul > li::before { content: "–"; background: none; }
+/* Nothing hangs below a column's last block: the PPT measures its text boxes
+   to the last line, and a stray block margin pushed full slides into auto-fit. */
+body[data-brand="zmo"] .reveal :is(ul, ol) > li:last-child { margin-bottom: 0; }
+body[data-brand="zmo"] .reveal .cols > .col > :last-child { margin-bottom: 0; }
+body[data-brand="zmo"] .reveal ol > li { padding-left: 1.4em; margin: 0 0 0.6em; }
+body[data-brand="zmo"] .reveal ol > li::before {
+  content: counter(list-item) "."; top: 0; font-size: 1em; font-weight: 700;
+  font-family: var(--zmo-font); color: var(--zmo-blue); letter-spacing: 0;
+}
+
+/* Emphasis: the reference deck leads with bold blue and marks a conclusion in
+   orange. */
+body[data-brand="zmo"] .reveal strong,
+body[data-brand="zmo"] .reveal b { color: var(--zmo-blue); font-weight: 700; }
+body[data-brand="zmo"] .reveal mark,
+body[data-brand="zmo"] .reveal .hl {
+  background: none; padding: 0; margin: 0; color: var(--zmo-orange-ink); font-weight: 700;
+}
+body[data-brand="zmo"] .reveal .accent { color: var(--zmo-orange-ink); font-weight: 700; }
+body[data-brand="zmo"] .reveal .kicker {
+  font: 700 var(--fs-label)/1.2 var(--zmo-font); color: var(--zmo-orange-ink);
+  text-transform: none; letter-spacing: 0; margin: 0 0 6px;
+}
+body[data-brand="zmo"] .reveal .kicker::before { content: none; }
+body[data-brand="zmo"] .reveal :is(.source, .cite, .small, small, figcaption) {
+  font-family: var(--zmo-font); font-size: var(--fs-caption); font-style: normal; color: var(--zmo-muted);
+}
+body[data-brand="zmo"] .reveal .muted { color: var(--zmo-muted); }
+body[data-brand="zmo"] .reveal h3 { font: 700 var(--fs-h3)/1.2 var(--zmo-font); color: var(--zmo-blue); margin: 0 0 12px; }
+
+/* ----------------------------------------------------------------------------
+   5. SECTION DIVIDER — "C · Titelfolie weiß": the master with an empty band,
+   the title centred and bottom-anchored over a centred subtitle.
+   ---------------------------------------------------------------------------- */
+body[data-brand="zmo"] .reveal section.section { --r-main-color: var(--zmo-blue); color: var(--zmo-blue); }
+body[data-brand="zmo"] .reveal section.section::before { content: none; }
+body[data-brand="zmo"] .reveal section.section .sec-no { display: none; }
+body[data-brand="zmo"] .reveal section.section h2 {
+  position: absolute; left: 62.6px; bottom: 439.5px; width: 1112.5px; box-sizing: border-box;
+  margin: 0; padding: 0 12.8px; max-width: none; text-align: center;
+  font: 700 var(--fs-h2)/1.2 var(--zmo-font); letter-spacing: 0; color: var(--zmo-blue);
+}
+body[data-brand="zmo"] .reveal section.section .sec-sub {
+  position: absolute; left: 152.5px; top: 298px; width: 976.9px; box-sizing: border-box;
+  margin: 0; padding: 0 12.8px; max-width: none; text-align: center;
+  font: 400 2.667rem/1.2 var(--zmo-font); font-style: normal; color: var(--zmo-blue);
+}
+body[data-brand="zmo"] .reveal section.section .sec-sub em { font-style: italic; }
+
+/* ----------------------------------------------------------------------------
+   6. COVER AND CLOSING — "A · Titelfolie" (.cover) and "B · Titelfolie mit
+   Adresse" (.cover.address): a blue field over a white foot band (y 537)
+   carrying the ZMO logo and the Leibniz Association mark; the address variant
+   adds the band motif, the marker and the postal address. The closing is a
+   cover variant here, as it is in the PPT, and not Broadsheet's .closing: the
+   engine's auto-fit reserves room under .closing's gold rule, which this
+   layout does not have, and would push the meta lines into the foot band.
+   ---------------------------------------------------------------------------- */
+body[data-brand="zmo"] .reveal section.cover {
+  color: #ffffff; --r-main-color: #ffffff;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+body[data-brand="zmo"] .reveal section.cover {
+  background:
+    url("./logo-leibniz.png") 1047.5px 590.3px / 142.7px auto no-repeat,
+    url("./logo-zmo.png") 66.6px 579.4px / 124.3px auto no-repeat,
+    linear-gradient(to bottom, var(--zmo-blue) 0 537px, #ffffff 537px);
+}
+body[data-brand="zmo"] .reveal section.cover.address {
+  background:
+    url("./logo-leibniz.png") 1047.5px 590.3px / 142.7px auto no-repeat,
+    url("./logo-zmo.png") 66.6px 579.4px / 124.3px auto no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 137'%3E%3Cpath d='M1175 33v71M1245 0v104M1174 34h106M1174 103h72' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") 0 0 / 1280px 137px no-repeat,
+    linear-gradient(to bottom, var(--zmo-blue) 0 537px, #ffffff 537px);
+}
+/* The closing's sender block: a short blue marker over three address lines. */
+body[data-brand="zmo"] .reveal section.cover.address::before {
+  content: ""; position: absolute; left: 403.7px; top: 598.1px; right: auto;
+  width: 70.1px; height: 11.5px; background: var(--zmo-blue); animation: none;
+}
+body[data-brand="zmo"] .reveal section.cover.address::after {
+  content: "Leibniz-Zentrum Moderner Orient\A Kirchweg 33 · 14129 Berlin\A www.leibniz-zmo.de";
+  white-space: pre; position: absolute; left: 404px; top: 624.4px;
+  font: 400 1.111rem/1.3 var(--zmo-font); color: var(--zmo-blue); pointer-events: none;
+}
+/* Title block: centred, bottom-anchored in the PPT's top placeholder
+   (y 98.6→282.6), so a long title grows upward as it does in PowerPoint. */
+body[data-brand="zmo"] .reveal section.cover .cover-head {
+  position: absolute; left: 156.6px; top: 98.6px; width: 968.7px; height: 184px;
+  box-sizing: border-box; padding: 6.4px 12.8px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: center; text-align: center;
+}
+body[data-brand="zmo"] .reveal section.cover :is(h1, h2) {
+  margin: 0; max-width: none; text-align: center;
+  font: 700 var(--fs-h1)/1.1 var(--zmo-font); letter-spacing: 0; color: #ffffff;
+}
+body[data-brand="zmo"] .reveal section.cover .subtitle {
+  margin: 4px 0 0; max-width: none;
+  font: 400 2.222rem/1.2 var(--zmo-font); font-style: normal; color: #ffffff;
+}
+/* Everything after the title block is the meta block (presenter, event,
+   date): the PPT's lower placeholder, centred and top-anchored at y 345. The
+   slide's own padding places it, so the byline and event line stay plain
+   children of the section — the strings tools/new-talk.py fills in. The
+   bottom padding is the white foot band: meta lines that would run into it
+   are scaled by the engine's auto-fit instead. */
+body[data-brand="zmo"] .reveal .slides section.cover {
+  padding: 346.8px 117.7px 183px 75.5px; text-align: center;
+  font: 400 2.469rem/1.2 var(--zmo-font);
+}
+body[data-brand="zmo"] .reveal .slides > section.cover.present,
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section.cover {
+  justify-content: flex-start; align-items: stretch;
+}
+body[data-brand="zmo"] .reveal section.cover > :is(p, .eyebrow, .byline),
+body[data-brand="zmo"] .reveal section.cover > .byline :is(.name, .role, .affil) {
+  display: block; margin: 0; padding: 0; border: 0; max-width: none;
+  font: inherit; font-style: normal; color: #ffffff; letter-spacing: 0; text-transform: none;
+}
+body[data-brand="zmo"] .reveal section.cover > .contact {
+  justify-content: center; margin-top: 14px; font-size: var(--fs-caption);
+}
+body[data-brand="zmo"] .reveal section.cover > .contact a,
+body[data-brand="zmo"] .reveal section.cover > .contact a .ico { color: #ffffff; font-size: var(--fs-caption); }
+body[data-brand="zmo"] .reveal section.cover a {
+  color: #ffffff; text-decoration-color: color-mix(in oklch, #ffffff, transparent 45%);
+}
+body[data-brand="zmo"] .reveal section.cover strong { color: #ffffff; }
+/* The slides QR rides in the blue field's top-right corner, clear of the
+   centred title block. */
+body[data-brand="zmo"] .reveal section.cover.address .slides-qr {
+  position: absolute; right: 105px; top: 180px; margin: 0;
+  flex-direction: column; align-items: center; gap: 6px;
+}
+body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-label { color: #ffffff; text-align: center; font-family: var(--zmo-font); }
+body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-label b { color: #ffffff; }
+body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-url { color: var(--zmo-on-blue-soft); }
+
+/* "Startfolie Logo": the logo alone on blue. */
+body[data-brand="zmo"] .reveal section.brand-logo {
+  padding: 0;
+  background: url("./logo-zmo-white.png") 446px 166.6px / 388px auto no-repeat, var(--zmo-blue);
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+/* ----------------------------------------------------------------------------
+   7. COMPONENTS — the reference deck's vocabulary on the engine's classes.
+   ---------------------------------------------------------------------------- */
+/* Columns sit as close as the PPT's text boxes do, not Broadsheet's 4rem. */
+body[data-brand="zmo"] .reveal .cols { gap: 26px; }
+
+/* Rounded cards: .card anywhere, or every column of .cols.cards. Their sizes
+   are custom properties so .compact (below) can retune a whole slide. */
+body[data-brand="zmo"] .reveal .cols.cards { gap: 25.6px; align-items: stretch; }
+body[data-brand="zmo"] .reveal :is(.card, .panel, .cols.cards > .col) {
+  background: var(--zmo-card); border: 0; border-radius: 28px;
+  padding: var(--zmo-card-pad, 21px 32px 26px); box-shadow: none;
+}
+body[data-brand="zmo"] .reveal :where(.card, .panel, .cols.cards > .col) :is(ul, ol, p) { font-size: var(--zmo-card-text, var(--fs-small)); }
+body[data-brand="zmo"] .reveal :is(.card, .panel, .cols.cards > .col) > :last-child { margin-bottom: 0; }
+body[data-brand="zmo"] .reveal :is(.col-head, .card-head) {
+  display: block; margin: 0 0 var(--zmo-card-gap, 30px); padding: 0; border: 0;
+  font: 700 var(--zmo-card-head, var(--fs-h3))/1.2 var(--zmo-font); letter-spacing: 0; text-transform: none; color: var(--zmo-blue);
+}
+/* .compact: the PPT's dense slides — six cards, two step rows, a QR beside
+   a list — set 14 pt card heads over 11 pt text and 12 pt running text. Put
+   it on the <section>. */
+body[data-brand="zmo"] .reveal section.compact {
+  --zmo-card-head: 1.556rem; --zmo-card-text: 1.222rem; --zmo-card-gap: 10px;
+  --zmo-card-pad: 16px 22px 18px;
+}
+body[data-brand="zmo"] .reveal .slides section.compact > :is(ul, ol, p):not(.lead),
+body[data-brand="zmo"] .reveal .slides section.compact .cols:not(.cards) > .col > :is(ul, ol, p) { font-size: 1.333rem; }
+body[data-brand="zmo"] .reveal :is(.col-head, .card-head).alt { color: var(--zmo-orange-ink); }
+body[data-brand="zmo"] .reveal :is(.col-head, .card-head)::before { content: none; }
+
+/* The blue callout box: white text, an orange label. */
+body[data-brand="zmo"] .reveal .callout {
+  background: var(--zmo-blue); color: #ffffff; border: 0; border-radius: 28px;
+  padding: 18px 26px 20px; margin: 0 0 16px; max-width: none; box-shadow: none;
+  font: 400 1.556rem/1.25 var(--zmo-font);
+}
+body[data-brand="zmo"] .reveal .callout .callout-label {
+  display: block; margin: 0 0 8px; color: var(--zmo-orange);
+  font: 700 1.556rem/1.2 var(--zmo-font); letter-spacing: 0; text-transform: none;
+}
+body[data-brand="zmo"] .reveal .callout :is(strong, b, h3) { color: #ffffff; }
+body[data-brand="zmo"] .reveal .callout h3 { margin: 0 0 10px; font-size: var(--fs-h3); line-height: 1.2; }
+body[data-brand="zmo"] .reveal .callout p { margin: 10px 0 0; font-size: inherit; }
+body[data-brand="zmo"] .reveal .callout > p:first-child { margin-top: 0; }
+body[data-brand="zmo"] .reveal .callout :is(.small, .muted, .source) { color: var(--zmo-on-blue-soft); }
+body[data-brand="zmo"] .reveal .callout a { color: #ffffff; }
+body[data-brand="zmo"] .reveal .stat-grid + .callout { max-width: none; }
+/* .callout.light: the same box on the card fill, for a quieter aside. */
+body[data-brand="zmo"] .reveal .callout.light { background: var(--zmo-card); color: var(--zmo-text); }
+body[data-brand="zmo"] .reveal .callout.light :is(strong, b, h3) { color: var(--zmo-blue); }
+body[data-brand="zmo"] .reveal .callout.light .callout-label { color: var(--zmo-orange-ink); }
+
+/* Facts ledger: an orange label column beside its text (dl.facts). */
+body[data-brand="zmo"] .reveal dl.facts {
+  display: grid; grid-template-columns: minmax(9rem, max-content) 1fr;
+  /* The PPT sets each row in its own text box on a fixed 87 px pitch, so a
+     one-line entry keeps the same step as a two-line one. */
+  grid-auto-rows: minmax(var(--zmo-facts-pitch, 4.35rem), auto);
+  column-gap: 2.5rem; row-gap: 1.1rem; margin-top: 4px; margin-bottom: 0.6rem;
+}
+body[data-brand="zmo"] .reveal dl.facts dt {
+  font: 700 var(--fs-label)/1.25 var(--zmo-font); color: var(--zmo-orange-ink); margin: 0;
+}
+body[data-brand="zmo"] .reveal dl.facts dd { margin: 0; font-size: 1.667rem; line-height: 1.2; color: var(--zmo-text); }
+
+/* Steps: a light card per step, an orange numbered dot, an arrow between. */
+body[data-brand="zmo"] .reveal .flow { display: flex; align-items: stretch; gap: 14px; margin: 0 0 18px; }
+body[data-brand="zmo"] .reveal .flow-step {
+  position: relative; flex: 1 1 0; min-width: 0;
+  background: var(--zmo-card); border: 0; border-radius: 20px;
+  padding: 18px 22px 20px 70px;
+}
+body[data-brand="zmo"] .reveal .flow-step::before,
+body[data-brand="zmo"] .reveal .flow-step::after { content: none; }
+body[data-brand="zmo"] .reveal .flow-step .step-n {
+  position: absolute; left: 20px; top: 18px; width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--zmo-orange-ink); color: #ffffff;
+  font: 700 1.25rem/1 var(--zmo-font); letter-spacing: 0; text-transform: none;
+}
+body[data-brand="zmo"] .reveal .flow-step .step-h {
+  display: block; margin: 4px 0 6px;
+  font: 700 1.444rem/1.2 var(--zmo-font); color: var(--zmo-blue);
+}
+body[data-brand="zmo"] .reveal .flow-step p { font-size: 1.222rem; line-height: 1.2; margin: 0; color: var(--zmo-text); }
+body[data-brand="zmo"] .reveal .flow-arrow {
+  align-self: center; flex: none; color: var(--zmo-on-blue-soft);
+  font: 700 2rem/1 var(--zmo-font);
+}
+
+/* Figures in numbers: big blue figure over a muted label. */
+body[data-brand="zmo"] .reveal .stat-grid { gap: 18px 40px; margin-top: 0; }
+body[data-brand="zmo"] .reveal .stat-grid .stat,
+body[data-brand="zmo"] .reveal .stat-grid .stat:nth-child(1),
+body[data-brand="zmo"] .reveal .stat-grid .stat:nth-child(2) {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 0; padding: 0;
+}
+body[data-brand="zmo"] .reveal .stat .stat-num,
+body[data-brand="zmo"] .reveal .stat-grid .stat .stat-num {
+  order: 1; font: 700 2.667rem/1.1 var(--zmo-font); letter-spacing: 0; color: var(--zmo-blue);
+}
+body[data-brand="zmo"] .reveal .stat .stat-label,
+body[data-brand="zmo"] .reveal .stat-grid .stat .stat-label {
+  order: 2; align-self: start; font: 400 var(--fs-caption)/1.2 var(--zmo-font);
+  letter-spacing: 0; text-transform: none; color: var(--zmo-muted);
+}
+
+/* Tables: the manual's blue header row and pale stripes. */
+body[data-brand="zmo"] .reveal table { font-family: var(--zmo-font); font-size: var(--fs-small); border-collapse: collapse; }
+body[data-brand="zmo"] .reveal table th {
+  background: var(--zmo-blue); color: #ffffff; border: 0;
+  font: 700 var(--fs-small)/1.2 var(--zmo-font); letter-spacing: 0; text-transform: none;
+}
+body[data-brand="zmo"] .reveal table td { border: 0; }
+body[data-brand="zmo"] .reveal table tbody tr:nth-child(even) td { background: var(--zmo-card); }
+
+/* Live frames show the site straight away. The engine covers a frame that
+   sends no readiness message with a "Show the site here" control; a ZMO deck
+   presents the embedding itself, and the frame bar already carries Open ↗.
+   An author's own <img class="frame-fallback"> (a saved view that gives way
+   when the embed reports ready) is untouched. */
+body[data-brand="zmo"] .reveal .site-frame-view > div.frame-fallback { display: none !important; }
+
+/* Figures: a hairline frame, the caption in the muted source voice. An image
+   is held to the text area's height (y 230→606 less a caption line) and
+   shown whole. */
+body[data-brand="zmo"] .reveal figure { margin: 0; }
+body[data-brand="zmo"] .reveal .slides section figure img {
+  display: block; width: auto; height: auto; max-width: 100%; max-height: 320px;
+}
+body[data-brand="zmo"] .reveal figure figcaption { margin-top: 6px; }
+
+/* ----------------------------------------------------------------------------
+   8. PRINT — reveal's print view resets every slide's padding with !important
+   (see html.reveal-print in theme.css); the master's text area is restated so
+   the PDF keeps the PPT geometry. The per-page imprint is Broadsheet's; the
+   ZMO pages already carry their logo and URL.
+   ---------------------------------------------------------------------------- */
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section:not(.stack, .cover, .brand-logo, .media) {
+  padding: 176px 105px 114px 64px !important;
+}
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section.cover {
+  padding: 346.8px 117.7px 183px 75.5px !important;
+}
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section.brand-logo {
+  padding: 0 !important;
+}
+/* Hidden, not removed: the export's bounds check reads the imprint's top as
+   the page's last line of text. */
+body[data-brand="zmo"] .pdf-imprint { visibility: hidden; }

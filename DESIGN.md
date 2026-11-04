@@ -493,3 +493,50 @@ The Stellenbosch aggregate and relationship slides demonstrate this pattern.
 Reading editions use the same typefaces, colour tokens and ruled hierarchy,
 but normal document flow and mobile-sized text. They do not inherit the
 fixed canvas or auto-fit transforms of the projected presentation.
+
+## Brand skin: ZMO
+
+Broadsheet is the house system and everything above describes it. A talk given
+for the Leibniz-Zentrum Moderner Orient (ZMO) can instead wear the ZMO skin,
+which reproduces the institute's PowerPoint template on the same engine. It is
+a separate visual system with its own authority — the ZMO Corporate Design
+Manual (2019) and `ZMO Powerpoint.pptx` — so Broadsheet's Named Rules (ruled
+not boxed, the inverted hierarchy, colour as fields) do not govern it.
+
+**Isolation.** The skin lives in `shared/brands/zmo/` (built from
+`shared/src/brands/zmo/` by `tools/build-shared.mjs`) beside its logos and the
+Carlito font. A deck opts in twice: it links `shared/brands/zmo/zmo.css` after
+`theme.css` and `zmo.js` after `deck.js`, and its `<body>` carries
+`data-brand="zmo"`; every rule is scoped to that attribute. `theme.css` and
+`deck.js` do not change for it, so no Bayreuth deck can be affected. Start one
+with `tools/new-talk.py --brand zmo`, which copies `talks/_template-zmo/`.
+
+**Measured, not interpreted.** Geometry is taken from the PPT on the
+1280 × 720 canvas (128 px per inch): a 137 px ZMO-blue band carrying the
+extended-square motif and the white 32 pt slide title, the line under it at
+18 pt blue, the text area x 64→1175 and y 166→606, the logo at the foot left
+and `www.leibniz-zmo.de` at 9 pt foot right. Type is Calibri (Carlito where
+Calibri is not installed), 16 pt body, 13 pt in cards.
+
+| Token | Value | Role |
+|---|---|---|
+| `--zmo-blue` | `#143c73` | ZMO-Blau: band, fields, headings, bold lead-ins |
+| `--zmo-orange` | `#eb8241` | ZMO-Orange: marks and labels on blue only |
+| `--zmo-orange-ink` | `#cf7239` | orange text on white and cards (3.43 / 3.05 : 1) |
+| `--zmo-text` | `#1f2937` | running text |
+| `--zmo-muted` | `#5b6573` | sources and captions |
+| `--zmo-card` | `#eef2f7` | rounded card and step fill |
+
+The one deliberate departure from the PPT is `--zmo-orange-ink`: the brand
+orange measures 2.69:1 on white, under the 3:1 that bold display text needs,
+so orange words are set 12% darker and the exact orange stays on marks and on
+the blue field (4.06:1).
+
+**Layouts.** `.cover` (A · Titelfolie), `.section` (C · Titelfolie weiß),
+plain content slides (Titel und Inhalt), `.cover.address` as the closing
+(B · Titelfolie mit Adresse — not Broadsheet's `.closing`, whose auto-fit
+reserve would push the meta lines into the foot band) and `.brand-logo`
+(Startfolie Logo). Content fills the text area as the PPT's shapes do:
+`.cols` and `.flow` rows grow to the foot, a lone callout fills its column,
+and a final takeaway paragraph drops to the bottom line. The engine's footer
+keeps only its navigation, hidden until a pointer or keyboard reaches it.

@@ -36,6 +36,17 @@ const bundles = [
       'shared/src/deck/08-diagnostics.js',
     ],
   },
+  // Brand skins: opt-in layers a deck links after theme.css / deck.js. Each
+  // lives in its own shared/brands/<name>/ folder beside its logos and fonts,
+  // so the house bundles above never change for one.
+  {
+    output: 'shared/brands/zmo/zmo.css',
+    sources: ['shared/src/brands/zmo/zmo.css'],
+  },
+  {
+    output: 'shared/brands/zmo/zmo.js',
+    sources: ['shared/src/brands/zmo/zmo.js'],
+  },
 ];
 
 let stale = false;

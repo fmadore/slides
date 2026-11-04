@@ -56,10 +56,12 @@ slides/
 │   ├── favicon.svg (+ PNGs)  the tab icon: the house mark, not an institution's
 │   ├── assets/               images used by more than one talk
 │   ├── fonts/                self-hosted EB Garamond + Libre Franklin + JetBrains Mono
+│   ├── brands/zmo/           opt-in ZMO skin (zmo.css/zmo.js, logos, Carlito)
 │   └── reveal/               vendored reveal.js v6 + plugins (offline)
 ├── talks/
 │   ├── talks.json            ← the TALK MANIFEST (one record per published talk)
 │   ├── _template/            minimal starter (tools/new-talk.py copies this)
+│   ├── _template-zmo/        ZMO-branded starter (new-talk.py --brand zmo)
 │   ├── _showcase/            the full layout catalogue (never published)
 │   └── YYYY-MM-DD-place-title/
 │       ├── index.html            (slides + DECK_CONFIG; points to ../../shared)
@@ -118,6 +120,12 @@ are rolled back. `--dry-run` validates without writing, and `--no-qr` deliberate
 removes the QR markup and avoids the Python dependency.
 Then edit the slides; the full layout catalogue with copy-paste examples lives
 in `talks/_showcase/` (preview at `/talks/_showcase/`).
+
+For a talk in the Leibniz-Zentrum Moderner Orient's corporate design, add
+`--brand zmo`: the deck starts from `talks/_template-zmo/`, which loads the
+opt-in skin in `shared/brands/zmo/` and reproduces the ZMO PowerPoint template
+(its starter slides double as the ZMO component catalogue). The Bayreuth deck
+stays the default; see "Brand skin: ZMO" in [DESIGN.md](DESIGN.md).
 
 Doing it by hand instead: copy `talks/_template`, add an entry to
 `talks/talks.json`, and run `python3 tools/build-index.py`. The marked SEO and

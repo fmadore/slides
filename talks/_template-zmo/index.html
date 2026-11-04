@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DECK_META:START (generated from talks/talks.json) -->
+  <title>Talk title — Frédérick Madore</title>
+  <meta name="description" content="A one-line description of the talk.">
+  <!-- DECK_META:END -->
+  <link rel="icon" href="../../shared/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../shared/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+  <!-- The ZMO brand skin. It only acts with <body data-brand="zmo"> below. -->
+  <link rel="stylesheet" href="../../shared/brands/zmo/zmo.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched.
+       Stable, reusable components live in shared/theme.css — only add rules here
+       that are genuinely specific to this one talk. -->
+  <style>
+  </style>
+</head>
+<body data-brand="zmo">
+
+<!-- ============================================================================
+     NEW TALK — ZMO STARTER
+     The Leibniz-Zentrum Moderner Orient template: the same engine as the
+     Bayreuth decks, dressed as the official ZMO PowerPoint (blue band with the
+     square motif, logo foot left, www.leibniz-zmo.de foot right, Calibri).
+     The skin lives in shared/brands/zmo/; Bayreuth decks never load it.
+
+     Preferred: run  python3 tools/new-talk.py --brand zmo --date YYYY-MM-DD \
+                     --place berlin --title "My talk" --venue "Unit · Berlin" --lang en
+     (it copies this folder, fills the metadata, registers the talk in
+     talks/talks.json, regenerates the landing page and makes the QR code).
+
+     THE ZMO LAYOUTS (each one below is a working slide to copy)
+     • class="cover"    — "A Titelfolie": title + subtitle in .cover-head,
+                          then presenter and event lines.
+     • class="section"  — "C Titelfolie weiß": <h2> + optional .sec-sub.
+     • (no class)       — "Titel und Inhalt": <h2 class="slide-title"> sits
+                          in the blue band (long titles shrink to fit), then
+                          an optional <p class="lead"> line, then the body.
+     • class="cover address" — "B Titelfolie mit Adresse", the closing: the
+                          address block and logos are drawn by the skin.
+                          (Broadsheet's class="closing" is not the ZMO one.)
+     • class="brand-logo" — "Startfolie Logo": the logo alone on blue.
+     Components: .cols.cards (rounded cards, .col-head / .col-head.alt),
+     .callout (blue box, .callout-label in orange; .callout.light), dl.facts
+     (orange label + text rows), .flow (numbered steps), .stat-grid (big
+     figures), <strong> (bold blue), .hl (orange emphasis), .source (captions).
+     The engine's own features — fragments, notes (S), contents (T), ?check,
+     PDF export, ?view=scroll — work as in every other deck.
+     ============================================================================ -->
+<script>
+  window.DECK_CONFIG = {
+    // DECK_CONFIG_META:START (generated from talks/talks.json)
+    presenter: "Frédérick Madore",          // co-presented? list all names — shows in the TOC footer
+    talkTitle: "Talk title",
+    talkShort: "Talk title",                 // footer label — keep it short
+    venue:     "Venue · DD Month YYYY",
+    tocEyebrow:"Outline",
+    // DECK_CONFIG_META:END
+    transition:"fade",
+    logoMark: false,                         // the ZMO logo is part of each slide
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ░░ COVER ░░ "A Titelfolie" ░░ -->
+    <section class="cover" data-footer="light">
+      <div class="cover-head">
+        <h1>Talk title</h1>
+        <p class="subtitle">A one-line description of the talk.</p>
+      </div>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+      </div>
+      <p class="eyebrow">Event · Place, DD Month YYYY</p>
+      <aside class="notes">Speaker notes for the cover — press S for the speaker view.</aside>
+    </section>
+
+    <!-- ░░ OVERVIEW ░░ two rounded cards; .col-head.alt turns a heading orange ░░ -->
+    <section data-toc="Overview">
+      <h2 class="slide-title">Overview</h2>
+      <p class="lead">Two parts</p>
+      <div class="cols cards">
+        <div class="col">
+          <div class="col-head">Part 1 · Examples</div>
+          <ul>
+            <li>A first point</li>
+            <li>A second point</li>
+            <li>A third point</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">Part 2 · Discussion</div>
+          <ul>
+            <li>A first question</li>
+            <li>A second question</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ SECTION DIVIDER ░░ "C Titelfolie weiß" ░░ -->
+    <section class="section" data-toc="First section">
+      <h2>The first section</h2>
+      <p class="sec-sub">An optional subtitle</p>
+    </section>
+
+    <!-- ░░ TEXT + CALLOUT ░░ bold blue lead-ins, a blue box beside them ░░ -->
+    <section data-toc="A key point">
+      <h2 class="slide-title">A slide title</h2>
+      <p class="lead">The line under the band sets up the slide</p>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <ul>
+            <li class="fragment"><strong>First point:</strong> one line of support</li>
+            <li class="fragment"><strong>Second point:</strong> with an <span class="hl">orange emphasis</span></li>
+            <li class="fragment"><strong>Third point:</strong> one more line</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="callout">
+            <span class="callout-label">Next</span>
+            <h3>A short claim in the blue box</h3>
+            <p>A line of support.</p>
+            <p class="muted">A quieter line under it.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Press → to bring the points in one at a time.</aside>
+    </section>
+
+    <!-- ░░ FACTS LEDGER ░░ dl.facts: orange labels, text beside ░░ -->
+    <section data-toc="Definitions">
+      <h2 class="slide-title">Definitions</h2>
+      <p class="lead">A ledger of labels and their text</p>
+      <dl class="facts">
+        <dt>Author 2014</dt><dd>What the first source says, in one line</dd>
+        <dt>Author 2019</dt><dd>What the second source says, in one line</dd>
+        <dt>Author 2011</dt><dd>What the third source says, in one line</dd>
+      </dl>
+      <p><strong>Question for today:</strong> the one question the slide leaves open.</p>
+    </section>
+
+    <!-- ░░ STEPS ░░ .flow: numbered cards with arrows. Each .flow is a row and
+         the rows share the slide's height; a last paragraph drops to the foot ░░ -->
+    <section data-toc="The pipeline">
+      <h2 class="slide-title">The pipeline</h2>
+      <p class="lead">Each automated step is also a choice</p>
+      <div class="flow">
+        <div class="flow-step"><span class="step-n">1</span><span class="step-h">Digitise</span><p>What the first step does</p></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><span class="step-n">2</span><span class="step-h">Transcribe</span><p>What the second step does</p></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><span class="step-n">3</span><span class="step-h">Normalise</span><p>What the third step does</p></div>
+      </div>
+      <div class="flow">
+        <div class="flow-step"><span class="step-n">4</span><span class="step-h">Separate</span><p>What the fourth step does</p></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><span class="step-n">5</span><span class="step-h">List</span><p>What the fifth step does</p></div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step"><span class="step-n">6</span><span class="step-h">Count</span><p>What the sixth step does</p></div>
+      </div>
+      <p><span class="hl">Back to the source:</span> one line on what the steps add up to.</p>
+    </section>
+
+    <!-- ░░ FIGURE + NUMBERS ░░ a figure beside .stat-grid (big blue numbers,
+         muted labels). Click the figure to enlarge it. ░░ -->
+    <section data-toc="In figures">
+      <h2 class="slide-title">In figures</h2>
+      <p class="lead">What the collection holds</p>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <figure>
+            <img class="shot" src="assets/example-figure.png" alt="Describe the figure — this alt text shows in the lightbox" width="1600" height="1200">
+            <figcaption>A caption naming the source of the figure.</figcaption>
+          </figure>
+        </div>
+        <div class="col">
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-num">29</span><span class="stat-label">works located</span></div>
+            <div class="stat"><span class="stat-num">13</span><span class="stat-label">still to be found</span></div>
+            <div class="stat"><span class="stat-num">160</span><span class="stat-label">photographs</span></div>
+            <div class="stat"><span class="stat-num">31</span><span class="stat-label">people profiled</span></div>
+          </div>
+          <p>One line reading the figures.</p>
+          <p class="source">Source: name the source of the figures.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ CLOSING ░░ "B Titelfolie mit Adresse" — a cover variant; the address
+         block and logos are the skin's ░░ -->
+    <section class="cover address" data-toc="Thank you">
+      <div class="cover-head">
+        <h2>Thank you</h2>
+        <p class="subtitle">Questions and discussion</p>
+      </div>
+      <div class="byline"><span class="name">Frédérick Madore</span></div>
+      <div data-contact></div>
+      <div class="slides-qr corner">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- reveal.js core + plugins (vendored), then the deck engine, then the skin. -->
+<script src="../../shared/reveal/reveal.js"></script>
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+<script src="../../shared/brands/zmo/zmo.js"></script>
+
+</body>
+</html>

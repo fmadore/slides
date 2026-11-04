@@ -8,6 +8,9 @@
       --venue "Conference · Bayreuth" \
       --lang en
 
+Add --brand zmo to start from the ZMO (Leibniz-Zentrum Moderner Orient)
+starter instead; without it the deck is the Bayreuth house deck.
+
 It validates and stages the complete deck before updating talks/talks.json,
 then regenerates the landing page and sitemap. By default it also writes an
 assets/qr-slides.png pointing at the canonical URL. Use --dry-run to validate
@@ -33,6 +36,9 @@ from slideslib.manifest import Talk, atomic_write, load_manifest, manifest_text
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = ROOT / "talks" / "_template"
+# Brand starters beside the default Bayreuth one: --brand NAME copies
+# talks/<folder>. Each must carry the same cover strings the default does.
+BRAND_TEMPLATES = {"zmo": "_template-zmo"}
 MANIFEST = ROOT / "talks" / "talks.json"
 
 
@@ -87,6 +93,10 @@ def write_qr(path, url):
 
 
 def main(argv=None):
+    # The closing summary prints "→"; a cp1252 Windows console cannot encode it
+    # and crashed after a scaffold that had already succeeded.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--date", required=True, help="YYYY-MM-DD")
     ap.add_argument("--place", required=True, help="city, used in the slug (e.g. bayreuth)")
@@ -99,6 +109,8 @@ def main(argv=None):
     ap.add_argument("--presenters", default="Frédérick Madore",
                     help='comma-separated, e.g. "A. Author, B. Author"')
     ap.add_argument("--tags", default="", help="comma-separated subject tags")
+    ap.add_argument("--brand", default="bayreuth", choices=["bayreuth", *BRAND_TEMPLATES],
+                    help="starter to copy: the Bayreuth house deck (default) or a brand skin")
     ap.add_argument("--no-qr", action="store_true",
                     help="omit QR markup and do not require qrcode[pil]")
     ap.add_argument("--dry-run", action="store_true",
@@ -158,7 +170,8 @@ def main(argv=None):
 
     with tempfile.TemporaryDirectory(prefix=f".{slug}-", dir=ROOT / "talks") as temporary:
         staged = Path(temporary) / slug
-        shutil.copytree(TEMPLATE, staged)
+        template = TEMPLATE if args.brand == "bayreuth" else ROOT / "talks" / BRAND_TEMPLATES[args.brand]
+        shutil.copytree(template, staged)
         deck = staged / "index.html"
         source = deck.read_text(encoding="utf-8")
         escaped_event = html_mod.escape(event, quote=False)

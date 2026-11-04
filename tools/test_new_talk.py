@@ -130,6 +130,29 @@ class NewTalkTransaction(unittest.TestCase):
         self.assertIn('2099-03-04-test-city-archives-ai', (self.root / 'sitemap.xml').read_text())
         self.assertTrue((deck / 'read.html').is_file())
 
+    def test_zmo_brand_scaffolds_from_the_zmo_starter(self):
+        # The real ZMO starter must carry every cover string new-talk fills,
+        # and the real index build must keep the brand switch on <body>.
+        shutil.copytree(HERE / "slideslib", self.root / "tools" / "slideslib", ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copy2(HERE / "build-index.py", self.root / "tools" / "build-index.py")
+        shutil.copytree(HERE.parent / "talks" / "_template-zmo", self.root / "talks" / "_template-zmo")
+        shutil.copy2(HERE.parent / "index.html", self.root / "index.html")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(new_talk.main(self.args("--brand", "zmo")), 0)
+        deck = self.root / 'talks' / '2099-03-04-test-city-archives-ai'
+        source = (deck / 'index.html').read_text(encoding="utf-8")
+        self.assertIn('<body data-brand="zmo">', source)
+        self.assertIn('shared/brands/zmo/zmo.css', source)
+        self.assertIn('<h1>Archives &amp; &lt;AI&gt;</h1>', source)
+        self.assertIn('<p class="eyebrow">Event &amp; Lab · 4 March 2099</p>', source)
+        self.assertNotIn('Talk title</h1>', source)
+        self.assertNotIn('slides-qr', source)
+        self.assertTrue((deck / 'read.html').is_file())
+
+    def test_unknown_brand_is_refused(self):
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            new_talk.main(self.args("--brand", "nowhere"))
+
     def test_qr_failure_leaves_no_registration_or_partial_deck(self):
         before = self.manifest.read_bytes()
         args = [value for value in self.args() if value != '--no-qr']

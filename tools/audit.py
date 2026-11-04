@@ -75,6 +75,7 @@ DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
             "DESIGN.md", ".impeccable",
             "serve-deck.py", "tools", ".github", "roadmap.md", "docs", "scratchpad",
             os.path.join("talks", "_template"), os.path.join("talks", "_showcase"),
+            os.path.join("talks", "_template-zmo"),
             os.path.join("shared", "src"),
             os.path.join("shared", "vendor-manifest.json"),
             os.path.join("shared", "reveal", "plugin", "notes.js")]
