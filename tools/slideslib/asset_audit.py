@@ -138,9 +138,16 @@ def audit_image_weight(rep, root):
                                   f"(ceiling {BYTE_CEILING // 1024} KB)")
 
 
+# What `npm run export` leaves in a deck folder. All four are gitignored and CI
+# rebuilds them into _site (tools/sync-extras-cache.mjs lists the same set), so
+# a local export must not read as orphaned or duplicated deck assets.
+EXPORT_OUTPUTS = {"slides.pdf", "social-card.png", ".extras-hash", "export-evidence.json"}
+
+
 def audit_assets(rep, root):
     """Path-aware orphan detection and exact duplicate files (warnings)."""
     referenced = reference_targets(root)
+    talks = os.path.join(root, "talks")
 
     hashes = {}
     for sub in ("talks", "shared"):
@@ -153,6 +160,8 @@ def audit_assets(rep, root):
                     continue
                 if rel.startswith(os.path.join("shared", "src") + os.sep):
                     continue  # build-shared.mjs accounts for every source partial
+                if n in EXPORT_OUTPUTS and os.path.dirname(dirpath) == talks:
+                    continue  # local export output at a deck root, never committed
                 if os.path.normcase(os.path.abspath(path)) not in referenced:
                     rep.warn(rel, "asset has no path-resolved reference (orphan?)")
                 if ext in {".png", ".jpg", ".jpeg", ".webp", ".svg", ".md", ".pdf"}:

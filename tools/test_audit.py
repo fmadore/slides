@@ -726,6 +726,19 @@ class AssetHygiene(AuditCase):
         self.assertIn(os.path.join("shared", "orphan", "logo.png"), warned_paths)
         self.assertNotIn(os.path.join("shared", "used", "logo.png"), warned_paths)
 
+    def test_local_export_outputs_at_deck_root_are_silent(self):
+        self.make_repo()
+        for name in ("slides.pdf", "social-card.png", ".extras-hash", "export-evidence.json"):
+            self.write(f"talks/{TALK['slug']}/{name}", b"generated")
+        audit.audit_assets(self.rep)
+        self.assertSilent("warnings")
+
+    def test_export_output_names_inside_assets_still_warn(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/assets/social-card.png", b"bytes")
+        audit.audit_assets(self.rep)
+        self.assertReports("asset has no path-resolved reference", "warnings")
+
     def test_duplicate_files_warn(self):
         self.make_repo()
         self.write(f"talks/{TALK['slug']}/index.html",
