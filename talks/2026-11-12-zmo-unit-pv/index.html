@@ -134,8 +134,18 @@
     body[data-brand="zmo"] .reveal dl.facts.tight { --zmo-facts-pitch: 3.4rem; }
     body[data-brand="zmo"] .reveal dl.facts.tight dd { font-size: 1.556rem; }
     body[data-brand="zmo"] .reveal dl.facts.tight { margin-bottom: 6px; }
-    /* Slide 26: 16 pt heads over 12 pt questions. */
-    body[data-brand="zmo"] .reveal section.questions { --zmo-card-head: 1.778rem; --zmo-card-text: 1.333rem; --zmo-card-gap: 18px; }
+    /* Slide 28: three questions as full-width rows that share the text area,
+       a hairline between them, the label beside a 22 pt question. */
+    body[data-brand="zmo"] .reveal dl.facts.discussion {
+      --rule: 1px solid color-mix(in srgb, var(--zmo-blue) 22%, #ffffff);
+      flex: 1 0 auto; grid-auto-rows: 1fr; gap: 0; margin: 8px 0 0;
+    }
+    body[data-brand="zmo"] .reveal dl.facts.discussion > :is(dt, dd) {
+      display: flex; align-items: center; border-top: var(--rule);
+    }
+    body[data-brand="zmo"] .reveal dl.facts.discussion > :nth-last-child(-n+2) { border-bottom: var(--rule); }
+    body[data-brand="zmo"] .reveal dl.facts.discussion dt { font-size: 1.778rem; padding-right: 3rem; }
+    body[data-brand="zmo"] .reveal dl.facts.discussion dd { font-size: 2.444rem; line-height: 1.2; }
 
     /* The two-project slide: each column a heading, a line, the live site, a QR. */
     body[data-brand="zmo"] .reveal .cols.two-sites .col > h3 { margin: 0 0 4px; }
@@ -143,12 +153,11 @@
     body[data-brand="zmo"] .reveal .qr-row.small { margin-top: 10px; }
     body[data-brand="zmo"] .reveal .qr-row.small img { width: 76px; height: 76px; }
 
-    /* Slide 26: a numbered dot before each card heading. */
-    body[data-brand="zmo"] .reveal .col-head .num {
+    /* Slide 28: a numbered dot before each question's label. */
+    body[data-brand="zmo"] .reveal :is(.col-head, dt) .num {
       display: inline-grid; place-items: center; width: 40px; height: 40px; margin-right: 14px;
       border-radius: 50%; background: var(--zmo-orange-ink); color: #ffffff; font-size: 1.25rem; vertical-align: middle;
     }
-    body[data-brand="zmo"] .reveal .cols.cards .col p.q { margin: 0 0 14px; }
 
     /* The overview: eight one-line points on a pitch that fills the text area. */
     body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.78em; }
@@ -719,13 +728,13 @@ const artwork: Artwork = {
           <div class="callout">
             <span class="callout-label">The counter-position</span>
             <p>Some projects try to make interlocutors impossible to datafy, so that they do not end up in prison: dispersing data points to prevent mapping.</p>
-            <p>Datafication varies by region (authoritarian or not), by discipline and by goal.</p>
+            <p>Datafication varies by region (authoritarian or not), by discipline and within it, and by goal.</p>
           </div>
         </div>
         <div class="col">
           <ul>
-            <li>Historians, already surrounded by texts, tend to see DH as a treasure</li>
-            <li>Anthropologists are often hostile: everyday experience is not data</li>
+            <li>For many historians, already working with texts, DH looks like a gift</li>
+            <li>Some anthropologists push back: everyday experience is not simply data</li>
             <li>Fieldwork is already extraction; AI changes speed and scale</li>
             <li>What would consensual, qualitative practice look like?</li>
           </ul>
@@ -736,26 +745,12 @@ const artwork: Artwork = {
     <!-- ░░ 28 · QUESTIONS FOR THE DISCUSSION ░░ -->
     <section class="compact questions">
       <h2 class="slide-title">Questions for the discussion</h2>
-      <div class="cols cards three">
-        <div class="col">
-          <div class="col-head"><span class="num">1</span>Method</div>
-          <p class="q">Who checks the word lists, and in which language?</p>
-          <p class="q">What does a 20-minute segment cut through?</p>
-          <p class="q">Can error rates be measured for Hausa–Arabic speech?</p>
-        </div>
-        <div class="col">
-          <div class="col-head"><span class="num">2</span>Ethics</div>
-          <p class="q">Whose voice becomes data, and who decides?</p>
-          <p class="q">Should such recordings go through commercial AI services?</p>
-          <p class="q">When should material stay out of the data altogether?</p>
-        </div>
-        <div class="col">
-          <div class="col-head"><span class="num">3</span>Epistemology</div>
-          <p class="q">Is a count evidence, or only a pointer?</p>
-          <p class="q">What does building one's own categories teach that automatic labelling skips?</p>
-          <p class="q">Fieldwork, archives, AI: is it all extraction?</p>
-        </div>
-      </div>
+      <dl class="facts discussion">
+        <dt><span class="num">1</span>Method</dt><dd>Who checks the word lists, and in which language?</dd>
+        <dt><span class="num">2</span>Ethics</dt><dd>Whose voice becomes data, and who decides?</dd>
+        <dt><span class="num">3</span>Epistemology</dt><dd>Is a count evidence, or only a pointer?</dd>
+      </dl>
+      <aside class="notes">Follow-up questions if the room is quiet. Method: What does a 20-minute segment cut through? Can error rates be measured for Hausa–Arabic speech? Ethics: Should such recordings go through commercial AI services? When should material stay out of the data altogether? Epistemology: What does building one's own categories teach that automatic labelling skips? Fieldwork, archives, AI: is it all extraction?</aside>
     </section>
 
     <!-- ░░ 29 · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
