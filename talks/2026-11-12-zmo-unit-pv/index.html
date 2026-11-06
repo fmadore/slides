@@ -69,8 +69,7 @@
     body[data-brand="zmo"] .reveal .cols.w667 { grid-template-columns: 667px 1fr; gap: 50px; }
     body[data-brand="zmo"] .reveal .cols.w397 { grid-template-columns: 397px 1fr; gap: 32px; }
     body[data-brand="zmo"] .reveal .cols.w682 { grid-template-columns: 682px 1fr; gap: 16px; }
-    body[data-brand="zmo"] .reveal .cols.w672 { grid-template-columns: 672px 1fr; gap: 26px; }
-    body[data-brand="zmo"] .reveal .cols.w704 { grid-template-columns: 704px 1fr; gap: 32px; }
+    body[data-brand="zmo"] .reveal .cols.w600 { grid-template-columns: 600px 1fr; gap: 28px; }
     body[data-brand="zmo"] .reveal .cols.w653 { grid-template-columns: 653px 1fr; gap: 38px; }
     body[data-brand="zmo"] .reveal .cols.w503 { grid-template-columns: 503px 1fr 156px; gap: 28px; }
     body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
@@ -98,6 +97,16 @@
     /* The pipeline explainer runs 650 px tall at desktop width: a little
        further out than the other panels so all five captions fit. */
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed.explainer { --z: 0.58; }
+    /* On "Every step is a decision" the explainer is cropped to its five
+       drawings and stage titles (176-330 px down the panel); the decisions
+       beneath it say the rest. */
+    body[data-brand="zmo"] .reveal .site-frame-view.stages { flex: none; height: 92px; overflow: hidden; }
+    body[data-brand="zmo"] .reveal .site-frame-view.zoomed.stages > iframe {
+      top: calc(-176px * var(--z)); height: calc((100% + 176px * var(--z)) / var(--z));
+    }
+    body[data-brand="zmo"] .reveal .site-frame-view.stages > img.frame-fallback { object-position: 0 46%; }
+    body[data-brand="zmo"] .reveal .cols.cards.decisions { gap: 12px 16px; margin-top: 12px; }
+    body[data-brand="zmo"] .reveal .cols.cards.decisions > .col { padding: 12px 20px 14px; border-radius: 20px; }
     /* Two sites open on a tall header; a little further out reaches their charts. */
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site:is(.shot-zmovis, .shot-genocide, .shot-iwac) { --z: 0.42; }
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed > iframe {
@@ -161,14 +170,6 @@
 
     /* The overview: eight one-line points on a pitch that fills the text area. */
     body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.78em; }
-    /* The people slide: a ranked list, each count set flush right. */
-    /* A flex item is no list item, so the list counts with its own counter. */
-    body[data-brand="zmo"] .reveal .callout ol.ranked { margin: 0; counter-reset: rank; }
-    body[data-brand="zmo"] .reveal .callout ol.ranked > li { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 6px; counter-increment: rank; }
-    body[data-brand="zmo"] .reveal .callout ol.ranked > li::before { content: counter(rank) "."; }
-    body[data-brand="zmo"] .reveal .callout ol.ranked > li:last-child { margin-bottom: 0; }
-    body[data-brand="zmo"] .reveal .callout ol.ranked strong { font-variant-numeric: tabular-nums; }
-    body[data-brand="zmo"] .reveal .callout.light p.muted { color: var(--zmo-muted); font-size: 1.222rem; margin-top: 14px; }
 
     /* Fictionalization slides (from "Method of Fictionalization and Anonymity").
        The conditions panel: one blue box at the PPT's height, 16 pt bullets. */
@@ -283,7 +284,7 @@
         <li><strong>Framing:</strong> two ZMO workshops and a position paper</li>
         <li><strong>Global Heshmat:</strong> a sculptor's works on a map</li>
         <li><strong>Datafication:</strong> where the work lies, and Kalamu, an app to speed it up</li>
-        <li><strong>Albani Zaria's sermons:</strong> from DVD to word counts, places and people</li>
+        <li><strong>Albani Zaria's sermons:</strong> where youth meets politics, and what the count decides</li>
         <li><strong>The Global South and data:</strong> who digitises what, and who has access</li>
         <li><strong>The dialectics of datafication:</strong> what helps, what damages, what endangers</li>
         <li><strong>Questions for the discussion:</strong> method, ethics, epistemology</li>
@@ -516,7 +517,7 @@ const artwork: Artwork = {
     <section>
       <h2 class="slide-title">Who was Albani Zaria?</h2>
       <p class="lead">Muhammad Auwal Adam Albani Zaria (1960–2014)</p>
-      <div class="cols w672">
+      <div class="cols w600">
         <div class="col">
           <dl class="facts tight">
             <dt>Born</dt><dd>Zaria, northern Nigeria, 27 September 1960</dd>
@@ -527,7 +528,7 @@ const artwork: Artwork = {
           </dl>
         </div>
         <div class="col">
-          <div class="callout"><strong>The collection includes the lessons he gave on the day of his death.</strong></div>
+          <div class="callout"><p>45 recordings in IWAC, c. 1999–2014; 42 transcribed: 145 h, 1,089,269 words. <strong>They include the lessons he gave on the day of his death.</strong></p></div>
           <figure class="site-frame">
             <div class="site-frame-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -538,167 +539,40 @@ const artwork: Artwork = {
               <iframe data-src="https://islam.zmo.de/s/westafrica/page/home" title="The Islam West Africa Collection home page" loading="lazy"></iframe>
             </div>
           </figure>
+          <p class="source">Catalogued for IWAC by Vincent Favier and Aleksei Akseshin</p>
         </div>
       </div>
     </section>
 
-    <!-- ░░ 15 · THE COLLECTION — live IWAC panel ░░ -->
-    <section>
-      <h2 class="slide-title">The collection</h2>
-      <p class="lead">45 recordings, c. 1999–2014 · 42 transcribed so far: 145 h, 1,089,269 words</p>
-      <figure class="site-frame">
-        <div class="site-frame-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="site-frame-url">islam.zmo.de/s/westafrica/page/albani-zaria-sermons</span>
-          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-        </div>
-        <div class="site-frame-view zoomed">
-          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-corpus-timeline" title="Recordings by date and length (IWAC, live)" loading="lazy"></iframe>
-          <img class="frame-fallback" src="assets/albani-timeline.png" alt="Recordings by date and length: each dated recording placed by date and running time">
-        </div>
-      </figure>
-      <p class="source">Running time (hours) of the 15 dated recordings; the other 30 carry no date. Catalogued for IWAC by Vincent Favier and Aleksei Akseshin; 3 recordings not yet transcribed.</p>
-    </section>
-
-    <!-- ░░ 16 · THE PIPELINE — the exhibit's animated explainer, live ░░ -->
-    <section data-toc="The pipeline">
-      <h2 class="slide-title">The pipeline</h2>
-      <p class="lead">Five stages turn the recordings into figures and passages</p>
+    <!-- ░░ 15 · EVERY STEP IS A DECISION ░░ The exhibit's animated pipeline,
+         live and cropped to its five stages, over the decisions each one takes. -->
+    <section class="compact" data-toc="Every step is a decision">
+      <h2 class="slide-title">Every step is a decision</h2>
+      <p class="lead">A word list is a classification scheme</p>
       <figure class="site-frame">
         <div class="site-frame-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
           <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons · how the figures are made</span>
           <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
         </div>
-        <div class="site-frame-view zoomed explainer">
+        <div class="site-frame-view zoomed explainer stages">
           <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/pipeline-explainer?preset=albani-sermons" title="How the Albani Zaria sermons become figures: an animated diagram (IWAC, live)" loading="lazy"></iframe>
           <img class="frame-fallback" src="assets/albani-pipeline.png" alt="How the Albani Zaria sermons become figures: five stages from the recordings to figures and passages">
         </div>
       </figure>
-      <aside class="notes">The diagram animates when the slide opens; "Replay animation" at its top right runs it again.</aside>
+      <div class="cols cards three decisions">
+        <div class="col"><p><strong>Spelling.</strong> ɓ/b, ɗ/d, ƙ/k, ƴ/y, q/k, double letters and apostrophes count as one word</p></div>
+        <div class="col"><p><strong>Common words.</strong> 76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus this speaker's fillers <em>ainihin</em>, <em>wato</em></p></div>
+        <div class="col"><p><strong>Formulae.</strong> <em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
+        <div class="col"><p><strong>Loanwords.</strong> <em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
+        <div class="col"><p><strong>Meaning.</strong> <em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, “country” or “to fail”, stays out of totals</p></div>
+        <div class="col"><p><strong>Speakers.</strong> Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
+      </div>
+      <aside class="notes">The diagram animates when the slide opens; "Replay animation" in the full exhibit runs it again.</aside>
     </section>
 
-    <!-- ░░ 17 · EVERY STEP IS A DECISION ░░ -->
+    <!-- ░░ 16 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
     <section class="compact">
-      <h2 class="slide-title">Every step is a decision</h2>
-      <p class="lead">A word list is a classification scheme</p>
-      <div class="cols cards three">
-        <div class="col"><div class="col-head">Spelling</div><p>ɓ/b, ɗ/d, ƙ/k, ƴ/y, q/k, double letters and apostrophes count as one word</p></div>
-        <div class="col"><div class="col-head">Common words</div><p>76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus this speaker's fillers <em>ainihin</em>, <em>wato</em></p></div>
-        <div class="col"><div class="col-head">Formulae</div><p><em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
-        <div class="col"><div class="col-head">Loanwords</div><p><em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
-        <div class="col"><div class="col-head">Meaning</div><p><em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, “country” or “to fail”, stays out of totals</p></div>
-        <div class="col"><div class="col-head">Speakers</div><p>Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
-      </div>
-    </section>
-
-    <!-- ░░ 18 · THE PLACES NAMED — live IWAC panel ░░ -->
-    <section data-toc="The places named">
-      <h2 class="slide-title">The places named</h2>
-      <p class="lead">Each circle a place, its area proportional to how often the sermons name it</p>
-      <figure class="site-frame">
-        <div class="site-frame-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
-          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-        </div>
-        <div class="site-frame-view zoomed">
-          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-places" title="The places the sermons name, on a map (IWAC, live)" loading="lazy"></iframe>
-          <img class="frame-fallback" src="assets/albani-places.png" alt="A map of the places the sermons name, each circle sized by how often it is named">
-        </div>
-      </figure>
-    </section>
-
-    <!-- ░░ 19 · THE PEOPLE NAMED — live IWAC panel ░░ -->
-    <section data-toc="The people named">
-      <h2 class="slide-title">The people named</h2>
-      <p class="lead">Seven groups of people, the most named first in each</p>
-      <div class="cols w704">
-        <div class="col">
-          <figure class="site-frame">
-            <div class="site-frame-bar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
-              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-            </div>
-            <div class="site-frame-view zoomed">
-              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-people" title="The people the sermons name, grouped and counted (IWAC, live)" loading="lazy"></iframe>
-              <img class="frame-fallback" src="assets/albani-people.png" alt="The people the sermons name, grouped by who they are, each with its count and the recordings it appears in">
-            </div>
-          </figure>
-        </div>
-        <div class="col">
-          <div class="callout light">
-            <span class="callout-label">Most named, all groups</span>
-            <ol class="ranked">
-              <li>Al-Bukhari <strong>502</strong></li>
-              <li>Usman dan Fodio <strong>397</strong></li>
-              <li>Ja'afar Mahmud Adam <strong>279</strong></li>
-              <li>Abubakar Gumi <strong>252</strong></li>
-              <li>Isa (Jesus) <strong>188</strong></li>
-              <li>Abu Hurayra <strong>176</strong></li>
-            </ol>
-            <p class="muted">Al-Bukhari in 36 of 42 recordings; Usman dan Fodio in 25.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ░░ 20 · YOUTH — live IWAC panel ░░ -->
-    <section>
-      <h2 class="slide-title">Youth: who is being talked about?</h2>
-      <p class="lead">Occurrences of the youth word list across the 42 analysed transcripts</p>
-      <div class="cols w704">
-        <div class="col">
-          <figure class="site-frame">
-            <div class="site-frame-bar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
-              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-            </div>
-            <div class="site-frame-view zoomed">
-              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-youth-lexicon" title="The youth word list and its counts (IWAC, live)" loading="lazy"></iframe>
-              <img class="frame-fallback" src="assets/albani-youth-lexicon.png" alt="The youth word list and its counts, by term">
-            </div>
-          </figure>
-        </div>
-        <div class="col">
-          <div class="callout light">
-            <p><strong>Yara</strong> (children) is the largest youth term: much of the theme concerns children and families.</p>
-            <p><span class="hl">Makaranta</span> (school, education theme) occurs 996 times, in 40 of 42 recordings.</p>
-            <p><strong>Almajirai</strong>, Qur'anic pupils: 164 times in 30 recordings.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ░░ 21 · POLITICS — live IWAC panel ░░ -->
-    <section>
-      <h2 class="slide-title">Politics: the vocabulary of government</h2>
-      <p class="lead">Occurrences of the political word list across the 42 analysed transcripts</p>
-      <div class="cols w704">
-        <div class="col">
-          <figure class="site-frame">
-            <div class="site-frame-bar">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
-              <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-            </div>
-            <div class="site-frame-view zoomed">
-              <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-politics-lexicon" title="The political word list and its counts (IWAC, live)" loading="lazy"></iframe>
-              <img class="frame-fallback" src="assets/albani-politics-lexicon.png" alt="The political word list and its counts, by term">
-            </div>
-          </figure>
-        </div>
-        <div class="col">
-          <div class="callout light"><p><strong>sarki</strong> (emir, king): 2,094 occurrences, but 1,184 left out because they refer to God, as in <em>Allah Maɗaukakin Sarki</em></p></div>
-          <div class="callout"><p>Three in four uses of <em>demokuraɗiyya</em> (201 of 263) come from a single lecture, <strong>Demokuradiyyah</strong> (9 h 33).</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ░░ 22 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
-    <section>
       <h2 class="slide-title">Where youth meets politics</h2>
       <p class="lead">A meeting: a youth term and a political term within ten words, same speaker</p>
       <div class="cols w517">
@@ -718,29 +592,13 @@ const artwork: Artwork = {
         <div class="col">
           <p><strong>Most frequent pairs:</strong> yara × sarki (13), yara × jihadi (12), 'ya'ya × sarki (11), almajirai × sarki (11)</p>
           <p><strong>89 segments</strong> contain at least one meeting; the exhibit ranks them and links each to its 20 minutes of audio.</p>
+          <p>Three in four uses of <em>demokuraɗiyya</em> (201 of 263) come from a single lecture, <strong>Demokuradiyyah</strong> (9 h 33).</p>
           <p><span class="hl">The count points to the 20 minutes worth hearing; the analysis comes from listening to them.</span></p>
         </div>
       </div>
     </section>
 
-    <!-- ░░ 23 · THE SERMONS AS A SCORE — live IWAC panel ░░ -->
-    <section data-toc="The sermons as a score">
-      <h2 class="slide-title">The sermons as a score</h2>
-      <p class="lead">Each row a recording, each cell a 20-minute segment: click one to listen to it</p>
-      <figure class="site-frame">
-        <div class="site-frame-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="site-frame-url">islam.zmo.de · Albani Zaria's sermons</span>
-          <a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons" target="_blank" rel="noopener">Open ↗</a>
-        </div>
-        <div class="site-frame-view zoomed">
-          <iframe data-ready-message="iwac-embed-height" data-src="https://islam.zmo.de/s/westafrica/iwac-embed/albani-sermons/albani-score" title="The sermons as a score (IWAC, live)" loading="lazy"></iframe>
-          <img class="frame-fallback" src="assets/albani-score.png" alt="The sermons as a score: one row per recording, one cell per 20-minute segment, shaded by meetings">
-        </div>
-      </figure>
-    </section>
-
-    <!-- ░░ 24 · READ THE PASSAGES — live IWAC panel ░░ -->
+    <!-- ░░ 17 · READ THE PASSAGES — live IWAC panel ░░ -->
     <section>
       <h2 class="slide-title">Read the passages</h2>
       <p class="lead">On the exhibit page, every count leads back to the words it comes from</p>
@@ -763,13 +621,13 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 25 · SECTION ░░ -->
+    <!-- ░░ 18 · SECTION ░░ -->
     <section class="section" data-toc="Discussion">
       <h2>Discussion</h2>
       <p class="sec-sub">Methodological, ethical and epistemological stakes of AI and digital humanities tools</p>
     </section>
 
-    <!-- ░░ 26 · THE GLOBAL SOUTH AND DATA ░░ -->
+    <!-- ░░ 19 · THE GLOBAL SOUTH AND DATA ░░ -->
     <section class="compact">
       <h2 class="slide-title">The Global South and data</h2>
       <p class="lead">Digitisation and AI can reproduce older asymmetries</p>
@@ -784,7 +642,7 @@ const artwork: Artwork = {
       <p><span class="hl">One answer, in IWAC:</span> FAIR and CARE principles; catalogue where custodians prefer; credit rights holders.</p>
     </section>
 
-    <!-- ░░ 27 · THE DIALECTICS OF DATAFICATION ░░ -->
+    <!-- ░░ 20 · THE DIALECTICS OF DATAFICATION ░░ -->
     <section>
       <h2 class="slide-title">The dialectics of datafication</h2>
       <p class="lead">Which datafication helps, which damages, and which endangers?</p>
@@ -807,7 +665,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 27a–d · FICTIONALIZATION AND ANONYMITY ░░ Text as given in
+    <!-- ░░ 21 · FICTIONALIZATION AND ANONYMITY ░░ Text as given in
          "Method of Fictionalization and Anonymity.pptx", redrawn on the skin. -->
     <section data-toc="Fictionalization and anonymity">
       <h2 class="slide-title">Method of Fictionalization and Anonymity</h2>
@@ -859,7 +717,7 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 28 · QUESTIONS FOR THE DISCUSSION ░░ -->
+    <!-- ░░ 22 · QUESTIONS FOR THE DISCUSSION ░░ -->
     <section class="compact questions">
       <h2 class="slide-title">Questions for the discussion</h2>
       <dl class="facts discussion">
@@ -870,7 +728,7 @@ const artwork: Artwork = {
       <aside class="notes">Follow-up questions if the room is quiet. Method: What does a 20-minute segment cut through? Can error rates be measured for Hausa–Arabic speech? Ethics: Should such recordings go through commercial AI services? When should material stay out of the data altogether? Epistemology: What does building one's own categories teach that automatic labelling skips? Fieldwork, archives, AI: is it all extraction?</aside>
     </section>
 
-    <!-- ░░ 29 · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
+    <!-- ░░ 23 · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
     <section class="compact" data-toc="Two more projects to explore">
       <h2 class="slide-title">Two more projects to explore</h2>
       <div class="cols two-sites">
