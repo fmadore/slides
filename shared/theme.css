@@ -1272,7 +1272,9 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   gap: var(--space-sm); text-align: center; padding: var(--space-lg);
   background: var(--sunken);
 }
-.reveal .frame-fallback[hidden] { display: none; }
+/* !important: a skin's own image rules (display:block on figure images) would
+   otherwise keep a saved view on top of the live frame after it reports ready. */
+.reveal .frame-fallback[hidden] { display: none !important; }
 .reveal .frame-fallback p { margin: 0; font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); color: var(--ink-soft); max-width: 40ch; }
 .reveal .frame-fallback a { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); }
 

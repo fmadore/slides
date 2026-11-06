@@ -563,6 +563,12 @@ body[data-brand="zmo"] .reveal table tbody tr:nth-child(even) td { background: v
    An author's own <img class="frame-fallback"> (a saved view that gives way
    when the embed reports ready) is untouched. */
 body[data-brand="zmo"] .reveal .site-frame-view > div.frame-fallback { display: none !important; }
+/* A saved view covers its frame while the panel loads, as the live panel will,
+   instead of taking the figure-image cap and leaving the frame visible beside it. */
+body[data-brand="zmo"] .reveal .slides section .site-frame-view > img.frame-fallback {
+  width: 100%; height: 100%; max-width: none; max-height: none; padding: 0;
+  object-fit: cover; object-position: top center;
+}
 
 /* Figures: a hairline frame, the caption in the muted source voice. An image
    is held to the text area's height (y 230→606 less a caption line) and

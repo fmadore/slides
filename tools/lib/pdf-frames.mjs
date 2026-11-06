@@ -157,7 +157,22 @@ export async function captureLiveFrames(page, { timeoutMs = 12000, settleMs = 16
       ));
       if (fallbackVisible) throw new Error('deck fallback is visible');
 
-      const png = await locator.screenshot({ type: 'png', animations: 'disabled', timeout: timeoutMs });
+      // A frame whose container clips it (an iframe offset to crop a panel to
+      // one region) shows only the overlap; the iframe's own box would also
+      // take in whatever the slide paints over the hidden part.
+      const clip = await locator.evaluate(frame => {
+        const view = frame.parentElement;
+        if (!view || getComputedStyle(view).overflow === 'visible') return null;
+        const r = frame.getBoundingClientRect(), v = view.getBoundingClientRect();
+        const x0 = Math.max(r.left, v.left), y0 = Math.max(r.top, v.top);
+        const x1 = Math.min(r.right, v.right), y1 = Math.min(r.bottom, v.bottom);
+        const inside = r.left >= v.left - 0.5 && r.top >= v.top - 0.5 && r.right <= v.right + 0.5 && r.bottom <= v.bottom + 0.5;
+        return inside || x1 - x0 <= 1 || y1 - y0 <= 1 ? null : { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
+      });
+      if (clip) dimensions = { width: Math.round(clip.width), height: Math.round(clip.height) };
+      const png = clip
+        ? await page.screenshot({ type: 'png', animations: 'disabled', timeout: timeoutMs, clip })
+        : await locator.screenshot({ type: 'png', animations: 'disabled', timeout: timeoutMs });
       if (!pngHasVisibleContent(png)) throw new Error('capture was visually blank');
       captures.push({
         ...item,
@@ -233,7 +248,11 @@ export async function installPrintFrameSnapshots(page, captures) {
       const occurrence = seen.get(url) || 0;
       seen.set(url, occurrence + 1);
       const record = byKey.get(`${url}${separator}${occurrence}`);
-      const height = Math.max(120, record?.height || frame.getBoundingClientRect().height || frame.clientHeight || 360);
+      // A capture keeps the height it was taken at; the 120 px floor is for
+      // placeholders, which need room for their notice.
+      const height = record?.dataUrl && record.height > 1
+        ? record.height
+        : Math.max(120, record?.height || frame.getBoundingClientRect().height || frame.clientHeight || 360);
       let replacement;
       const fallbacks = [...frame.parentElement.querySelectorAll('.frame-fallback, .viz-fallback, .amrc-fallback')];
       const authored = fallbacks.map(fallback => fallback.matches('img') ? fallback : fallback.querySelector('img'))
