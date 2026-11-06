@@ -169,6 +169,71 @@
     body[data-brand="zmo"] .reveal .callout ol.ranked > li:last-child { margin-bottom: 0; }
     body[data-brand="zmo"] .reveal .callout ol.ranked strong { font-variant-numeric: tabular-nums; }
     body[data-brand="zmo"] .reveal .callout.light p.muted { color: var(--zmo-muted); font-size: 1.222rem; margin-top: 14px; }
+
+    /* Fictionalization slides (from "Method of Fictionalization and Anonymity").
+       The conditions panel: one blue box at the PPT's height, 16 pt bullets. */
+    body[data-brand="zmo"] .reveal .callout.conditions { padding: 34px 44px; margin-top: 24px; font-size: var(--fs-body); }
+    body[data-brand="zmo"] .reveal .callout.conditions ul > li { margin-bottom: 0.9em; }
+    body[data-brand="zmo"] .reveal .callout.conditions ul > li:last-child { margin-bottom: 0; }
+
+    /* Contextual dispersal: the definition, then four blue chips in a row. */
+    body[data-brand="zmo"] .reveal .callout.light.dispersal { font-size: var(--fs-body); line-height: 1.3; padding: 24px 36px; margin: 8px 0 22px; }
+    body[data-brand="zmo"] .reveal .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25.6px; }
+    body[data-brand="zmo"] .reveal .slides section > .chips + p { margin-top: auto; margin-bottom: 0; }
+    body[data-brand="zmo"] .reveal .chips > span {
+      display: grid; place-items: center; height: 84px; border-radius: 20px;
+      background: var(--zmo-blue); color: #ffffff; font: 700 var(--fs-h3)/1.2 var(--zmo-font);
+    }
+
+    /* Two axes: risk (rows) by identifiability (columns), the reading beside. */
+    body[data-brand="zmo"] .reveal .quad {
+      flex: 1 0 auto; display: grid; gap: 8px 12px;
+      grid-template-columns: 30px 52px 1fr 1fr 312px; grid-template-rows: 1fr 1fr auto;
+    }
+    body[data-brand="zmo"] .reveal .quad .axis {
+      font: 700 var(--fs-caption)/1.2 var(--zmo-font); letter-spacing: 0.08em; color: var(--zmo-muted);
+    }
+    body[data-brand="zmo"] .reveal .quad .axis-y {
+      grid-column: 1; grid-row: 1 / 3; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
+    }
+    body[data-brand="zmo"] .reveal .quad .tick-y { grid-column: 2; align-self: start; padding-top: 6px; }
+    body[data-brand="zmo"] .reveal .quad .tick-y.low { grid-row: 2; align-self: end; padding: 0 0 6px; }
+    body[data-brand="zmo"] .reveal .quad .axis-x { grid-column: 3 / 5; grid-row: 3; display: flex; justify-content: space-between; }
+    body[data-brand="zmo"] .reveal .quad .axis-x b { color: var(--zmo-muted); }
+    body[data-brand="zmo"] .reveal .quad .cell {
+      background: var(--zmo-card); border-radius: 20px; padding: 16px 22px;
+    }
+    body[data-brand="zmo"] .reveal .quad .cell h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 1.556rem; }
+    body[data-brand="zmo"] .reveal .quad .cell h3::before {
+      content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--dot, var(--zmo-blue));
+    }
+    body[data-brand="zmo"] .reveal .quad .cell p { margin: 0; font-size: 1.333rem; }
+    body[data-brand="zmo"] .reveal .quad .cell.r-hi { grid-row: 1; }
+    body[data-brand="zmo"] .reveal .quad .cell.r-lo { grid-row: 2; }
+    body[data-brand="zmo"] .reveal .quad .cell.i-lo { grid-column: 3; }
+    body[data-brand="zmo"] .reveal .quad .cell.i-hi { grid-column: 4; }
+    body[data-brand="zmo"] .reveal .quad .cell.r-hi.i-lo { --dot: var(--zmo-orange); }
+    body[data-brand="zmo"] .reveal .quad .cell.r-hi.i-hi { --dot: var(--zmo-orange-ink); }
+    body[data-brand="zmo"] .reveal .quad .cell.r-lo.i-lo { --dot: var(--zmo-on-blue-soft); }
+    body[data-brand="zmo"] .reveal .quad .cell.r-lo.i-hi { --dot: var(--zmo-blue); }
+    body[data-brand="zmo"] .reveal .quad > .callout { grid-column: 5; grid-row: 1 / 3; margin: 0; }
+
+    /* The risk scale: five rows, a lettered dot and the tier, the strategy, who. */
+    body[data-brand="zmo"] .reveal .tiers { flex: 1 0 auto; display: grid; grid-auto-rows: 1fr; gap: 6px; }
+    body[data-brand="zmo"] .reveal .tier {
+      display: grid; grid-template-columns: 40px 128px 1fr 150px; gap: 16px; align-items: center;
+      background: var(--zmo-card); border-radius: 16px; padding: 4px 22px 4px 16px; --tc: var(--zmo-orange-ink);
+    }
+    body[data-brand="zmo"] .reveal .tier.cool { --tc: var(--zmo-blue); }
+    body[data-brand="zmo"] .reveal .tier .t-dot {
+      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; box-sizing: border-box;
+      border: 2px solid var(--tc); background: var(--tc); color: #ffffff; font: 700 1.25rem/1 var(--zmo-font);
+    }
+    body[data-brand="zmo"] .reveal .tier.open .t-dot { background: transparent; color: var(--tc); }
+    body[data-brand="zmo"] .reveal .tier .t-name { font: 700 1.333rem/1.1 var(--zmo-font); letter-spacing: 0.04em; color: var(--tc); }
+    body[data-brand="zmo"] .reveal .tier p { margin: 0; font-size: 1.278rem; line-height: 1.15; }
+    body[data-brand="zmo"] .reveal .tier p strong { margin-right: 0.5em; }
+    body[data-brand="zmo"] .reveal .tier .t-who { font-size: 1.333rem; color: var(--zmo-muted); text-align: right; }
   </style>
 </head>
 <body data-brand="zmo">
@@ -739,6 +804,58 @@ const artwork: Artwork = {
             <li>What would consensual, qualitative practice look like?</li>
           </ul>
         </div>
+      </div>
+    </section>
+
+    <!-- ░░ 27a–d · FICTIONALIZATION AND ANONYMITY ░░ Text as given in
+         "Method of Fictionalization and Anonymity.pptx", redrawn on the skin. -->
+    <section data-toc="Fictionalization and anonymity">
+      <h2 class="slide-title">Method of Fictionalization and Anonymity</h2>
+      <p class="lead">Because: not everything should become data (from an anthropological perspective)</p>
+      <div class="callout conditions">
+        <ul>
+          <li>If it endangers one’s interlocutors (state/legal/vigilante/troll persecution)</li>
+          <li>If it could create social difficulties for one’s interlocutors (e.g. possible divorce)</li>
+          <li>If it doesn’t require recognition of some publicly relevant quality of one’s interlocutors</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="slide-title">Contextual Dispersal</h2>
+      <p class="lead">Fictionalization as Rigorous Method</p>
+      <div class="callout light dispersal">Fictionalization distributes actions over several characters and alters the locations and times that come up in the account. Contextual dispersal disperses personae, texts, time, and space by balancing contextual integrity against safety.</div>
+      <div class="chips"><span>Personae</span><span>Texts</span><span>Time</span><span>Space</span></div>
+      <p>Fundamentally opposed to a license to invent — every detail must be thought through as a potential data point.</p>
+    </section>
+
+    <section>
+      <h2 class="slide-title">Two axes, four disclosure decisions</h2>
+      <div class="quad">
+        <span class="axis axis-y">RISK LEVEL</span>
+        <b class="axis tick-y">HIGH</b>
+        <b class="axis tick-y low">LOW</b>
+        <div class="cell r-hi i-lo"><h3>Describe in full</h3><p>High risk, low identifiability. The tactic can be told in rich detail.</p></div>
+        <div class="cell r-hi i-hi"><h3>Fictionalize / redact</h3><p>High risk and high identifiability. Protect the person before the detail.</p></div>
+        <div class="cell r-lo i-lo"><h3>Openly shareable</h3><p>Low risk, low identifiability. Report freely.</p></div>
+        <div class="cell r-lo i-hi"><h3>Generalize</h3><p>Low risk but identifying. Aggregate away the specifics.</p></div>
+        <div class="axis axis-x"><b>LOW</b><span>IDENTIFICATION LEVEL</span><b>HIGH</b></div>
+        <div class="callout">
+          <span class="callout-label">Reading the grid</span>
+          <p>Identifiability decides how much can be told; risk decides how much care the telling demands. The dangerous-but-anonymous cell is where fictionalization earns its keep — the practice survives, the person disappears.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="slide-title">A five-tier grading of strategies</h2>
+      <p class="lead">Each strategy sits on a scale of exposure — from primary witnessing at the sharp end to durational poetry at the safe end.</p>
+      <div class="tiers">
+        <div class="tier"><span class="t-dot">C</span><span class="t-name">CRITICAL</span><p><strong>Direct public witnessing</strong>Physically documenting violence as a primary news source. Triggers immediate state and vigilante response.</p><span class="t-who">Bilal</span></div>
+        <div class="tier open"><span class="t-dot">H</span><span class="t-name">HIGH</span><p><strong>Hyperbolic framing</strong>Charged or polemical terms that can be legally cast as “inciting communal passions.”</p><span class="t-who">Hamid, early</span></div>
+        <div class="tier cool"><span class="t-dot">M</span><span class="t-name">MODERATE</span><p><strong>Global framing</strong>Using X to reach international media — it brings security, but also labels like “antinational.”</p><span class="t-who">Hamid, Hilal</span></div>
+        <div class="tier cool open"><span class="t-dot">L</span><span class="t-name">LOW</span><p><strong>Strategic evasion</strong>Mass-blocking and avoiding hashtags or mentions to stay out of hostile ecosystems.</p><span class="t-who">Hilal, Bilal</span></div>
+        <div class="tier cool open"><span class="t-dot">V</span><span class="t-name">VERY LOW</span><p><strong>Poetic reframing</strong>Moving from reactive tweets to reflexive, durational poetry that is hard to co-opt.</p><span class="t-who">Hamid</span></div>
       </div>
     </section>
 
