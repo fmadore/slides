@@ -74,6 +74,10 @@
     body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
     /* Slide 5: the PPT set this subtitle at 17 pt so it holds one line. */
     body[data-brand="zmo"] .reveal .slides section .lead.pt17 { font-size: 1.889rem; }
+    /* The closing application slide: two fields and the loop in one row. */
+    body[data-brand="zmo"] .reveal .cols.app { --zmo-card-gap: 12px; --zmo-card-pad: 18px 26px 20px; }
+    body[data-brand="zmo"] .reveal .cols.app .callout { padding: 18px 26px 20px; }
+    body[data-brand="zmo"] .reveal .slides section > .cols.app + p { font-size: 1.556rem; }
     /* Slide 5: the findings, the paper's first page linked to its DOI, what comes next. */
     body[data-brand="zmo"] .reveal .cols.paper-cols { grid-template-columns: 1fr 210px 300px; gap: 26px; }
     body[data-brand="zmo"] .reveal .slides section.compact .cols.paper-cols > .col > ul { font-size: 1.556rem; }
@@ -782,6 +786,23 @@ const artwork: Artwork = {
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- ░░ 24 · A ZMO APPLICATION ░░ From the Sondertatbestand draft (v.4,
+         8 July 2026). Public deck: no budget, posts or partner list on screen. -->
+    <section data-toc="A ZMO application">
+      <h2 class="slide-title">A ZMO application: Algorithmic Authorities</h2>
+      <p class="lead">AI, disinformation and knowledge production in the Global South</p>
+      <div class="cols three hold app">
+        <div class="col"><div class="card"><div class="card-head">Method: AI as a DH research tool</div><p>Open models run locally; workflows for low-resource languages and non-Latin scripts; always alongside archive and field research</p></div></div>
+        <div class="col"><div class="card"><div class="card-head">Analysis: who counts as an authority</div><p>How algorithmic mediation reshapes epistemic authority in Farsi, Hindi, Hausa and Swahili, and in local Arabic, French and English</p></div></div>
+        <div class="col"><div class="callout">
+          <span class="callout-label">The core: a loop</span>
+          <p>Findings from AI analysis go back to the field, where they are checked or revised; the revision shapes the next method.</p>
+        </div></div>
+      </div>
+      <p><strong>A Leibniz strategic extension (Sondertatbestand).</strong> Groundwork: IWAC, Albani Zaria's sermons, the <em>Islam East Africa Collection</em> (in preparation). It answers the Leibniz Senate's 2023 recommendation to strengthen ZMO in digital methods.</p>
+      <aside class="notes">A last word on where this could lead at ZMO. The institute has applied for a Leibniz strategic extension, a Sondertatbestand, called Algorithmic Authorities. It has two fields. The first is methodological: AI as a research tool for digital humanities, with open models run locally, and workflows for languages and scripts that current models handle badly. The second is analytical: how algorithms change who counts as an authority, in languages such as Farsi, Hindi, Hausa and Swahili. The two are meant to work as a loop: what the AI analysis finds goes back to fieldwork, where it is checked or revised, and that revision shapes the next method. The groundwork is what you have seen today: IWAC and the Albani Zaria sermons, with an East African collection in preparation. The plan is a department of its own, with a DH coordinator, rotating postdocs from partner regions and a doctoral fellowship.</aside>
     </section>
 
   </div>
