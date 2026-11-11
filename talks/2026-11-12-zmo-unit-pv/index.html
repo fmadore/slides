@@ -58,7 +58,6 @@
     body[data-brand="zmo"] .reveal .cols.w667 { grid-template-columns: 667px 1fr; gap: 50px; }
     body[data-brand="zmo"] .reveal .cols.w397 { grid-template-columns: 397px 1fr; gap: 32px; }
     body[data-brand="zmo"] .reveal .cols.w600 { grid-template-columns: 600px 1fr; gap: 28px; }
-    body[data-brand="zmo"] .reveal .cols.w503 { grid-template-columns: 503px 1fr 156px; gap: 28px; }
     body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
     /* Slide 5: the PPT set this subtitle at 17 pt so it holds one line. */
     body[data-brand="zmo"] .reveal .slides section .lead.pt17 { font-size: 1.889rem; }
@@ -105,8 +104,8 @@
     body[data-brand="zmo"] .reveal .cols.two-sites .col > h3 { margin: 0 0 4px; }
     body[data-brand="zmo"] .reveal .cols.two-sites .col > p { margin: 0 0 10px; }
 
-    /* The overview: seven one-line points on a pitch that fills the text area. */
-    body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 1.12em; }
+    /* The overview: eight one-line points on a pitch that fills the text area. */
+    body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 0.72em; }
 
     /* Fictionalization slides (from "Method of Fictionalization and Anonymity").
        The conditions panel: one blue box at the PPT's height, 16 pt bullets. */
@@ -157,8 +156,9 @@
       <p>Religion and Intellectual Culture Unit</p>
       <p>12 November 2026</p>
       <aside class="notes">
-        <p>For this unit presentation, we want to discuss digital humanities and AI in the social sciences through one process they both depend on: datafication, what happens when sources become data. We take it up through three projects from within our own unit. Sonja presents Global Heshmat, Abdoulaye the sermons of Albani Zaria, and Max his work on fictionalization, for material that should not become data.</p>
-        <p>I’ll start with the framing, which comes out of my work on AI and digital humanities over the past year: two workshops prepared here at ZMO, the position paper that came out of them, and some of the tools I have been building. After the three cases, we open the discussion.</p>
+        <p>This session looks back at what our unit has done with digital methods and AI over the past year. We have organised it around one process that all of this work depends on: datafication, or what happens when a source becomes data.</p>
+        <p>We take it up through three projects from the unit. Sonja presents Global Heshmat. Abdoulaye and I present the sermons of Albani Zaria: I cover the method, and he covers what he observes in them. Max then presents his work on fictionalization, which deals with material that should not become data.</p>
+        <p>I’ll start with the framing, which comes out of my own work this year: two workshops prepared here at ZMO, the position paper that followed, and some of the tools I have been building. After the three cases, we open the discussion.</p>
       </aside>
     </section>
 
@@ -166,17 +166,18 @@
     <section data-toc="Overview">
       <h2 class="slide-title">Overview</h2>
       <ol class="points">
-        <li><strong>Framing:</strong> two ZMO workshops and a position paper</li>
+        <li><strong>Framing:</strong> two workshops and a position paper</li>
         <li><strong>Global Heshmat:</strong> a sculptor's works on a map</li>
-        <li><strong>Datafication and AI:</strong> where the work lies, and Kalamu, to check and trace it</li>
-        <li><strong>Albani Zaria's sermons:</strong> where youth meets politics, and what the count decides</li>
+        <li><strong>Datafication and AI:</strong> where the time goes, and Kalamu, a tool to check the result</li>
+        <li><strong>Albani Zaria's sermons:</strong> youth and politics, and the choices behind the counts</li>
+        <li><strong>Algorithmic Authorities:</strong> a ZMO funding application</li>
         <li><strong>The Global South and data:</strong> who digitises, who profits, who is left out</li>
         <li><strong>Fictionalization and anonymity:</strong> when sources should not become data</li>
         <li><strong>Questions for the discussion:</strong> method, governance, limits</li>
       </ol>
       <aside class="notes">
-        <p>The programme is ambitious for one session, so take it as an overview: several projects and methods, each shown briefly, to give us material for the discussion.</p>
-        <p>Each case raises a different kind of decision. With Global Heshmat: how to represent objects, their movements and their absences. With the Albani Zaria sermons: how to build categories for searching and counting. With fictionalization: when to limit what can be linked and identified.</p>
+        <p>That is a lot for one session, so each project is shown briefly. The aim is to give us material for the discussion.</p>
+        <p>Each case raises a different kind of decision. With Global Heshmat, it is how to represent objects, their movements and their absences. With the Albani Zaria sermons, it is how to build the categories we search and count with. With fictionalization, it is when to limit what can be linked and identified.</p>
         <p>One question runs through all three, and I’ll come back to it after each case: what is decided, and by whom, when a source becomes data?</p>
       </aside>
     </section>
@@ -186,14 +187,14 @@
       <h2>Framing</h2>
       <p class="sec-sub">Where this comes from, and what datafication means</p>
       <aside class="notes">
-        <p>As social scientists, we usually talk about our sources rather than our data. A source has an author, a context and a history; data tend to look as if they were simply given. This first part is about the move from one to the other, starting with where my own work on it comes from.</p>
+        <p>Many of us talk about our sources, or our material, rather than our data. A source has an author, a context and a history, whereas data tend to look as if they were simply given. This first part is about the move from one to the other. I start with where my own work on it comes from.</p>
       </aside>
     </section>
 
     <!-- ░░ 4 · TWO WORKSHOPS ░░ -->
     <section class="compact" data-toc="Two workshops">
       <h2 class="slide-title">Two workshops</h2>
-      <p class="lead">Both applications prepared at ZMO</p>
+      <p class="lead">Both funding applications prepared at ZMO</p>
       <div class="cols cards">
         <div class="col">
           <div class="col-head">Charting New Territory</div>
@@ -223,22 +224,22 @@
         </div>
       </div>
       <aside class="notes">
-        <p>This year I had the chance to organise two workshops on digital humanities and AI in African studies. I prepared both funding applications last year, while I was here at ZMO.</p>
-        <p>In February in Hanover, a scoping workshop funded by the VolkswagenStiftung, convened with Vincent Hiribarren of King’s College London. Twenty-six researchers from sixteen countries: linguists, historians, anthropologists, archivists, AI governance specialists and DH practitioners. Instead of keynotes and panels, we worked in groups and World Café rounds.</p>
-        <p>In September at STIAS in Stellenbosch, a DFG Point Sud workshop, with Vincent, Emmanuel Ngue Um and Menno van Zaanen: twenty-five papers, thirty-three participants from seventeen countries, in English and French.</p>
+        <p>This year I organised two workshops on digital humanities and AI in African studies. I wrote both funding applications last year, while I was here at ZMO.</p>
+        <p>The first was in Hanover in February, a scoping workshop funded by the VolkswagenStiftung, which I convened with Vincent Hiribarren of King’s College London. It brought together twenty-six researchers from sixteen countries: linguists, historians, anthropologists, archivists, AI governance specialists and DH practitioners. Instead of keynotes and panels, we worked in groups and World Café rounds.</p>
+        <p>The second was in September at STIAS in Stellenbosch, a DFG Point Sud workshop convened with Vincent, Emmanuel Ngue Um and Menno van Zaanen. It had twenty-five papers and thirty-three participants from seventeen countries, and it ran in English and French.</p>
       </aside>
     </section>
 
     <!-- ░░ 5 · WHAT CAME OUT OF IT ░░ -->
-    <section class="compact" data-toc="What came out of it">
-      <h2 class="slide-title">What came out of it</h2>
+    <section class="compact" data-toc="What came out of them">
+      <h2 class="slide-title">What came out of them</h2>
       <p class="lead pt17">Position paper: “For Whom and For What Purpose?” (<em>ZMO Programmatic Texts</em>, 2026)</p>
       <div class="cols paper-cols">
         <div class="col">
           <ul>
-            <li><strong>Situated practice:</strong> digitisation agreements as living documents, ontologies open to revision</li>
-            <li><strong>Sovereignty:</strong> design grounded in access and governance; ethics revisited throughout a project</li>
-            <li><strong>Shared problems:</strong> consent, standardisation, ill-fitting metadata, hidden labour, language bias, maintenance, all more visible in African contexts</li>
+            <li><strong>Situated practice:</strong> digitisation agreements as living documents, classification schemes open to revision</li>
+            <li><strong>Sovereignty:</strong> access and governance built into a project's design; ethics revisited throughout</li>
+            <li><strong>Shared problems:</strong> consent, hidden labour, language bias and maintenance exist in the North too; African contexts make them more visible</li>
             <li><strong>Reusable outputs:</strong> 217 references, a map of 145 concepts, six video interviews</li>
           </ul>
         </div>
@@ -259,9 +260,10 @@
       </div>
       <aside class="notes">
         <p>The Hanover participants wrote a position paper together, published open access in September in the ZMO Programmatic Texts series. Its title is its question: for whom, and for what purpose, do we do DH and AI work in African studies?</p>
-        <p>It argues for situated practice: digitisation agreements and ontologies that stay open to revision, and ethics revisited throughout a project. Most of the problems it lists also exist in the Global North; African contexts make them more visible.</p>
+        <p>It argues for situated practice: digitisation agreements and classification schemes that stay open to revision, and ethics revisited throughout a project. Most of the problems it lists also exist in the Global North; African contexts make them more visible.</p>
         <p>We also wanted what the workshop produced to be reusable. The workshop website has the bibliography, 217 references, a map of 145 concepts that links them, and six video interviews with participants on what digital humanities and AI change for African studies.</p>
         <p>Next, the Stellenbosch papers are being prepared as a special issue of the Journal of the Digital Humanities Association of Southern Africa.</p>
+        <p>The paper asks for whom and for what purpose. The rest of this session asks the same thing at a smaller scale, one source at a time.</p>
       </aside>
     </section>
 
@@ -281,30 +283,30 @@
           <p><strong>As data:</strong> a transcript, with speakers and timestamps</p>
         </div>
         <div class="col">
-          <div class="col-head">Fieldwork notes</div>
-          <p><strong>As it is:</strong> a notebook, often legible only to its author</p>
+          <div class="col-head">A field notebook</div>
+          <p><strong>As it is:</strong> handwriting, often legible only to its author</p>
           <p><strong>As data:</strong> typed text, tagged by person, place and theme</p>
         </div>
       </div>
       <p><span class="hl">Each conversion chooses what is kept, how it is named, and what is left out.</span></p>
       <aside class="notes">
-        <p>Before the theory, a basic point. A computer does not read a source the way we do. A photograph of an archive page is, for the computer, an image: pixels, no words. A recorded interview is sound, and you can only search it by listening. Fieldwork notes in a notebook are legible to us, and often only to their author.</p>
-        <p>To search, link or count them, we have to give them a machine-readable form: the text of the page, a transcript of the interview, typed notes, and fields such as date, place, people or theme. AI now does much of this conversion, but it is still a conversion. Each one is a choice: what we keep, what we call it, and what we leave out.</p>
+        <p>Before the theory, a basic point. A computer does not read a source the way we do. A photograph of an archive page is, for the computer, an image: pixels, no words. A recorded interview is sound, and you can only search it by listening. A field notebook is often legible only to the person who wrote it.</p>
+        <p>To search, link or count them, we have to give them a machine-readable form: the text of the page, a transcript of the interview, typed notes, and fields such as date, place, people or theme. AI now does much of this conversion, but someone still chooses what is kept and what it is called.</p>
       </aside>
     </section>
 
     <section data-toc="Datafication">
       <h2 class="slide-title">Datafication</h2>
-      <p class="lead">Selecting and structuring sources to search, link and compute them</p>
+      <p class="lead">Selecting and structuring sources so that they can be searched, linked and counted</p>
       <dl class="facts">
-        <dt>van Dijck 2014</dt><dd>Datafication as a paradigm shift in knowledge production, and the belief in data it fosters</dd>
-        <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life, whose appropriation they call data colonialism</dd>
         <dt>Drucker 2011</dt><dd>Data are capta: taken, not given</dd>
         <dt>Gitelman (ed.) 2013</dt><dd>“Raw data” is an oxymoron</dd>
+        <dt>van Dijck 2014</dt><dd>Datafication as a paradigm shift in knowledge production, and the belief in data it fosters</dd>
+        <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life, whose appropriation they call data colonialism</dd>
       </dl>
       <p><strong>Question for today:</strong> what is decided, and by whom, when a source becomes data?</p>
       <aside class="notes">
-        <p>This process has a name: datafication. Our working definition for today is selecting and structuring aspects of sources so that they can be searched, linked and computed. It covers different operations. Scanning a page, defining a category such as “youth”, and letting a company train on a corpus raise different questions.</p>
+        <p>This process has a name: datafication. Our working definition for today is selecting and structuring aspects of sources so that they can be searched, linked and counted. It covers different operations. Scanning a page, defining a category such as “youth”, and letting a company train on a corpus raise different questions.</p>
         <p>The four references do different work. Drucker and Gitelman make an epistemological point: data are constructed, selected and situated; Drucker calls them capta, things taken. Van Dijck follows how datafication turns into dataism, the belief that data simply mirror the world. Mejias and Couldry look at power: the infrastructures that quantify social life, and who appropriates the value. In their analysis appropriation is what makes it data colonialism, so not every dataset falls under that term.</p>
         <p>Hence the question for today: what is decided, and by whom, when a source becomes data?</p>
       </aside>
@@ -404,7 +406,7 @@ const artwork: Artwork = {
         </div>
         <div class="col">
           <div class="cols cards">
-            <div class="col"><div class="col-head">One file per work</div><p>Each work and each person is a typed data file: adding one is a one-file edit</p></div>
+            <div class="col"><div class="col-head">One file per work</div><p>Each work and each person is one file: adding a work does not need a developer</p></div>
             <div class="col"><div class="col-head">Statuses</div><p>Located, to be found, relocated: a work's history becomes a field and a line on the map</p></div>
             <div class="col"><div class="col-head">Names and scripts</div><p>Search ignores Arabic vowel marks and accents, but each name still takes one chosen spelling</p></div>
             <div class="col"><div class="col-head">After the project</div><p>Who maintains the record, and who in Egypt can correct it?</p></div>
@@ -421,27 +423,31 @@ const artwork: Artwork = {
         <div class="callout"><span class="callout-label">Datafication</span>find · scan · transcribe · correct · describe · link</div>
         <div class="callout light"><span class="callout-label blue">Analysis</span>visualise · count · compare</div>
       </div>
-      <p><strong>AI speeds up the first part by an order of magnitude</strong></p>
+      <p><strong>AI shortens the first part considerably</strong></p>
       <div class="cols cards three">
-        <div class="col"><div class="col-head">Text extraction</div><p>Manuscripts, typescripts and print, in several scripts</p></div>
+        <div class="col"><div class="col-head">Reading text</div><p>Manuscripts, typescripts and print, in several scripts</p></div>
         <div class="col"><div class="col-head">Transcription</div><p>Interviews, lectures and sermons, with speakers told apart</p></div>
-        <div class="col"><div class="col-head">Entities</div><p>People, places and organisations, ready to link</p></div>
+        <div class="col"><div class="col-head">Names</div><p>People, places and organisations picked out, ready to link</p></div>
       </div>
       <p><span class="hl">Its own problems:</span> errors that read well, bias, cost, and extraction (whose data trains the models, and who profits?)</p>
       <aside class="notes">
         <p>[After Sonja] Back to the question. In Global Heshmat the decisions concerned fields, statuses and spellings, and one remains open: who maintains the record, and who in Egypt can correct it?</p>
         <p>A general point before the second case. Most of the time goes into datafication: finding the sources, scanning, transcribing, correcting, describing, linking. The visualisations and analyses that people picture as digital humanities come comparatively quickly afterwards.</p>
-        <p>AI shortens that first part considerably: text from manuscripts and print, transcripts of interviews and sermons, people and places ready to link. It brings its own problems. Its errors read well, so they are hard to spot. And it raises the question of extraction, which we come back to in the discussion.</p>
+        <p>AI shortens that first part considerably. It reads text from manuscripts and print, transcribes interviews and sermons, and picks out the people and places so that they can be linked. It brings its own problems. Its errors read well, so they are hard to spot. And it raises the question of extraction: whose texts and voices train the models, and who profits. We come back to that in the last part.</p>
       </aside>
     </section>
 
-    <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing, so the illustration stays. -->
+    <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing; the app's comparison view
+         (store screenshot 01, cropped to the workspace) shows the checking. -->
     <section data-toc="Kalamu">
       <h2 class="slide-title">Kalamu</h2>
       <p class="lead">A desktop app I am developing: AI-assisted datafication you can check and trace</p>
-      <div class="cols w503">
+      <div class="cols w600">
         <div class="col">
-          <img class="shot" src="assets/kalamu.jpg" alt="Illustration of Kalamu: documents, a recorder and a laptop" width="1440" height="1080">
+          <figure>
+            <img class="shot" src="assets/kalamu-compare.jpg" alt="Kalamu's comparison view: a scanned 1911 newspaper page on the left, the AI's text on the right with the words where two models disagree highlighted, and a box to type what the source says" width="1400" height="823">
+            <figcaption>The source beside the AI's text; highlighted words are where two models disagree</figcaption>
+          </figure>
         </div>
         <div class="col">
           <ul class="kalamu-list">
@@ -451,15 +457,15 @@ const artwork: Artwork = {
             <li>Check every result against its source; corrections never overwrite the AI's text</li>
             <li>Export with a record of model, prompt and settings</li>
           </ul>
-        </div>
-        <div class="col qr-col">
-          <img src="assets/qr-kalamu.png" alt="QR code to github.com/fmadore/Kalamu" width="396" height="396">
-          <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/<wbr>fmadore/<wbr>Kalamu</a><br>Free, open source<br>Windows and macOS</p>
+          <div class="qr-row small">
+            <img src="assets/qr-kalamu.png" alt="QR code to github.com/fmadore/Kalamu" width="396" height="396">
+            <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/fmadore/Kalamu</a><br>Free, open source · Windows and macOS</p>
+          </div>
         </div>
       </div>
       <aside class="notes">
         <p>If AI does part of this work, the researcher needs a way to check it and to say how it was done. That is what Kalamu is for. It is a desktop app I am developing; the name is Swahili for “pen”, from the Arabic qalam.</p>
-        <p>It reads scanned and handwritten documents, transcribes recordings in the cloud or offline, and analyses texts with fields you define. Three functions matter for today’s argument. Every result is shown beside its source. Your corrections are stored apart, so the AI’s text is never overwritten. And every export records the model, the prompt and the settings, which you can cite in a methods section.</p>
+        <p>It reads scanned and handwritten documents, transcribes recordings in the cloud or offline, and analyses texts with fields you define. Three functions matter for today’s argument. Every result is shown beside its source. On the screenshot, the scanned newspaper page is on the left and the AI’s text on the right. The words in yellow are where two models disagree, which tells you where to look first. Your corrections are stored apart, so the AI’s text is never overwritten. And every export records the model, the prompt and the settings, which you can cite in a methods section.</p>
         <p>One practical point: sensitive material should not go through commercial services. Use the offline mode, or keep it out.</p>
         <p>[Abdoulaye takes over for Albani Zaria]</p>
       </aside>
@@ -468,7 +474,7 @@ const artwork: Artwork = {
     <!-- ░░ 13 · SECTION ░░ -->
     <section class="section" data-toc="Albani Zaria's sermons">
       <h2>Albani Zaria's sermons</h2>
-      <p class="sec-sub">From DVD to word counts: Hausa sermons in the <em>Islam West Africa Collection</em> (IWAC)</p>
+      <p class="sec-sub">From DVD to an interactive dashboard: Hausa sermons in the <em>Islam West Africa Collection</em> (IWAC)</p>
     </section>
 
     <!-- ░░ 14 · WHO WAS ALBANI ZARIA? ░░ -->
@@ -486,7 +492,7 @@ const artwork: Artwork = {
           </dl>
         </div>
         <div class="col">
-          <div class="callout"><p>45 recordings in IWAC, c. 1999–2014; 42 transcribed: 145 h, 1,089,269 words. <strong>They include the lessons he gave on the day of his death.</strong></p></div>
+          <div class="callout"><p>45 recordings in IWAC, c. 1999–2014; 42 transcribed: 145 h, about 1.1 million words. <strong>They include the lessons he gave on the day of his death.</strong></p></div>
           <figure class="site-frame">
             <div class="site-frame-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -519,20 +525,21 @@ const artwork: Artwork = {
         </div>
       </figure>
       <div class="cols cards three decisions">
-        <div class="col"><p><strong>Spelling.</strong> ɓ/b, ɗ/d, ƙ/k, q/k, ƴ/'y and doubled letters: variants count as one word</p></div>
-        <div class="col"><p><strong>Common words.</strong> 76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus 195 for this corpus, fillers such as <em>wato</em> among them</p></div>
+        <div class="col"><p><strong>Spelling.</strong> Hausa is written with and without hooked letters (ɓ, ɗ, ƙ): variants count as one word</p></div>
+        <div class="col"><p><strong>Common words.</strong> 76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024) and 195 added for this corpus are left out</p></div>
         <div class="col"><p><strong>Formulae.</strong> <em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
         <div class="col"><p><strong>Loanwords.</strong> <em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
-        <div class="col"><p><strong>Meaning.</strong> <em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, “country” or “to fail”, stays out of totals</p></div>
-        <div class="col"><p><strong>Speakers.</strong> Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
+        <div class="col"><p><strong>Meaning.</strong> <em>sarki</em> (king, emir) is not counted where it means God: 1,184 of 2,094 uses</p></div>
+        <div class="col"><p><strong>Speakers.</strong> Voices are told apart only within each 20-minute segment</p></div>
       </div>
       <aside class="notes">
-        <p>[The diagram animates when the slide opens; “Replay animation” in the full exhibit runs it again.]</p>
-        <p>The five stages take the recordings to figures and passages, and each involves choices that decide what the counts say.</p>
-        <p>Spelling first: the transcripts write Hausa with and without the hooked letters, so variants are merged into one word. Then common words: a published list of seventy-six Hausa stop words, plus 195 we added for this corpus.</p>
-        <p>Meaning is the hardest. Sarki means king or emir, but in “Allah Maɗaukakin Sarki” it means God. A rule leaves sarki out when Allah or maɗaukakin comes just before it: 1,184 of its 2,094 uses. The rule works on a form and stands in for a sense, so it will miss other ways of naming God. Ambiguous words such as ƙasa, “country” or “to fail”, are shown but kept out of the totals.</p>
-        <p>All of this is exploratory. The word lists and the translations are drafts that a Hausa-speaking specialist has yet to check. So here the decisions are categories, and so far we have made them without that check.</p>
-        <p>[Abdoulaye continues]</p>
+        <p>[Frédérick: the method. The diagram animates when the slide opens; “Replay animation” in the full exhibit runs it again.]</p>
+        <p>Abdoulaye and I split this case. He tells you what he observes in the sermons, and my part is how the figures are made. What you see on screen is an interactive dashboard on the IWAC website. It is public, and the panels on these slides are live.</p>
+        <p>Five stages take the recordings to figures and passages. An AI model transcribes the recordings and cuts them into twenty-minute segments. After that, each stage involves choices that decide what the counts say.</p>
+        <p>Spelling comes first. The transcripts write Hausa with and without the hooked letters, so variants are merged into one word. Then common words: we leave out a published list of seventy-six Hausa stop words, plus 195 that we added for this corpus.</p>
+        <p>Meaning is the hardest. Sarki means king or emir, but in “Allah Maɗaukakin Sarki” it means God. A rule leaves sarki out when Allah or maɗaukakin comes just before it, which removes 1,184 of its 2,094 uses. The rule only looks at the neighbouring words, not at the meaning, so it will miss other ways of naming God. Ambiguous words such as ƙasa, “country” or “to fail”, are shown but kept out of the totals.</p>
+        <p>All of this is exploratory. The word lists and the translations are drafts, and no Hausa specialist has checked them yet. Abdoulaye will do that, in sha Allah. [smile] So in this case the decisions are categories, and so far we have made them without that check.</p>
+        <p>[Abdoulaye continues with what he observes]</p>
       </aside>
     </section>
 
@@ -555,7 +562,7 @@ const artwork: Artwork = {
           </figure>
         </div>
         <div class="col">
-          <p><strong>Most frequent pairs:</strong> yara × sarki (13), yara × jihadi (12), 'ya'ya × sarki (11), almajirai × sarki (11)</p>
+          <p><strong>Most frequent pairs:</strong> <em>yara</em> (children) × <em>sarki</em> (king, emir), 13; <em>yara</em> × <em>jihadi</em> (jihad), 12; <em>'ya'ya</em> (offspring) × <em>sarki</em>, 11; <em>almajirai</em> (Qur'anic pupils) × <em>sarki</em>, 11</p>
           <p><strong>89 segments</strong> contain at least one meeting; the exhibit ranks them and links each to its 20 minutes of audio.</p>
           <p>Three in four uses of <em>demokuraɗiyya</em> (201 of 263) come from a single lecture, <strong>Demokuradiyyah</strong> (9 h 33).</p>
           <p><span class="hl">The count points to the 20 minutes worth hearing; the analysis comes from listening to them.</span></p>
@@ -587,12 +594,35 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 18 · SECTION ░░ -->
-    <section class="section" data-toc="Discussion">
-      <h2>Discussion</h2>
-      <p class="sec-sub">Methodological, ethical and epistemological stakes of AI and digital humanities tools</p>
+    <!-- ░░ A ZMO FUNDING APPLICATION ░░ Closes the Albani case, before the stakes. From the Sondertatbestand draft (v.4,
+         8 July 2026). Public deck: no budget, posts or partner list on screen. -->
+    <section data-toc="A ZMO funding application">
+      <h2 class="slide-title">A ZMO funding application: Algorithmic Authorities</h2>
+      <p class="lead">AI, disinformation and knowledge production in the Global South</p>
+      <div class="cols three hold app">
+        <div class="col"><div class="card"><div class="card-head">Method: AI as a DH research tool</div><p>Open models run locally; workflows for low-resource languages and non-Latin scripts; always alongside archive and field research</p></div></div>
+        <div class="col"><div class="card"><div class="card-head">Analysis: who counts as an authority</div><p>How algorithmic mediation reshapes epistemic authority in Farsi, Hindi, Hausa and Swahili, and in local Arabic, French and English</p></div></div>
+        <div class="col"><div class="callout">
+          <span class="callout-label">The core: a loop</span>
+          <p>Findings from AI analysis go back to the field, where they are checked or revised; the revision shapes the next method.</p>
+        </div></div>
+      </div>
+      <p><strong>A Leibniz strategic extension (Sondertatbestand).</strong> Groundwork: IWAC, Albani Zaria's sermons, the <em>Islam East Africa Collection</em> (in preparation). It answers the Leibniz Senate's 2023 recommendation to strengthen ZMO in digital methods.</p>
       <aside class="notes">
-        <p>Part two. Two slides from me, then Max’s presentation, a word on where this could lead at ZMO, and the questions.</p>
+        <p>[Frédérick, after Abdoulaye]</p>
+        <p>Before we turn to the stakes, a word on where this could lead at ZMO. The institute is preparing a funding application for a Leibniz strategic extension, a Sondertatbestand, called Algorithmic Authorities. It has two strands. The first uses AI as a research tool, with open models run on our own machines and workflows for languages and scripts that current models handle badly. The second analyses how algorithms change who counts as an authority.</p>
+        <p>What I would stress is the loop. Earlier I presented datafication as a line, from sources to data to analysis. Here, what the AI analysis finds goes back to the field, where it is checked or revised, and that revision shapes the next method. The sermons show why this matters: the word lists are still waiting for Abdoulaye’s check.</p>
+        <p>The groundwork is what you have just seen: IWAC, the Albani sermons, and an East African collection in preparation.</p>
+      </aside>
+    </section>
+
+    <!-- ░░ 18 · SECTION ░░ -->
+    <section class="section" data-toc="Stakes and limits">
+      <h2>Stakes and limits</h2>
+      <p class="sec-sub">Who gains from datafication, and what should not become data</p>
+      <aside class="notes">
+        <p>Back to the question once more. In the sermons, the decisions were categories: which words count as youth, which as politics, and when sarki means God. Those categories are still unchecked.</p>
+        <p>This last part has two slides from me on who gains from datafication, then Max’s presentation on material that should not become data, and then the questions.</p>
       </aside>
     </section>
 
@@ -601,19 +631,19 @@ const artwork: Artwork = {
       <h2 class="slide-title">The Global South and data</h2>
       <p class="lead">Digitisation and AI can reproduce older asymmetries</p>
       <div class="cols cards three">
-        <div class="col"><div class="col-head">Who digitises</div><p>Mostly Northern institutions or private firms: “digital imperialism” (Breckenridge), a “digital saviour complex” (Shringarpure)</p></div>
+        <div class="col"><div class="col-head">Who digitises</div><p>Mostly Northern institutions or private firms: “digital imperialism” (Breckenridge 2014), a “digital saviour complex” (Shringarpure 2020)</p></div>
         <div class="col"><div class="col-head">What gets digitised</div><p>Selection deepens archival silences; keyword search sidelines what is not online</p></div>
         <div class="col"><div class="col-head">Who has access</div><p>The digital divide: unequal internet access remains a major obstacle (Barringer &amp; Wallace 2014)</p></div>
-        <div class="col"><div class="col-head">Data colonialism</div><p>Life turned into raw material for profit, as land once was (Couldry &amp; Mejias 2019, 2024)</p></div>
-        <div class="col"><div class="col-head">Data extractivism</div><p>Scraped texts, voices and outsourced annotation (some in Kenya) feed a few firms' models</p></div>
-        <div class="col"><div class="col-head">Data flaring</div><p>Neglect: African-language data under-collected, poorly kept, little used (Adebara 2025)</p></div>
+        <div class="col"><div class="col-head">Data extractivism</div><p>Scraped texts and voices, and annotation outsourced to Kenya and elsewhere, feed a few firms' models</p></div>
+        <div class="col"><div class="col-head">Data flaring</div><p>The reverse problem, neglect: African-language data under-collected, poorly kept, little used (Adebara 2025)</p></div>
+        <div class="col"><div class="col-head">The tension between them</div><p>More African-language resources are needed; some conditions of their collection should be refused</p></div>
       </div>
       <p><span class="hl">Back to our cases:</span> who corrects a Heshmat record, validates the Hausa lists, withdraws a transcript?</p>
       <aside class="notes">
-        <p>To open the discussion, a step back, drawn from my work on IWAC and the workshop literature.</p>
+        <p>To open this part, a step back, drawn from my work on IWAC and from the workshop literature.</p>
         <p>Most digitisation of African material has been funded by Northern institutions or run by private firms, and it tends to reproduce colonial hierarchies of access. What gets selected deepens archival silences, and keyword search sidelines whatever is not online.</p>
-        <p>AI adds two problems that can coexist. Extraction: texts and voices scraped into training data, and annotation outsourced to low-paid workers, some of them in Kenya, for models owned by a few firms. And neglect: Ife Adebara speaks of language data flaring, after gas flaring. African languages are spoken every day on the radio and at religious gatherings, but that data is not collected or kept, which keeps them “low-resource”.</p>
-        <p>So we may need more language resources while refusing some of the conditions of their collection. In IWAC we follow FAIR and CARE principles, catalogue rather than digitise where custodians prefer, and credit rights holders. The questions at the bottom bring this back to our own cases.</p>
+        <p>AI adds two problems that can coexist. The first is extraction, which Couldry and Mejias’s data colonialism already pointed to: texts and voices are scraped into training data, and annotation is outsourced to low-paid workers, some of them in Kenya, for models owned by a few firms. The second is neglect. Ife Adebara speaks of language data flaring, after gas flaring. African languages are spoken every day on the radio and at religious gatherings, but nobody collects or keeps that speech. That is why they stay “low-resource”, meaning that models have little to learn from.</p>
+        <p>So we may need more language resources while refusing some of the conditions of their collection. In IWAC we follow two sets of principles, FAIR for open data and CARE for Indigenous data governance. We catalogue rather than digitise where custodians prefer, and we credit rights holders. The questions at the bottom bring this back to our own cases.</p>
       </aside>
     </section>
 
@@ -640,9 +670,9 @@ const artwork: Artwork = {
         </div>
       </div>
       <aside class="notes">
-        <p>Our cases so far make sources findable and linkable. Some fieldwork has to prevent exactly that. The method Max presents next tries to keep interlocutors from being datafied, so that they do not end up in prison, for instance by dispersing details so that they cannot be mapped.</p>
-        <p>That is the dialectic in practice: which datafication helps, which damages, and which endangers? The answer depends less on the discipline than on the material, the relation with the people concerned, the purpose, and what disclosure would cost them. And rather than calling fieldwork extraction by definition, I would ask under what conditions it becomes extractive, and what AI changes in speed and scale.</p>
-        <p>The Albani exhibit takes one position: every transcript feeds the counts, but passages are quoted only from transcripts already public on IWAC. Public text does not settle everything, though: aggregating it and making it searchable gives it a new visibility.</p>
+        <p>The Albani dashboard takes one position on this. Every transcript feeds the counts, but passages are quoted only from transcripts that are already public on IWAC. Public text does not settle everything, though. Once it is aggregated and searchable, it has a visibility it did not have before.</p>
+        <p>Some material calls for the opposite move. Max’s interlocutors could end up in prison if they were identified, so his method works to keep them from becoming data points at all.</p>
+        <p>Which of the two applies depends less on the discipline than on the material and on the people it describes. In our planning meeting a colleague said that fieldwork is already extraction. I would rather ask under what conditions it becomes extractive, and what AI changes in speed and scale.</p>
         <p>[Max takes over]</p>
       </aside>
     </section>
@@ -699,37 +729,16 @@ const artwork: Artwork = {
       </div>
     </section>
 
-    <!-- ░░ 24 · A ZMO APPLICATION ░░ From the Sondertatbestand draft (v.4,
-         8 July 2026). Public deck: no budget, posts or partner list on screen. -->
-    <section data-toc="A ZMO application">
-      <h2 class="slide-title">A ZMO application: Algorithmic Authorities</h2>
-      <p class="lead">AI, disinformation and knowledge production in the Global South</p>
-      <div class="cols three hold app">
-        <div class="col"><div class="card"><div class="card-head">Method: AI as a DH research tool</div><p>Open models run locally; workflows for low-resource languages and non-Latin scripts; always alongside archive and field research</p></div></div>
-        <div class="col"><div class="card"><div class="card-head">Analysis: who counts as an authority</div><p>How algorithmic mediation reshapes epistemic authority in Farsi, Hindi, Hausa and Swahili, and in local Arabic, French and English</p></div></div>
-        <div class="col"><div class="callout">
-          <span class="callout-label">The core: a loop</span>
-          <p>Findings from AI analysis go back to the field, where they are checked or revised; the revision shapes the next method.</p>
-        </div></div>
-      </div>
-      <p><strong>A Leibniz strategic extension (Sondertatbestand).</strong> Groundwork: IWAC, Albani Zaria's sermons, the <em>Islam East Africa Collection</em> (in preparation). It answers the Leibniz Senate's 2023 recommendation to strengthen ZMO in digital methods.</p>
-      <aside class="notes">
-        <p>Before the questions, where this could lead at ZMO. The institute is preparing an application for a Leibniz strategic extension, a Sondertatbestand, called Algorithmic Authorities. It has two strands: AI as a research tool, with open models run locally and workflows for languages and scripts that current models handle badly; and an analysis of how algorithms change who counts as an authority.</p>
-        <p>What I would stress is the loop. Earlier I presented datafication as a line, from sources to data to analysis. Here, what the AI analysis finds goes back to the field, where it is checked or revised, and that revision shapes the next method. It is one answer to the question of who checks and who corrects.</p>
-        <p>The groundwork is what you have seen today: IWAC, the Albani sermons, and an East African collection in preparation.</p>
-      </aside>
-    </section>
-
     <!-- ░░ 22 · QUESTIONS FOR THE DISCUSSION ░░ -->
     <section class="compact">
       <h2 class="slide-title">Questions for the discussion</h2>
       <dl class="facts questions">
-        <dt>Method</dt><dd>What validation would make these categories usable for analysis?</dd>
+        <dt>Method</dt><dd>What checks would make categories such as the Hausa word lists usable for analysis?</dd>
         <dt>Governance</dt><dd>Who can correct, contest or withdraw a representation?</dd>
-        <dt>Limits</dt><dd>When should relations be made visible, and when should their reconstruction be prevented?</dd>
+        <dt>Limits</dt><dd>When should links between people, places and texts be made visible, and when should they be impossible to reconstruct?</dd>
       </dl>
       <aside class="notes">
-        <p>[Leave this slide up during the discussion.]</p>
+        <p>[Frédérick, after Max. Leave this slide up during the discussion.]</p>
         <p>The three questions follow the cases: validation from the Albani sermons, governance from Heshmat and the sermons, limits from Max’s presentation.</p>
         <p>If the room is quiet: Who should check the Hausa word lists, and how would we know they are good enough? Should recordings like these go through commercial AI services? Who can ask for a transcript to be withdrawn, and who pays for the upkeep once the project ends? What does building one’s own categories teach that automatic labelling skips?</p>
       </aside>
