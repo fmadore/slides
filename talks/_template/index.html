@@ -90,20 +90,22 @@
       <aside class="notes">Speaker notes for the cover — press S for the speaker view.</aside>
     </section>
 
-    <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field ("navy"/"warm" variants) ░░ -->
+    <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field ("navy"/"warm" variants).
+         Complete as it stands; a deck that numbers its parts may add
+         <p class="sec-no">1</p> above the title. ░░ -->
     <section class="section" data-toc="First section">
-      <p class="sec-no">01</p>
       <h2>The first section</h2>
       <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
-    <!-- ░░ STANDARD CONTENT ░░ the everyday slide: kicker, title, lead, list.
+    <!-- ░░ STANDARD CONTENT ░░ the everyday slide: title, lead, list. The
+         running head already names the section; add <p class="kicker"> only
+         when this one slide needs its own label (it then replaces the head).
          The list steps in on →, one point at a time — class="fragment" on each
          <li>. Delete the classes to put the whole list up at once; that is the
          right call when the room needs to compare the points rather than be
          walked through them. See talks/_showcase/ for the emphasis variants. ░░ -->
     <section data-toc="A key point">
-      <p class="kicker">Optional eyebrow</p>
       <h2 class="slide-title">A slide title</h2>
       <p class="lead">A larger opening line that sets up the slide.</p>
       <ul>
@@ -116,7 +118,7 @@
 
     <!-- ░░ CLOSING / CONTACT ░░ -->
     <section class="closing" data-footer="dark">
-      <p class="kicker">Thank you · Merci</p>
+      <p class="kicker">Thank you</p>
       <h2>A closing line.</h2>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
       <div data-contact></div>

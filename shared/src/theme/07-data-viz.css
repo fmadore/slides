@@ -1,6 +1,6 @@
 /* =============================================================================
    11. DATA AS DESIGN — native, on-brand charts        (direction-board · Move 1)
-   A corpus has a shape, so the system must be able to DRAW it: bars, a timeline,
+   Native charts: bars, a timeline,
    a share breakdown — set in the green/navy fields with gothic labels, tabular
    figures and a single heavy editorial baseline. Not a chart library; the
    broadsheet's own type and rules, holding numbers.
@@ -9,7 +9,7 @@
 .reveal .chart { margin: var(--space-md) 0; max-width: none; display: flex; flex-direction: column; }
 .reveal .chart-head {
   font-family: var(--font-label); font-weight: 700; font-size: var(--fs-label);
-  letter-spacing: var(--track-hall); text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-md);
+  letter-spacing: var(--track-case); color: var(--ink-soft); margin-bottom: var(--space-md);
 }
 .reveal .chart-src { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-faint); margin: var(--space-sm) 0 0; }
 

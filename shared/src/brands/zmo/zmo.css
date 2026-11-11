@@ -124,6 +124,13 @@
   --zmo-muted:        #5b6573;   /* sources and captions · 5.91:1 on white   */
   --zmo-card:         #eef2f7;   /* the rounded card fill                    */
   --zmo-on-blue-soft: #b8c2ce;   /* secondary text on blue · 6.05:1          */
+  /* Marks on white that must still read from the back of a room: flow arrows,
+     the quiet quadrant dot. 3.51:1 on white, 3.12:1 on the card fill. */
+  --zmo-blue-grey:    #7d8a9c;
+  /* Two radii only: every box (card, callout, step, tier row, pill, matrix
+     cell) and the browser frame around a live site. */
+  --zmo-radius:       16px;
+  --zmo-radius-frame: 8px;
   --zmo-font: "Calibri", "Carlito", "Segoe UI", system-ui, sans-serif;
 
   --green:        var(--zmo-blue);
@@ -227,12 +234,22 @@ body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, 
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 137'%3E%3Crect width='1280' height='137' fill='%23143c73'/%3E%3Cpath d='M1175 33v71M1245 0v104M1174 34h106M1174 103h72' stroke='%23fff' stroke-width='2' fill='none'/%3E%3C/svg%3E") 0 0 / 1280px 137px no-repeat;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
+/* The URL foot right, with the slide's folio before it in the same 9 pt blue
+   voice. The folio is stamped by zmo.js as data-zmo-folio, in the engine's
+   own vocabulary (counted slides 01…N, annexe slides A01…), so the number on
+   the slide is the one the contents list and the counter show; a slide with
+   no stamp shows the URL alone. It prints with the slide, so the PDF keeps it
+   while the engine's imprint stays hidden (section 8). */
 body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media)::after {
   content: "www.leibniz-zmo.de";
   position: absolute; right: 105px; top: 667px; height: 38px;
   display: flex; align-items: center;
   font: 400 16px/1 var(--zmo-font); letter-spacing: 0; color: var(--zmo-blue);
+  text-transform: none; white-space: pre; font-variant-numeric: tabular-nums;
   pointer-events: none;
+}
+body[data-brand="zmo"] .reveal .slides section[data-zmo-folio]:not(.stack, .cover, .brand-logo, .media)::after {
+  content: attr(data-zmo-folio) "\2003\2003www.leibniz-zmo.de";
 }
 
 /* Fill the text area, as the PPT's shapes do. In the reference deck cards,
@@ -250,12 +267,25 @@ html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section:not
 }
 body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) > * { flex-shrink: 0; }
 body[data-brand="zmo"] .reveal .slides section > :is(.cols, .flow) { flex: 1 0 auto; min-height: auto; }
-body[data-brand="zmo"] .reveal .slides section > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table) ~ p:nth-last-child(1 of :not(aside)) {
+body[data-brand="zmo"] .reveal .slides section > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table, .pill-row, .tiers, .matrix) ~ p:nth-last-child(1 of :not(aside)) {
   margin-top: auto; margin-bottom: 0;
 }
 body[data-brand="zmo"] .reveal .cols { align-items: stretch; }
 body[data-brand="zmo"] .reveal .cols > .col { display: flex; flex-direction: column; min-width: 0; }
 body[data-brand="zmo"] .reveal .cols > .col > :is(.callout, .card, .panel):only-child { flex: 1 0 auto; margin: 0; }
+/* A stretched box whose content fills well under its height would read as a
+   half-empty panel. A lone callout (a statement box, with no neighbouring
+   card heading to keep level with) centres its content; it does so beside a
+   .matrix too. A row of .cols.cards keeps the PPT's top anchoring unless it
+   is sparse: zmo.js measures the rows of the slide in view (and of every PDF
+   page) and, where the fullest card's content takes under 60% of the card,
+   sets grow factors on two zero-basis spacers so every card's content sits
+   the same height down, just above centre. Neither can grow a box, so
+   neither can push a slide into the engine's auto-fit. */
+body[data-brand="zmo"] .reveal .cols:not(.cards, :has(> .col > :is(.card, .panel))) > .col > .callout:only-child,
+body[data-brand="zmo"] .reveal .matrix > .callout { align-content: center; }
+body[data-brand="zmo"] .reveal .cols.cards > .col::before { content: ""; flex: var(--zmo-above, 0) 1 0px; }
+body[data-brand="zmo"] .reveal .cols.cards > .col::after  { content: ""; flex: var(--zmo-below, 0) 1 0px; }
 
 /* Base type: Calibri, single-spaced, the reference deck's ink. */
 body[data-brand="zmo"] .reveal .slides section {
@@ -267,15 +297,17 @@ body[data-brand="zmo"] .reveal h1,
 body[data-brand="zmo"] .reveal h2,
 body[data-brand="zmo"] .reveal h3,
 body[data-brand="zmo"] .reveal h4 { font-family: var(--zmo-font); letter-spacing: 0; text-transform: none; text-wrap: wrap; }
-/* Text boxes in the PPT sit 0.1 in inside their frame; cards, callouts and
-   figures sit on the frame edge. */
-body[data-brand="zmo"] .reveal .slides section > :is(p, ul, ol, dl, h3, .stat-grid) { margin-inline: 12.8px; }
+/* One left edge. The PPT insets its text boxes 0.1 in (12.8 px) inside the
+   frame while cards, callouts and figures sit on the frame edge, so the lead
+   line started 13 px right of the card under it on almost every slide. Here
+   the band title, the lead, running text and every box share x 64. */
+body[data-brand="zmo"] .reveal .slides section > :is(p, ul, ol, dl, h3, .stat-grid) { margin-inline: 0; }
 
 /* The band title: white, 32 pt, top-anchored in the band. zmo.js shrinks a
    title that would wrap, the way PowerPoint's "shrink text on overflow" does. */
 body[data-brand="zmo"] .reveal .slides section .slide-title {
   position: absolute; left: 64px; top: 25px; width: 1024px; box-sizing: border-box;
-  margin: 0; padding: 0 12.8px; max-width: none;
+  margin: 0; padding: 0; max-width: none;
   font: 400 var(--fs-h2)/1.2 var(--zmo-font); letter-spacing: 0; color: #ffffff;
 }
 body[data-brand="zmo"] .reveal .slides section .slide-title::before,
@@ -432,7 +464,7 @@ body[data-brand="zmo"] .reveal section.cover.address .slides-qr {
 }
 body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-label { color: #ffffff; text-align: center; font-family: var(--zmo-font); }
 body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-label b { color: #ffffff; }
-body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-url { color: var(--zmo-on-blue-soft); }
+body[data-brand="zmo"] .reveal section.cover.address .slides-qr .qr-url { color: var(--zmo-on-blue-soft); font-size: var(--fs-caption); }
 
 /* "Startfolie Logo": the logo alone on blue. */
 body[data-brand="zmo"] .reveal section.brand-logo {
@@ -451,7 +483,7 @@ body[data-brand="zmo"] .reveal .cols { gap: 26px; }
    are custom properties so .compact (below) can retune a whole slide. */
 body[data-brand="zmo"] .reveal .cols.cards { gap: 25.6px; align-items: stretch; }
 body[data-brand="zmo"] .reveal :is(.card, .panel, .cols.cards > .col) {
-  background: var(--zmo-card); border: 0; border-radius: 28px;
+  background: var(--zmo-card); border: 0; border-radius: var(--zmo-radius);
   padding: var(--zmo-card-pad, 21px 32px 26px); box-shadow: none;
 }
 body[data-brand="zmo"] .reveal :where(.card, .panel, .cols.cards > .col) :is(ul, ol, p) { font-size: var(--zmo-card-text, var(--fs-small)); }
@@ -474,7 +506,7 @@ body[data-brand="zmo"] .reveal :is(.col-head, .card-head)::before { content: non
 
 /* The blue callout box: white text, an orange label. */
 body[data-brand="zmo"] .reveal .callout {
-  background: var(--zmo-blue); color: #ffffff; border: 0; border-radius: 28px;
+  background: var(--zmo-blue); color: #ffffff; border: 0; border-radius: var(--zmo-radius);
   padding: 18px 26px 20px; margin: 0 0 16px; max-width: none; box-shadow: none;
   font: 400 1.556rem/1.25 var(--zmo-font);
 }
@@ -511,7 +543,7 @@ body[data-brand="zmo"] .reveal dl.facts dd { margin: 0; font-size: 1.667rem; lin
 body[data-brand="zmo"] .reveal .flow { display: flex; align-items: stretch; gap: 14px; margin: 0 0 18px; }
 body[data-brand="zmo"] .reveal .flow-step {
   position: relative; flex: 1 1 0; min-width: 0;
-  background: var(--zmo-card); border: 0; border-radius: 20px;
+  background: var(--zmo-card); border: 0; border-radius: var(--zmo-radius);
   padding: 18px 22px 20px 70px;
 }
 body[data-brand="zmo"] .reveal .flow-step::before,
@@ -527,12 +559,13 @@ body[data-brand="zmo"] .reveal .flow-step .step-h {
 }
 body[data-brand="zmo"] .reveal .flow-step p { font-size: 1.222rem; line-height: 1.2; margin: 0; color: var(--zmo-text); }
 body[data-brand="zmo"] .reveal .flow-arrow {
-  align-self: center; flex: none; color: var(--zmo-on-blue-soft);
+  align-self: center; flex: none; color: var(--zmo-blue-grey);
   font: 700 2rem/1 var(--zmo-font);
 }
 
 /* Figures in numbers: big blue figure over a muted label. */
-body[data-brand="zmo"] .reveal .stat-grid { gap: 18px 40px; margin-top: 0; }
+/* The grid keeps a clear step from whatever reads it below. */
+body[data-brand="zmo"] .reveal .stat-grid { gap: 18px 40px; margin: 0 0 24px; }
 body[data-brand="zmo"] .reveal .stat-grid .stat,
 body[data-brand="zmo"] .reveal .stat-grid .stat:nth-child(1),
 body[data-brand="zmo"] .reveal .stat-grid .stat:nth-child(2) {
@@ -548,6 +581,145 @@ body[data-brand="zmo"] .reveal .stat-grid .stat .stat-label {
   letter-spacing: 0; text-transform: none; color: var(--zmo-muted);
 }
 
+/* ---- Layout helpers and composite components ------------------------------
+   Drawn by hand for the first ZMO deck (2026-11-12) and kept here so the next
+   one need not redraw them. Each has a working example in talks/_template-zmo. */
+
+/* .cols.three: three columns (three cards a row with .cards; six cards wrap
+   to two rows). .cols.hold: a row that keeps its content height instead of
+   growing to the foot, for a row with more content after it. */
+body[data-brand="zmo"] .reveal .cols.three { --cols: 3; }
+body[data-brand="zmo"] .reveal .slides section > .cols.hold { flex: 0 0 auto; }
+
+/* QR in a card: p.card-meta (muted lines under the card head), .card-qr (the
+   card's list beside a 128 px QR code) and p.card-foot (the link line, pinned
+   to the card's foot). For .cols.cards columns, which are flex columns. */
+body[data-brand="zmo"] .reveal :is(.card, .panel, .cols.cards > .col) p.card-meta {
+  margin: 0 0 18px; font-size: var(--zmo-card-text, var(--fs-small)); color: var(--zmo-muted);
+}
+body[data-brand="zmo"] .reveal .card-qr { display: grid; grid-template-columns: 1fr 128px; gap: 18px; align-items: start; }
+body[data-brand="zmo"] .reveal .card-qr > img { display: block; width: 128px; height: 128px; }
+body[data-brand="zmo"] .reveal :is(.card, .panel, .cols.cards > .col) p.card-foot {
+  margin: auto 0 0; padding-top: 10px; font-size: var(--fs-caption); color: var(--zmo-muted);
+}
+
+/* A QR code with its line of text: .qr-row beside it (.qr-row.small for a
+   76 px code under a frame), .qr-col stacked and centred in a column. */
+body[data-brand="zmo"] .reveal .qr-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+body[data-brand="zmo"] .reveal .qr-row > img { display: block; flex: none; width: 104px; height: 104px; }
+body[data-brand="zmo"] .reveal .qr-row > p { margin: 0; font-size: 1.222rem; line-height: 1.25; }
+body[data-brand="zmo"] .reveal .qr-row.small { margin-top: 10px; }
+body[data-brand="zmo"] .reveal .qr-row.small > img { width: 76px; height: 76px; }
+body[data-brand="zmo"] .reveal .qr-col { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+body[data-brand="zmo"] .reveal .qr-col > img { display: block; width: 141px; height: 141px; }
+body[data-brand="zmo"] .reveal .qr-col > p { margin: 0; font-size: 1.222rem; color: var(--zmo-muted); }
+
+/* img.plain: a screenshot shown as an image at its column's width, framed by
+   a hairline, not enlarged on click. */
+body[data-brand="zmo"] .reveal .slides section img.plain { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+
+/* .callout-label.blue: a label in ZMO blue, on .callout.light only (orange
+   is the default; blue on the blue box would vanish). */
+body[data-brand="zmo"] .reveal .callout.light .callout-label.blue { color: var(--zmo-blue); }
+
+/* dl.facts.tight: five or more short rows on a 72 px pitch, 14 pt text. */
+body[data-brand="zmo"] .reveal dl.facts.tight { --zmo-facts-pitch: 3.4rem; margin-bottom: 6px; }
+body[data-brand="zmo"] .reveal dl.facts.tight dd { font-size: 1.556rem; }
+
+/* .flow.bare: numbered steps without their cards, for a row under a figure.
+   It keeps its own height instead of growing to the foot. */
+body[data-brand="zmo"] .reveal .slides section > .flow.bare { flex: 0 0 auto; margin-top: 14px; }
+body[data-brand="zmo"] .reveal .flow.bare .flow-step { background: none; padding: 4px 6px 0 56px; }
+body[data-brand="zmo"] .reveal .flow.bare .flow-step .step-n { left: 0; top: 4px; }
+
+/* .pill-row: a row of equal blue pills, one short term each (direct
+   children, any element). A final paragraph after it drops to the foot. */
+body[data-brand="zmo"] .reveal .pill-row { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 25.6px; }
+body[data-brand="zmo"] .reveal .pill-row > * {
+  display: grid; place-items: center; height: 84px; margin: 0; padding: 0 12px; text-align: center;
+  border-radius: var(--zmo-radius); background: var(--zmo-blue); color: #ffffff;
+  font: 700 var(--fs-h3)/1.2 var(--zmo-font); letter-spacing: 0; text-transform: none;
+}
+
+/* dl.facts.questions: numbered questions as full-width rows sharing the text
+   area, a hairline between them; the <dt> is the label (an orange number is
+   drawn before it), the <dd> the question at 22 pt. */
+body[data-brand="zmo"] .reveal dl.facts.questions {
+  --zmo-q-rule: 1px solid color-mix(in srgb, var(--zmo-blue) 22%, #ffffff);
+  flex: 1 0 auto; grid-auto-rows: 1fr; gap: 0; margin: 8px 0 0; counter-reset: zmo-q;
+}
+body[data-brand="zmo"] .reveal dl.facts.questions > :is(dt, dd) { display: flex; align-items: center; border-top: var(--zmo-q-rule); }
+body[data-brand="zmo"] .reveal dl.facts.questions > :nth-last-child(-n+2) { border-bottom: var(--zmo-q-rule); }
+body[data-brand="zmo"] .reveal dl.facts.questions dt { font-size: 1.778rem; padding-right: 3rem; counter-increment: zmo-q; }
+body[data-brand="zmo"] .reveal dl.facts.questions dt::before {
+  content: counter(zmo-q); flex: none; display: grid; place-items: center;
+  width: 40px; height: 40px; margin-right: 14px; border-radius: 50%;
+  background: var(--zmo-orange-ink); color: #ffffff; font: 700 1.25rem/1 var(--zmo-font);
+}
+body[data-brand="zmo"] .reveal dl.facts.questions dd { font-size: 2.444rem; line-height: 1.2; }
+
+/* .matrix: a 2 × 2 grid of decisions on two labelled axes, with an optional
+   .callout beside it reading the grid. Children: span.axis.axis-y (the
+   vertical axis title), b.axis.tick-y and b.axis.tick-y.low (its ends),
+   four div.cell placed by .top/.bottom and .left/.right (an <h3> with a dot
+   coloured by quadrant, then a <p>), and div.axis.axis-x holding the
+   horizontal ends and title. Axis text is written in sentence case and set
+   in capitals here. The grid grows to the foot of the text area. */
+body[data-brand="zmo"] .reveal .matrix {
+  flex: 1 0 auto; display: grid; gap: 8px 12px;
+  grid-template-columns: 30px 52px 1fr 1fr; grid-template-rows: 1fr 1fr auto;
+}
+body[data-brand="zmo"] .reveal .matrix:has(> .callout) { grid-template-columns: 30px 52px 1fr 1fr 312px; }
+body[data-brand="zmo"] .reveal .matrix .axis {
+  font: 700 var(--fs-caption)/1.2 var(--zmo-font); letter-spacing: 0.08em; text-transform: uppercase; color: var(--zmo-muted);
+}
+body[data-brand="zmo"] .reveal .matrix .axis-y {
+  grid-column: 1; grid-row: 1 / 3; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
+}
+body[data-brand="zmo"] .reveal .matrix .tick-y { grid-column: 2; grid-row: 1; align-self: start; padding-top: 6px; }
+body[data-brand="zmo"] .reveal .matrix .tick-y.low { grid-row: 2; align-self: end; padding: 0 0 6px; }
+body[data-brand="zmo"] .reveal .matrix .axis-x { grid-column: 3 / 5; grid-row: 3; display: flex; justify-content: space-between; }
+body[data-brand="zmo"] .reveal .matrix .axis-x b { color: var(--zmo-muted); }
+body[data-brand="zmo"] .reveal .matrix .cell {
+  background: var(--zmo-card); border-radius: var(--zmo-radius); padding: 16px 22px; --dot: var(--zmo-blue);
+}
+body[data-brand="zmo"] .reveal .matrix .cell h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 1.556rem; }
+body[data-brand="zmo"] .reveal .matrix .cell h3::before {
+  content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--dot);
+}
+body[data-brand="zmo"] .reveal .matrix .cell p { margin: 0; font-size: 1.333rem; }
+body[data-brand="zmo"] .reveal .matrix .cell.top { grid-row: 1; }
+body[data-brand="zmo"] .reveal .matrix .cell.bottom { grid-row: 2; }
+body[data-brand="zmo"] .reveal .matrix .cell.left { grid-column: 3; }
+body[data-brand="zmo"] .reveal .matrix .cell.right { grid-column: 4; }
+body[data-brand="zmo"] .reveal .matrix .cell.top.left { --dot: var(--zmo-orange); }
+body[data-brand="zmo"] .reveal .matrix .cell.top.right { --dot: var(--zmo-orange-ink); }
+body[data-brand="zmo"] .reveal .matrix .cell.bottom.left { --dot: var(--zmo-blue-grey); }
+body[data-brand="zmo"] .reveal .matrix > .callout { grid-column: 5; grid-row: 1 / 3; margin: 0; }
+
+/* .tiers: graded rows that share the text area, each div.tier holding a
+   lettered dot (.t-dot), the grade (.t-name, set in capitals), a <p> with a
+   bold lead-in, and optionally who it applies to (.t-who). Orange by
+   default; .cool turns a row blue, .open hollows its dot. */
+body[data-brand="zmo"] .reveal .tiers { flex: 1 0 auto; display: grid; grid-auto-rows: 1fr; gap: 6px; }
+body[data-brand="zmo"] .reveal .tier {
+  display: grid; grid-template-columns: 40px 128px 1fr 150px; gap: 16px; align-items: center;
+  background: var(--zmo-card); border-radius: var(--zmo-radius); padding: 4px 22px 4px 16px; --tc: var(--zmo-orange-ink);
+}
+body[data-brand="zmo"] .reveal .tier:not(:has(> .t-who)) { grid-template-columns: 40px 128px 1fr; }
+body[data-brand="zmo"] .reveal .tier.cool { --tc: var(--zmo-blue); }
+body[data-brand="zmo"] .reveal .tier .t-dot {
+  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; box-sizing: border-box;
+  border: 2px solid var(--tc); background: var(--tc); color: #ffffff; font: 700 1.25rem/1 var(--zmo-font);
+}
+body[data-brand="zmo"] .reveal .tier.open .t-dot { background: transparent; color: var(--tc); }
+body[data-brand="zmo"] .reveal .tier .t-name {
+  font: 700 1.333rem/1.1 var(--zmo-font); letter-spacing: 0.04em; text-transform: uppercase; color: var(--tc);
+}
+body[data-brand="zmo"] .reveal .tier p { margin: 0; font-size: 1.278rem; line-height: 1.15; }
+body[data-brand="zmo"] .reveal .tier p strong { margin-right: 0.5em; }
+body[data-brand="zmo"] .reveal .tier .t-who { font-size: 1.333rem; color: var(--zmo-muted); text-align: right; }
+
 /* Tables: the manual's blue header row and pale stripes. */
 body[data-brand="zmo"] .reveal table { font-family: var(--zmo-font); font-size: var(--fs-small); border-collapse: collapse; }
 body[data-brand="zmo"] .reveal table th {
@@ -557,17 +729,34 @@ body[data-brand="zmo"] .reveal table th {
 body[data-brand="zmo"] .reveal table td { border: 0; }
 body[data-brand="zmo"] .reveal table tbody tr:nth-child(even) td { background: var(--zmo-card); }
 
-/* Live frames show the site straight away. The engine covers a frame that
-   sends no readiness message with a "Show the site here" control; a ZMO deck
-   presents the embedding itself, and the frame bar already carries Open ↗.
-   An author's own <img class="frame-fallback"> (a saved view that gives way
-   when the embed reports ready) is untouched. */
-body[data-brand="zmo"] .reveal .site-frame-view > div.frame-fallback { display: none !important; }
+/* Live frames show the site straight away, as the engine now does on its own:
+   its notice hides once the site answers and stays, with the Open link, only
+   when the site cannot be reached. Nothing to override here. */
 /* A saved view covers its frame while the panel loads, as the live panel will,
    instead of taking the figure-image cap and leaving the frame visible beside it. */
 body[data-brand="zmo"] .reveal .slides section .site-frame-view > img.frame-fallback {
   width: 100%; height: 100%; max-width: none; max-height: none; padding: 0;
   object-fit: cover; object-position: top center;
+}
+
+/* Browser frames: flat, on the frame radius. The bar's URL and Open link are
+   held to the PPT's 10 pt caption floor rather than the engine's footer size. */
+body[data-brand="zmo"] .reveal .site-frame { box-shadow: none; border-radius: var(--zmo-radius-frame); }
+body[data-brand="zmo"] .reveal :is(.site-frame-url, .site-frame-open) { font-size: var(--fs-caption); }
+/* .site-frame-view.zoomed renders the page at a larger virtual size scaled
+   down, as a browser zoomed out would, so a panel or a site fits its frame
+   whole instead of showing its top sliver: IWAC panels at 65%, full websites
+   (.zoomed.site) at 50%. Set --z on the view for another step.
+   .has-shot paints a screenshot under the frame while the site loads: give
+   the view a background-image of its own in the deck. */
+body[data-brand="zmo"] .reveal .site-frame-view.zoomed { --z: 0.65; }
+body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site { --z: 0.5; }
+body[data-brand="zmo"] .reveal .site-frame-view.zoomed > iframe {
+  right: auto; bottom: auto; width: calc(100% / var(--z)); height: calc(100% / var(--z));
+  transform: scale(var(--z)); transform-origin: 0 0;
+}
+body[data-brand="zmo"] .reveal .site-frame-view.has-shot {
+  background-color: var(--zmo-card); background-position: top center; background-size: cover; background-repeat: no-repeat;
 }
 
 /* Figures: a hairline frame, the caption in the muted source voice. An image

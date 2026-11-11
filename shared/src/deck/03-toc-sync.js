@@ -188,11 +188,14 @@
       else el.removeAttribute("data-field");
     });
 
-    // Running head: the current section on content slides; hidden on title pages.
+    // Running head: the current section on content slides; hidden on title
+    // pages, and on any slide that authors its own .kicker (or .dateline) — one overline per
+    // slide, and the author's wins over the engine's.
     if (runhead) {
       var isHero = !!(cur && HERO.some(function (c) { return cur.classList.contains(c); }));
-      runhead.hidden = isHero;
-      if (!isHero && runSec) runSec.textContent = sectionLabelFor(h);
+      var hasKicker = !!(cur && cur.querySelector(".kicker, .dateline"));
+      runhead.hidden = isHero || hasKicker;
+      if (!runhead.hidden && runSec) runSec.textContent = sectionLabelFor(h);
     }
     markCurrentTOC();
     fitSlide(cur);

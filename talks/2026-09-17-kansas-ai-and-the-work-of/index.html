@@ -47,7 +47,6 @@
     .reveal .evidence-slide .site-frame-view > img { object-fit: contain; }
     .reveal .evidence-slide .frame-fallback { padding: 0; }
     .reveal .evidence-slide .frame-fallback img { width: 100%; height: 100%; object-fit: contain; margin: 0; }
-    .reveal .evidence-slide .frame-show { position: absolute; bottom: var(--space-md); right: var(--space-md); background: var(--paper); }
     .reveal .evidence-caption { display: flex; gap: var(--space-xl); align-items: baseline; margin-top: var(--space-sm); }
     .reveal .evidence-caption p { font-size: var(--fs-small); margin: 0; }
     .reveal .evidence-caption .source { margin-left: auto; white-space: nowrap; font-size: var(--fs-caption); }
@@ -69,7 +68,6 @@
     .reveal .abundance-slide .stat-num { font-size: var(--fs-h3); }
     .reveal .abundance-slide .frame-fallback { padding: 0; }
     .reveal .abundance-slide .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top; margin: 0; }
-    .reveal .abundance-slide .frame-show { position: absolute; bottom: var(--space-md); right: var(--space-md); background: var(--paper); }
     .reveal .ewe-slide .scroll-panel { max-height: 25rem; }
     .reveal .ewe-slide .shot.tall { max-height: 26.5rem; }
     .reveal .ewe-slide .scroll-panel pre code { font-size: var(--fs-label); }
@@ -140,7 +138,6 @@
           <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://islam.zmo.de/s/westafrica/page/home" title="Islam West Africa Collection — live homepage" loading="lazy"></iframe>
           <div class="frame-fallback" hidden>
             <img src="assets/iwac-home-live.png" alt="Saved IWAC homepage showing the collection overview, search and navigation.">
-            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live homepage</button>
           </div>
         </div>
       </figure>
@@ -228,7 +225,6 @@
           <iframe data-ready-message="iwac-embed-height" src="https://islam.zmo.de/s/westafrica/iwac-embed/spatial-exploration" title="Islam West Africa Collection — live place-mention map" loading="lazy"></iframe>
           <div class="frame-fallback" hidden>
             <img src="assets/spatial-exploration.png" alt="IWAC place-mention map, centred on Africa: many overlapping circles in West Africa and further mentions around the Arabian Peninsula. Larger circles indicate more mentions, not population." width="998" height="560">
-            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live map</button>
           </div>
         </div>
       </figure>
@@ -250,7 +246,6 @@
           <iframe data-ready-message="iwac-embed-height" src="https://islam.zmo.de/s/westafrica/iwac-embed/entity-networks" title="Islam West Africa Collection — live entity network" loading="lazy"></iframe>
           <div class="frame-fallback" hidden>
             <img src="assets/entity-networks.png" alt="IWAC network of co-mentioned people, organisations, places, events and subjects. Coloured nodes form clusters around indexed entities; connections represent co-occurrence in collection items." width="1018" height="520">
-            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live network</button>
           </div>
         </div>
       </figure>
@@ -272,7 +267,6 @@
           <iframe data-frame-trusted src="https://iwac.frederickmadore.com/sentiment-analysis/?urlVersion=2&amp;view=charts&amp;lang=fr&amp;dataset=luna" title="IWAC sentiment analysis dashboard — polarity, centrality and subjectivity across the newspaper corpus" loading="lazy"></iframe>
           <div class="frame-fallback" hidden>
             <img src="assets/sentiment-analysis.png" alt="IWAC sentiment analysis dashboard: country and newspaper filters beside polarity and subjectivity distributions for the GPT-5.6 Luna annotation of 12,349 articles." width="1126" height="411">
-            <button class="frame-show" type="button" onclick="this.parentElement.hidden = true; const frame = this.parentElement.parentElement.querySelector('iframe'); frame.style.visibility = ''; frame.src = frame.dataset.src; frame.focus();">Show live dashboard</button>
           </div>
         </div>
       </figure>

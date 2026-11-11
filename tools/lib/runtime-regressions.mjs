@@ -116,34 +116,94 @@ export async function checkRuntimeRegressions(browser, base, diagnostics = null)
       return document.activeElement === element && css.outlineStyle !== 'none' && parseFloat(css.outlineWidth) >= 2;
     }), true);
 
-    // Framing permission is not availability. An aborted trusted iframe must
-    // keep its already-vendored screenshot, including after the fallback timer.
-    await open('2026-09-17-kansas-ai-and-the-work-of');
-    const frameSlide = await page.evaluate(() => {
-      const frame = document.querySelector('iframe[data-frame-trusted=""]');
-      const { h } = Reveal.getIndices(frame.closest('section'));
-      Reveal.slide(h, 0);
-      return h;
+    // A live frame shows directly, with no opt-in control. What decides is
+    // reachability: the engine probes the frame's URL with a no-cors fetch.
+    // Recording that probe lets each check wait for the engine's own verdict
+    // (its handlers are attached first, so they have run once ours resolves).
+    const recordProbe = () => page.evaluate(() => {
+      const native = window.fetch;
+      window.fetch = (...args) => (window.frameProbe = native(...args));
     });
+    const probed = () => page.evaluate(() => window.frameProbe.then(() => true, () => false));
+    const reachable = origin => ctx.route(url => url.origin === origin,
+      route => route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Stub</title>' }));
+    const visit = selector => page.evaluate(selector => {
+      const { h, v } = Reveal.getIndices(document.querySelector(selector).closest('section'));
+      Reveal.slide(0, 0);
+      Reveal.slide(h, v);
+      return document.querySelector('.present [data-frame-notice] p')?.textContent ?? null;
+    }, selector);
+    const frameShown = () => page.evaluate(() => {
+      const frame = document.querySelector('.present iframe');
+      return frame.style.visibility !== 'hidden' &&
+        [...frame.parentElement.querySelectorAll('.frame-fallback')].every(fallback => fallback.hidden);
+    });
+
+    // An author's saved view survives an unreachable site, a load event (which
+    // blocked and error documents also fire) and the fallback timer.
+    await open('2026-09-17-kansas-ai-and-the-work-of');
+    await recordProbe();
+    assert.equal(await page.locator('.frame-show').count(), 0);
+    const trustedAny = 'iframe[data-frame-trusted=""]';
+    await visit(trustedAny);
     await page.evaluate(() => window.DeckRuntime.settle());
     const fallback = page.locator('.present .frame-fallback');
+    assert.equal(await probed(), false);
     assert.equal(await fallback.isVisible(), true);
     assert.ok(await fallback.locator('img').evaluate(img => img.complete && img.naturalWidth > 0));
     await page.evaluate(() => document.querySelector('.present iframe').dispatchEvent(new Event('load')));
     await page.waitForTimeout(8250);
     assert.equal(await fallback.isVisible(), true);
-    // A matching origin declaration must not bypass the fallback either.
-    await page.evaluate(h => {
-      document.querySelector('.present iframe').dataset.frameTrusted = location.origin;
-      Reveal.slide(h - 1, 0);
-      Reveal.slide(h, 0);
-    }, frameSlide);
-    assert.equal(await fallback.isVisible(), true);
-    await fallback.locator('.frame-show').click();
+    // Once the site answers, a trust declaration for any origin, or for this
+    // page's origin, lets the saved view give way to the live frame.
+    const sentiment = new URL(await page.locator(trustedAny).getAttribute('data-src')).origin;
+    await reachable(sentiment);
+    await visit(trustedAny);
+    assert.equal(await probed(), true);
     assert.equal(await fallback.isVisible(), false);
-    await page.evaluate(h => { Reveal.slide(h - 1, 0); Reveal.slide(h, 0); }, frameSlide);
+    assert.equal(await frameShown(), true);
+    await page.evaluate(selector => {
+      const frame = document.querySelector(selector);
+      frame.dataset.frameTrusted = location.origin;
+      frame.dataset.thisOrigin = '';
+    }, trustedAny);
+    await visit('iframe[data-this-origin]');
+    assert.equal(await probed(), true);
+    assert.equal(await frameShown(), true);
+    // Reachable is not enough when the declaration names another origin: the
+    // published-site declaration does not cover this local page.
+    const elsewhere = 'iframe[data-frame-trusted^="https://"]';
+    await reachable(new URL(await page.locator(elsewhere).getAttribute('data-src')).origin);
+    await visit(elsewhere);
+    assert.equal(await probed(), true);
     assert.equal(await fallback.isVisible(), true);
-    console.log('ok    runtime regressions: resize and cached slides, wrapped gallery, native touch dialog, footer link, trusted iframe offline/opt-in');
+    assert.equal(await frameShown(), false);
+    await ctx.unrouteAll();
+    await ctx.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+
+    // A frame with no saved view gets the engine's notice: loading while the
+    // probe is pending, then a readable unavailable notice with a persistent
+    // Open link; once the site answers, the notice gives way to the frame.
+    await open('2026-06-29-erlangen-islam-peripheries');
+    await recordProbe();
+    const bare = 'iframe[src*="islam.zmo.de"], iframe[data-src*="islam.zmo.de"]';
+    assert.equal(await visit(bare), 'Loading the site…');
+    assert.equal(await probed(), false);
+    const notice = page.locator('.present [data-frame-notice]');
+    assert.equal(await notice.isVisible(), true);
+    assert.equal(await notice.locator('p').textContent(), 'Live view unavailable — it needs a network connection.');
+    const openSite = notice.locator('a');
+    assert.equal(await openSite.textContent(), 'Open the site ↗');
+    assert.equal(await openSite.getAttribute('target'), '_blank');
+    assert.equal(await openSite.getAttribute('href'), await page.locator('.present .site-frame-open').getAttribute('href'));
+    assert.equal(await page.locator('.frame-show').count(), 0);
+    await reachable('https://islam.zmo.de');
+    await visit(bare);
+    assert.equal(await probed(), true);
+    assert.equal(await notice.isVisible(), false);
+    assert.equal(await frameShown(), true);
+    assert.equal(await page.locator('.present iframe').isVisible(), true);
+    console.log('ok    runtime regressions: resize and cached slides, wrapped gallery, native touch dialog, footer link, live frames (saved view, trust, notice, reachability)');
   } catch (error) {
     diagnostics?.capture('runtime regressions', error.stack || String(error));
     throw error;

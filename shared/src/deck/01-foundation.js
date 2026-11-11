@@ -34,7 +34,7 @@
           imageLoading: "Loading image…", imageUnavailable: "Image unavailable. Try another image.",
           embedLoading: "Loading file…", embedError: "Could not load the file.", embedSource: "View the source",
           scrollRegion: "Scrollable excerpt", pipelinePlay: "Play sequence", pipelinePause: "Pause sequence",
-          frameNetwork: "This website uses a network connection.", frameShow: "Show the site here",
+          frameLoading: "Loading the site…",
           frameUnavailable: "Live view unavailable — it needs a network connection.", frameOpen: "Open the site" },
     fr: { contents: "Sommaire", overview: "aperçu", close: "fermer", prev: "Diapo précédente", next: "Diapo suivante", tocOpen: "Ouvrir le sommaire", tocAria: "Sommaire", closeAria: "Fermer", deckNav: "Navigation des diapositives",
           copyLink: "Copier le lien de cette diapositive", linkCopied: "Lien copié",
@@ -42,7 +42,7 @@
           imageLoading: "Chargement de l’image…", imageUnavailable: "Image indisponible. Essayez une autre image.",
           embedLoading: "Chargement du fichier…", embedError: "Impossible de charger le fichier.", embedSource: "Voir la source",
           scrollRegion: "Extrait défilant", pipelinePlay: "Lire la séquence", pipelinePause: "Mettre en pause",
-          frameNetwork: "Ce site utilise une connexion réseau.", frameShow: "Afficher le site ici",
+          frameLoading: "Chargement du site…",
           frameUnavailable: "Aperçu en direct indisponible — une connexion réseau est requise.", frameOpen: "Ouvrir le site" }
   };
   var STR = I18N[LANG] || I18N.en;

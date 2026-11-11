@@ -18,9 +18,9 @@ colour palette.
 
 A bold scholarly broadsheet, not a slide template. Three rules carry the whole system:
 
-1. **Inverted type hierarchy.** The newspaper-gothic (**Libre Franklin**, pushed to its
-   black weights) is the *loud* display voice — headlines, section numbers, statements,
-   set big and tight. The humanist book serif (**EB Garamond**) is the *quiet*
+1. **Inverted type hierarchy.** The newspaper-gothic (**Libre Franklin**, set bold at
+   700) is the *loud* display voice — headlines, statements and divider titles, set big
+   and tight. The humanist book serif (**EB Garamond**) is the *quiet*
    counter-voice — body prose, leads and quotations. This is the reverse of a
    conventional academic deck, where a serif leads and a gothic is reduced to tiny
    labels. One pair of (variable, self-hosted) fonts; opposite personality.
@@ -33,11 +33,15 @@ A bold scholarly broadsheet, not a slide template. Three rules carry the whole s
    wash. Structure is drawn with confident 3–6px rules instead of faint hairlines.
 
 **Signature device:** a heavy green marker bar sits above every standard slide title
-(add `.no-rule` to drop it). Section numbers and metrics run oversized.
+(add `.no-rule` to drop it); it is the slide's one mark. A slide carries one overline at
+most (an authored `.kicker` replaces the engine's running head), labels inside the slide
+are in sentence case, and metrics run oversized.
 
 The design system is recorded in [`DESIGN.md`](DESIGN.md) — tokens, named rules and
 component specs derived from the shipped theme (machine-readable sidecar in
 `.impeccable/design.json`) — and the durable product context in [`PRODUCT.md`](PRODUCT.md).
+How the rules were arrived at, and the values they replaced, is in
+[`docs/design-history.md`](docs/design-history.md).
 
 ---
 
@@ -76,6 +80,7 @@ slides/
 │   ├── validate.mjs          `npm run validate`: every CI check in one command
 │   ├── export-pdf.mjs        per-deck slides.pdf + social-card.png, and the
 │   │                         landing page's own card (CI)
+│   ├── contact-sheet.mjs     `npm run sheets`: every slide on 3×3 review sheets
 │   ├── check-links.py        external links in published decks (weekly, not CI)
 │   ├── strip-notes.py        allowlisted, notes-free publication build (+ tests)
 │   ├── fetch-highlight.py    regenerate the slim highlight.js bundle
@@ -83,7 +88,8 @@ slides/
 │   ├── lib/                  shared Node runtime/server/cache helpers
 │   ├── slideslib/            validated manifest + generated deck metadata
 │   └── test_*.py test-*.mjs  unit tests (Python unittest, node --test)
-├── docs/audits/              dated repository reviews and what came of them
+├── docs/                     design-history.md (why DESIGN.md's rules exist) and
+│                             audits/ (dated repository reviews and what came of them)
 ├── package.json lock         pinned browser/visual tooling and local scripts
 ├── requirements-dev.txt      pinned QR-generation dependency
 ├── serve-deck.py             ← no-cache dev server (serves the whole repo)
@@ -327,20 +333,28 @@ Output-affecting options invalidate the cache; failed captures expire after an
 hour. `--refresh-frames` retries immediately, and `--force` regenerates all
 selected output. Render the affected PDF pages for visual review as well.
 
-**Live-frame recovery.** A persistent external link and explicit “Show the
-site here” control remain available when an embedded page cannot prove it is
-ready. For an owned application, declare `data-ready-message="message-type"`
-on the iframe and have the application send that message to its parent; the
-engine verifies both origin and source. The state resets on each activation.
-Use a local screenshot when a live surface is unnecessary for the argument.
+**Live frames show the site directly.** There is no opt-in step: a
+`.site-frame` iframe loads when its slide is shown, and the frame bar's
+`Open ↗` link (always `target="_blank"`, which `tools/audit.py` enforces) is
+the way out. A load event is not taken as evidence, so the engine asks
+whether the site is reachable with a no-cors request. A frame with no
+fallback of its own is covered by a “Loading the site…” notice until that
+request succeeds; if the site is offline, blocked or still pending after 8 s,
+the notice says the live view is unavailable and keeps a persistent “Open
+the site ↗” link. The state resets on each activation.
 
-Framing permission is not evidence that an application loaded. The legacy
-`data-frame-trusted` attribute no longer dismisses the fallback automatically,
-even on an allowed origin. Applications without a ready-message contract keep
-their screenshot and recovery controls until the audience explicitly chooses
-“Show the site here”. The PDF exporter records the final URL, HTTP status and
-capture mode; an error page is a failed capture, with the authored local image
-retained when available. Failed captures remain eligible for retry.
+An authored saved view (`<img class="frame-fallback">` inside
+`.site-frame-view`) is kept until the embed proves itself: for an owned
+application, declare `data-ready-message="message-type"` on the iframe and
+have it post that message to its parent (the engine checks origin and
+source); otherwise `data-frame-trusted` (empty, or this page's origin) lets
+the saved view give way once the site is reachable. A site that refuses
+framing from an origin stays on its saved view there; `islam.zmo.de`, for
+example, refuses `localhost`, so those frames show their screenshots in a
+local preview. ZMO decks follow the same contract. The PDF exporter records the final
+URL, HTTP status and capture mode; an error page is a failed capture, with
+the authored local image retained when available. Failed captures remain
+eligible for retry.
 
 **Reading editions.** Each published talk has a generated `read.html` with
 ordinary, reflowing text, headings, figures and source-slide links. The landing
@@ -458,7 +472,13 @@ npm run validate -- --browser     # … plus source/publication/reader/export br
 `npm run test:export` exercises real browser failures (HTTP errors, denied
 frames, offline and blank responses, missing images and interrupted exports).
 `npm run check:publication -- --root _site --exports` checks the built site
-and its PDF/card links. The CI browser smoke also runs Firefox and
+and its PDF/card links. To review a whole deck at a glance,
+`npm run sheets -- --out DIR --decks <slug>` renders every slide at 1280×720
+(final fragment state, reduced motion) onto 3×3 contact sheets labelled with
+slide number, annexe folio and any auto-fit scale, plus a `<slug>-info.json`;
+`--full` keeps each slide as a JPEG, `--live` lets live frames load,
+`--viewport 390x844` and `--columns N` change the grid, and omitting `--decks`
+captures every public deck. The CI browser smoke also runs Firefox and
 WebKit. Dependency freshness has its own scheduled report:
 `python tools/check-vendors.py --json`; refresh reveal.js reproducibly with
 `python tools/fetch-reveal.py <exact-version>` and commit its manifest hashes.

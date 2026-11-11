@@ -90,6 +90,10 @@ own CI. The author is the credit; the university is an affiliation.
 
 - Credit belongs to Frédérick Madore; Africa Multiple / University of
   Bayreuth is an affiliation, never the masthead credit or publisher slot.
+- A talk given for the Leibniz-Zentrum Moderner Orient may wear the opt-in
+  ZMO brand skin (`shared/brands/zmo/`), which follows the ZMO PowerPoint and
+  corporate design manual instead of the Bayreuth palette below; the person
+  remains the credit and the institution an affiliation there too.
 - The exact six-colour University of Bayreuth corporate palette is binding:
   green #009260, navy #00268a, gold #cca352, amber #f59c08, brown #d57912,
   sky #44b8f2. The Africa Multiple / Bayreuth wordmarks are the identity
@@ -108,7 +112,8 @@ own CI. The author is the credit; the university is an affiliation.
   real research assets in `talks/*/assets/` (IWAC screenshots, OCR samples,
   archival photographs, QR codes).
 - `talks/_showcase/` — the full layout catalogue (never published);
-  `talks/_template/` — the starter every new talk copies.
+  `talks/_template/` — the starter a new talk copies, or `talks/_template-zmo/`
+  for a talk in the ZMO brand skin.
 - CITATION.cff with ORCID; live site at slides.frederickmadore.com.
 - No testimonials, adoption metrics or press exist — do not fabricate any.
 

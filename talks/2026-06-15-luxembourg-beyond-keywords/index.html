@@ -85,8 +85,8 @@
     .reveal .kvm-q { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-lead); color: var(--ink); flex: 1 1 auto; min-width: 0; }
     .reveal .kvm-toggle { display: flex; gap: 0.4em; flex: none; }
     .reveal .kvm-btn { appearance: none; -webkit-appearance: none; cursor: pointer;
-      font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer); line-height: 1;
-      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85em 1.1em; border-radius: var(--radius-sm);
+      font-family: var(--font-label); font-weight: 800; font-size: var(--fs-label); line-height: 1;
+      letter-spacing: var(--track-case); padding: 0.85em 1.1em; border-radius: var(--radius-sm);
       background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line-strong);
       /* Never `all`: it sweeps outline-color and outline-offset in too, so the
          focus ring faded up over 220ms instead of landing with focus. */
@@ -99,16 +99,16 @@
     .reveal .kvm[data-mode="keyword"] .kvm-keyword,
     .reveal .kvm[data-mode="meaning"] .kvm-meaning { display: block; }
     .reveal .kvm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; margin-bottom: 0.3em; }
-    .reveal .kvm-count { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-footer); letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); }
+    .reveal .kvm-count { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-label); letter-spacing: var(--track-case); color: var(--green-deep); }
     .reveal .kvm-count.poor { color: var(--ink-soft); }
-    .reveal .kvm-metric { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+    .reveal .kvm-metric { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-label); letter-spacing: var(--track-case); color: var(--ink-faint); }
     .reveal .kvm-rows { border-top: 3px solid var(--rule); }
     .reveal .kvm-row { display: grid; grid-template-columns: 1fr auto 4rem; align-items: center; gap: var(--space-md);
       padding: 0.36em 0; border-bottom: 1px solid var(--line); }
     .reveal .kvm-title { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); min-width: 0; }
     .reveal .kvm-title.rtl { direction: rtl; text-align: left; }
-    .reveal .kvm-tag { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); letter-spacing: 0.05em;
-      text-transform: uppercase; color: var(--ink-soft); border: 1.5px solid var(--line); border-radius: var(--radius-sm);
+    .reveal .kvm-tag { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); letter-spacing: var(--track-case);
+      color: var(--ink-soft); border: 1.5px solid var(--line); border-radius: var(--radius-sm);
       padding: 0.25em 0.6em; white-space: nowrap; }
     .reveal .kvm-tag.cross { color: var(--brown-deep); border-color: color-mix(in oklch, var(--brown), white 50%); }
     .reveal .kvm-score { font-family: var(--font-label); font-weight: 800; font-size: var(--fs-small); color: var(--navy);
@@ -117,12 +117,12 @@
     .reveal .kvm-excerpt { font-family: var(--font-serif); font-size: var(--fs-small); color: var(--ink); }
     .reveal .kvm-src { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer); color: var(--ink-faint); margin-top: 0.2em; }
     .reveal .kvm-blind { border-top: 3px solid var(--brown); padding-top: 0.5em; margin-top: var(--space-md); }
-    .reveal .kvm-blind-label { display: block; font-family: var(--font-label); font-weight: 800; font-size: var(--fs-footer);
-      letter-spacing: 0.12em; text-transform: uppercase; color: var(--brown-deep); margin-bottom: 0.2em; }
+    .reveal .kvm-blind-label { display: block; font-family: var(--font-label); font-weight: 800; font-size: var(--fs-label);
+      letter-spacing: var(--track-case); color: var(--brown-deep); margin-bottom: 0.2em; }
     .reveal .kvm-blind p { margin: 0; font-size: var(--fs-small); color: var(--ink-soft); max-width: none; }
     .reveal .kvm-note { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-soft); margin: 0.7em 0 0; max-width: none; }
-    .reveal .kvm-illus { font-style: normal; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-footer);
-      letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); }
+    .reveal .kvm-illus { font-style: normal; font-family: var(--font-label); font-weight: 600; font-size: var(--fs-caption);
+      letter-spacing: var(--track-case); color: var(--ink-faint); }
 
     /* Tidy pass — let the cover and the conclusion sit at FULL scale (no mild
        auto-fit shrink), and lift the SKILL.md panel clear of the footer. */
@@ -197,12 +197,12 @@
           <div class="panel">
             <div class="kicker">In numbers</div>
             <div class="stat-grid">
-              <div class="stat"><span class="stat-num" data-count="14700" data-count-suffix="+">14,700+</span><span class="stat-label">documents</span></div>
-              <div class="stat"><span class="stat-num" data-count="28.1" data-count-decimals="1" data-count-suffix="M">28.1M</span><span class="stat-label">words</span></div>
-              <div class="stat"><span class="stat-num" data-count="68122">68,122</span><span class="stat-label">pages</span></div>
-              <div class="stat"><span class="stat-num" data-count="13">13</span><span class="stat-label">document types</span></div>
-              <div class="stat"><span class="stat-num" data-count="9315">9,315</span><span class="stat-label">audiovisual minutes</span></div>
-              <div class="stat"><span class="stat-num" data-count="864">864</span><span class="stat-label">references</span></div>
+              <div class="stat"><span class="stat-num" data-count="14700" data-count-suffix="+">14,700+</span><span class="stat-label">Documents</span></div>
+              <div class="stat"><span class="stat-num" data-count="28.1" data-count-decimals="1" data-count-suffix="M">28.1M</span><span class="stat-label">Words</span></div>
+              <div class="stat"><span class="stat-num" data-count="68122">68,122</span><span class="stat-label">Pages</span></div>
+              <div class="stat"><span class="stat-num" data-count="13">13</span><span class="stat-label">Document types</span></div>
+              <div class="stat"><span class="stat-num" data-count="9315">9,315</span><span class="stat-label">Audiovisual minutes</span></div>
+              <div class="stat"><span class="stat-num" data-count="864">864</span><span class="stat-label">References</span></div>
             </div>
             <hr class="rule">
             <p class="small muted">Six countries · mostly French — also Arabic &amp; Hausa · open access since 2023</p>
@@ -367,15 +367,15 @@
           <ul class="query-list">
             <li>
               <span class="q">"Newspaper articles on Islam in <strong>Abidjan</strong>, in the 1990s"</span>
-              <span class="q-map"><span class="chip green">articles</span>place · period</span>
+              <span class="q-map"><span class="chip green">Articles</span>Place · period</span>
             </li>
             <li>
               <span class="q">"Islamic publications on <strong>secularism</strong> in Togo and Benin"</span>
-              <span class="q-map"><span class="chip green">publications</span>subject · country</span>
+              <span class="q-map"><span class="chip green">Publications</span>Subject · country</span>
             </li>
             <li>
               <span class="q">"Academic references on <strong>Muslim women</strong> in Burkina Faso"</span>
-              <span class="q-map"><span class="chip green">references</span>subject · country</span>
+              <span class="q-map"><span class="chip green">References</span>Subject · country</span>
             </li>
           </ul>
           <p class="small muted">One plain-language request; the model picks the tools and combines the filters.</p>
@@ -461,16 +461,16 @@
         <div class="kvm-panel kvm-meaning">
           <div class="kvm-head">
             <span class="kvm-count">7 documents · ranked by meaning · across languages</span>
-            <span class="kvm-metric">cosine similarity</span>
+            <span class="kvm-metric">Cosine similarity</span>
           </div>
           <div class="kvm-rows">
-            <div class="kvm-row"><span class="kvm-title">Écoles franco-arabes et le programme national</span><span class="kvm-tag">education · state</span><span class="kvm-score">0.89</span></div>
-            <div class="kvm-row"><span class="kvm-title">Le code de la famille relance la controverse</span><span class="kvm-tag">family law</span><span class="kvm-score">0.86</span></div>
-            <div class="kvm-row"><span class="kvm-title">L’État et les associations islamiques</span><span class="kvm-tag">religion · state</span><span class="kvm-score">0.84</span></div>
+            <div class="kvm-row"><span class="kvm-title">Écoles franco-arabes et le programme national</span><span class="kvm-tag">Education · state</span><span class="kvm-score">0.89</span></div>
+            <div class="kvm-row"><span class="kvm-title">Le code de la famille relance la controverse</span><span class="kvm-tag">Family law</span><span class="kvm-score">0.86</span></div>
+            <div class="kvm-row"><span class="kvm-title">L’État et les associations islamiques</span><span class="kvm-tag">Religion · state</span><span class="kvm-score">0.84</span></div>
             <div class="kvm-row"><span class="kvm-title rtl" lang="ar">النظام العلماني ودوره في التعليم</span><span class="kvm-tag cross">Arabic · cross-lang</span><span class="kvm-score">0.81</span></div>
-            <div class="kvm-row"><span class="kvm-title">Neutralité religieuse de l’administration publique</span><span class="kvm-tag">governance</span><span class="kvm-score">0.79</span></div>
+            <div class="kvm-row"><span class="kvm-title">Neutralité religieuse de l’administration publique</span><span class="kvm-tag">Governance</span><span class="kvm-score">0.79</span></div>
           </div>
-          <p class="kvm-note">None contain the word <em>laïcité</em> — all are about the idea, including the Arabic record keyword search would never reach. <span class="kvm-illus">· illustrative slice</span></p>
+          <p class="kvm-note">None contain the word <em>laïcité</em> — all are about the idea, including the Arabic record keyword search would never reach. <span class="kvm-illus">· Illustrative slice</span></p>
         </div>
       </div>
       <aside class="notes">The talk argues meaning beats keywords — so let the slide prove it, live and offline. Start on Keyword: two exact hits, and a whole blind spot. Then click "By meaning": seven results, none of which contain the word, one of them in Arabic. The deck performing its own thesis. (These rows are an illustrative slice — I'll swap in a real query before the talk.)</aside>
@@ -483,7 +483,7 @@
       <p class="small muted" style="margin-bottom:var(--space-sm)">Two depths, chosen up front:</p>
       <div class="depths">
         <div class="depth">
-          <span class="depth-name">Brief<span class="depth-tag">default</span></span>
+          <span class="depth-name">Brief<span class="depth-tag">Default</span></span>
           <span class="depth-desc">a quick scan and a few close reads</span>
         </div>
         <div class="depth is-full">

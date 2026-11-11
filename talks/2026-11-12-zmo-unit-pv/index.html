@@ -42,25 +42,14 @@
   <link rel="stylesheet" href="../../shared/brands/zmo/zmo.css">
 
   <!-- Per-talk styles: the layouts this deck's PPT drew by hand. Selectors
-       carry the brand prefix because the skin's own rules do. -->
+       carry the brand prefix because the skin's own rules do. The reusable
+       ones (three-up cards, QR in a card, QR rows, the 2 × 2 matrix, graded
+       tiers, the pill row, the question rows, zoomed frames) live in the skin. -->
   <style>
-    /* Three-up card grids (slides 11, 17, 24, 26). */
-    body[data-brand="zmo"] .reveal .cols.three { --cols: 3; }
-    /* A row that keeps its own height instead of sharing the slide's. */
-    body[data-brand="zmo"] .reveal .slides section > .cols.hold { flex: 0 0 auto; }
-
-    /* Workshop cards: meta lines, then the bullets beside a QR code. The text
-       sits clear of the 28 px corner, and the meta lines a step below the title. */
-    body[data-brand="zmo"] .reveal .cols.cards.ws > .col { --zmo-card-pad: 28px 36px 24px; }
-    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-meta { margin: 0 0 18px; font-size: 1.222rem; color: var(--zmo-muted); }
-    body[data-brand="zmo"] .reveal .ws-body { display: grid; grid-template-columns: 1fr 128px; gap: 18px; align-items: start; }
-    body[data-brand="zmo"] .reveal .ws-body img { width: 128px; height: 128px; display: block; }
-    body[data-brand="zmo"] .reveal .cols.cards .col p.ws-url { margin-top: auto; padding-top: 10px; font-size: 1rem; color: var(--zmo-muted); }
-
     /* Slide 7: the photograph beside its record in the site's code. */
     body[data-brand="zmo"] .reveal .cols.record-row { grid-template-columns: 474px 1fr; gap: 38px; }
     body[data-brand="zmo"] .reveal pre.record {
-      margin: 0; padding: 14px 18px; border-radius: 20px; background: var(--zmo-text);
+      margin: 0; padding: 14px 18px; border-radius: var(--zmo-radius); background: var(--zmo-text);
       font-size: 1rem; line-height: 1.12; white-space: pre-wrap; box-shadow: none;
     }
     body[data-brand="zmo"] .reveal pre.record code { color: #e5e7eb; background: none; padding: 0; font-family: var(--font-mono); font-size: 1rem; }
@@ -69,7 +58,6 @@
     body[data-brand="zmo"] .reveal .cols.w667 { grid-template-columns: 667px 1fr; gap: 50px; }
     body[data-brand="zmo"] .reveal .cols.w397 { grid-template-columns: 397px 1fr; gap: 32px; }
     body[data-brand="zmo"] .reveal .cols.w600 { grid-template-columns: 600px 1fr; gap: 28px; }
-    body[data-brand="zmo"] .reveal .cols.w653 { grid-template-columns: 653px 1fr; gap: 38px; }
     body[data-brand="zmo"] .reveal .cols.w503 { grid-template-columns: 503px 1fr 156px; gap: 28px; }
     body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
     /* Slide 5: the PPT set this subtitle at 17 pt so it holds one line. */
@@ -89,23 +77,6 @@
     body[data-brand="zmo"] .reveal a.paper-link:hover span { color: var(--zmo-blue); text-decoration: underline; }
     body[data-brand="zmo"] .reveal .cols.split-work { grid-template-columns: 768fr 324fr; gap: 19px; }
 
-    /* A QR code with its line of text, beside or under a frame. */
-    body[data-brand="zmo"] .reveal .qr-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
-    body[data-brand="zmo"] .reveal .qr-row img { width: 104px; height: 104px; flex: none; display: block; }
-    body[data-brand="zmo"] .reveal .qr-row p { margin: 0; font-size: 1.222rem; line-height: 1.25; }
-    body[data-brand="zmo"] .reveal .qr-col { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
-    body[data-brand="zmo"] .reveal .qr-col img { width: 141px; height: 141px; display: block; }
-    body[data-brand="zmo"] .reveal .qr-col p { margin: 0; font-size: 1.222rem; color: var(--zmo-muted); }
-
-    /* Screenshots used as images, framed by a hairline. */
-    body[data-brand="zmo"] .reveal .slides section img.plain { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
-    body[data-brand="zmo"] .reveal .slides section .cover-fit img { width: 100%; height: 100%; max-height: none; object-fit: cover; }
-
-    /* Live frames render at a larger virtual size, scaled down, as a browser
-       zoomed out would: a panel or a site then fits its frame whole instead of
-       showing its top sliver. IWAC panels at 65%, full websites at 50%. */
-    body[data-brand="zmo"] .reveal .site-frame-view.zoomed { --z: 0.65; }
-    body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site { --z: 0.5; }
     /* The pipeline explainer runs 650 px tall at desktop width: a little
        further out than the other panels so all five captions fit. */
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed.explainer { --z: 0.58; }
@@ -116,69 +87,23 @@
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed.stages > iframe {
       top: calc(-176px * var(--z)); height: calc((100% + 176px * var(--z)) / var(--z));
     }
-    body[data-brand="zmo"] .reveal .site-frame-view.stages > img.frame-fallback { object-position: 0 46%; }
+    body[data-brand="zmo"] .reveal .slides section .site-frame-view.stages > img.frame-fallback { object-position: 0 46%; }
     body[data-brand="zmo"] .reveal .cols.cards.decisions { gap: 12px 16px; margin-top: 12px; }
-    body[data-brand="zmo"] .reveal .cols.cards.decisions > .col { padding: 12px 20px 14px; border-radius: 20px; }
+    body[data-brand="zmo"] .reveal .cols.cards.decisions > .col { padding: 12px 20px 14px; }
     /* Two sites open on a tall header; a little further out reaches their charts. */
     body[data-brand="zmo"] .reveal .site-frame-view.zoomed.site:is(.shot-zmovis, .shot-genocide, .shot-iwac) { --z: 0.42; }
-    body[data-brand="zmo"] .reveal .site-frame-view.zoomed > iframe {
-      right: auto; bottom: auto; width: calc(100% / var(--z)); height: calc(100% / var(--z));
-      transform: scale(var(--z)); transform-origin: 0 0;
-    }
-
-    /* Live sites load straight into their frames (the skin hides the engine's
-       opt-in control); the screenshot under each shows while it loads. */
-    body[data-brand="zmo"] .reveal .site-frame { box-shadow: none; border-radius: 12px; }
-    body[data-brand="zmo"] .reveal .site-frame-view.has-shot {
-      background-color: var(--zmo-card); background-position: top center; background-size: cover; background-repeat: no-repeat;
-    }
-    body[data-brand="zmo"] .reveal .site-frame-view.has-shot .frame-fallback {
-      inset: auto 0 0 0; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 12px;
-      padding: 10px 14px; background: color-mix(in oklch, #ffffff, transparent 8%);
-    }
-    body[data-brand="zmo"] .reveal .site-frame-view.has-shot .frame-fallback p { font-family: var(--zmo-font); font-style: normal; font-size: 1rem; }
+    /* The screenshot under each live site while it loads (.has-shot). */
     body[data-brand="zmo"] .reveal .shot-heshmat { background-image: url("assets/heshmat-map.jpg"); }
     body[data-brand="zmo"] .reveal .shot-zmovis { background-image: url("assets/zmo-wordcloud.jpg"); }
     body[data-brand="zmo"] .reveal .shot-genocide { background-image: url("assets/genocide-dashboard.jpg"); }
     body[data-brand="zmo"] .reveal .shot-iwac { background-image: url("assets/iwac-home.jpg"); }
 
-    /* Slide 21: four numbered steps, no cards (the PPT drew none). */
-    body[data-brand="zmo"] .reveal .slides section > .flow.bare { flex: 0 0 auto; margin-top: 14px; }
-    body[data-brand="zmo"] .reveal .flow.bare .flow-step { background: none; padding: 4px 6px 0 56px; }
-    body[data-brand="zmo"] .reveal .flow.bare .flow-step .step-n { left: 0; top: 4px; }
-
-    /* Slide 11: the Analysis label is blue in the PPT, not orange. */
-    body[data-brand="zmo"] .reveal .callout.light .callout-label.blue { color: var(--zmo-blue); }
     /* Slide 12: the Kalamu list is set at 14 pt. */
     body[data-brand="zmo"] .reveal .slides section ul.kalamu-list { font-size: 1.556rem; }
-    /* Slide 14: five short rows on the PPT's 72 px pitch, 14 pt text. */
-    body[data-brand="zmo"] .reveal dl.facts.tight { --zmo-facts-pitch: 3.4rem; }
-    body[data-brand="zmo"] .reveal dl.facts.tight dd { font-size: 1.556rem; }
-    body[data-brand="zmo"] .reveal dl.facts.tight { margin-bottom: 6px; }
-    /* Slide 28: three questions as full-width rows that share the text area,
-       a hairline between them, the label beside a 22 pt question. */
-    body[data-brand="zmo"] .reveal dl.facts.discussion {
-      --rule: 1px solid color-mix(in srgb, var(--zmo-blue) 22%, #ffffff);
-      flex: 1 0 auto; grid-auto-rows: 1fr; gap: 0; margin: 8px 0 0;
-    }
-    body[data-brand="zmo"] .reveal dl.facts.discussion > :is(dt, dd) {
-      display: flex; align-items: center; border-top: var(--rule);
-    }
-    body[data-brand="zmo"] .reveal dl.facts.discussion > :nth-last-child(-n+2) { border-bottom: var(--rule); }
-    body[data-brand="zmo"] .reveal dl.facts.discussion dt { font-size: 1.778rem; padding-right: 3rem; }
-    body[data-brand="zmo"] .reveal dl.facts.discussion dd { font-size: 2.444rem; line-height: 1.2; }
 
     /* The two-project slide: each column a heading, a line, the live site, a QR. */
     body[data-brand="zmo"] .reveal .cols.two-sites .col > h3 { margin: 0 0 4px; }
     body[data-brand="zmo"] .reveal .cols.two-sites .col > p { margin: 0 0 10px; }
-    body[data-brand="zmo"] .reveal .qr-row.small { margin-top: 10px; }
-    body[data-brand="zmo"] .reveal .qr-row.small img { width: 76px; height: 76px; }
-
-    /* Slide 28: a numbered dot before each question's label. */
-    body[data-brand="zmo"] .reveal :is(.col-head, dt) .num {
-      display: inline-grid; place-items: center; width: 40px; height: 40px; margin-right: 14px;
-      border-radius: 50%; background: var(--zmo-orange-ink); color: #ffffff; font-size: 1.25rem; vertical-align: middle;
-    }
 
     /* The overview: seven one-line points on a pitch that fills the text area. */
     body[data-brand="zmo"] .reveal ol.points > li:not(:last-child) { margin-bottom: 1.12em; }
@@ -189,64 +114,8 @@
     body[data-brand="zmo"] .reveal .callout.conditions ul > li { margin-bottom: 0.9em; }
     body[data-brand="zmo"] .reveal .callout.conditions ul > li:last-child { margin-bottom: 0; }
 
-    /* Contextual dispersal: the definition, then four blue chips in a row. */
+    /* Contextual dispersal: the definition over the row of pills. */
     body[data-brand="zmo"] .reveal .callout.light.dispersal { font-size: var(--fs-body); line-height: 1.3; padding: 24px 36px; margin: 8px 0 22px; }
-    body[data-brand="zmo"] .reveal .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25.6px; }
-    body[data-brand="zmo"] .reveal .slides section > .chips + p { margin-top: auto; margin-bottom: 0; }
-    body[data-brand="zmo"] .reveal .chips > span {
-      display: grid; place-items: center; height: 84px; border-radius: 20px;
-      background: var(--zmo-blue); color: #ffffff; font: 700 var(--fs-h3)/1.2 var(--zmo-font);
-    }
-
-    /* Two axes: risk (rows) by identifiability (columns), the reading beside. */
-    body[data-brand="zmo"] .reveal .quad {
-      flex: 1 0 auto; display: grid; gap: 8px 12px;
-      grid-template-columns: 30px 52px 1fr 1fr 312px; grid-template-rows: 1fr 1fr auto;
-    }
-    body[data-brand="zmo"] .reveal .quad .axis {
-      font: 700 var(--fs-caption)/1.2 var(--zmo-font); letter-spacing: 0.08em; color: var(--zmo-muted);
-    }
-    body[data-brand="zmo"] .reveal .quad .axis-y {
-      grid-column: 1; grid-row: 1 / 3; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
-    }
-    body[data-brand="zmo"] .reveal .quad .tick-y { grid-column: 2; align-self: start; padding-top: 6px; }
-    body[data-brand="zmo"] .reveal .quad .tick-y.low { grid-row: 2; align-self: end; padding: 0 0 6px; }
-    body[data-brand="zmo"] .reveal .quad .axis-x { grid-column: 3 / 5; grid-row: 3; display: flex; justify-content: space-between; }
-    body[data-brand="zmo"] .reveal .quad .axis-x b { color: var(--zmo-muted); }
-    body[data-brand="zmo"] .reveal .quad .cell {
-      background: var(--zmo-card); border-radius: 20px; padding: 16px 22px;
-    }
-    body[data-brand="zmo"] .reveal .quad .cell h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 1.556rem; }
-    body[data-brand="zmo"] .reveal .quad .cell h3::before {
-      content: ""; flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--dot, var(--zmo-blue));
-    }
-    body[data-brand="zmo"] .reveal .quad .cell p { margin: 0; font-size: 1.333rem; }
-    body[data-brand="zmo"] .reveal .quad .cell.r-hi { grid-row: 1; }
-    body[data-brand="zmo"] .reveal .quad .cell.r-lo { grid-row: 2; }
-    body[data-brand="zmo"] .reveal .quad .cell.i-lo { grid-column: 3; }
-    body[data-brand="zmo"] .reveal .quad .cell.i-hi { grid-column: 4; }
-    body[data-brand="zmo"] .reveal .quad .cell.r-hi.i-lo { --dot: var(--zmo-orange); }
-    body[data-brand="zmo"] .reveal .quad .cell.r-hi.i-hi { --dot: var(--zmo-orange-ink); }
-    body[data-brand="zmo"] .reveal .quad .cell.r-lo.i-lo { --dot: var(--zmo-on-blue-soft); }
-    body[data-brand="zmo"] .reveal .quad .cell.r-lo.i-hi { --dot: var(--zmo-blue); }
-    body[data-brand="zmo"] .reveal .quad > .callout { grid-column: 5; grid-row: 1 / 3; margin: 0; }
-
-    /* The risk scale: five rows, a lettered dot and the tier, the strategy, who. */
-    body[data-brand="zmo"] .reveal .tiers { flex: 1 0 auto; display: grid; grid-auto-rows: 1fr; gap: 6px; }
-    body[data-brand="zmo"] .reveal .tier {
-      display: grid; grid-template-columns: 40px 128px 1fr 150px; gap: 16px; align-items: center;
-      background: var(--zmo-card); border-radius: 16px; padding: 4px 22px 4px 16px; --tc: var(--zmo-orange-ink);
-    }
-    body[data-brand="zmo"] .reveal .tier.cool { --tc: var(--zmo-blue); }
-    body[data-brand="zmo"] .reveal .tier .t-dot {
-      display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; box-sizing: border-box;
-      border: 2px solid var(--tc); background: var(--tc); color: #ffffff; font: 700 1.25rem/1 var(--zmo-font);
-    }
-    body[data-brand="zmo"] .reveal .tier.open .t-dot { background: transparent; color: var(--tc); }
-    body[data-brand="zmo"] .reveal .tier .t-name { font: 700 1.333rem/1.1 var(--zmo-font); letter-spacing: 0.04em; color: var(--tc); }
-    body[data-brand="zmo"] .reveal .tier p { margin: 0; font-size: 1.278rem; line-height: 1.15; }
-    body[data-brand="zmo"] .reveal .tier p strong { margin-right: 0.5em; }
-    body[data-brand="zmo"] .reveal .tier .t-who { font-size: 1.333rem; color: var(--zmo-muted); text-align: right; }
   </style>
 </head>
 <body data-brand="zmo">
@@ -287,6 +156,10 @@
       </div>
       <p>Religion and Intellectual Culture Unit</p>
       <p>12 November 2026</p>
+      <aside class="notes">
+        <p>For this unit presentation, we want to discuss digital humanities and AI in the social sciences through one process they both depend on: datafication, what happens when sources become data. We take it up through three projects from within our own unit. Sonja presents Global Heshmat, Abdoulaye the sermons of Albani Zaria, and Max his work on fictionalization, for material that should not become data.</p>
+        <p>I’ll start with the framing, which comes out of my work on AI and digital humanities over the past year: two workshops prepared here at ZMO, the position paper that came out of them, and some of the tools I have been building. After the three cases, we open the discussion.</p>
+      </aside>
     </section>
 
     <!-- ░░ 2 · OVERVIEW ░░ -->
@@ -295,29 +168,37 @@
       <ol class="points">
         <li><strong>Framing:</strong> two ZMO workshops and a position paper</li>
         <li><strong>Global Heshmat:</strong> a sculptor's works on a map</li>
-        <li><strong>Datafication:</strong> where the work lies, and Kalamu, an app to speed it up</li>
+        <li><strong>Datafication and AI:</strong> where the work lies, and Kalamu, to check and trace it</li>
         <li><strong>Albani Zaria's sermons:</strong> where youth meets politics, and what the count decides</li>
-        <li><strong>The Global South and data:</strong> who digitises what, and who has access</li>
-        <li><strong>The dialectics of datafication:</strong> what helps, what damages, what endangers</li>
-        <li><strong>Questions for the discussion:</strong> method, ethics, epistemology</li>
+        <li><strong>The Global South and data:</strong> who digitises, who profits, who is left out</li>
+        <li><strong>Fictionalization and anonymity:</strong> when sources should not become data</li>
+        <li><strong>Questions for the discussion:</strong> method, governance, limits</li>
       </ol>
+      <aside class="notes">
+        <p>The programme is ambitious for one session, so take it as an overview: several projects and methods, each shown briefly, to give us material for the discussion.</p>
+        <p>Each case raises a different kind of decision. With Global Heshmat: how to represent objects, their movements and their absences. With the Albani Zaria sermons: how to build categories for searching and counting. With fictionalization: when to limit what can be linked and identified.</p>
+        <p>One question runs through all three, and I’ll come back to it after each case: what is decided, and by whom, when a source becomes data?</p>
+      </aside>
     </section>
 
     <!-- ░░ 3 · SECTION ░░ -->
     <section class="section" data-toc="Framing">
       <h2>Framing</h2>
       <p class="sec-sub">Where this comes from, and what datafication means</p>
+      <aside class="notes">
+        <p>As social scientists, we usually talk about our sources rather than our data. A source has an author, a context and a history; data tend to look as if they were simply given. This first part is about the move from one to the other, starting with where my own work on it comes from.</p>
+      </aside>
     </section>
 
     <!-- ░░ 4 · TWO WORKSHOPS ░░ -->
     <section class="compact" data-toc="Two workshops">
       <h2 class="slide-title">Two workshops</h2>
       <p class="lead">Both applications prepared at ZMO</p>
-      <div class="cols cards ws">
+      <div class="cols cards">
         <div class="col">
           <div class="col-head">Charting New Territory</div>
-          <p class="ws-meta">Scoping workshop · VolkswagenStiftung<br>Hanover, 18–20 February 2026</p>
-          <div class="ws-body">
+          <p class="card-meta">Scoping workshop · VolkswagenStiftung<br>Hanover, 18–20 February 2026</p>
+          <div class="card-qr">
             <ul>
               <li>Convened with Vincent Hiribarren (King's College London)</li>
               <li>26 researchers from 16 countries</li>
@@ -325,12 +206,12 @@
             </ul>
             <img src="assets/qr-hanover.png" alt="QR code to the Hanover workshop website" width="444" height="444">
           </div>
-          <p class="ws-url"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener">fmadore.github.io/dh-ai-african-studies-2026</a></p>
+          <p class="card-foot"><a href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener">fmadore.github.io/dh-ai-african-studies-2026</a></p>
         </div>
         <div class="col">
           <div class="col-head">Towards Sustainable and Equitable Practices</div>
-          <p class="ws-meta">DFG Programme Point Sud · STIAS<br>Stellenbosch, 21–24 September 2026</p>
-          <div class="ws-body">
+          <p class="card-meta">DFG Programme Point Sud · STIAS<br>Stellenbosch, 21–24 September 2026</p>
+          <div class="card-qr">
             <ul>
               <li>Convened with Vincent Hiribarren, Emmanuel Ngue Um and Menno van Zaanen</li>
               <li>25 papers, 33 participants from 17 countries</li>
@@ -338,9 +219,14 @@
             </ul>
             <img src="assets/qr-stias.png" alt="QR code to the Stellenbosch workshop website" width="444" height="444">
           </div>
-          <p class="ws-url"><a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/" target="_blank" rel="noopener">fmadore.github.io/stias-dh-ai-workshop-2026</a></p>
+          <p class="card-foot"><a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/" target="_blank" rel="noopener">fmadore.github.io/stias-dh-ai-workshop-2026</a></p>
         </div>
       </div>
+      <aside class="notes">
+        <p>This year I had the chance to organise two workshops on digital humanities and AI in African studies. I prepared both funding applications last year, while I was here at ZMO.</p>
+        <p>In February in Hanover, a scoping workshop funded by the VolkswagenStiftung, convened with Vincent Hiribarren of King’s College London. Twenty-six researchers from sixteen countries: linguists, historians, anthropologists, archivists, AI governance specialists and DH practitioners. Instead of keynotes and panels, we worked in groups and World Café rounds.</p>
+        <p>In September at STIAS in Stellenbosch, a DFG Point Sud workshop, with Vincent, Emmanuel Ngue Um and Menno van Zaanen: twenty-five papers, thirty-three participants from seventeen countries, in English and French.</p>
+      </aside>
     </section>
 
     <!-- ░░ 5 · WHAT CAME OUT OF IT ░░ -->
@@ -353,7 +239,7 @@
             <li><strong>Situated practice:</strong> digitisation agreements as living documents, ontologies open to revision</li>
             <li><strong>Sovereignty:</strong> design grounded in access and governance; ethics revisited throughout a project</li>
             <li><strong>Shared problems:</strong> consent, standardisation, ill-fitting metadata, hidden labour, language bias, maintenance, all more visible in African contexts</li>
-            <li><strong>Reading as data:</strong> 217 works annotated, mapped into 145 concepts and 1,219 links</li>
+            <li><strong>Reusable outputs:</strong> 217 references, a map of 145 concepts, six video interviews</li>
           </ul>
         </div>
         <div class="col">
@@ -371,12 +257,45 @@
           </div>
         </div>
       </div>
+      <aside class="notes">
+        <p>The Hanover participants wrote a position paper together, published open access in September in the ZMO Programmatic Texts series. Its title is its question: for whom, and for what purpose, do we do DH and AI work in African studies?</p>
+        <p>It argues for situated practice: digitisation agreements and ontologies that stay open to revision, and ethics revisited throughout a project. Most of the problems it lists also exist in the Global North; African contexts make them more visible.</p>
+        <p>We also wanted what the workshop produced to be reusable. The workshop website has the bibliography, 217 references, a map of 145 concepts that links them, and six video interviews with participants on what digital humanities and AI change for African studies.</p>
+        <p>Next, the Stellenbosch papers are being prepared as a special issue of the Journal of the Digital Humanities Association of Southern Africa.</p>
+      </aside>
     </section>
 
     <!-- ░░ 6 · DATAFICATION ░░ -->
+    <section data-toc="From source to data">
+      <h2 class="slide-title">From source to data</h2>
+      <p class="lead">Machine-readable: a form a computer can search, sort and count</p>
+      <div class="cols cards three">
+        <div class="col">
+          <div class="col-head">Archive photographs</div>
+          <p><strong>As they are:</strong> images; the computer sees pixels, not words</p>
+          <p><strong>As data:</strong> their text, plus fields such as date, author, place</p>
+        </div>
+        <div class="col">
+          <div class="col-head">A recorded interview</div>
+          <p><strong>As it is:</strong> sound, searchable only by listening</p>
+          <p><strong>As data:</strong> a transcript, with speakers and timestamps</p>
+        </div>
+        <div class="col">
+          <div class="col-head">Fieldwork notes</div>
+          <p><strong>As it is:</strong> a notebook, often legible only to its author</p>
+          <p><strong>As data:</strong> typed text, tagged by person, place and theme</p>
+        </div>
+      </div>
+      <p><span class="hl">Each conversion chooses what is kept, how it is named, and what is left out.</span></p>
+      <aside class="notes">
+        <p>Before the theory, a basic point. A computer does not read a source the way we do. A photograph of an archive page is, for the computer, an image: pixels, no words. A recorded interview is sound, and you can only search it by listening. Fieldwork notes in a notebook are legible to us, and often only to their author.</p>
+        <p>To search, link or count them, we have to give them a machine-readable form: the text of the page, a transcript of the interview, typed notes, and fields such as date, place, people or theme. AI now does much of this conversion, but it is still a conversion. Each one is a choice: what we keep, what we call it, and what we leave out.</p>
+      </aside>
+    </section>
+
     <section data-toc="Datafication">
       <h2 class="slide-title">Datafication</h2>
-      <p class="lead">Rendering social life, objects and records into machine-readable data</p>
+      <p class="lead">Selecting and structuring sources to search, link and compute them</p>
       <dl class="facts">
         <dt>van Dijck 2014</dt><dd>Datafication as a paradigm shift in knowledge production, and the belief in data it fosters</dd>
         <dt>Mejias &amp; Couldry 2019</dt><dd>The quantification of social life, whose appropriation they call data colonialism</dd>
@@ -384,6 +303,11 @@
         <dt>Gitelman (ed.) 2013</dt><dd>“Raw data” is an oxymoron</dd>
       </dl>
       <p><strong>Question for today:</strong> what is decided, and by whom, when a source becomes data?</p>
+      <aside class="notes">
+        <p>This process has a name: datafication. Our working definition for today is selecting and structuring aspects of sources so that they can be searched, linked and computed. It covers different operations. Scanning a page, defining a category such as “youth”, and letting a company train on a corpus raise different questions.</p>
+        <p>The four references do different work. Drucker and Gitelman make an epistemological point: data are constructed, selected and situated; Drucker calls them capta, things taken. Van Dijck follows how datafication turns into dataism, the belief that data simply mirror the world. Mejias and Couldry look at power: the infrastructures that quantify social life, and who appropriates the value. In their analysis appropriation is what makes it data colonialism, so not every dataset falls under that term.</p>
+        <p>Hence the question for today: what is decided, and by whom, when a source becomes data?</p>
+      </aside>
     </section>
 
     <!-- ░░ 7 · ONE OBJECT, TWO FORMS ░░ -->
@@ -419,6 +343,12 @@ const artwork: Artwork = {
 };</code></pre>
         </div>
       </div>
+      <aside class="notes">
+        <p>A first answer, on a single object. On the left, a memorial Hassan Heshmat built in Hasselt, Belgium, in 1970. The Order of the Holy Cross commissioned it in memory of twenty-three Belgian missionaries killed in Buta, Congo, in 1965. He made the ceramics in his Cairo workshop and flew them to Belgium.</p>
+        <p>On the right, the same work in the code of the Global Heshmat website. Each work is one file: an identifier, coordinates, an address, a status, the thematic trails it belongs to, a short description, eight photographs and a link to the KADOC archive in Leuven.</p>
+        <p>Between the two, someone decided which fields exist, what counts as “located”, which trail a work belongs to, and how its story fits in a few lines.</p>
+        <p>[Sonja takes over]</p>
+      </aside>
     </section>
 
     <!-- ░░ 8 · SECTION ░░ -->
@@ -498,12 +428,17 @@ const artwork: Artwork = {
         <div class="col"><div class="col-head">Entities</div><p>People, places and organisations, ready to link</p></div>
       </div>
       <p><span class="hl">Its own problems:</span> errors that read well, bias, cost, and extraction (whose data trains the models, and who profits?)</p>
+      <aside class="notes">
+        <p>[After Sonja] Back to the question. In Global Heshmat the decisions concerned fields, statuses and spellings, and one remains open: who maintains the record, and who in Egypt can correct it?</p>
+        <p>A general point before the second case. Most of the time goes into datafication: finding the sources, scanning, transcribing, correcting, describing, linking. The visualisations and analyses that people picture as digital humanities come comparatively quickly afterwards.</p>
+        <p>AI shortens that first part considerably: text from manuscripts and print, transcripts of interviews and sermons, people and places ready to link. It brings its own problems. Its errors read well, so they are hard to spot. And it raises the question of extraction, which we come back to in the discussion.</p>
+      </aside>
     </section>
 
     <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing, so the illustration stays. -->
     <section data-toc="Kalamu">
       <h2 class="slide-title">Kalamu</h2>
-      <p class="lead">A desktop app I am developing: the same work, without writing code</p>
+      <p class="lead">A desktop app I am developing: AI-assisted datafication you can check and trace</p>
       <div class="cols w503">
         <div class="col">
           <img class="shot" src="assets/kalamu.jpg" alt="Illustration of Kalamu: documents, a recorder and a laptop" width="1440" height="1080">
@@ -522,6 +457,12 @@ const artwork: Artwork = {
           <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/<wbr>fmadore/<wbr>Kalamu</a><br>Free, open source<br>Windows and macOS</p>
         </div>
       </div>
+      <aside class="notes">
+        <p>If AI does part of this work, the researcher needs a way to check it and to say how it was done. That is what Kalamu is for. It is a desktop app I am developing; the name is Swahili for “pen”, from the Arabic qalam.</p>
+        <p>It reads scanned and handwritten documents, transcribes recordings in the cloud or offline, and analyses texts with fields you define. Three functions matter for today’s argument. Every result is shown beside its source. Your corrections are stored apart, so the AI’s text is never overwritten. And every export records the model, the prompt and the settings, which you can cite in a methods section.</p>
+        <p>One practical point: sensitive material should not go through commercial services. Use the offline mode, or keep it out.</p>
+        <p>[Abdoulaye takes over for Albani Zaria]</p>
+      </aside>
     </section>
 
     <!-- ░░ 13 · SECTION ░░ -->
@@ -578,14 +519,21 @@ const artwork: Artwork = {
         </div>
       </figure>
       <div class="cols cards three decisions">
-        <div class="col"><p><strong>Spelling.</strong> ɓ/b, ɗ/d, ƙ/k, ƴ/y, q/k, double letters and apostrophes count as one word</p></div>
-        <div class="col"><p><strong>Common words.</strong> 76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus this speaker's fillers <em>ainihin</em>, <em>wato</em></p></div>
+        <div class="col"><p><strong>Spelling.</strong> ɓ/b, ɗ/d, ƙ/k, q/k, ƴ/'y and doubled letters: variants count as one word</p></div>
+        <div class="col"><p><strong>Common words.</strong> 76 published Hausa stop words (Bashir, Bichi &amp; Adamu 2024), plus 195 for this corpus, fillers such as <em>wato</em> among them</p></div>
         <div class="col"><p><strong>Formulae.</strong> <em>sallallahu alaihi wa sallam</em>, <em>in sha Allah</em>: counted as whole phrases, outside the word lists</p></div>
         <div class="col"><p><strong>Loanwords.</strong> <em>addini</em>, <em>shari'a</em>, <em>ilimi</em>: Arabic words that count as Hausa</p></div>
         <div class="col"><p><strong>Meaning.</strong> <em>sarki</em> is not counted where it means God (1,184 of 2,094); <em>ƙasa</em>, “country” or “to fail”, stays out of totals</p></div>
         <div class="col"><p><strong>Speakers.</strong> Voices are told apart only within each 20-minute segment; the 35 dialogue segments can be excluded</p></div>
       </div>
-      <aside class="notes">The diagram animates when the slide opens; "Replay animation" in the full exhibit runs it again.</aside>
+      <aside class="notes">
+        <p>[The diagram animates when the slide opens; “Replay animation” in the full exhibit runs it again.]</p>
+        <p>The five stages take the recordings to figures and passages, and each involves choices that decide what the counts say.</p>
+        <p>Spelling first: the transcripts write Hausa with and without the hooked letters, so variants are merged into one word. Then common words: a published list of seventy-six Hausa stop words, plus 195 we added for this corpus.</p>
+        <p>Meaning is the hardest. Sarki means king or emir, but in “Allah Maɗaukakin Sarki” it means God. A rule leaves sarki out when Allah or maɗaukakin comes just before it: 1,184 of its 2,094 uses. The rule works on a form and stands in for a sense, so it will miss other ways of naming God. Ambiguous words such as ƙasa, “country” or “to fail”, are shown but kept out of the totals.</p>
+        <p>All of this is exploratory. The word lists and the translations are drafts that a Hausa-speaking specialist has yet to check. So here the decisions are categories, and so far we have made them without that check.</p>
+        <p>[Abdoulaye continues]</p>
+      </aside>
     </section>
 
     <!-- ░░ 16 · WHERE YOUTH MEETS POLITICS — live IWAC panel ░░ -->
@@ -611,6 +559,7 @@ const artwork: Artwork = {
           <p><strong>89 segments</strong> contain at least one meeting; the exhibit ranks them and links each to its 20 minutes of audio.</p>
           <p>Three in four uses of <em>demokuraɗiyya</em> (201 of 263) come from a single lecture, <strong>Demokuradiyyah</strong> (9 h 33).</p>
           <p><span class="hl">The count points to the 20 minutes worth hearing; the analysis comes from listening to them.</span></p>
+          <p class="small">Exploratory: draft word lists, not yet checked by a Hausa specialist. A meeting is a co-occurrence; quotation, negation or a set phrase can produce one.</p>
         </div>
       </div>
     </section>
@@ -642,6 +591,9 @@ const artwork: Artwork = {
     <section class="section" data-toc="Discussion">
       <h2>Discussion</h2>
       <p class="sec-sub">Methodological, ethical and epistemological stakes of AI and digital humanities tools</p>
+      <aside class="notes">
+        <p>Part two. Two slides from me, then Max’s presentation, a word on where this could lead at ZMO, and the questions.</p>
+      </aside>
     </section>
 
     <!-- ░░ 19 · THE GLOBAL SOUTH AND DATA ░░ -->
@@ -649,14 +601,20 @@ const artwork: Artwork = {
       <h2 class="slide-title">The Global South and data</h2>
       <p class="lead">Digitisation and AI can reproduce older asymmetries</p>
       <div class="cols cards three">
-        <div class="col"><div class="col-head">Who digitises</div><p>Mostly Western-funded: “digital imperialism” (Breckenridge), a “digital saviour complex” (Shringarpure)</p></div>
+        <div class="col"><div class="col-head">Who digitises</div><p>Mostly Northern institutions or private firms: “digital imperialism” (Breckenridge), a “digital saviour complex” (Shringarpure)</p></div>
         <div class="col"><div class="col-head">What gets digitised</div><p>Selection deepens archival silences; keyword search sidelines what is not online</p></div>
         <div class="col"><div class="col-head">Who has access</div><p>The digital divide: unequal internet access remains a major obstacle (Barringer &amp; Wallace 2014)</p></div>
         <div class="col"><div class="col-head">Data colonialism</div><p>Life turned into raw material for profit, as land once was (Couldry &amp; Mejias 2019, 2024)</p></div>
-        <div class="col"><div class="col-head">Data extractivism</div><p>African texts, voices and annotation labour feed models whose value flows north</p></div>
-        <div class="col"><div class="col-head">Data flaring</div><p>The reverse: African-language data never collected or kept (Adebara 2025)</p></div>
+        <div class="col"><div class="col-head">Data extractivism</div><p>Scraped texts, voices and outsourced annotation (some in Kenya) feed a few firms' models</p></div>
+        <div class="col"><div class="col-head">Data flaring</div><p>Neglect: African-language data under-collected, poorly kept, little used (Adebara 2025)</p></div>
       </div>
-      <p><span class="hl">One answer, in IWAC:</span> FAIR and CARE principles; catalogue where custodians prefer; credit rights holders.</p>
+      <p><span class="hl">Back to our cases:</span> who corrects a Heshmat record, validates the Hausa lists, withdraws a transcript?</p>
+      <aside class="notes">
+        <p>To open the discussion, a step back, drawn from my work on IWAC and the workshop literature.</p>
+        <p>Most digitisation of African material has been funded by Northern institutions or run by private firms, and it tends to reproduce colonial hierarchies of access. What gets selected deepens archival silences, and keyword search sidelines whatever is not online.</p>
+        <p>AI adds two problems that can coexist. Extraction: texts and voices scraped into training data, and annotation outsourced to low-paid workers, some of them in Kenya, for models owned by a few firms. And neglect: Ife Adebara speaks of language data flaring, after gas flaring. African languages are spoken every day on the radio and at religious gatherings, but that data is not collected or kept, which keeps them “low-resource”.</p>
+        <p>So we may need more language resources while refusing some of the conditions of their collection. In IWAC we follow FAIR and CARE principles, catalogue rather than digitise where custodians prefer, and credit rights holders. The questions at the bottom bring this back to our own cases.</p>
+      </aside>
     </section>
 
     <!-- ░░ 20 · THE DIALECTICS OF DATAFICATION ░░ -->
@@ -667,19 +625,26 @@ const artwork: Artwork = {
         <div class="col">
           <div class="callout">
             <span class="callout-label">The counter-position</span>
-            <p>Some projects try to make interlocutors impossible to datafy, so that they do not end up in prison: dispersing data points to prevent mapping.</p>
-            <p>Datafication varies by region (authoritarian or not), by discipline and within it, and by goal.</p>
+            <p>Our cases make sources findable and linkable. Some fieldwork has to prevent exactly that, so that interlocutors do not end up in prison.</p>
+            <p>One answer: dispersing data points so that they cannot be mapped.</p>
           </div>
         </div>
         <div class="col">
+          <p><strong>It depends less on the discipline than on</strong></p>
           <ul>
-            <li>For many historians, already working with texts, DH looks like a gift</li>
-            <li>Some anthropologists push back: everyday experience is not simply data</li>
-            <li>Fieldwork is already extraction; AI changes speed and scale</li>
-            <li>What would consensual, qualitative practice look like?</li>
+            <li>the material: archived texts or living interlocutors</li>
+            <li>the relation with the people the data describe</li>
+            <li>the purpose, and what disclosure would cost them</li>
           </ul>
+          <p>Under what conditions does fieldwork become extractive, and what does AI change?</p>
         </div>
       </div>
+      <aside class="notes">
+        <p>Our cases so far make sources findable and linkable. Some fieldwork has to prevent exactly that. The method Max presents next tries to keep interlocutors from being datafied, so that they do not end up in prison, for instance by dispersing details so that they cannot be mapped.</p>
+        <p>That is the dialectic in practice: which datafication helps, which damages, and which endangers? The answer depends less on the discipline than on the material, the relation with the people concerned, the purpose, and what disclosure would cost them. And rather than calling fieldwork extraction by definition, I would ask under what conditions it becomes extractive, and what AI changes in speed and scale.</p>
+        <p>The Albani exhibit takes one position: every transcript feeds the counts, but passages are quoted only from transcripts already public on IWAC. Public text does not settle everything, though: aggregating it and making it searchable gives it a new visibility.</p>
+        <p>[Max takes over]</p>
+      </aside>
     </section>
 
     <!-- ░░ 21 · FICTIONALIZATION AND ANONYMITY ░░ Text as given in
@@ -700,21 +665,21 @@ const artwork: Artwork = {
       <h2 class="slide-title">Contextual Dispersal</h2>
       <p class="lead">Fictionalization as Rigorous Method</p>
       <div class="callout light dispersal">Fictionalization distributes actions over several characters and alters the locations and times that come up in the account. Contextual dispersal disperses personae, texts, time, and space by balancing contextual integrity against safety.</div>
-      <div class="chips"><span>Personae</span><span>Texts</span><span>Time</span><span>Space</span></div>
+      <div class="pill-row"><span>Personae</span><span>Texts</span><span>Time</span><span>Space</span></div>
       <p>Fundamentally opposed to a license to invent — every detail must be thought through as a potential data point.</p>
     </section>
 
     <section>
       <h2 class="slide-title">Two axes, four disclosure decisions</h2>
-      <div class="quad">
-        <span class="axis axis-y">RISK LEVEL</span>
-        <b class="axis tick-y">HIGH</b>
-        <b class="axis tick-y low">LOW</b>
-        <div class="cell r-hi i-lo"><h3>Describe in full</h3><p>High risk, low identifiability. The tactic can be told in rich detail.</p></div>
-        <div class="cell r-hi i-hi"><h3>Fictionalize / redact</h3><p>High risk and high identifiability. Protect the person before the detail.</p></div>
-        <div class="cell r-lo i-lo"><h3>Openly shareable</h3><p>Low risk, low identifiability. Report freely.</p></div>
-        <div class="cell r-lo i-hi"><h3>Generalize</h3><p>Low risk but identifying. Aggregate away the specifics.</p></div>
-        <div class="axis axis-x"><b>LOW</b><span>IDENTIFICATION LEVEL</span><b>HIGH</b></div>
+      <div class="matrix">
+        <span class="axis axis-y">Risk level</span>
+        <b class="axis tick-y">High</b>
+        <b class="axis tick-y low">Low</b>
+        <div class="cell top left"><h3>Describe in full</h3><p>High risk, low identifiability. The tactic can be told in rich detail.</p></div>
+        <div class="cell top right"><h3>Fictionalize / redact</h3><p>High risk and high identifiability. Protect the person before the detail.</p></div>
+        <div class="cell bottom left"><h3>Openly shareable</h3><p>Low risk, low identifiability. Report freely.</p></div>
+        <div class="cell bottom right"><h3>Generalize</h3><p>Low risk but identifying. Aggregate away the specifics.</p></div>
+        <div class="axis axis-x"><b>Low</b><span>Identification level</span><b>High</b></div>
         <div class="callout">
           <span class="callout-label">Reading the grid</span>
           <p>Identifiability decides how much can be told; risk decides how much care the telling demands. The dangerous-but-anonymous cell is where fictionalization earns its keep — the practice survives, the person disappears.</p>
@@ -726,27 +691,52 @@ const artwork: Artwork = {
       <h2 class="slide-title">A five-tier grading of strategies</h2>
       <p class="lead">Each strategy sits on a scale of exposure — from primary witnessing at the sharp end to durational poetry at the safe end.</p>
       <div class="tiers">
-        <div class="tier"><span class="t-dot">C</span><span class="t-name">CRITICAL</span><p><strong>Direct public witnessing</strong>Physically documenting violence as a primary news source. Triggers immediate state and vigilante response.</p><span class="t-who">Bilal</span></div>
-        <div class="tier open"><span class="t-dot">H</span><span class="t-name">HIGH</span><p><strong>Hyperbolic framing</strong>Charged or polemical terms that can be legally cast as “inciting communal passions.”</p><span class="t-who">Hamid, early</span></div>
-        <div class="tier cool"><span class="t-dot">M</span><span class="t-name">MODERATE</span><p><strong>Global framing</strong>Using X to reach international media — it brings security, but also labels like “antinational.”</p><span class="t-who">Hamid, Hilal</span></div>
-        <div class="tier cool open"><span class="t-dot">L</span><span class="t-name">LOW</span><p><strong>Strategic evasion</strong>Mass-blocking and avoiding hashtags or mentions to stay out of hostile ecosystems.</p><span class="t-who">Hilal, Bilal</span></div>
-        <div class="tier cool open"><span class="t-dot">V</span><span class="t-name">VERY LOW</span><p><strong>Poetic reframing</strong>Moving from reactive tweets to reflexive, durational poetry that is hard to co-opt.</p><span class="t-who">Hamid</span></div>
+        <div class="tier"><span class="t-dot">C</span><span class="t-name">Critical</span><p><strong>Direct public witnessing</strong>Physically documenting violence as a primary news source. Triggers immediate state and vigilante response.</p><span class="t-who">Bilal</span></div>
+        <div class="tier open"><span class="t-dot">H</span><span class="t-name">High</span><p><strong>Hyperbolic framing</strong>Charged or polemical terms that can be legally cast as “inciting communal passions.”</p><span class="t-who">Hamid, early</span></div>
+        <div class="tier cool"><span class="t-dot">M</span><span class="t-name">Moderate</span><p><strong>Global framing</strong>Using X to reach international media — it brings security, but also labels like “antinational.”</p><span class="t-who">Hamid, Hilal</span></div>
+        <div class="tier cool open"><span class="t-dot">L</span><span class="t-name">Low</span><p><strong>Strategic evasion</strong>Mass-blocking and avoiding hashtags or mentions to stay out of hostile ecosystems.</p><span class="t-who">Hilal, Bilal</span></div>
+        <div class="tier cool open"><span class="t-dot">V</span><span class="t-name">Very low</span><p><strong>Poetic reframing</strong>Moving from reactive tweets to reflexive, durational poetry that is hard to co-opt.</p><span class="t-who">Hamid</span></div>
       </div>
     </section>
 
-    <!-- ░░ 22 · QUESTIONS FOR THE DISCUSSION ░░ -->
-    <section class="compact questions">
-      <h2 class="slide-title">Questions for the discussion</h2>
-      <dl class="facts discussion">
-        <dt><span class="num">1</span>Method</dt><dd>Who checks the word lists, and in which language?</dd>
-        <dt><span class="num">2</span>Ethics</dt><dd>Whose voice becomes data, and who decides?</dd>
-        <dt><span class="num">3</span>Epistemology</dt><dd>Is a count evidence, or only a pointer?</dd>
-      </dl>
-      <aside class="notes">Follow-up questions if the room is quiet. Method: What does a 20-minute segment cut through? Can error rates be measured for Hausa–Arabic speech? Ethics: Should such recordings go through commercial AI services? When should material stay out of the data altogether? Epistemology: What does building one's own categories teach that automatic labelling skips? Fieldwork, archives, AI: is it all extraction?</aside>
+    <!-- ░░ 24 · A ZMO APPLICATION ░░ From the Sondertatbestand draft (v.4,
+         8 July 2026). Public deck: no budget, posts or partner list on screen. -->
+    <section data-toc="A ZMO application">
+      <h2 class="slide-title">A ZMO application: Algorithmic Authorities</h2>
+      <p class="lead">AI, disinformation and knowledge production in the Global South</p>
+      <div class="cols three hold app">
+        <div class="col"><div class="card"><div class="card-head">Method: AI as a DH research tool</div><p>Open models run locally; workflows for low-resource languages and non-Latin scripts; always alongside archive and field research</p></div></div>
+        <div class="col"><div class="card"><div class="card-head">Analysis: who counts as an authority</div><p>How algorithmic mediation reshapes epistemic authority in Farsi, Hindi, Hausa and Swahili, and in local Arabic, French and English</p></div></div>
+        <div class="col"><div class="callout">
+          <span class="callout-label">The core: a loop</span>
+          <p>Findings from AI analysis go back to the field, where they are checked or revised; the revision shapes the next method.</p>
+        </div></div>
+      </div>
+      <p><strong>A Leibniz strategic extension (Sondertatbestand).</strong> Groundwork: IWAC, Albani Zaria's sermons, the <em>Islam East Africa Collection</em> (in preparation). It answers the Leibniz Senate's 2023 recommendation to strengthen ZMO in digital methods.</p>
+      <aside class="notes">
+        <p>Before the questions, where this could lead at ZMO. The institute is preparing an application for a Leibniz strategic extension, a Sondertatbestand, called Algorithmic Authorities. It has two strands: AI as a research tool, with open models run locally and workflows for languages and scripts that current models handle badly; and an analysis of how algorithms change who counts as an authority.</p>
+        <p>What I would stress is the loop. Earlier I presented datafication as a line, from sources to data to analysis. Here, what the AI analysis finds goes back to the field, where it is checked or revised, and that revision shapes the next method. It is one answer to the question of who checks and who corrects.</p>
+        <p>The groundwork is what you have seen today: IWAC, the Albani sermons, and an East African collection in preparation.</p>
+      </aside>
     </section>
 
-    <!-- ░░ 23 · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
-    <section class="compact" data-toc="Two more projects to explore">
+    <!-- ░░ 22 · QUESTIONS FOR THE DISCUSSION ░░ -->
+    <section class="compact">
+      <h2 class="slide-title">Questions for the discussion</h2>
+      <dl class="facts questions">
+        <dt>Method</dt><dd>What validation would make these categories usable for analysis?</dd>
+        <dt>Governance</dt><dd>Who can correct, contest or withdraw a representation?</dd>
+        <dt>Limits</dt><dd>When should relations be made visible, and when should their reconstruction be prevented?</dd>
+      </dl>
+      <aside class="notes">
+        <p>[Leave this slide up during the discussion.]</p>
+        <p>The three questions follow the cases: validation from the Albani sermons, governance from Heshmat and the sermons, limits from Max’s presentation.</p>
+        <p>If the room is quiet: Who should check the Hausa word lists, and how would we know they are good enough? Should recordings like these go through commercial AI services? Who can ask for a transcript to be withdrawn, and who pays for the upkeep once the project ends? What does building one’s own categories teach that automatic labelling skips?</p>
+      </aside>
+    </section>
+
+    <!-- ░░ ANNEXE · TWO MORE PROJECTS TO EXPLORE — both live sites ░░ -->
+    <section class="compact" data-toc="Two more projects to explore" data-visibility="uncounted">
       <h2 class="slide-title">Two more projects to explore</h2>
       <div class="cols two-sites">
         <div class="col">
@@ -769,7 +759,7 @@ const artwork: Artwork = {
         </div>
         <div class="col">
           <h3>Genocide at the Security Council</h3>
-          <p>How is the word used in 167,600 UN Security Council speeches, 1946–2024?</p>
+          <p>How is the word used in 182,684 UN Security Council speeches, 1946–2026?</p>
           <figure class="site-frame">
             <div class="site-frame-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -786,23 +776,11 @@ const artwork: Artwork = {
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- ░░ 24 · A ZMO APPLICATION ░░ From the Sondertatbestand draft (v.4,
-         8 July 2026). Public deck: no budget, posts or partner list on screen. -->
-    <section data-toc="A ZMO application">
-      <h2 class="slide-title">A ZMO application: Algorithmic Authorities</h2>
-      <p class="lead">AI, disinformation and knowledge production in the Global South</p>
-      <div class="cols three hold app">
-        <div class="col"><div class="card"><div class="card-head">Method: AI as a DH research tool</div><p>Open models run locally; workflows for low-resource languages and non-Latin scripts; always alongside archive and field research</p></div></div>
-        <div class="col"><div class="card"><div class="card-head">Analysis: who counts as an authority</div><p>How algorithmic mediation reshapes epistemic authority in Farsi, Hindi, Hausa and Swahili, and in local Arabic, French and English</p></div></div>
-        <div class="col"><div class="callout">
-          <span class="callout-label">The core: a loop</span>
-          <p>Findings from AI analysis go back to the field, where they are checked or revised; the revision shapes the next method.</p>
-        </div></div>
-      </div>
-      <p><strong>A Leibniz strategic extension (Sondertatbestand).</strong> Groundwork: IWAC, Albani Zaria's sermons, the <em>Islam East Africa Collection</em> (in preparation). It answers the Leibniz Senate's 2023 recommendation to strengthen ZMO in digital methods.</p>
-      <aside class="notes">A last word on where this could lead at ZMO. The institute has applied for a Leibniz strategic extension, a Sondertatbestand, called Algorithmic Authorities. It has two fields. The first is methodological: AI as a research tool for digital humanities, with open models run locally, and workflows for languages and scripts that current models handle badly. The second is analytical: how algorithms change who counts as an authority, in languages such as Farsi, Hindi, Hausa and Swahili. The two are meant to work as a loop: what the AI analysis finds goes back to fieldwork, where it is checked or revised, and that revision shapes the next method. The groundwork is what you have seen today: IWAC and the Albani Zaria sermons, with an East African collection in preparation. The plan is a department of its own, with a DH coordinator, rotating postdocs from partner regions and a doctoral fellowship.</aside>
+      <aside class="notes">
+        <p>[Annexe: only if there is time or someone asks.]</p>
+        <p>ZMO Visualisations treats the institute as data: a word cloud of what each research unit writes about, and a dashboard of the publication register where every chart is also a filter. Researcher bylines are dropped so that names do not become terms.</p>
+        <p>Genocide at the Security Council, with Joël Glasman, follows the word through the Council’s speeches. An open-weight model, run on hardware we control with its version and prompt recorded, labels each mention, and a second model gives a comparison. The labels are a preview: the human-coded sample that will test them is not coded yet. When two models agree, the labels are stable; whether they are right still needs that sample.</p>
+      </aside>
     </section>
 
   </div>
