@@ -58,7 +58,6 @@
     body[data-brand="zmo"] .reveal .cols.w667 { grid-template-columns: 667px 1fr; gap: 50px; }
     body[data-brand="zmo"] .reveal .cols.w397 { grid-template-columns: 397px 1fr; gap: 32px; }
     body[data-brand="zmo"] .reveal .cols.w600 { grid-template-columns: 600px 1fr; gap: 28px; }
-    body[data-brand="zmo"] .reveal .cols.w503 { grid-template-columns: 503px 1fr 156px; gap: 28px; }
     body[data-brand="zmo"] .reveal .cols.w517 { grid-template-columns: 517px 1fr; gap: 114px; }
     /* Slide 5: the PPT set this subtitle at 17 pt so it holds one line. */
     body[data-brand="zmo"] .reveal .slides section .lead.pt17 { font-size: 1.889rem; }
@@ -438,13 +437,17 @@ const artwork: Artwork = {
       </aside>
     </section>
 
-    <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing, so the illustration stays. -->
+    <!-- ░░ 12 · KALAMU ░░ GitHub refuses framing; the app's comparison view
+         (store screenshot 01, cropped to the workspace) shows the checking. -->
     <section data-toc="Kalamu">
       <h2 class="slide-title">Kalamu</h2>
       <p class="lead">A desktop app I am developing: AI-assisted datafication you can check and trace</p>
-      <div class="cols w503">
+      <div class="cols w600">
         <div class="col">
-          <img class="shot" src="assets/kalamu.jpg" alt="Illustration of Kalamu: documents, a recorder and a laptop" width="1440" height="1080">
+          <figure>
+            <img class="shot" src="assets/kalamu-compare.jpg" alt="Kalamu's comparison view: a scanned 1911 newspaper page on the left, the AI's text on the right with the words where two models disagree highlighted, and a box to type what the source says" width="1400" height="823">
+            <figcaption>The source beside the AI's text; highlighted words are where two models disagree</figcaption>
+          </figure>
         </div>
         <div class="col">
           <ul class="kalamu-list">
@@ -454,15 +457,15 @@ const artwork: Artwork = {
             <li>Check every result against its source; corrections never overwrite the AI's text</li>
             <li>Export with a record of model, prompt and settings</li>
           </ul>
-        </div>
-        <div class="col qr-col">
-          <img src="assets/qr-kalamu.png" alt="QR code to github.com/fmadore/Kalamu" width="396" height="396">
-          <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/<wbr>fmadore/<wbr>Kalamu</a><br>Free, open source<br>Windows and macOS</p>
+          <div class="qr-row small">
+            <img src="assets/qr-kalamu.png" alt="QR code to github.com/fmadore/Kalamu" width="396" height="396">
+            <p><a href="https://github.com/fmadore/Kalamu" target="_blank" rel="noopener">github.com/fmadore/Kalamu</a><br>Free, open source · Windows and macOS</p>
+          </div>
         </div>
       </div>
       <aside class="notes">
         <p>If AI does part of this work, the researcher needs a way to check it and to say how it was done. That is what Kalamu is for. It is a desktop app I am developing; the name is Swahili for “pen”, from the Arabic qalam.</p>
-        <p>It reads scanned and handwritten documents, transcribes recordings in the cloud or offline, and analyses texts with fields you define. Three functions matter for today’s argument. Every result is shown beside its source. Your corrections are stored apart, so the AI’s text is never overwritten. And every export records the model, the prompt and the settings, which you can cite in a methods section.</p>
+        <p>It reads scanned and handwritten documents, transcribes recordings in the cloud or offline, and analyses texts with fields you define. Three functions matter for today’s argument. Every result is shown beside its source. On the screenshot, the scanned newspaper page is on the left and the AI’s text on the right. The words in yellow are where two models disagree, which tells you where to look first. Your corrections are stored apart, so the AI’s text is never overwritten. And every export records the model, the prompt and the settings, which you can cite in a methods section.</p>
         <p>One practical point: sensitive material should not go through commercial services. Use the offline mode, or keep it out.</p>
         <p>[Abdoulaye takes over for Albani Zaria]</p>
       </aside>
