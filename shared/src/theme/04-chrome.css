@@ -2,17 +2,16 @@
    6. BRAND CHROME (injected by deck.js)
    A running head at the top, the imprint + nav at the foot. Typographic, heavy.
    ---------------------------------------------------------------------------- */
-/* Running head — current section, gothic small-caps, with a heavy rule beneath. */
+/* Running head — the current section as a quiet chrome label. No rule: the
+   footer already carries the deck's one chrome rule, and a second full-width
+   rule at the top made every content slide open on a masthead. deck.js hides
+   it on slides that author their own .kicker, so a slide has one overline. */
 .deck-runhead {
   position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x);
   top: 1.3rem; height: 1.3rem; z-index: 30;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   pointer-events: none; font-family: var(--font-label); font-size: var(--fs-footer); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.22em; color: var(--ink-faint);
-}
-.deck-runhead::after {
-  content: ""; position: absolute; left: 0; right: 0; top: 1.3rem;
-  height: 2px; background: var(--rule);
 }
 .deck-runhead .rh-sec { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70ch; color: var(--ink-bold); }
 .deck-runhead[hidden] { display: none; }
@@ -31,7 +30,7 @@
 .deck-footer .foot-left { display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
 .deck-footer .foot-logo { pointer-events: auto; }
 .deck-footer .foot-logo:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
-.deck-footer .foot-left img { height: 1.15rem; width: auto; opacity: 0.9; }
+.deck-footer .foot-left img { height: 1.4rem; width: auto; opacity: 0.9; }
 .deck-footer .foot-title {
   min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.92em; color: var(--ink-faint); font-weight: 600;

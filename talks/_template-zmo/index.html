@@ -47,10 +47,17 @@
                           address block and logos are drawn by the skin.
                           (Broadsheet's class="closing" is not the ZMO one.)
      • class="brand-logo" — "Startfolie Logo": the logo alone on blue.
-     Components: .cols.cards (rounded cards, .col-head / .col-head.alt),
-     .callout (blue box, .callout-label in orange; .callout.light), dl.facts
-     (orange label + text rows), .flow (numbered steps), .stat-grid (big
-     figures), <strong> (bold blue), .hl (orange emphasis), .source (captions).
+     Components: .cols.cards (rounded cards, .col-head / .col-head.alt;
+     .cols.cards.three for three a row), .callout (blue box, .callout-label in
+     orange; .callout.light), dl.facts (orange label + text rows; .tight for
+     five or more), .flow (numbered steps; .flow.bare without cards),
+     .stat-grid (big figures), QR codes (.card-qr in a card with .card-meta
+     and .card-foot; .qr-row, .qr-col), .pill-row (blue pills), .matrix (2 × 2
+     on two axes), .tiers (graded rows), dl.facts.questions (numbered
+     question rows), .cols.hold (a row that keeps its own height), <strong>
+     (bold blue), .hl (orange emphasis), .source (captions). Every master
+     slide carries its folio before the URL; data-visibility="uncounted"
+     slides after the closing number A01, A02 …
      The engine's own features — fragments, notes (S), contents (T), ?check,
      PDF export, ?view=scroll — work as in every other deck.
      ============================================================================ -->
@@ -200,6 +207,114 @@
           <p class="source">Source: name the source of the figures.</p>
         </div>
       </div>
+    </section>
+
+    <!-- ░░ THREE CARDS ░░ .cols.cards.three: three cards a row; six wrap to
+         two rows. .compact on the section sets the PPT's dense card sizes. ░░ -->
+    <section class="compact" data-toc="Three cards">
+      <h2 class="slide-title">Three cards</h2>
+      <p class="lead">Three parallel points, one card each</p>
+      <div class="cols cards three">
+        <div class="col"><div class="col-head">First point</div><p>Two lines of support for the first point, in the card's smaller size</p></div>
+        <div class="col"><div class="col-head">Second point</div><p>Two lines of support for the second point, in the card's smaller size</p></div>
+        <div class="col"><div class="col-head">Third point</div><p>Two lines of support for the third point, in the card's smaller size</p></div>
+        <div class="col"><div class="col-head">Fourth point</div><p>A second row starts on its own when there are more than three</p></div>
+        <div class="col"><div class="col-head">Fifth point</div><p>Each row shares the height left on the slide</p></div>
+        <div class="col"><div class="col-head">Sixth point</div><p>One line of support</p></div>
+      </div>
+      <p><span class="hl">Reading the cards:</span> one line on what the six points add up to.</p>
+    </section>
+
+    <!-- ░░ QR IN A CARD ░░ p.card-meta under the head, .card-qr (a list beside
+         the code), p.card-foot (the link, pinned to the card's foot) ░░ -->
+    <section class="compact" data-toc="Two projects">
+      <h2 class="slide-title">Two projects</h2>
+      <p class="lead">Each card links to a website by QR code</p>
+      <div class="cols cards">
+        <div class="col">
+          <div class="col-head">First project</div>
+          <p class="card-meta">Kind of event · Funder<br>Place, DD–DD Month YYYY</p>
+          <div class="card-qr">
+            <ul>
+              <li>Who convened it</li>
+              <li>How many took part, and from where</li>
+              <li>What the format was</li>
+            </ul>
+            <img src="assets/qr-slides.png" alt="QR code to the first project's website" width="444" height="444">
+          </div>
+          <p class="card-foot"><a href="https://slides.frederickmadore.com/" target="_blank" rel="noopener">example.org/first-project</a></p>
+        </div>
+        <div class="col">
+          <div class="col-head">Second project</div>
+          <p class="card-meta">Kind of event · Funder<br>Place, DD–DD Month YYYY</p>
+          <div class="card-qr">
+            <ul>
+              <li>Who convened it</li>
+              <li>How many took part, and from where</li>
+              <li>What the format was</li>
+            </ul>
+            <img src="assets/qr-slides.png" alt="QR code to the second project's website" width="444" height="444">
+          </div>
+          <p class="card-foot"><a href="https://slides.frederickmadore.com/" target="_blank" rel="noopener">example.org/second-project</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ PILL ROW ░░ a definition in .callout.light, then .pill-row: one short
+         term per pill; a last paragraph drops to the foot ░░ -->
+    <section data-toc="Four terms">
+      <h2 class="slide-title">Four terms</h2>
+      <p class="lead">A definition, then the terms it rests on</p>
+      <div class="callout light">A two-line definition of the idea the slide is about, written as running text in the quieter box. It names the four terms below and says in a few words how each of them changes the idea.</div>
+      <div class="pill-row"><span>First</span><span>Second</span><span>Third</span><span>Fourth</span></div>
+      <p>One line on how the four terms relate.</p>
+    </section>
+
+    <!-- ░░ MATRIX ░░ .matrix: four .cell (.top/.bottom × .left/.right) on two
+         labelled axes, an optional .callout beside. Write the axis text in
+         sentence case; the skin sets it in capitals. ░░ -->
+    <section data-toc="Two axes">
+      <h2 class="slide-title">Two axes, four cases</h2>
+      <div class="matrix">
+        <span class="axis axis-y">Vertical axis</span>
+        <b class="axis tick-y">High</b>
+        <b class="axis tick-y low">Low</b>
+        <div class="cell top left"><h3>First case</h3><p>High on the vertical axis, low on the horizontal one.</p></div>
+        <div class="cell top right"><h3>Second case</h3><p>High on both axes.</p></div>
+        <div class="cell bottom left"><h3>Third case</h3><p>Low on both axes.</p></div>
+        <div class="cell bottom right"><h3>Fourth case</h3><p>Low on the vertical axis, high on the horizontal one.</p></div>
+        <div class="axis axis-x"><b>Low</b><span>Horizontal axis</span><b>High</b></div>
+        <div class="callout">
+          <span class="callout-label">Reading the grid</span>
+          <p>Two or three lines on what the axes decide and which case matters most.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░ TIERS ░░ .tiers: graded rows, each a lettered .t-dot, a .t-name, a
+         <p> with a bold lead-in and an optional .t-who. Orange by default;
+         .cool turns a row blue, .open hollows its dot. ░░ -->
+    <section data-toc="A graded scale">
+      <h2 class="slide-title">A graded scale</h2>
+      <p class="lead">Five grades, from the highest to the lowest</p>
+      <div class="tiers">
+        <div class="tier"><span class="t-dot">1</span><span class="t-name">Highest</span><p><strong>First strategy</strong>One line on what it is and what it risks.</p><span class="t-who">Who uses it</span></div>
+        <div class="tier open"><span class="t-dot">2</span><span class="t-name">High</span><p><strong>Second strategy</strong>One line on what it is and what it risks.</p><span class="t-who">Who uses it</span></div>
+        <div class="tier cool"><span class="t-dot">3</span><span class="t-name">Middle</span><p><strong>Third strategy</strong>One line on what it is and what it risks.</p><span class="t-who">Who uses it</span></div>
+        <div class="tier cool open"><span class="t-dot">4</span><span class="t-name">Low</span><p><strong>Fourth strategy</strong>One line on what it is and what it risks.</p><span class="t-who">Who uses it</span></div>
+        <div class="tier cool open"><span class="t-dot">5</span><span class="t-name">Lowest</span><p><strong>Fifth strategy</strong>One line on what it is and what it risks.</p><span class="t-who">Who uses it</span></div>
+      </div>
+    </section>
+
+    <!-- ░░ QUESTIONS ░░ dl.facts.questions: numbered rows that share the text
+         area; the numbers are drawn by the skin ░░ -->
+    <section class="compact" data-toc="Questions">
+      <h2 class="slide-title">Questions for the discussion</h2>
+      <dl class="facts questions">
+        <dt>Method</dt><dd>The first question, in one line</dd>
+        <dt>Ethics</dt><dd>The second question, in one line</dd>
+        <dt>Epistemology</dt><dd>The third question, in one line</dd>
+      </dl>
     </section>
 
     <!-- ░░ CLOSING ░░ "B Titelfolie mit Adresse" — a cover variant; the address

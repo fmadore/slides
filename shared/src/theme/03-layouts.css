@@ -23,14 +23,14 @@
    gothic title, serif italic subtitle ---------------------------------------- */
 .reveal section.cover { padding-right: 6rem; }
 .reveal section.cover .eyebrow {
-  font-family: var(--font-label); font-weight: 700; text-transform: uppercase;
-  letter-spacing: var(--track-hall); font-size: var(--fs-kicker); color: var(--ink-bold);
+  font-family: var(--font-label); font-weight: 700;
+  letter-spacing: var(--track-case); font-size: var(--fs-kicker); line-height: 1.3; color: var(--ink-bold); text-wrap: balance;
   max-width: 60ch; margin-bottom: var(--space-md);
   padding-bottom: var(--space-md); border-bottom: 3px solid var(--rule);
 }
 .reveal section.cover h1 {
-  font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em;
-  color: var(--ink-bold); max-width: 17ch; margin-bottom: var(--space-md); line-height: 0.96;
+  font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.018em;
+  color: var(--ink-bold); max-width: 18ch; margin-bottom: var(--space-md); line-height: 0.96;
 }
 .reveal section.cover .subtitle {
   font-family: var(--font-serif); font-style: italic; font-weight: 500;
@@ -65,15 +65,18 @@
 .reveal .contact a .ico { color: var(--ink-faint); display: inline-flex; }
 .reveal .contact a:hover .ico { color: var(--green-deep); }
 
-/* --- Institution wordmark on hero slides (cover + closing) ------------------ */
+/* --- Institution wordmark on hero slides (cover + closing) ------------------
+   An affiliation, not a publisher's mark: it always follows the byline, never
+   sits above the author's name. At 1.7rem the university's name inside the
+   mark was 4px tall — present, but unreadable past the front row. */
 .reveal section.cover .org-logo,
 .reveal section.closing .org-logo {
   display: block; align-self: flex-start;
-  height: 1.7rem; width: auto; margin-top: var(--space-lg); opacity: 0.9;
+  height: 2.5rem; width: auto; margin-top: var(--space-md); opacity: 0.9;
 }
 .reveal section.closing .org-logo { filter: brightness(0) invert(1); opacity: 0.85; }
 
-/* --- SECTION DIVIDER --- a full-bleed saturated GREEN field, gold folio,
+/* --- SECTION DIVIDER --- a full-bleed saturated GREEN field, a plate rule,
    giant gothic title. Navy variant for the structural deep. ------------------ */
 .reveal section.section {
   --r-main-color: var(--paper);
@@ -88,24 +91,17 @@
   top: var(--slide-pad-y); height: var(--bar); background: var(--ond-mark);
 }
 .reveal section.section .sec-no {
-  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-mega);
-  letter-spacing: -0.03em; line-height: 0.82; color: color-mix(in oklch, var(--paper), transparent 76%);
-  margin-bottom: var(--space-sm); font-variant-numeric: tabular-nums;
-}
-/* The oversized folio is the only place a divider states its own number, and
-   as a 24% ghost it measured 1.52:1 — gone by about row five. Outlined, it
-   carries the full Paper contrast of the field while keeping almost none of
-   its visual mass, so it still sits under the title. The filled ghost above
-   is the fallback where text-stroke is unsupported. */
-@supports (-webkit-text-stroke: 3px currentColor) {
-  .reveal section.section .sec-no {
-    color: transparent;
-    -webkit-text-stroke: 3px var(--paper);
-  }
+  /* Optional, and quiet: a divider is complete with its rule and title alone.
+     When a deck numbers its parts, the number is a plain label above the
+     title — not the oversized outlined folio it used to be, which made every
+     divider a poster. */
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-h3);
+  letter-spacing: 0; line-height: 1; color: var(--ond-quiet);
+  margin-bottom: var(--space-md); font-variant-numeric: lining-nums tabular-nums;
 }
 .reveal section.section h2 {
-  color: var(--paper); font-family: var(--font-display); font-size: var(--fs-section); font-weight: 800;
-  letter-spacing: -0.03em; max-width: 16ch; margin: 0; line-height: 0.94;
+  color: var(--paper); font-family: var(--font-display); font-size: var(--fs-section); font-weight: 700;
+  letter-spacing: -0.018em; max-width: 16ch; margin: 0; line-height: 0.94;
 }
 .reveal section.section .sec-sub {
   color: var(--ond-quiet);
@@ -122,8 +118,8 @@
 /* --- STATEMENT (big claim / quote) ----------------------------------------- */
 /* Default: a GOTHIC claim — heavy, huge, tight. One green accent phrase. */
 .reveal section.statement .statement-body {
-  font-family: var(--font-display); font-weight: 800; font-style: normal;
-  font-size: var(--fs-display); line-height: 0.98; letter-spacing: -0.03em;
+  font-family: var(--font-display); font-weight: 700; font-style: normal;
+  font-size: var(--fs-display); line-height: 0.98; letter-spacing: -0.018em;
   color: var(--ink-bold); max-width: 18ch; text-wrap: balance;
 }
 .reveal section.statement .statement-body .accent { color: var(--green-deep); }
@@ -161,7 +157,7 @@
 .reveal .col > h3 { margin-bottom: var(--space-sm); }
 .reveal .col-head {
   font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker);
-  text-transform: uppercase; letter-spacing: var(--track-hall); color: var(--ink-bold);
+  letter-spacing: var(--track-case); line-height: 1.2; color: var(--ink-bold);
   padding-bottom: var(--space-xs); margin-bottom: var(--space-md);
   border-bottom: 3px solid var(--rule);
 }
@@ -207,7 +203,6 @@
 }
 .reveal section.media .media-caption h2 { color: var(--paper); }
 .reveal section.media .media-caption .kicker { color: var(--ond-mark); }
-.reveal section.media .media-caption .kicker::before { background: var(--ond-mark); }
 
 /* Image + caption side layout */
 .reveal .figrow { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-3xl); align-items: center; flex: 1; min-height: 0; }
@@ -231,7 +226,7 @@
    left the field empty — which is why three decks waived the fit check with
    identical boilerplate rather than fixing the composition. Wider measures let
    the sign-off span the page it actually has. */
-.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 22ch; letter-spacing: -0.028em; line-height: 0.96; }
+.reveal section.closing h2 { color: var(--paper); font-family: var(--font-display); font-size: var(--fs-h1); max-width: 22ch; letter-spacing: -0.018em; line-height: 0.96; }
 .reveal section.closing .lead { color: var(--ond-quiet); max-width: 46ch; }
 /* Contributors read across on a colophon, the way a masthead lists them —
    stacked is right under a cover title, where the byline is a caption, but here
@@ -247,7 +242,6 @@
 .reveal section.closing .contact a:hover { color: var(--ond-text); }
 .reveal section.closing .contact a .ico { color: var(--ond-mark); }
 .reveal section.closing .kicker { color: var(--ond-mark); }
-.reveal section.closing .kicker::before { background: var(--ond-mark); }
 .reveal section.closing p a { color: var(--ond-mark); text-decoration-color: color-mix(in oklch, var(--ond-mark), transparent 50%); }
 .reveal section.closing p a:hover { color: var(--ond-text); text-decoration-color: var(--ond-text); }
 .reveal section.closing .byline .name { color: var(--ond-text); }

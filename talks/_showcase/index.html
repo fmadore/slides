@@ -36,8 +36,9 @@
        .callout, .kicker, .panel, .chip, .byline (+.authors), .slides-qr,
        tables, code blocks, fragments, .flow, .barchart/.share-bars,
        .plate/.chrome/.duotone, .scroll-panel embeds.
-     • EXPERIMENTAL (APIs may still move): .dateline, p.dropcap, .marginnote,
-       .folio-ghost, .colophon (the "editorial signature" set), auto-animate
+     • EXPERIMENTAL (APIs may still move): .marginnote; the ornaments
+       .dateline, p.dropcap, .folio-ghost, .colophon (use sparingly — shown in
+       the annexe, not the main run) and the optional .sec-no; auto-animate
        recipes, annexe slides (data-visibility="uncounted" — the A-series folio
        is new), reveal's own lightbox (data-preview-image/-video/-link/-fit).
 
@@ -52,8 +53,7 @@
        .stat/.stat-grid, .panel, .chip, .figrow, .index-list, .metric …
      • SIGNATURE COMPONENTS (the direction board): data charts (.barchart +
        .bar-axis, .share-bars); the image system (.plate duotone photo, .chrome
-       app shot, .duotone utility); editorial marks (.dateline, p.dropcap,
-       .marginnote, .folio-ghost, .colophon); .flow process diagrams; and the
+       app shot, .duotone utility); .marginnote; .flow process diagrams; and the
        warm "critique" thread (.section.warm, .kicker/.callout/.col-head .warm).
      • MOTION is automatic + restrained: heavy rules/markers draw in and chart
        bars grow as a slide arrives; add data-count="14700" to a numeral and it
@@ -65,6 +65,9 @@
        and quotes. Colour is a flat structural FIELD + heavy rule, not a sprinkle
        — green leads, navy is the deep pole, gold the spark. Every .slide-title
        carries a heavy green marker bar; add .no-rule to drop it.
+     • ONE OVERLINE PER SLIDE: the running head names the section; a .kicker is
+       optional and, where a slide has one, it replaces the running head.
+       Labels are sentence case — type them as you want them read.
      • Hero layouts (cover, section, statement, closing, metric) centre themselves.
        Add class="balance" to centre any OTHER sparse <section>.
      • Speaker notes go in <aside class="notes">…</aside> (press S). They are
@@ -96,7 +99,7 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- ░░ COVER ░░ a journal masthead: event line, big serif title, byline ░░ -->
+    <!-- ░░ COVER ░░ a journal masthead: event line, big gothic title, byline ░░ -->
     <section class="cover" data-footer="light" data-visual-test="cover">
       <p class="eyebrow">Event · Place, DD Month YYYY</p>
       <h1>Talk title</h1>
@@ -135,7 +138,6 @@
 
     <!-- ░░ NUMBERED INDEX ░░ a bold agenda/contents grid (.index-list) ░░ -->
     <section data-toc="Outline" data-visual-test="index">
-      <p class="kicker">In four movements</p>
       <h2 class="slide-title">What this talk covers</h2>
       <ol class="index-list">
         <li><span class="idx-title">The question</span><span class="idx-desc">Why keyword search fails the archive.</span></li>
@@ -147,14 +149,14 @@
 
     <!-- ░░ SECTION DIVIDER ░░ a full-bleed green field (add "navy" for the deep variant) ░░ -->
     <section class="section" data-toc="First section" data-visual-test="divider">
-      <p class="sec-no">01</p>
       <h2>The first section</h2>
       <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
-    <!-- ░░ STANDARD CONTENT ░░ the everyday slide: kicker, title, lead, list ░░ -->
+    <!-- ░░ STANDARD CONTENT ░░ the everyday slide: title, lead, list. The
+         optional .kicker is shown here once; it replaces the running head. ░░ -->
     <section data-toc="A key point" data-visual-test="content">
-      <p class="kicker">Optional eyebrow</p>
+      <p class="kicker">Optional label</p>
       <h2 class="slide-title">A slide title</h2>
       <p class="lead">A larger opening line that sets up the slide.</p>
       <ul>
@@ -204,7 +206,7 @@
           <div class="panel">
             <p class="kicker">In brief</p>
             <p>A ruled sidebar groups a secondary thought without a heavy card.</p>
-            <p><span class="chip">tag</span> <span class="chip green">key</span></p>
+            <p><span class="chip">Tag</span> <span class="chip green">Key</span></p>
           </div>
           <div class="panel sunken">
             <p>Where an aside needs a surface rather than a rule, it takes the
@@ -240,14 +242,14 @@
       <p class="kicker">The collection</p>
       <h2 class="slide-title">In figures</h2>
       <div class="stat-grid">
-        <div class="stat"><span class="stat-num" data-count="12480">12,480</span><span class="stat-label">documents</span></div>
-        <div class="stat"><span class="stat-num" data-count="8">8</span><span class="stat-label">countries</span></div>
-        <div class="stat"><span class="stat-num">1953–2024</span><span class="stat-label">date range</span></div>
-        <div class="stat"><span class="stat-num" data-count="4">4</span><span class="stat-label">languages</span></div>
+        <div class="stat"><span class="stat-num" data-count="12480">12,480</span><span class="stat-label">Documents</span></div>
+        <div class="stat"><span class="stat-num" data-count="8">8</span><span class="stat-label">Countries</span></div>
+        <div class="stat"><span class="stat-num">1953–2024</span><span class="stat-label">Date range</span></div>
+        <div class="stat"><span class="stat-num" data-count="4">4</span><span class="stat-label">Languages</span></div>
       </div>
       <div class="callout">
         <span class="callout-label">Note</span>
-        Counts are indicative — the corpus grows monthly.
+        Counts are indicative; the corpus grows monthly.
       </div>
     </section>
 
@@ -255,10 +257,10 @@
     <section class="metric" data-toc="One number">
       <p class="kicker green">The headline figure</p>
       <p class="metric-num" data-count="12480">12,480</p>
-      <p class="metric-label">documents catalogued across eight countries — and the count climbs every month.</p>
+      <p class="metric-label">documents catalogued across eight countries.</p>
     </section>
 
-    <!-- ░░ TABLE ░░ gothic small-caps headers, hairline ruling, .num right-aligns ░░ -->
+    <!-- ░░ TABLE ░░ bold sentence-case headers, hairline ruling, .num right-aligns ░░ -->
     <section data-toc="A table">
       <h2 class="slide-title">A table</h2>
       <table>
@@ -293,7 +295,6 @@ print(f"{len(hits)} documents")</code></pre>
          reaching for it as an entrance puts the last line on screen with the first.
          Great for walking through a list without overwhelming the room. ░░ -->
     <section data-toc="Step by step">
-      <p class="kicker">Built incrementally</p>
       <h2 class="slide-title">One point at a time</h2>
       <ul>
         <li class="fragment">First it appears on its own</li>
@@ -323,9 +324,8 @@ print(f"{len(hits)} documents")</code></pre>
 
     <!-- ░░ SECTION DIVIDER (navy variant — the structural deep) ░░ -->
     <section class="section navy" data-toc="Second section">
-      <p class="sec-no">02</p>
       <h2>The second section</h2>
-      <p class="sec-sub">Green leads; navy is the deep pole — two fields, one system.</p>
+      <p class="sec-sub">An optional italic subtitle.</p>
     </section>
 
     <!-- ░░ BIG STATEMENT ░░ a claim worth pausing on; one accent phrase ░░ -->
@@ -363,7 +363,6 @@ print(f"{len(hits)} documents")</code></pre>
          refuse framing (X-Frame-Options / CSP frame-ancestors). Verify in a real
          browser; if it's blocked, keep the screenshot. ░░ -->
     <section class="balance" data-toc="A live look" data-footer="light">
-      <p class="kicker">On the web</p>
       <h2 class="slide-title">A framed website</h2>
       <div class="site-frame">
         <div class="site-frame-bar">
@@ -406,7 +405,6 @@ print(f"{len(hits)} documents")</code></pre>
          below. Esc closes it. The image and video variants are offline-safe:
          point them at a file in assets/. ░░ -->
     <section data-toc="An overlay on demand">
-      <p class="kicker">Reveal’s own overlay</p>
       <h2 class="slide-title">The live site, only if the room asks</h2>
       <div class="cols">
         <div class="col">
@@ -432,8 +430,7 @@ print(f"{len(hits)} documents")</code></pre>
          (height per bar via --h) + .share-bars (width via --p). Values count up
          with data-count; the bars grow in on slide entry. ░░ -->
     <section data-toc="Data as design" data-visual-test="data-viz">
-      <p class="kicker">Make the data the design</p>
-      <h2 class="slide-title">A corpus has a shape — so draw it</h2>
+      <h2 class="slide-title">Documents by decade and country</h2>
       <div class="cols ratio-3-2">
         <div class="col">
           <div class="chart">
@@ -462,57 +459,37 @@ print(f"{len(hits)} documents")</code></pre>
             <li class="is-mute" style="--p:5%"><div class="share-head"><span>Niger</span><b data-count="5" data-count-suffix="%">5%</b></div><div class="share-track"></div></li>
             <li class="is-mute" style="--p:3%"><div class="share-head"><span>Nigeria</span><b data-count="3" data-count-suffix="%">3%</b></div><div class="share-track"></div></li>
           </ul>
-          <div class="marginnote"><span class="mn-label">In the margin</span>The thin bars <em>are</em> the bias disclosure — made visible.</div>
+          <div class="marginnote"><span class="mn-label">Note</span>The short bars show where the collection is thin.</div>
         </div>
       </div>
-      <aside class="notes">The one subject the system couldn't render used to be the data itself — which, for a talk about a corpus, is the whole talk. Now the chart is a house component, in the green/navy fields with a single heavy baseline.</aside>
+      <aside class="notes">Native house charts: a column chart on a heavy baseline and a share breakdown, with values that count up.</aside>
     </section>
 
     <!-- ░░ ONE IMAGE TREATMENT ░░ two rules, never broken: documentary photos get
          a .plate (green duotone + ruled Fig. caption); app shots get real .chrome.
          The #duo-green filter is injected by deck.js — just add the classes. ░░ -->
     <section data-toc="Image treatment">
-      <p class="kicker">One coherent image treatment</p>
-      <h2 class="slide-title">Two image types, one system</h2>
+      <h2 class="slide-title">Photographs and screenshots</h2>
       <div class="cols">
         <figure class="plate">
           <div class="plate-img" style="height:280px"><img data-src="assets/example-figure.png" alt="A documentary photograph, rendered as a green duotone plate." width="1600" height="1200"></div>
-          <figcaption><span class="fig-no">Fig. 1</span><span class="fig-cap">Documentary photos get a green duotone and a ruled plate caption — every one belongs.</span></figcaption>
+          <figcaption><span class="fig-no">Fig. 1</span><span class="fig-cap">A documentary photograph as a duotone plate with a ruled caption.</span></figcaption>
         </figure>
         <div class="col">
           <figure class="chrome">
             <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-url">islam.zmo.de/s/westafrica</span></div>
             <div class="chrome-view" style="height:280px"><img data-src="assets/example-site.png" style="height:100%" alt="An application screenshot, shown in true colour inside browser chrome." width="1920" height="1180"></div>
           </figure>
-          <p class="small muted">App screenshots keep their true colour — but always inside the same chrome.</p>
+          <p class="small muted">App screenshots keep their true colour inside browser chrome.</p>
         </div>
       </div>
-      <aside class="notes">Pick two rules and never break them. A deck of scavenged JPEGs then reads as one authored object.</aside>
-    </section>
-
-    <!-- ░░ EDITORIAL SIGNATURE ░░ the broadsheet, taken further: a .dateline
-         masthead, a p.dropcap versal, a .marginnote sidenote, and a faint
-         .folio-ghost anchoring the field. ░░ -->
-    <section data-toc="Editorial signature">
-      <div class="folio-ghost" aria-hidden="true">02</div>
-      <div class="dateline"><span class="dl-part">Part Two · The approach</span><span class="dl-meta">House masthead · running dateline</span></div>
-      <h2 class="slide-title no-rule">Plumbing, then intelligence</h2>
-      <div class="cols ratio-3-2">
-        <div class="col">
-          <p class="lead dropcap">The server gives any AI assistant structured, read-only access to the collection; the skill — a plain-text file — encodes how to use it <em>well</em>.</p>
-        </div>
-        <div class="col">
-          <div class="marginnote"><span class="mn-label">In the margin</span>The serif counter-voice becomes a true sidenote — a scholar’s marginalia, exactly where the eye expects it on a printed page.</div>
-        </div>
-      </div>
-      <aside class="notes">A versal opens the argument; a dateline runs the masthead; the serif voice becomes a true margin note; an oversized ghosted folio anchors the field. None of it is decoration — it's the newspaper logic the system already chose, made unmistakable.</aside>
+      <aside class="notes">Photographs take the duotone plate; screenshots take the browser chrome.</aside>
     </section>
 
     <!-- ░░ FLOW DIAGRAM ░░ a process drawn, not bulleted: .flow with .flow-step
          boxes and .flow-arrow connectors (takes any number of steps). ░░ -->
     <section data-toc="A process">
-      <p class="kicker navy">Diagrams over lists</p>
-      <h2 class="slide-title">A process, drawn — not bulleted</h2>
+      <h2 class="slide-title">Three steps of semantic search</h2>
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1 · Ask</span><span class="step-h">Your question</span>
@@ -533,7 +510,7 @@ print(f"{len(hits)} documents")</code></pre>
       </div>
       <div class="callout navy">
         <span class="callout-label">Why it matters</span>
-        Finds the right records even when they never say the word — the diagram carries what a bullet list would bury.
+        Finds relevant records even when they do not use the search term.
       </div>
     </section>
 
@@ -545,31 +522,31 @@ print(f"{len(hits)} documents")</code></pre>
         <figcaption>An illustrative workflow for the Islam West Africa Collection</figcaption>
         <ol class="pipeline-steps">
           <li class="pipeline-step">
-            <span class="pipeline-number">01</span>
+            <span class="pipeline-number">1</span>
             <div data-pipeline-art="scan" aria-hidden="true"></div>
             <h3>Source scan</h3>
             <p>Keep the original page as evidence.</p>
           </li>
           <li class="pipeline-step">
-            <span class="pipeline-number">02</span>
+            <span class="pipeline-number">2</span>
             <div data-pipeline-art="text" aria-hidden="true"></div>
             <h3>Text extraction</h3>
             <p>Read the page into searchable text.</p>
           </li>
           <li class="pipeline-step">
-            <span class="pipeline-number">03</span>
+            <span class="pipeline-number">3</span>
             <div data-pipeline-art="entities" aria-hidden="true"></div>
             <h3>Entity extraction</h3>
             <p>Identify names, organisations and places.</p>
           </li>
           <li class="pipeline-step">
-            <span class="pipeline-number">04</span>
+            <span class="pipeline-number">4</span>
             <div data-pipeline-art="match" aria-hidden="true"></div>
             <h3>Authority matching</h3>
             <p>Compare name variants with existing records.</p>
           </li>
           <li class="pipeline-step">
-            <span class="pipeline-number">05</span>
+            <span class="pipeline-number">5</span>
             <div data-pipeline-art="review" aria-hidden="true"></div>
             <h3>Human review</h3>
             <p>Check the context before accepting a match.</p>
@@ -581,17 +558,11 @@ print(f"{len(hits)} documents")</code></pre>
 
     <!-- ░░ CLOSING / CONTACT ░░ -->
     <section class="closing" data-footer="dark" data-visual-test="closing">
-      <p class="kicker">Thank you · Merci</p>
+      <p class="kicker">Thank you</p>
       <h2>A closing line.</h2>
       <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
       <!-- Co-presented? Use the same <div class="byline authors">…</div> pattern as the cover, and delete the data-contact row below. -->
       <div data-contact></div>
-      <!-- Colophon — a printer's imprint to close on (label·value pairs on a rule). Delete to omit. -->
-      <div class="colophon">
-        <span class="col-item"><b>Type</b> EB Garamond &amp; Libre Franklin</span>
-        <span class="col-item"><b>Palette</b> Bayreuth green · navy · gold</span>
-        <span class="col-item"><b>Built with</b> reveal.js · fully offline</span>
-      </div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <!-- QR to these slides (floats to the top-right corner). Replace the PNG + label. -->
       <div class="slides-qr corner">
@@ -631,6 +602,29 @@ print(f"{len(hits)} documents")</code></pre>
         </div>
       </div>
       <aside class="notes">Backup slides live after the closing so the talk can end where it ends, and the material for questions is one arrow key away.</aside>
+    </section>
+
+    <!-- ░░ ORNAMENTS — USE SPARINGLY ░░ kept for decks that already use them,
+         not part of the everyday run: a .dateline masthead, a p.dropcap versal,
+         a faint .folio-ghost and a .colophon. A slide that reaches for one
+         should have a reason a plain slide could not meet. ░░ -->
+    <section data-toc="Ornaments" data-visibility="uncounted">
+      <div class="folio-ghost" aria-hidden="true">3</div>
+      <div class="dateline"><span class="dl-part">Part three · Method</span><span class="dl-meta">Venue · Date</span></div>
+      <h2 class="slide-title no-rule">Ornaments, used sparingly</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="lead dropcap">A versal, a dateline, a ghosted folio and a colophon are available, but none belongs on an ordinary slide.</p>
+        </div>
+        <div class="col">
+          <div class="colophon">
+            <span class="col-item"><b>Dateline</b> top of this slide</span>
+            <span class="col-item"><b>Versal</b> first letter of the lead</span>
+            <span class="col-item"><b>Folio</b> the faint numeral</span>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Use these only where the slide needs them.</aside>
     </section>
 
   </div>

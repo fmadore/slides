@@ -138,8 +138,10 @@
 .reveal section.section .slides-qr .qr-label .qr-url,
 .reveal section.closing .slides-qr .qr-label .qr-url { color: color-mix(in oklch, var(--paper), transparent 36%); }
 
-/* Fallback note injected by deck.js when a live iframe fails to load (offline,
-   or the site refuses framing): a quiet centred notice with the original link. */
+/* Notice injected by deck.js over a live iframe while its site is being
+   reached, and kept if it cannot be (offline, or the request is blocked): a
+   quiet centred notice with the original link. There is no opt-in control —
+   a reachable site shows directly. */
 .reveal .frame-fallback {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -280,10 +282,3 @@ html.reveal-print .reveal { --excerpt-mark: block; --scroll-hint-display: none; 
 .reveal .fragment.fade-up { transform: translateY(14px); transition: transform 420ms var(--ease), opacity 420ms var(--ease); }
 .reveal .fragment.fade-up.visible { transform: none; }
 .reveal .slides section .fragment.highlight-green.visible { color: var(--green-deep); }
-/* Explicit opt-in remains usable when a remote document cannot prove readiness. */
-.frame-show {
-  font: inherit; color: var(--green-deep); background: var(--paper);
-  border: 1px solid var(--line-strong); padding: var(--space-xs) var(--space-sm);
-  cursor: pointer;
-}
-.frame-show:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }

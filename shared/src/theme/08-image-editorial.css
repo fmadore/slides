@@ -21,7 +21,7 @@
   border-top: 2px solid var(--rule); max-width: none; font-style: normal;
 }
 .reveal .plate .fig-no { flex: none; font-family: var(--font-label); font-weight: 800; font-size: var(--fs-label);
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-deep); }
+  letter-spacing: var(--track-case); color: var(--green-deep); }
 .reveal .plate.navy .fig-no { color: var(--navy); }
 .reveal .plate .fig-cap { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); line-height: 1.34; color: var(--ink-soft); }
 
@@ -36,9 +36,11 @@
 .reveal .chrome-view img { display: block; width: 100%; height: auto; object-fit: cover; border: 0; border-radius: 0; }
 
 /* =============================================================================
-   13. PUSH THE BROADSHEET FURTHER — editorial signature      (Move 4)
-   Versal, margin note, dateline masthead, ghosted folio, colophon. Not
-   decoration — the newspaper logic the system already chose, taken all the way.
+   13. EDITORIAL ORNAMENTS — use sparingly                     (Move 4)
+   Versal, dateline masthead, ghosted folio, colophon: kept for the decks that
+   use them, not part of the everyday run. A slide that reaches for one should
+   have a reason a plain slide could not meet. (The margin note is a working
+   component, not an ornament.)
    ============================================================================= */
 /* VERSAL / drop-cap — opens an argument. Green on paper, gold on the dark fields. */
 .reveal p.dropcap::first-letter {
@@ -60,7 +62,7 @@
 .reveal .marginnote { border-top: 3px solid var(--rule); padding-top: 0.55em; max-width: 34ch;
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-small); line-height: 1.4; color: var(--ink-soft); }
 .reveal .marginnote .mn-label { display: block; font-family: var(--font-label); font-style: normal; font-weight: 800;
-  font-size: var(--fs-label); letter-spacing: var(--track-hall); text-transform: uppercase; color: var(--ink-bold); margin-bottom: 0.3em; }
+  font-size: var(--fs-label); letter-spacing: var(--track-case); color: var(--ink-bold); margin-bottom: 0.3em; }
 .reveal .marginnote.warm { border-top-color: var(--brown); }
 .reveal .marginnote.warm .mn-label { color: var(--brown-deep); }
 .reveal section.section .marginnote, .reveal section.closing .marginnote { border-top-color: var(--ond-mark); color: var(--ond-quiet); }
@@ -69,11 +71,11 @@
 /* DATELINE — a masthead row: the part/strand on the left, the venue on the
    right, on a heavy rule. Gothic small-caps; gold-keyed on dark fields. */
 .reveal .dateline { display: flex; justify-content: space-between; align-items: baseline; gap: 1em;
-  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker); text-transform: uppercase;
-  letter-spacing: var(--track-hall); color: var(--ink-faint); padding-bottom: 0.6em; margin: 0 0 var(--space-lg);
+  font-family: var(--font-label); font-weight: 700; font-size: var(--fs-kicker);
+  letter-spacing: var(--track-case); color: var(--ink-faint); padding-bottom: 0.6em; margin: 0 0 var(--space-lg);
   border-bottom: 3px solid var(--rule); max-width: none; }
 .reveal .dateline .dl-part { color: var(--green-deep); }
-.reveal .dateline .dl-meta { font-weight: 600; letter-spacing: 0.12em; }
+.reveal .dateline .dl-meta { font-weight: 600; }
 .reveal section.section .dateline, .reveal section.closing .dateline { border-bottom-color: var(--ond-mark); color: var(--ond-quiet); }
 .reveal section.section .dateline .dl-part, .reveal section.closing .dateline .dl-part { color: var(--ond-mark); }
 
@@ -94,7 +96,7 @@
 .reveal .colophon .col-item { display: inline-flex; align-items: baseline; gap: 0.5em;
   font-family: var(--font-serif); font-style: italic; font-size: var(--fs-caption); color: var(--ink-soft); }
 .reveal .colophon .col-item b { font-family: var(--font-label); font-style: normal; font-weight: 800;
-  font-size: var(--fs-footer); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-bold); }
+  font-size: var(--fs-caption); letter-spacing: var(--track-case); color: var(--ink-bold); }
 .reveal section.closing .colophon { border-top-color: var(--ond-rule); }
 .reveal section.closing .colophon .col-item { color: color-mix(in oklch, var(--paper), transparent 30%); }
 .reveal section.closing .colophon .col-item b { color: color-mix(in oklch, var(--paper), transparent 8%); }
@@ -114,8 +116,8 @@
 .reveal .evidence-reading { margin: 0 0 var(--space-lg); }
 .reveal .evidence-reading > div { border-top: 3px solid var(--rule); padding: var(--space-sm) 0; }
 .reveal .evidence-reading dt {
-  font-family: var(--font-label); font-size: var(--fs-caption); font-weight: 700;
-  text-transform: uppercase; letter-spacing: var(--track-hall); color: var(--navy);
+  font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700;
+  letter-spacing: var(--track-case); color: var(--navy);
 }
 .reveal .evidence-reading dd {
   margin: var(--space-xs) 0 0; font-family: var(--font-display);

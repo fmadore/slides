@@ -37,15 +37,15 @@ typography:
   display:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "5.30rem"
-    fontWeight: 800
+    fontWeight: 700
     lineHeight: 0.98
-    letterSpacing: "-0.028em"
+    letterSpacing: "-0.018em"
   headline:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "3.50rem"
-    fontWeight: 800
+    fontWeight: 700
     lineHeight: 0.98
-    letterSpacing: "-0.022em"
+    letterSpacing: "-0.012em"
   title:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "2.20rem"
@@ -66,10 +66,10 @@ typography:
     letterSpacing: "0"
   label:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.05rem"
+    fontSize: "1.15rem"
     fontWeight: 700
     lineHeight: 1.2
-    letterSpacing: "0.10em"
+    letterSpacing: "0.005em"
   chrome:
     fontFamily: "Libre Franklin, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "0.80rem"
@@ -151,392 +151,250 @@ components:
 
 # Design System: Broadsheet
 
+This file states the rules: what each is, its value, and the one-line reason. How a rule was found, what the system measured before a fix and the values it superseded are in [`docs/design-history.md`](docs/design-history.md), which is not required reading. The code (`shared/src/theme/`, `shared/src/deck/`) is the authority; this file tracks it.
+
 ## Overview
 
-**Creative North Star: "The Scholarly Broadsheet"**
+**Creative North Star: "The Scholarly Broadsheet".** Broadsheet is the visual system of a reveal.js engine for academic talks: an authored scholarly broadsheet, not a slide template. Three ideas carry it.
 
-Broadsheet is the visual system of a reveal.js slide-deck engine for academic talks: a bold scholarly broadsheet, not a slide template. Its identity rests on the three rules the author wrote into the theme itself. First, an **inverted type hierarchy**: the newspaper gothic (Libre Franklin, pushed to its 700/800 weights with negative tracking) is the loud display voice, while the humanist book serif (EB Garamond) is the quiet counter-voice for body prose, leads and quotations — the reverse of a conventional academic deck. Second, **colour is a field, not a sprinkle**: the six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules, never as a timid accent wash. Third, a **crisp, high-contrast page**: near-black ink on a cool near-white, with structure drawn by confident 3–6px rules rather than faint decoration.
+1. **Inverted type hierarchy.** The newspaper gothic (Libre Franklin, bold, lightly negative-tracked) is the loud display voice; the humanist book serif (EB Garamond) is the quiet voice for prose, leads and quotations.
+2. **Colour is a field, not a sprinkle.** The six binding Bayreuth corporate colours are spent as flat structural planes and heavy rules.
+3. **A crisp, high-contrast page.** Near-black ink on a cool near-white, with structure drawn by 3–4px rules rather than boxes.
 
-The voice is authored-by-a-historian and must never read as template-made or AI-generated. The confirmed anti-references (retired tells): the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, and drop-shadowed rounded cards. WCAG 2.2 AA is binding; hall-projection legibility leads every sizing decision (the serif body sits deliberately large because EB Garamond's small x-height reads small in a hall).
-
-**Key Characteristics:**
-- Inverted type hierarchy: loud gothic display, quiet serif prose
-- Colour as full-bleed structural fields (green leads, navy is the deep pole, gold sparks the deep pole only)
-- Two on-dark registers, split by measured luminance: the deep pole re-opens a tonal ramp and takes gold; the bright fields spend Paper and separate their tiers by weight
-- Signature device: a heavy 4px green marker bar above every standard slide title
-- Ruled, not boxed: hairlines and heavy editorial rules instead of cards
-- Flat by default; shadows only on true overlays
-- "Ink on paper" motion: rules draw in, bars grow, figures count up — one switch (`--draw-run`) stills all three
+The voice is authored by a historian and must not read as template-made or AI-generated (see [Visual tells to avoid](#visual-tells-to-avoid)). WCAG 2.2 AA is binding, and legibility in a lecture hall leads every sizing decision. The signature mark is the 4px green bar above the slide title; a slide carries one overline at most, and labels inside the canvas are in sentence case.
 
 ## Colors
 
-The exact six-colour University of Bayreuth corporate palette (binding, hex-normative) over a cool near-white/near-black neutral ramp defined in OKLCH (OKLCH-normative — do not convert). The fifteen derived values between them are normative as their `color-mix(in oklch, …)` expressions, not as hex: the corporate hex is the input, and what actually paints a field, a plate ground or a small-text depth is the mix. The section divider is never raw `#009260`; the closing is never raw `#00268a`. Nine of the fifteen are `:root` custom properties; the other six are mixed **inline in the one rule that spends them** — the browser-bar dot, the code-theme title blue, the scroll-panel thumb, the highlighter wash, the scrim ink and the capture letterbox. They are recorded here because they paint real surfaces, not because they are tokens: each has exactly one user, and promoting a single-user value to `:root` would invite a second, unmeasured one.
+The Bayreuth palette is hex-normative and the neutral ramp OKLCH-normative; do not convert either. Derived values are normative as their `color-mix(in oklch, …)` expressions (the divider is never raw `#009260`, the closing never raw `#00268a`). Nine are `:root` tokens; six are mixed inline in the one rule that spends them (browser-bar dot, code title blue, scroll thumb, highlighter wash, scrim ink, capture letterbox), so that no second, unmeasured user appears.
 
-### Primary
-- **Lead Green** (`{colors.lead-green}`): the lead colour. Full-bleed `.section` divider fields, the marker bar above slide titles, list ticks, links, folios, the progress bar, chart bars. Darkened via `color-mix(in oklch, var(--green), #06140d 26%)` (`--green-deep`) for AA text and links on light backgrounds — never set small green text in the raw corporate hex.
+| Role | Token | Use |
+|---|---|---|
+| Lead Green | `--green` `#009260` | divider fields (as `--green-field`), title marker, list ticks, progress bar, chart bars, focus ring on light (3.87:1) |
+| Green Deep | `--green-deep` | all small green text and links on light (6.12:1) |
+| Structural Navy | `--navy` `#00268a` | `.closing`, `.section.navy`, share-bar fills, `.accent-navy` |
+| Gold Spark | `--gold` `#cca352` | the deep pole's mark, through `--ond-mark` (gold-bright, 7.13:1 on navy); on paper only the `mark` wash and the statement quote mark |
+| Amber | `--amber` `#f59c08` | minor highlight washes |
+| Warm Brown | `--brown` `#d57912` | `.section.warm` and `.warm` variants; `--brown-deep` for small text |
+| Sky | `--sky` `#44b8f2` | spent once: 18% mixed into navy for the highlight.js function token |
+| Paper, Panel, Sunken | `--paper` … | slide ground; faint raised surface; insets, code, table stripes, chart tracks |
+| Line | `--line` | hairlines, 2.22:1 on Paper |
+| Line Strong | `--line-strong` | chip, nav-button and plate borders, 3.52:1 (WCAG 3:1 for a boundary) |
+| Rule | `--rule` | heavy near-black editorial rules, 18.71:1 |
+| Ink tiers | `--ink`, `--ink-bold`, `--ink-soft`, `--ink-faint` | text; Ink Faint is 5.15:1 on Paper, 4.51:1 on Sunken |
 
-### Secondary
-- **Structural Navy** (`{colors.structural-navy}`): the structural deep pole. The `.closing` field, the `.section.navy` divider variant, share-bar fills, the `.accent-navy` text voice.
-- **Gold Spark** (`{colors.gold-spark}`): the spark of the *deep* pole, reached through `--ond-mark`. That token resolves to `--gold-bright` (`color-mix(... white 24%)`, 7.13:1 on navy) on `.section.navy`, `.closing` and `.media`, and to Paper on the green and brown fields. It draws the `.section`/`.closing` plate rule, dark-field list ticks, the dropcap, the marginnote and dateline keys, the closing kicker, links and icons, the footer counter and the on-dark progress fill. On paper, gold survives only as the `mark` highlight wash and the oversized quotation mark of the statement quote.
+**The Field, Not Sprinkle Rule.** Colour arrives as a flat plane, a heavy bar or a solid fill, or not at all; never as a tint, gradient wash or scattered accent.
 
-### Tertiary
-- **Amber Highlight** (`{colors.amber-highlight}`): minor supporting role; highlight washes.
-- **Warm Brown** (`{colors.warm-brown}`): the warm "counter-thread" — `.section.warm` stakes divider, `.kicker.warm`/`.callout.warm` variants; darkened (`--brown-deep`) for AA small text on light.
-- **Sky** (`{colors.sky}`): the smallest role in the palette, and it is spent exactly once — 18% of it is mixed into Navy for the highlight.js function/title token (`{colors.code-title-blue}`), which lifts a function name off the keyword navy without introducing a second hue. Sky is never used at full strength anywhere.
+**The One Gold Spark Rule.** Gold reaches a dark field only through `--ond-mark` where it resolves to gold-bright. Never a second accent on a light slide, never hand-placed on a bright field.
 
-### Neutral
-- **Paper** (`{colors.paper}`): the page/slide background — cool, crisp near-white, not a warm-paper wash.
-- **Panel** (`{colors.panel}`): faintly raised surfaces (TOC close button).
-- **Sunken** (`{colors.sunken}`): insets, code blocks, table stripes, chart tracks.
-- **Line** (`{colors.line}`): hairlines, re-spaced for the hall at 2.22:1 on Paper. At its former 1.43:1 it was a printer's hairline — present at 40cm, simply gone on a weak beamer, which quietly turned "Ruled, not boxed" into floating text. **Line Strong** (`{colors.line-strong}`): the borders that draw a control or a plate — chip outlines, nav-button borders, plate borders — at 3.52:1, clearing the 3:1 WCAG 2.2 asks of a component boundary.
-- **Rule** (`{colors.rule}`): the heavy near-black editorial rule (3px dividers, callout tops, table header rules, footer/runhead rules).
-- **Ink** (`{colors.ink}`): primary text. **Ink Bold** (`{colors.ink-bold}`): big display headlines. **Ink Soft** (`{colors.ink-soft}`): secondary text. **Ink Faint** (`{colors.ink-faint}`): tertiary text, captions, chrome — 5.15:1 on Paper and 4.51:1 on `Sunken`, which is where code line numbers and zebra rows actually put it.
+**The Two Dark Registers Rule.** Nothing on a dark field is coloured by hand: six on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) hold the colours, and their `:root` values are the bright register.
 
-### Named Rules
-**The Field, Not Sprinkle Rule.** Colour arrives as a flat structural plane (a full-bleed divider field, a heavy marker bar, a solid fill) or not at all. Never as a timid tint, gradient wash, or decorative accent scattered across a light slide.
+- **Deep pole** (`.section.navy`, `.closing`, `.media`; navy 13.06:1 against Paper, duotone ground 18.4:1): the tonal ramp reopens (quiet text 9.18:1, chrome 6.22:1, rules and control borders 3.05:1) and the mark is gold-bright.
+- **Bright fields** (green divider 4.97:1, brown 5.71:1): Paper only. Past about 7% transparency Paper falls under 4.5:1, and no palette colour clears 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28), so tiers separate by weight (600 against 700), never by alpha.
 
-**The One Gold Spark Rule.** Gold is the spark of the deep pole, not of "the dark fields". It reaches a dark field only through `--ond-mark`, and only where that token resolves to gold-bright. It is never a second accent competing with green on a light slide, and never hand-placed on a bright field.
-
-**The Two Dark Registers Rule.** (Supersedes the former Dark-Field Flip Rule.) The dark fields are two registers, split by measured luminance against Paper, and nothing on a dark field is coloured by hand: it is coloured by the six on-dark tokens — `--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink` — whose `:root` values *are* the bright register, so any dark surface is safe without opting in.
-
-- **Deep pole** (`.section.navy`, `.closing`, `.media`; navy 13.06:1 against Paper, the duotone ground 18.4:1): a selector block immediately after `:root` re-opens the tonal ramp — quiet text at 18% transparency (9.18:1 on navy), footer chrome at 35% (6.22:1), rules and control borders at 55% (3.05:1) — and hands the mark to gold-bright.
-- **Bright fields** (the green divider at 4.97:1, the brown `.section.warm` at 5.71:1): they spend Paper and nothing else. Past roughly 7% transparency Paper itself falls under 4.5:1, and no other palette colour clears even 3:1 on green (gold 2.17, gold-bright 2.71, amber 2.34, sky 2.28). Tiers therefore separate by **weight** (600 against 700), never by alpha.
-
-The footer and the viewport live outside the slide and cannot inherit the register, so `shared/src/deck/03-toc-sync.js` mirrors it onto them as `data-field="deep"`. **One helper owns the question.** `fieldOf(el)` in that same module returns `null` on a paper slide, `"bright"`, or `"deep"`; the live chrome (`update()`) and the printed imprint (`buildPrintImprints()`) both read it, so a slide can never be dark for one surface and light for the other. Any new surface that has to sit over a slide asks `fieldOf`, it does not re-derive the answer from class names. Never leave ink-coloured emphasis on a dark field, and never open a new alpha tier on a bright one.
+`03-toc-sync.js` mirrors the register onto the footer and viewport as `data-field="deep"`. One helper owns the question: `fieldOf(el)` returns `null`, `"bright"` or `"deep"`, read by both the live chrome (`update()`) and the print imprint (`buildPrintImprints()`). A new surface over a slide asks `fieldOf`.
 
 ## Typography
 
-**Display Font:** Libre Franklin (variable, self-hosted; system-ui fallback)
-**Body Font:** EB Garamond (variable, self-hosted; Iowan Old Style / Georgia fallback)
-**Label/Mono Font:** Libre Franklin for uppercase labels; JetBrains Mono (ui-monospace fallback) for code
+| Voice | Face and setting | Use |
+|---|---|---|
+| Display | Libre Franklin 700; 5.30rem cover, 6.10rem section, 5.60rem statement; line-height ≤ 0.98; −0.018em | cover, divider and closing titles, statements |
+| Numerals | Libre Franklin 800; metric 9.50rem `--fs-mega` (−0.035em), stat at `--fs-h2` | the only display text still at 800 |
+| Headline | 700, 3.50rem, line-height 0.98, `--track-tight` −0.012em, max 22ch | `h2.slide-title` |
+| Title | 700, 2.20rem, −0.014em | `h3`, index titles |
+| Lead | EB Garamond 500, 2.00rem, line-height 1.26, max 30ch | `.lead`; `h4` is serif 600 at this size |
+| Body | EB Garamond 500, 1.52rem, line-height 1.46, max 62ch | prose, set large for the serif's small x-height |
+| Label | Libre Franklin 700 (stat label 600), 1.15rem `--fs-label`, `--track-case` 0.005em, sentence case | every label inside the canvas |
+| Chrome | 700, 0.80rem `--fs-footer`, `--track-label` 0.18em (runhead 0.22em), uppercase | footer, running head, TOC button and eyebrow, print imprint, Excerpt band, `.site-qr` label |
+| Mono | JetBrains Mono 500, line-height 1.5, no tracking, never uppercase | code (1.02rem measured), scroll-panel excerpt, frame-bar URLs, document references |
 
-**Character:** The hierarchy is deliberately inverted — the newspaper gothic is the LOUD voice (big, tight, weight 700–800, negative tracking down to −0.03em), and the book serif is the QUIET counter-voice for prose, leads and quotations. One pair of fonts, opposite personality. This inversion is the system's core identity; flattening it back to serif-led headings destroys the theme.
+Ordered lists and `.index-list` number plainly (`1, 2, 3`); only the footer counter, a running folio, keeps leading zeros (`01 / 17`).
 
-### Hierarchy
-- **Display** (800, 5.30rem cover / 6.10rem section / 5.60rem statement, line-height ≤0.98, tracking −0.028 to −0.03em): cover titles, section-divider titles, statement claims, oversized metrics (9.50rem `--fs-mega`).
-- **Headline** (800, 3.50rem, line-height 0.98): the standard slide title (`h2.slide-title`), max-width 22ch, carrying the green marker bar.
-- **Title** (700, 2.20rem, tracking −0.014em): sub-headings (`h3`), column heads.
-- **Lead** (serif 500, 2.00rem, line-height 1.26): the serif lead paragraph, max-width 30ch.
-- **Body** (serif 500, 1.52rem, line-height 1.46): prose, max-width 62ch — set a touch big because EB Garamond's small x-height reads small in a hall.
-- **Label** (700, 1.05rem `--fs-label`, letter-spacing 0.10em `--track-hall`, UPPERCASE): every label *inside* the canvas that carries meaning — kickers, callout labels, stat labels, column heads, chart heads, bar-axis ticks, table headers, chips, figure numbers, step numbers.
-- **Chrome** (700, 0.80rem `--fs-footer`, letter-spacing 0.18em, UPPERCASE): the deck footer and running head, which sit outside the scaled canvas, plus the browser-frame simulations and QR URLs that are representational rather than read.
-- **Mono** (JetBrains Mono, vendored, 500, line-height 1.5): the third face, and a utility rather than a voice — it never carries prose. It appears where characters have to be counted rather than read: code blocks (1.02rem measured, the product of `pre` at 0.78em and `.reveal code` at 0.86em), the scroll-panel excerpt (0.854rem), frame-bar and QR URLs (0.80rem `--fs-footer`), and document references in deck CSS (1.00rem `--fs-caption`). It takes no tracking and never goes uppercase; the label and chrome voices own that.
+**The Inverted Hierarchy Rule.** h1–h3 are Libre Franklin 700 with negative tracking; prose, leads, quotations and captions are EB Garamond. Never swap them.
 
-**The Hall Label Rule.** The label voice splits in two, and the split is by *distance*, not by component. A label printed on paper is read at 40cm; a label projected in a lecture hall is read at 20m, and the hall is the primary reader. If a label tells the audience what a figure counts, which decade a bar sits in, or what a column holds, it takes `--fs-label` — never the chrome size. The tracking eases from 0.18em to 0.10em as the cap grows, and a larger label takes *less* space beneath it, so the net slide height barely moves. Test: cover the numerals and read only the labels from the back of the room.
+**The Serif h4 Rule.** `h4` stays in the serif: an emphatic lead, not a label.
 
-### Named Rules
-**The Third Face Is Pinned Too.** `--font-mono` names JetBrains Mono, and `tools/fetch-fonts.py` now vendors it beside EB Garamond and Libre Franklin — latin and latin-ext, normal and italic, 115 KB. The italic subset is not optional: highlight.js sets comments and quotes in it, so without it every code comment renders as a synthesised oblique. Before it was vendored the mono role was the one place the deck was not self-contained, and the measurements say what that cost: the same 55-character line at 19px ran 574.5px in a bare machine's generic monospace, 612.3px on the author's laptop (which holds Cascadia Code, `ui-monospace` not resolving in Chrome there), and 627px in the face the theme actually named. Three metrics for one line of code — and the published PDFs, generated in CI, were typeset in the first of them. The remaining families in the stack are a fallback for a webfont that fails to load, not a choice: what should arrive is the face this repository ships. Either vendor it or let the declared face be one that actually arrives.
+**The Hall Label Rule.** Labels split by distance, not by component. A label inside the canvas that says what a figure counts, which decade a bar sits in or what a column holds is set at `--fs-label` in sentence case with `--track-case`, and the author types it in sentence case. Tracked uppercase is chrome only: the theme's seven `text-transform: uppercase` rules are all chrome. `--track-hall` (0.10em) survives only for per-deck CSS. Test: cover the numerals and read the labels from the back of the room.
 
-**The Inverted Hierarchy Rule.** Gothic leads, serif follows. Headings h1–h3 are always Libre Franklin at 700–800 with negative tracking; prose, leads, quotations and captions are always EB Garamond. Never swap the roles.
+**The One Overline Rule.** A slide carries at most one line above its title. The engine's running head names the section on content slides; a slide with a `.kicker` or `.dateline` hides it (`update()` in `03-toc-sync.js`), and heroes never show it. The kicker has no tick: the title marker is the slide's one mark. Add a kicker only when this slide needs a label the running head cannot give.
 
-**The Serif h4 Rule.** `h4` deliberately stays in the serif register (EB Garamond 600, 2.00rem) — it reads as an emphatic lead, not a gothic label. Do not "fix" it to match h1–h3.
+**The Third Face Is Pinned Too.** `tools/fetch-fonts.py` vendors JetBrains Mono, italic included because highlight.js sets comments in it. The rest of the stack is a fallback for a failed load, not a choice.
 
 ## Layout
 
-The canvas is a **fixed 1280×720 reveal.js stage, uniformly scaled** by reveal's transform to fit the viewport. The type scale is therefore deliberately fixed rem — NOT viewport-fluid `clamp()`. Viewport units inside the canvas would fight the canvas transform; do not introduce them. Only chrome that lives outside the scaled canvas (deck footer, running head, TOC overlay) uses `clamp()` and media queries (`max-width: 640px` compacts chrome; `max-height: 560px` reserves a real footer strip outside the scaled area).
+The canvas is a **fixed 1280×720 stage, uniformly scaled** by reveal: fixed rem on a 16px root inside it, never viewport-fluid. Only chrome outside the canvas uses `clamp()` and media queries (`max-width: 640px` compacts chrome; `max-height: 560px` reserves a footer strip). Each slide is a padded column (3.8rem top, 4.8rem sides, footer clearance), flowing from the top, on a 4pt-derived spacing scale. Measures: body 62ch, lists 56ch, leads 30ch, slide titles 22ch, cover title 18ch. Columns: `.cols` (equal, `ratio-3-2`, `ratio-2-3`, `ratio-1-2`; 4rem gutter).
 
-Each slide is a padded editorial column (padding 3.8rem top, 4.8rem sides, footer clearance below), content flowing from the top. **Hero layouts centre themselves; centring is not opt-in.** One rule at `.present` specificity gives `.cover`, `.section`, `.statement`, `.closing`, `.metric`, `.center` and `.balance` `display: flex !important` with `flex-direction: column; justify-content: center`. The `!important` and the `.present` qualifier are both load-bearing: reveal hard-sets `display: block` on the active slide, so a bare `justify-content` on the unqualified selector was inert, and for a period only `.balance` actually centred. `.balance` is now the opt-in for *non-hero* sparse slides only — on a hero it is redundant, not load-bearing. The same seven-selector list is restated as `html.reveal-print .reveal .slides .pdf-page > section.… { justify-content: center; }` in `01-foundations.css`, because reveal's print view re-parents each slide into a `.pdf-page` wrapper and the wrapper, not the section, is what carries `.present`. It is restated a third time, in the same file, for the opt-in scroll view. **The three lists must be edited together**; a hero class added to one and not the others centres on screen and top-aligns on paper or in the scroll read. Multi-column content uses `.cols` (equal or 3:2 / 2:3 / 1:2 ratios, 4rem gutters).
+**Hero centring is the theme's.** One rule at `.present` gives `.cover`, `.section`, `.statement`, `.closing`, `.metric`, `.center` and `.balance` `display: flex !important; flex-direction: column; justify-content: center` (reveal writes `display: block` inline). The list is restated for `.pdf-page > section` and `.scroll-page-content > section` in `01-foundations.css`. **Edit the three lists together.** `.balance` is for sparse non-hero slides.
 
-**Every view that re-parents the slide restates the column.** `.reveal .slides > section` is a *child* combinator, and two of reveal's own views move the section out from under it: print wraps it in `.pdf-page`, and the opt-in scroll view (`?view=scroll`) wraps it in `.scroll-page > .scroll-page-sticky > .scroll-page-content`. When the rule stops matching, the slide loses its padding, its border-box sizing and its flex column in one go — measured in scroll view before the restatement, the 1280px canvas became a 1376px content box, clipped 48px at each edge, with the copy flush into the top-left corner. A restatement copies the declarations verbatim and changes nothing else. In particular `display` stays un-`!important` there, because reveal writes `display: block` *inline* on every loaded slide, and that inline value is what makes a non-hero slide a block box on screen — it is also why the hero list needs `!important` to win. Forcing flex on every slide instead put the whole deck into a fixed-height flex column, where a `.cols` row grows to the safe area and an over-long slide silently shrinks its children rather than overflowing: twelve Erlangen slides came out exactly 595px tall and the two the fit engine scales (×0.979, ×0.903) stopped registering as overflowing at all. With the faithful restatement both views produce the same scales as the screen, to three decimals. Spacing follows a 4pt-derived semantic scale (0.25rem–4rem). Prose measures are enforced: 62ch body, 56ch lists, 30ch leads, 22ch slide titles.
+**Every view that re-parents the slide restates the column** (print, scroll view) verbatim, with `display` left un-`!important` so non-hero slides stay block boxes.
 
-**The closing is the one documented exception to those measures.** The hero measures were drawn for slides that carry a figure beside the type; the closing carries nothing but type, so at 16ch/30ch it stacked a narrow column down the left third and left the rest of the navy field empty — which is why three decks had waived the fit check with identical `data-fit-allow="deliberate full-bleed closing composition"` boilerplate instead of fixing the composition. `.closing h2` now runs to 22ch and `.closing .lead` to 46ch, overriding the global 30ch lead. The three waivers are deleted and those closings render at scale 1.0 (Luxembourg's at 0.960). Widen a measure only where the composition is all type and the fit check proves the result; do not generalize 46ch back onto `.lead`.
+**The closing is the one exception to the measures:** title 22ch, lead 46ch, because it is all type. Widen a measure only for an all-type composition the fit check proves.
 
-Content flows from the top and the bottom is allowed to run ragged. That is the contract, not a defect: a slide title in a constant position across a deck is worth more than a vertically balanced one, and `.balance` is the opt-in for genuinely sparse *non-hero* slides. Measured on the published decks, slides carrying more than 120px of slack run 1/17, 0/17, 4/22 and 0/18. (A far larger figure reported earlier measured `talks/_showcase/`, whose slides carry deliberately minimal placeholder copy to demonstrate layouts; it is not evidence about real decks.)
+**Ragged bottoms are the contract.** A title in a constant position is worth more than a balanced slide. The showcase's slack is placeholder copy, not evidence.
 
-**The Floating Control Clearance Rule.** A control that floats over a panel insets the panel's own text by the control's box plus a gap, and the rule beneath that text still spans the full width. `.toc-head` carries `padding-right: calc(2.4rem + var(--space-sm))` for exactly this: the 2.4rem `.toc-close` button overlapped the head's box at every viewport tested (1280×720, 844×390, 390×844, 1920×1080), and only the word "Contents" being short kept the collision off the screen. Clearance is now 20–34px. Padding insets the text, never the border.
+**The Fixed Canvas Rule.** No vw, vh or `clamp()` for slide content; figures and code cap at `--block-max-h` (28rem). The sanctioned viewport units are on true overlays only: the TOC panel (`90vh`) and the lightbox (`88vh` / `80vh`).
 
-**The Chrome Is Not Prose Rule.** The TOC overlay is mounted inside `.reveal`, so every rule written for slide prose reaches it. Three did: `.reveal ul` capped the contents list at the 56ch body measure, `.reveal ul > li` indented each row 1.5em and spaced it 0.5em, and `.reveal ul > li::before` gave every row the green bullet tick. The rows therefore sat indented from the head's rule on the left, stopped well short of it on the right, and each carried a stray tick sized for 1.52rem serif. `.toc-list` opts out of all of it — and the opt-out must be written as `.reveal .toc-list`, because a bare `.toc-list` (0,1,0) loses to `.reveal ul` (0,1,1); the reset that lived there before never applied at all. Any furniture placed inside `.reveal` states its own list, measure and marker, at `.reveal`-qualified specificity.
+**The Floating Control Clearance Rule.** A control floating over a panel insets the panel's text by its box plus a gap; the rule beneath stays full width (`.toc-head { padding-right: calc(2.4rem + var(--space-sm)) }`).
 
-**The Border-Box Chrome Rule.** `box-sizing: border-box` is set on the slide canvas, not globally, so anything mounted outside `.slides` gets the browser default. `.toc-panel` declared `width: min(92vw, 60rem)` and was sizing its *content* box, adding 2×2rem of padding on top: a 423px panel on a 390px phone, running past the screen with the close button 14px beyond its right edge, and 1062px on desktop where 60rem (960px) was the stated intent. Chrome that declares a width against the viewport sets `box-sizing: border-box` in the same rule.
+**The Chrome Is Not Prose Rule.** Furniture inside `.reveal` states its own list, measure and marker at `.reveal`-qualified specificity (`.reveal .toc-list`).
 
-**The Fixed Canvas Rule.** All sizing inside `.reveal .slides` is rem on a 16px root, scaled as a whole. Never use vw/vh/clamp() for slide content; reserve responsive units for the unscaled chrome (footer, runhead, TOC overlay) only. This binds *caps* as much as type: the tallest a figure or code block may stand is `{spacing.block-max}` (`--block-max-h`), which replaced two `62vh` literals — the `.figrow` figure image and the `pre code` block. A vh cap measures the *window*, not the scaled 1280×720 stage, so the same slide held a different amount of image on a laptop, a hall projector and a phone; 28rem is that 62vh taken once at the 720px reference height and then frozen. Three viewport heights survive on purpose, and all three are true overlays that live outside the scaled canvas: the TOC panel (`max-height: 90vh`) and the lightbox figure and image (`88vh` / `80vh`). If a new vh appears anywhere else inside `.reveal .slides`, it is a bug.
+**The Border-Box Chrome Rule.** Chrome that declares a width against the viewport sets `box-sizing: border-box` in the same rule; only the canvas has it.
 
 ## Elevation & Depth
 
-Flat by default. Depth is conveyed by the ruled hierarchy (heavy near-black rules vs. hairlines), tonal neutrals (Paper → Panel → Sunken), and full-bleed colour fields — never by lifting content on shadows. The theme's own token comment is normative: shadows are "tight, neutral; used only for true overlays (lightbox, QR)".
+Flat by default; depth comes from rules, the tonal neutrals and the fields.
 
-### Shadow Vocabulary
-Two tokens, and the list of what takes each is the whole vocabulary. There is no shadow-1: it was retired when its last two users — a row of book covers and a demo QR — turned out to be the retired card in disguise, and a depth token nobody spends is one the next author spends wrongly.
-- **shadow-2** (`box-shadow: 0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)`): the captured or borrowed artifact, floating over the page rather than printed on it — the browser-chrome screenshot frame (`.chrome`), the live embed in the same chrome (`.site-frame`), the demo capture (`.demo-shot`), and the QR that pops over a frame (`.site-qr`). Those four, and nothing else.
-- **shadow-pop** (`box-shadow: 0 22px 60px oklch(0.16 0.03 258 / 0.30)`): true modal overlays — the TOC panel, the lightbox image.
-- **The one inset** (`box-shadow: inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5)` on `.scroll-panel`): not a token and not a lift. It is written inline in the one rule that spends it, and it darkens *into* the panel from its top edge to say the content is cut off above — the affordance that let the panel drop its border. An inset shadow adds no elevation, which is why it is the single sanctioned exception below.
+| Shadow | Value | Only on |
+|---|---|---|
+| `--shadow-2` | `0 4px 14px oklch(0.2 0.02 258 / 0.10), 0 14px 40px oklch(0.2 0.02 258 / 0.12)` | `.chrome`, `.site-frame`, `.demo-shot`, `.site-qr` |
+| `--shadow-pop` | `0 22px 60px oklch(0.16 0.03 258 / 0.30)` | TOC panel, lightbox image |
+| inset, inline | `inset 0 6px 14px -12px oklch(0.2 0.02 258 / 0.5)` | `.scroll-panel` alone: it marks a cut edge in place of a border |
 
-### Named Rules
-**The Overlay-Only Shadow Rule.** Slide content is flat. An *outer* shadow may appear only on an element that genuinely floats above the deck (TOC panel, lightbox, QR pop, the browser-chrome frame). Never on callouts, stats, panels, columns or any in-flow content. The rule is about elevation, so it binds outer shadows only: the one `inset` shadow on `.scroll-panel` marks a cut edge rather than lifting anything, and it is the exception the vocabulary names above. A second inset would need the same justification — an affordance that replaces a border, not a texture.
+**The Overlay-Only Shadow Rule.** An outer shadow only on an element that floats above the deck; never on callouts, stats, panels, columns or other in-flow content.
 
 ## Shapes
 
-Sharp by default — the broadsheet leans on rules, not cards. Radii are minimal and utilitarian: 3px (`sm`) for chips and plate images, 5px (`md`) for the TOC panel and sunken panels, 8px (`lg`) only for the browser-chrome frame. Hairlines (1px `line`) divide; heavy rules (2–4px near-black `rule`, or the 4px green `--bar`) structure. Bars and ticks take a 1px radius so they read as printed rules, not pills. Images are sharp-cornered plates with a 1px `line-strong` border; full-bleed media has no border or radius at all.
+Sharp by default. Radii: 3px (`--radius-sm`) chips, plate images, focus corners; 5px (`--radius-md`) TOC panel, code, sunken insets; 8px (`--radius-lg`) the browser frame only. Bars and ticks take 1px; the scrollbar thumb, browser furniture, takes a pill. Images are sharp plates with a 1px Line Strong border; full-bleed media has none.
 
-**The Ruled, Not Boxed Rule.** Structure is drawn with confident rules and hairlines — a heavy top rule opens a callout, hairlines divide a ledger, a left bar marks the active choice. Components almost never take a filled box, shadow, or card shape. If a grouping needs a surface, the only sanctioned one is the flat `Sunken` inset (`.panel.sunken`) — no border, no shadow.
+**The Ruled, Not Boxed Rule.** Rules open, hairlines divide, a left bar marks the active choice. The only surface is the flat Sunken inset (`.panel.sunken`, `.reveal pre`, `.scroll-panel`), with no border. `.flow-step` and `.panel` open on the same 4px (`--bar`) Rule and are separated by the gutter.
 
-Two surfaces were brought back under this rule in the last pass, and both are its reference reading. **The process flow (`.flow-step`)** carried a 1px `Line` border and a `--radius-md` corner: three bordered radiused boxes joined by arrows, on the slide captioned "A process, drawn — not bulleted" — the one composition on the deck an unrelated product could have shipped unchanged. Each step now opens on `border-top: var(--bar) solid var(--rule)`, the same heavy near-black rule `.panel` opens on, and separation comes from the gutter (`--space-xl` between steps, up from `--space-xs`) rather than from a border. **The code block (`.reveal pre`)** likewise dropped its hairline (`border: none`); with the `Sunken` fill and `--radius-md` unchanged it now matches `.panel.sunken` exactly — the one sanctioned surface, which carries no border. A block that wants a boundary takes the opening rule or the Sunken fill, never a hairline outline on top of either. The **scrollable file embed (`.scroll-panel`)** was the same construction a third time — Sunken fill, 1px `Line` border, `--radius-md` — and it survived that pass because only the code block was looked at. It is now borderless too: the fill and the inset shadow are the surface. A scroll container does not earn an outline for marking where the scrolling stops; the inset shadow already says that. Its scrollbar is themed rather than left to the browser: an 11px track and a thumb in `{colors.scroll-thumb}` (Lead Green lifted 18% toward Paper, so the thumb reads as furniture rather than as the lead colour) on a 3px `Sunken` inset, with Firefox's `scrollbar-color` taking `--green` directly because that property cannot carry the mix, and a pill radius — the one radius in the system that is not 3/5/8px, because a scrollbar thumb is browser furniture and reads wrong as a rectangle.
+**One run, one opening rule.** In a run of callouts only the first opens on the 3px rule; `.callout + .callout` takes a hairline.
 
-**The Rule Opens From Above Rule.** A heavy rule that opens a block must have visible air above it, or it stops reading as an opening. `.marginnote` therefore takes `margin-top: var(--space-lg)` (reset to 0 when it is the first child): set flush under a chart, its 3px rule read as one more unlabelled near-black bar in the series rather than as the start of an aside.
+**The Rule Opens From Above Rule.** A heavy opening rule needs air above it (`.marginnote`: `margin-top: var(--space-lg)`, 0 as a first child).
 
-**The Rules Line Up Or Clearly Don't Rule.** Two instances of the same device sitting adjacent either end at the same x or differ obviously; a near-miss reads as a mistake where a clear difference would have read as a decision. `.stat-grid + .callout` therefore takes the ledger's own column (`max-width: calc((100% - var(--space-3xl)) / 2)`) in place of the callout's 60ch prose measure — at 60ch the note's rule stopped 32px past the stat column above it. Scoped to that one adjacency: a standalone callout keeps its 60ch.
+**The Rules Line Up Or Clearly Don't Rule.** Adjacent copies of one device end at the same x or differ obviously: `.stat-grid + .callout` takes the ledger's column width, while a standalone callout keeps 60ch.
 
 ## Components
 
-### Slide Title (the signature device)
-- **Character:** the gothic headline with the heavy green marker bar drawn above it.
-- **Type:** Libre Franklin 800, 3.50rem, line-height 0.98, tracking −0.022em, `Ink Bold`, max-width 22ch.
-- **Marker:** a 2.6rem × 4px (`--bar`) `Lead Green` bar at top-left, 1px radius, with `padding-top: calc(4px + 1rem)` clearance. It draws in from the left (`rule-draw`, 560ms) on slide entry.
-- **Opt-out:** `.no-rule` drops the bar and its padding.
+**Slide title.** Headline voice under a 2.6rem × 4px Lead Green marker (1px radius, `padding-top: calc(4px + 1rem)`) that draws in from the left; `.no-rule` drops it.
 
-### Kicker
-- **Style:** gothic overline label — Libre Franklin 700, 1.05rem (`--fs-label`), uppercase, letter-spacing 0.10em (`--track-hall`), `Ink Soft` — preceded by a 1.4em × 3px green tick, and set tight to the title it introduces (`--space-xs` beneath).
-- **Variants:** `.warm` (brown-deep text, brown tick), `.navy`, `.green`; on dark fields the kicker lifts to `Gold Spark`/gold-bright.
+**Kicker.** Optional overline: label voice, Ink Soft, `--space-xs` beneath, no tick. `.warm`, `.navy`, `.green` tint it; on `.closing` and in the `.media` caption it takes `--ond-mark`. It hides the running head.
 
-### Callout
-- **Style:** a ruled editorial aside, not a box: 3px near-black top rule, no background, no border elsewhere. Gothic uppercase `.callout-label` (0.80rem, 0.18em tracking, `Ink Bold`), serif body at 1.18rem, max-width 60ch.
-- **Variants:** `.warm` / `.navy` / `.green` tint the rule and label only.
+**Running head** (engine). The current section in chrome caps, no rule beneath; hidden on heroes and on slides with a `.kicker` or `.dateline`.
 
-### Stat / Stat Ledger
-- **Stat:** big gothic numeral (Libre Franklin 800, 3.50rem, line-height 0.92, tabular lining figures, `Ink Bold`) over a gothic uppercase label (0.80rem, 0.12em, `Ink Soft`).
-- **Ledger (`.stat-grid`):** two columns; each row is label left, green-deep figure right (2.20rem), baseline-aligned on a hairline, with a 3px near-black top rule opening each column. Reads like a colophon, not a card grid. Figures count up on entry via `data-count`. A `.callout` placed directly after the ledger drops to the ledger's column width so the two 3px rules end at the same x (see The Rules Line Up Or Clearly Don't Rule).
+**Callout.** 3px Rule on top, no fill, serif at `--fs-small`, max 60ch, a `.callout-label` in the label voice. `.warm`/`.navy`/`.green` tint rule and label.
 
-### Index List (contents / agenda)
-- **Style:** a ruled grid: 3px near-black rule top and bottom, 1px hairlines between rows. Each row = big gothic folio (`decimal-leading-zero`, 800, 1.9rem, `Lead Green` deep) + gothic title (700, 2.20rem, `Ink Bold`) + optional serif description (1.18rem, `Ink Soft`).
+**Stat and ledger.** `.stat`: an 800 numeral at `--fs-h2` over a label (600). `.stat-grid`: two columns of label left, green-deep figure right (`--fs-h3`) on hairlines, each column opened by a 3px rule; `data-count` rolls the figures.
 
-### Chip
-- **Outline (default):** transparent, 1.5px `Line Strong` border, 3px radius, gothic uppercase 0.80rem/700/0.08em, `Ink Soft`; padding 0.22em 0.6em.
-- **Variants:** `.green` (green border, green-deep text), `.navy`, `.warm`, `.solid` (Lead Green fill, Paper text).
+**Index list.** 3px rules top and bottom, hairlines between rows; each row a plain green-deep numeral (700, `--fs-lead`), a title (700, `--fs-h3`) and an optional serif description.
 
-### Section Divider
-- **Style:** a full-bleed saturated `Lead Green` field (`--green-field`, green deepened 14% toward near-black) with a 4px plate rule across the top drawn in the field's own mark (`--ond-mark`), an oversized outlined folio, and a giant gothic title (800, 6.10rem, Paper, line-height 0.94) with an italic serif subtitle in `--ond-quiet`. The per-variant `.section.navy::before` and `.section.warm::before` plate overrides were deleted: the register already hands each field the right mark.
-- **Folio (`.sec-no`):** 9.50rem gothic, outlined rather than ghosted. Inside `@supports (-webkit-text-stroke: 3px currentColor)` it becomes `color: transparent` with a 3px Paper stroke, so it carries the field's full Paper contrast (4.97:1 on green, 13.06:1 on navy) at almost none of its visual mass and still sits under the title. As a 24% ghost it measured 1.52:1; that fill remains only as the no-support fallback. Verified through the `?print-pdf` export path.
-- **Variants:** `.navy` (navy field, gold-bright rule) for the structural deep; `.warm` (brown field) for the critical stakes strand, sparingly.
+**Chip.** Transparent, 1.5px Line Strong border, 3px radius, label voice, Ink Soft, padding 0.22em 0.6em; `.green`, `.navy`, `.warm`, `.solid` (green fill).
 
-### Statement
-- **Default:** a huge gothic claim — Libre Franklin 800, 5.60rem, line-height 0.98, tracking −0.03em, `Ink Bold`, max-width 18ch, with one `.accent` phrase in green-deep.
-- **Quote variant:** the human voice returns to the serif italic (500, 5.60rem, line-height 1.08) opened by a `Gold Spark` quotation mark.
+**Section divider.** `--green-field` with a 4px `--ond-mark` plate rule, a display title (6.10rem, Paper, line-height 0.94, max 16ch) and an optional italic `.sec-sub` in `--ond-quiet`. `.sec-no` is an optional quiet label above the title (label font 700, `--fs-h3`, `--ond-quiet`); a divider is complete without it. `.navy` is the deep pole; `.warm` (brown) is used sparingly.
 
-### Closing (the colophon)
-- **Character:** the sign-off page — a full-bleed `--navy-field` deep-pole slide with a 4px `--ond-mark` plate rule at the head, read as a masthead colophon rather than as another content slide.
-- **Measures:** title at display size (`--fs-h1`, 800, line-height 0.96, tracking −0.028em, Paper) to **22ch**; serif lead in `--ond-quiet` to **46ch**. These override the global hero/lead measures on purpose; see Layout.
-- **Byline (`.byline.authors`):** on the closing only, the author blocks read **across** — `flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: var(--space-xl)`, each `.author` at `flex: 0 1 auto; max-width: 34ch`. Institution marks are pushed to the foot of their block (`margin-top: auto; padding-top: var(--space-sm)`) so they sit on one line no matter how many lines each author runs; without that they land at different heights and the row reads as two stacked cards. Monochrome logos invert to white at 85% opacity; `.keep-color` opts a box logo out.
-- **Elsewhere the byline stays a column.** Under a cover title the byline is a caption and stacking is correct; the generic `.byline` / `.byline.authors` outside `.closing` is unchanged.
-- **Colour:** links, kicker, contact icons and dropcap take `--ond-mark` (gold-bright); names `--ond-text`, affiliations and roles `--ond-quiet`.
+**Statement.** Display claim (5.60rem, max 18ch) with one green-deep `.accent`; `.quote` returns to serif italic (500, line-height 1.08) after a gold quote mark.
 
-### Deck Nav Button (footer chrome)
-- **Sharing:** the copy-link control uses the same outlined button and stroke-icon language. It copies a semantic slide hash, announces success, and offers a selectable URL if clipboard access is unavailable. The announcement is for screen readers only, so the button also answers visibly: for 2.4s its link glyph becomes a tick in `--green-deep` over a `Lead Green` border (`--ond-mark` on a dark field) — colour and glyph, no movement — and then both reset, so a second copy is shown and announced again.
-- **Print:** ordinary slides preserve block flow and border-box sizing; hero slides retain flex centring. Fit after fonts, local embeds, images, and frame replacements settle. Print fitting uses layout zoom before pagination: transforms alone can leave Chromium clipping text at its unscaled bounds. Both supported print URLs get the same imprints.
-- **Media recovery:** a ruled, paper-ground fallback offers a persistent external link and an explicit “Show the site here” action. An iframe load event does not establish application readiness; owned embeds may send an origin-checked ready message. Reduced motion disables Auto-Animate geometry changes as well as the signature effects.
-- **Landmarks:** the footer is a real `role="contentinfo"` element and its controls sit inside a genuine `<nav class="deck-nav">` carrying an `aria-label` — chrome that steers the deck is a navigation landmark, not a div of buttons.
-- **Shape:** 2rem square, 3px radius, 1.5px `Line Strong` border, transparent fill, `Ink Soft` icon.
-- **Hover:** fills `Lead Green`, text to Paper, `translateY(-1px)`; **Focus:** 2px `--focus-ring` outline, 2px offset; **Disabled:** 30% opacity. On dark fields it takes a 10%-Paper fill, an `--ond-rule` border and an `--ond-text` glyph, and hovers to the field's mark (`--ond-mark` fill, `--ond-mark-ink` glyph).
+**Closing.** `--navy-field` with a 4px `--ond-mark` plate rule; title at `--fs-h1` to 22ch, lead in `--ond-quiet` to 46ch. Here only, `.byline.authors` reads across (row, wrap, `--space-xl` gap, each `.author` max 34ch, logos pushed to the block foot). Links, kicker, contact icons take `--ond-mark`; names `--ond-text`, affiliations `--ond-quiet`; monochrome logos invert to white at 85% (`.keep-color` opts out).
 
-### Print Imprint (`.pdf-imprint`)
-- **Character:** the folio for paper. One persistent footer is right on screen because it updates as you move; on paper every page is final and needs its own mark. The live `.deck-footer` and `.deck-runhead` are therefore hidden outright under `html.reveal-print`, and `buildPrintImprints()` (`shared/src/deck/02-chrome.js`, called from the `PRINT` branch of `08-diagnostics.js` on `pdf-ready`) appends one imprint per `.pdf-page`, numbered from that page's own index. The behaviour it replaces parked the single live footer at the tail of the last page carrying whatever folio was current when the export ran — one wrong number and sixteen blank ones.
-- **Voice:** the screen footer's, restated — chrome caps (Libre Franklin 700, 0.80rem `--fs-footer`, 0.18em tracking, uppercase, line-height 1.2), a 2px `Rule` above with 0.5rem clearance (the same weight and colour as `.deck-footer::before`, so the two read as one device), deck title (and venue) left with ellipsis, folio right. Absolutely positioned at the slide's own `--slide-pad-x` inset, `--space-md` from the page foot, so it lands on the same measure as the column above it.
-- **On paper:** title in `Ink Faint` (5.15:1 on Paper), folio in `--green-deep` (6.12:1), the `/` separator dropped back to `Ink Faint` at weight 400, tabular lining figures. The rule is the heavy near-black `Rule` at 18.71:1.
-- **On dark pages:** the register is read from the shared `fieldOf()` helper, never from a second class list, and every colour comes through the on-dark tokens — `--ond-chrome` for the title, `--ond-mark` for the folio, `--ond-rule` for the rule. The imprint is appended to `.pdf-page`, a *sibling* of the section, so it inherits nothing from the field: like `.deck-footer`, it has to be **named in the deep-register override list** in `01-foundations.css` to reach the deep ramp. On the bright fields it spends Paper alone — 4.97:1 on the green divider, 5.71:1 on the brown. On the deep pole it opens the ramp and takes the spark: title 6.22:1, gold folio 7.13:1, rule 3.71:1 on navy, so the folio answers the gold plate rule at the head of the same page.
-- **Print fidelity:** carries `print-color-adjust: exact`, like the divider fields and the media scrim, so the folio colour survives the export rather than being helpfully flattened.
-- **Escaping:** the deck title and venue are passed through `escapeHTML()` (`01-foundation.js`) here and in the live footer, because the engine builds all chrome by string concatenation. Any new chrome built the same way does the same.
+**Institution logo.** `.org-logo` on cover and closing is 2.5rem tall and always follows the byline: an affiliation, never the credit or publisher slot. The footer's cluster mark is 1.4rem.
 
-### Scroll View (`?view=scroll`)
+**Deck nav button.** 2rem square, 3px radius, 1.5px Line Strong border, Ink Soft icon; hover fills Lead Green and lifts 1px; focus 2px `--focus-ring` at 2px offset; disabled 30%. On dark: 10%-Paper fill, `--ond-rule` border, `--ond-text` glyph, hover to `--ond-mark`. The footer is `role="contentinfo"` with its controls in a labelled `<nav class="deck-nav">`. Copy-link announces success and shows a tick for 2.4s.
 
-- **What it is:** reveal 6's scroll view, reachable only by asking for it in the URL — the deck read as one scrolling page rather than presented. It is the link to share after a talk. **Automatic activation stays off**: `scrollActivationWidth: null` in the engine config, because the automatic mobile switch (≤435px) clipped two-column slides on portrait phones. `?view=reader` is reveal's alias for the same view and takes the same treatment, since every rule keys off the `reveal-scroll` class reveal stamps on the viewport (the `<body>`, which is `.reveal-viewport` here).
-- **Layout:** the slide column and the hero list are restated for `.scroll-page-content > section` (see Layout). Every slide keeps its 1280×720 stage, its measures and its register; nothing reflows, so the scroll view magnifies nothing — on a 500px screen a slide is the same 39% postage stamp the normal view shows there, and the value of the view is the reading order, not the size.
-- **Chrome:** the footer stays and becomes a **fixed identification band** — logo, deck title, venue. `position: absolute` measured it against a `.reveal` one viewport tall, so it scrolled off after the first screen and never came back; the slide's own `--footer-h` clearance keeps content out from under the fixed band. The nav cluster, the running head and the contents overlay are **removed**, and for one reason: reveal re-parents every slide out of `.slides > section`, which is the selector `getHorizontalSlides()` reads, so the folio has no counted total to print (it froze at `01 / 01` on every slide), the running head has no section list to scan, and `buildTOC` had nothing to enumerate — it built an empty overlay on one deck and a one-entry overlay on another. The scrollbar reveal draws is this view's index. Fixing the folio properly means teaching the whole folio vocabulary to read scroll pages, including auto-animate steps and vertical stacks; that is a rework, not an adaptation. One known gap, left alone on purpose: on a shallow screen (`max-height: 560px`, a phone held landscape) the footer parks itself at `bottom: calc(-1 * var(--footer-reserve))` and relies on `.reveal` being shortened to match — a shortening the scroll view does not use, so the band simply falls below the fold there. Nothing overlaps and nothing clips; the identification is absent rather than wrong, and a fourth media branch to recover it would cost more than it buys.
-- **Motion:** takes `--draw-run: 0s`, alongside print and `.no-draw`. Reveal adds and removes `.present` as each page crosses its scroll trigger, so without the stiller every mark redraws and every numeral rolls from zero again each time a slide passes the fold, in both directions. An arrival animation needs an arrival; scrolling back up is not one.
-- **What reveal already handles, and does handle correctly:** fragments step on scroll triggers, `data-src` iframes load (the scroll view preloads them regardless of `preloadIframes`), the auto-fit engine runs per page off `slidechanged` and lands on the same scales as the screen, uncounted annexe slides scroll with the rest, and the lightbox — a fixed overlay — still opens over the scroll container.
+**Print imprint** (`.pdf-imprint`). In print the live footer and running head are hidden and `buildPrintImprints()` (`02-chrome.js`) adds one imprint per `.pdf-page`: chrome voice, a 2px Rule above, title and venue left, folio right. On paper: title Ink Faint (5.15:1), folio green-deep (6.12:1). On dark pages it reads `fieldOf()` and the on-dark tokens, and is named in the deep-register list in `01-foundations.css` because it is the section's sibling (deep pole: title 6.22:1, gold folio 7.13:1, rule 3.71:1). It carries `print-color-adjust: exact`. Author strings go through `escapeHTML()`, as in all string-built chrome.
 
-### Media Field (full-bleed image)
-- **Character:** the one dark ground the theme does not own — the image underneath it can be anything — so the scrim is built as a guarantee rather than a gesture.
-- **Scrim (`.media-scrim`):** two crossed gradients, one up from the caption edge and one in from the reading edge, darkest stop held above 0.85 alpha over `oklch(0.14 0.02 258)`.
-- **Footer band (`section.media::after`):** a theme-owned strip the height of the footer clearance, present whether or not the author added a scrim, because the footer is chrome the author never sees when choosing the image.
-- **Measured worst case** (a pure-white frame): Paper reads 18.8:1 on the footer strip and 13.2:1 in the caption zone — deeper than the navy field, which is why `.media` sits in the deep register and its caption kicker takes gold. Both layers carry `print-color-adjust: exact` so the guarantee survives PDF export.
+**Scroll view** (`?view=scroll`, alias `?view=reader`). Manual opt-in only (`scrollActivationWidth: null`). Slides keep their stage; the footer becomes a fixed identification band; counter, running head and contents overlay are removed; motion is stilled. Known gap: under `max-height: 560px` the band falls below the fold.
 
-### Process Flow (`.flow`)
-- **Character:** a process drawn as ruled columns, not as boxes joined by arrows.
-- **Structure:** a flex row of `.flow-step` columns (`flex: 1 1 0`) with an `--space-xl` gutter; each step opens on a 4px (`--bar`) near-black `Rule` top border with `padding: var(--space-sm) 0 0` — no background, no side or bottom border, no radius.
-- **Contents:** gothic uppercase step number (`.step-n`, 600, `--fs-label`, 0.12em tracking, `Structural Navy`), gothic step head (`.step-h`, 600, body size, line-height 1.08), serif gloss at caption size in `Ink Soft`, and an optional italic `.step-q`.
-- **Vector chip (`.step-vec`):** monospace at caption size on the `Sunken` fill with a 3px (`--radius-sm`) corner and no border — the same treatment as inline `code`.
-- **Arrow (`.flow-arrow`):** sits *on* the rule band rather than beside the prose — `align-self: flex-start`, `height: var(--bar)`, a half-bar negative top margin, `--green-deep`, `--fs-small`, weight 700. `.flow.tight` closes the gutter to 0.
+**Media field.** `.media-scrim` crosses two gradients (darkest stop above 0.85 alpha over `oklch(0.14 0.02 258)`) and `section.media::after` adds a footer band. Worst case, a white frame: Paper 18.8:1 on the band, 13.2:1 in the caption zone.
 
-### Table (ruled ledger)
-- **Style:** no boxes and no vertical lines — a gothic uppercase header row (700, 0.82em, 0.10em tracking, `Ink Bold`) over a 3px near-black `Rule`, 1px hairlines between body rows, and `Sunken` at 70% transparency striping the even rows. Body text at `--fs-small`; `.num` columns are right-aligned with tabular lining figures.
-- **Padding:** `0.55em calc(0.9 * var(--fs-small))`. The horizontal value is measured against the *table's* font-size, not the cell's; the vertical value stays in em on purpose, so a smaller header row keeps a proportional band.
+**Process flow.** `.flow-step` columns (`flex: 1 1 0`, `--space-xl` gutter) open on a 4px Rule: `.step-n` (600, label voice, navy), `.step-h`, a serif gloss, optional `.step-q` and `.step-vec` (mono on Sunken, no border). `.flow-arrow` sits on the rule band in green-deep; `.flow.tight` closes the gutter.
 
-### Inline Highlight (`mark` / `.hl`)
-- **Style:** a gold wash (`{colors.gold-wash}` — Gold lifted 18% toward white, mixed inline in the gradient) laid from 58% height, so it reads as a highlighter stroke under the phrase rather than as a filled chip; square corners (`border-radius: 0`), text colour inherited. It is close to `gold-bright` but not the same value: the mark sits on Paper and the spark sits on the deep pole, and each was measured where it lands.
-- **Overhang:** `padding: 0 0.2em; margin: 0 -0.14em`. The stroke overshoots the first and last glyph the way a real marker does, and the negative margin gives the space back so surrounding text does not move. At the former 0.06em (1.4px) the wash stopped flush against the glyphs and read as a printing error.
+**Table.** No boxes or vertical lines: a label-voice header (Ink Bold) over a 3px Rule, hairlines, even rows on Sunken at 70% transparency, body at `--fs-small`, `.num` right-aligned with tabular figures; padding `0.55em calc(0.9 * var(--fs-small))`.
 
-### Progress Bar
-- **Style:** a 3px rule on the viewport, `Lead Green` fill on light over an ink track at 22% opacity.
-- **On dark:** the fill takes `--ond-mark` — a green bar on a green divider was drawing itself at 1.28:1 against its own background, invisible on exactly the slides that end a section — and the unfilled track lifts from 1.23:1 to 1.61:1.
+**Inline highlight** (`mark`, `.hl`). A gold wash (gold 18% toward white) from 58% height, square, with `padding: 0 0.2em; margin: 0 -0.14em` so the stroke overshoots the word.
 
-### Plate (documentary figure)
-- **Style:** the one image treatment, never broken: documentary photographs get a green duotone (SVG filter `#duo-green`, navy variant available) on an ink ground (`#04140d`), a 1px `Line Strong` border, and a ruled caption — 2px near-black top rule, gothic uppercase "Fig." mark in green-deep, italic serif gloss. Live UI screenshots instead keep true colour inside real browser chrome (`.chrome`, 8px radius, shadow-2), whose bar carries three 0.6rem dots in `{colors.browser-dot}` — Ink Faint lifted 25% toward Paper, the one grey in the system that is neither a hairline nor text. An app capture of any aspect ratio letterboxes on `{colors.capture-letterbox}`, a warm near-black deliberately outside the cool ink ramp: it belongs to the captured artifact, like the chrome around it, not to the page. In `.figrow` splits, documentary figures show whole (`object-fit: contain`); `.crop` bleeds true photos.
+**Progress bar.** 3px, Lead Green on a 22% ink track; on dark the fill takes `--ond-mark` and the track measures 1.61:1.
 
-### Named Rules
-**The Ink-on-Paper Motion Rule.** One motion idea, repeated and restrained (`--draw: 560ms`, ease-out-quint): rules draw in from the left, chart bars grow from the baseline, figures count up (`--count: 900ms`, `data-count`) on slide entry. Drawing from the left is one keyframe — `rule-draw`, a `scaleX` — shared by the four marks and by the share-bar fill, which is itself a rule whose length is the number; it animated `width` under a second keyframe until that was collapsed into the first. The column chart is the one animation still on the layout path, and by decision: its `height` is what carries each bar's value numeral up with the bar (measured 447px → 247px on the peak bar), which scaling the fill would strand. The count runs longer than the draw on purpose — a numeral needs legible frames to read as counting, where a rule only needs to be seen arriving.
+**Plate.** Photographs take the green duotone (`#duo-green`; navy variant) on `#04140d`, a Line Strong border and a ruled caption (`.fig-no` in green-deep, italic gloss). App captures keep true colour in `.chrome` (8px, shadow-2), letterboxed on `#211f1d`. `.figrow` shows figures whole; `.crop` bleeds a photo.
 
-**The One Stiller Rule.** Nothing that wants the page to arrive still restates which marks are animated. Every signature animation takes its duration from `--draw-run`, and print, the `?print-pdf` preview, `prefers-reduced-motion`, the scroll view and `.no-draw` (on the deck or on a single slide) each set that one property to `0s`; a zero duration with `both` fill lands every mark on its end state. `deck.js` reads the same property off the slide before starting a count, and adds the one condition CSS cannot express — a hidden tab, where rAF is paused and a numeral would sit at 0. Before the switch there were three stiller lists in three different selector grammars, and the opt-out reached five of the six marks: a `.no-draw` deck still drew its section dividers' plate rules and still grew its chart bars, and every count ran regardless. No deck applies `.no-draw` — an opt-out never gets used by the decks that want the motion — so `tools/browser-check.mjs` measures the catalogue twice, switch off and switch on, and fails if a mark or a numeral escapes it, or if it finds no motion to still in the first place.
+**Live frame** (`.site-frame`). A chrome bar (`.site-frame-url` in mono, a `.site-frame-open` link) over `.site-frame-view` holding an `<iframe>` or a saved image. Live sites are **shown directly**; there is no opt-in control.
 
-**The Reduced Motion Keeps The Feedback Rule.** Under `prefers-reduced-motion` the signature stills completely and every *displacement* is removed — the TOC panel and the lightbox figure stop travelling (`transform: none`) and fade in on opacity alone, `.fragment.fade-up` stops rising, the deck buttons lose their 1px press lift, the TOC row stops sliding right on hover, and the progress bar jumps rather than slides. What stays is everything that changes only colour or opacity, at its authored timing, because instant is not gentler: this rule used to zero `transition-duration` on every element, which also flattened the viewport's 360ms cross-fade between the paper ground and the graphite one into a hard full-screen cut between near-white and near-black on every section divider — delivered to exactly the audience least able to take one. Reduce movement, not feedback.
+- A frame with no fallback of its own gets an engine notice (`div.frame-fallback[data-frame-notice]`, "Loading the site…"). It hides when a no-cors reachability request succeeds; if the site is unreachable, offline or still pending at 8 s it becomes the unavailable notice with a persistent "Open the site ↗" link.
+- An author's saved view (`<img class="frame-fallback">`) stays until the embed sends its `data-ready-message` (origin- and source-checked), or until the iframe's `data-frame-trusted` is empty or equals the page origin and the site is reachable. A load event is never evidence.
+- Every `.site-frame-open` opens a new tab; `audit.py` enforces it.
+- A site that refuses framing from an origin (as `islam.zmo.de` does from localhost) legitimately stays on its saved view there.
 
-**The Two Image Treatments Rule.** Every image is either a duotone plate with a ruled caption, or a true-colour screenshot in browser chrome. No naked JPEGs.
+**Editorial ornaments: use sparingly.** `.dateline`, `p.dropcap`, `.folio-ghost` and `.colophon` stay in the theme for decks that use them, but none belongs on an ordinary slide; the showcase shows them only on an uncounted annexe slide. A `.dateline` counts as the slide's overline. (`.marginnote` is a working component.)
 
-**The One Bar Rule.** Browser chrome comes in two frames because there are two jobs — `.site-frame` fills its column with a live page, `.chrome` holds a capture at its natural size — but the bar across the top of both is one device, declared once (`05-embeds-code.css`) and shared by selector. The two copies it replaced had already drifted 0.05rem of padding and 0.1rem of label inset apart. Only the open link is not shared: a capture has no live page to open, which is why `.chrome-open` was dead styling rather than stocked vocabulary.
+**Readable evidence.** Pair a native extract with the complete, zoomable source; label date, unit and limits; never turn an incomplete distribution into shares of a whole. `.evidence-pair` sets source and transcription in ruled columns; `.evidence-reference` holds the whole source under a reading; `.evidence-reading` is a `<dl>` of type, value and context, with the limit in a separate callout. Reading editions (`read.html`) keep the faces, tokens and rules in normal document flow, without the fixed canvas or auto-fit.
 
-**The Themed Focus Rule.** Focus is never the browser default. One token carries it — `--focus-ring`, `--green` on light (3.87:1 on Paper) and Paper on every dark field (green measures 1.28:1 on its own field, 1.47:1 on brown). `.deck-btn`, `.toc-item`, `.is-zoomable` and in-slide links all consume it, and focus radii take `var(--radius-sm)`.
+## Motion and interaction
 
-**The Focus Ring Is Not Animated Rule.** A focus indicator appears the instant focus lands; it never fades up. Every transition in the theme names its properties — `.deck-btn`, `.toc-close` and the lightbox close button list `background-color, border-color, color, transform`; `.fragment.fade-up` lists `transform, opacity`. `transition: all` appears nowhere in the theme: it swept `outline-color` and `outline-offset` into the 220ms (`--dur`) ramp, so the ring arrived late on exactly the interaction that needs it immediately. Add a property to a transition by naming it — and that includes overriding vendor CSS that does not: reveal ships `.reveal .fragment { transition: all .2s }`, so `.reveal .fragment` restates it as `opacity, color, transform, visibility`, the four properties reveal's fragment vocabulary actually moves. It matters now that a stepped list is the scaffold's default, and a fragment can hold something focusable.
+**The Ink-on-Paper Motion Rule.** `--draw: 560ms`, ease-out-quint: rules draw in from the left, chart bars grow, figures count up (`--count: 900ms`). One keyframe, `rule-draw` (`scaleX`), serves three marks (title marker, section and closing plate rules) and the share-bar fill. Only the column chart animates a layout property (`height`), so each numeral rides its bar.
 
-**The Inline Style Wins Rule.** Reveal writes `transition: transform 0.8s` *inline* on the viewport element while it initialises, and an inline declaration outranks any stylesheet rule — so the `.reveal-viewport` cross-fade the theme had declared never ran once, and the frame around the canvas cut instantly between the paper ground and the graphite one while the slide it surrounds faded. That one declaration therefore carries `!important`, and restates reveal's transform transition rather than dropping it. Before overriding a vendor property, check whether the vendor sets it inline; a stylesheet rule that reads correctly and never applies is worse than no rule at all.
+**The One Stiller Rule.** Every signature animation takes its duration from `--draw-run`; print, `?print-pdf`, reduced motion, the scroll view and `.no-draw` set it to `0s`. `deck.js` reads it before a count and skips counts in a hidden tab; `tools/browser-check.mjs` proves the switch reaches every mark.
 
-**The Padding Measures The Container Rule.** Em padding resolves against the element's own font-size, so a header cell at 0.82em and a body cell at 1em drew different gutters from one declaration — 12.4px against 17.0px — and a right-aligned header sat 4.6px inboard of the numerals it labelled. Horizontal cell padding is therefore `calc(0.9 * var(--fs-small))`: one gutter measured against the table, so header ink and numeral ink end at the same x (1186.2px, measured). A prior reading blamed trailing letter-space on the tracked headers; measurement showed the em mismatch was the cause. Any grid whose columns must align across rows of different type sizes sizes its gutter against the container, not the cell.
+**The Reduced Motion Keeps The Feedback Rule.** Under reduced motion every displacement goes; colour and opacity changes keep their authored timing.
 
-**The Paper Cannot Scroll Rule.** An affordance that only exists on screen must be answered in print, not left to fail quietly. `.scroll-panel` caps at 25rem and scrolls; on paper it cannot, and under the one-page-per-slide contract a 190-line file was never going to fit a 1280×720 page — so the excerpt is unavoidable and only the silence was ever the defect. The PDF used to hard-cut mid-sentence with no mark, beneath authored copy still telling the reader to scroll. Print now draws the cut in the system's own vocabulary: the text fades into the Sunken fill, the heavy near-black rule that opens a block is used here to close one, and a gothic `Excerpt` band names what the reader is holding — `Extrait` under `html[lang="fr"]`. A panel carrying `data-source-url` prints the address beside the label, in its own case and eased tracking, because uppercasing a URL shouts it; that attribute already existed as deck.js's load-failure fallback, so the band reuses the author's answer rather than asking for a second one, and it is what keeps the suppressed `.scroll-hint` from taking a URL down with it. Both marks and the suppressed hint hang off `--excerpt-mark` / `--scroll-hint-display`, declared once for `@media print` and once for the `?print-pdf` preview.
+**The Themed Focus Rule.** `--focus-ring` is `--green` on light and Paper on dark fields, with a `var(--radius-sm)` corner on `.deck-btn`, `.toc-item`, `.is-zoomable` and in-slide links.
 
-**The Scrim Guarantee Rule.** A dark ground the theme does not own must be manufactured, not assumed. Full-bleed media carries a theme-owned footer band regardless of what the author added, and any new overlay-on-image pattern states the contrast it holds against a worst-case white frame.
+**The Focus Ring Is Not Animated Rule.** Every transition names its properties; `transition: all` appears nowhere. `.reveal .fragment` restates reveal's `transition: all` as `opacity, color, transform, visibility`.
+
+**The Inline Style Wins Rule.** Before overriding a vendor property, check whether the vendor sets it inline (the `.reveal-viewport` cross-fade needs `!important`).
+
+**Links and scroll regions.** In-slide links keep an underline at rest (1.5px, own colour at 50%, offset 0.16em): green against ink is 1.4–2.9:1, under the 3:1 at which colour alone may mark a link. Contact rows, the frame bar's Open link and the frame notice's link are excepted. `.scroll-panel` is a focusable named region (a deck's own scroller opts in with `data-scroll-region`); it takes only the vertical arrows.
+
+## Further named rules
+
+**The Two Image Treatments Rule.** Every image is a duotone plate with a ruled caption or a true-colour capture in browser chrome. No naked JPEGs.
+
+**The One Bar Rule.** `.site-frame-bar, .chrome-bar` is one device declared once in `05-embeds-code.css`; it neutralises caption styling so it spans the frame whatever element carries it. Only the Open link is the live frame's own.
+
+**The Padding Measures The Container Rule.** A gutter that must align across type sizes is measured against the container, not each cell's em.
+
+**The Paper Cannot Scroll Rule.** A `.scroll-panel` prints what fits, fades into Sunken, closes on the heavy rule and carries an `Excerpt` band (`Extrait` in French) naming its `data-source-url`. `--excerpt-mark` and `--scroll-hint-display` are set for `@media print` and the `?print-pdf` preview.
+
+**The Scrim Guarantee Rule.** A dark ground the theme does not own is manufactured; a new overlay-on-image pattern states its contrast against a worst-case white frame.
+
+## Visual tells to avoid
+
+The visual counterpart of the anti-slop list in the slides skill's `writing.md`.
+
+- Stacked overlines: a kicker under a running head, or eyebrow, kicker and dateline on one slide.
+- Tracked-uppercase labels inside the canvas.
+- A heavy rule on every block, including each callout in a run.
+- Outlined or ghosted numerals, and leading zeros used as decoration.
+- Em-dash slogan titles ("X — and why it matters") and slogan kickers.
+- Colophon-style credits on an ordinary closing.
+- An italic serif subtitle under every heavy title.
+- An institution logo missing, or in the credit slot above the presenter.
+- The retired tells: the 6-colour rainbow bar, the compass motif, tinted key-takeaway boxes, a per-slide green eyebrow with a tick rule, drop-shadowed rounded cards.
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** put the 4px green marker bar above every standard slide title; use `.no-rule` only when a layout genuinely replaces it (cover, section, statement).
-- **Do** spend colour as fields: full-bleed green/navy divider planes, heavy rules, solid fills. Green leads, navy is the deep pole, gold is the single spark on dark.
-- **Do** use the AA-derived depths for text: `--green-deep` for green text/links on light, `--brown-deep` for brown, `--gold-bright` for gold on dark. WCAG 2.2 AA is binding.
-- **Do** keep the inverted hierarchy: Libre Franklin 700–800 with negative tracking for display, EB Garamond for all prose, leads and quotations — and leave `h4` in the serif.
-- **Do** size in fixed rem inside the 1280×720 canvas and let reveal's transform scale it; keep clamp()/media queries for the unscaled chrome only.
-- **Do** structure with rules: 3px near-black top rules to open, 1px hairlines to divide, tabular lining figures in ledgers — hairlines at 2.22:1 and control borders at 3.52:1, sized for the hall rather than the page.
-- **Do** colour dark fields through the on-dark tokens (`--ond-text`, `--ond-quiet`, `--ond-chrome`, `--ond-mark`, `--ond-rule`, `--ond-mark-ink`) instead of naming Paper or gold directly; the deep pole and the bright fields then each get the value that measures.
-- **Do** centre heroes by giving the slide one of the seven centring classes and nothing else; if you add a new hero class, add it to all three lists — the `.present` list in `03-layouts.css`, and the `.pdf-page` and `.scroll-page-content` lists in `01-foundations.css`.
-- **Do** cap a figure or code block with `--block-max-h` (28rem), and give print its own per-page `.pdf-imprint` rather than expecting the live footer to travel.
-- **Do** ask `fieldOf()` which register a surface sits in — it is the one answer the live chrome and the printed imprint share.
-- **Do** let the closing take its own measures (22ch title, 46ch lead, byline in a row) — it is all type, and it is the only place those overrides apply.
-- **Do** give an opening rule air above it and land adjacent rules at the same x; a near-miss between two copies of the same device reads as a mistake.
-- **Do** inset a panel's own header text past any control floating over it (`calc(2.4rem + var(--space-sm))` on `.toc-head`) while leaving the rule full-width.
-- **Do** open a process step, a panel or any grouped column on the 4px near-black rule and let the gutter separate them — `.flow-step` and `.panel` share one opening device.
-- **Do** name every property a transition animates, and keep the focus ring out of them — including where that means restating a vendor rule (`.reveal .fragment`).
-- **Do** still motion by setting `--draw-run: 0s` on the scope that wants stillness, never by listing the animated marks again; give a new signature animation `var(--draw-run)` as its duration and it inherits every stiller.
-- **Do** step a list with `.fragment` when the room should be walked through it — the scaffold seeds a stepped list, and deleting the classes is the right call when the points need to be compared rather than delivered one at a time.
-- **Do** measure a gutter that must align across type sizes against the container (`calc(0.9 * var(--fs-small))` on table cells) rather than against each cell's own em.
-- **Do** theme every focus state with `--focus-ring` and a `var(--radius-sm)` corner — including in-slide links, which previously fell back to the browser default at about 1.5:1 on the navy closing field.
-- **Do** let a link on a slide carry its underline at rest, not only on hover. Green against the surrounding ink measures 1.4–2.9:1, under the 3:1 at which colour alone may mark a link (WCAG 1.4.1), so the rule — 1.5px, the link's own colour at 50%, offset 0.16em — is what tells it from the words beside it. The links that stand alone as components are excepted: contact rows, the frame bar's open link, the offline fallback's.
-- **Do** make anything that scrolls its own content reachable from the keyboard: `.scroll-panel` is a focusable, named region by default, and a deck's own scroller opts in with `data-scroll-region`. Only the vertical arrows are kept for the panel; ←/→, Page Up/Down and Space stay with the deck, because those are what presenter remotes send.
+**Do:** put the green marker above every standard title; spend colour as fields and use the deep variants for small text; colour dark fields through the on-dark tokens and `fieldOf()`; keep display at 700 and `h4` in the serif; type labels in sentence case and give a slide one overline at most; centre heroes with the seven classes and add a new one to all three lists; cap figures with `--block-max-h`; open steps and panels on the 4px rule with air above; name every transitioned property and still motion through `--draw-run`; theme focus with `--focus-ring`; show live sites directly with a saved view and a new-tab Open link; step a list with `.fragment` only when the room should be walked through it.
 
-### Don't:
-- **Don't** resurrect the retired tells: the 6-colour rainbow spectrum bar, the compass motif, tinted key-takeaway boxes, the per-slide green eyebrow + tick-rule, or drop-shadowed rounded cards.
-- **Don't** put shadows on in-flow slide content — shadows exist only for true overlays (TOC panel, lightbox, QR pop) and the browser-chrome frame.
-- **Don't** use viewport units or fluid clamp() type inside the slide canvas — including `vh` height caps, which measure the window rather than the 1280×720 stage. The only sanctioned viewport units are the three on true overlays (TOC panel, lightbox).
-- **Don't** treat `.balance` as the way to centre a hero; the hero classes centre themselves, and `.balance` is for non-hero sparse slides.
-- **Don't** interpolate a deck title, venue or any author string into chrome markup without `escapeHTML()`.
-- **Don't** use gold as a second accent on light slides, set small text in raw `#009260`, or leave ink-coloured emphasis on a dark field (strong text lifts to Paper; the mark follows the register).
-- **Don't** put gold — or amber, or sky — on a bright field: none of them clears 3:1 on the green divider. Separate tiers there by weight, and keep transparency on Paper under about 7%.
-- **Don't** rely on a low-opacity fill to carry a large form; outline it instead, as `.sec-no` does with a 3px Paper stroke.
-- **Don't** box what should be ruled: no cards, no filled panels with borders and radii — the only sanctioned surface is the flat Sunken inset.
-- **Don't** waive the fit check with boilerplate when the real fault is a measure drawn for a different composition — fix the measure, as `.closing` now does.
-- **Don't** widen `.lead` past 30ch outside `.closing`, or push the closing's row byline onto covers and other slides.
-- **Don't** read the showcase deck's slack as a measurement of the system; its copy is placeholder by design.
-- **Don't** write `transition: all` — it animates `outline-color` and `outline-offset` and makes the focus ring fade up over 220ms.
-- **Don't** answer `prefers-reduced-motion` by zeroing every transition duration: that turns a colour cross-fade into a flash. Take the displacement away and leave the feedback at its authored timing.
-- **Don't** animate a layout property without a reason the comment can state; the column chart has one — the numeral rides its bar — and it is the only place in the theme that does.
-- **Don't** put a border on the Sunken inset (code blocks and the scroll panel included) or a radius on a ruled column; the surface is either the fill or the opening rule, never either one plus a hairline outline.
-- **Don't** let a screen-only affordance fail silently on paper: give the scroll panel a `data-source-url` so its printed `Excerpt` band names the source, and never leave an instruction in print that the reader cannot follow.
-- **Don't** convert the OKLCH neutrals to hex or "correct" the hex corporate palette; each format is normative where it stands.
+**Don't:** resurrect any visual tell above; shadow in-flow content or border the Sunken inset; use viewport units in the canvas; centre a hero with `.balance`; build chrome from author strings without `escapeHTML()`; put gold on a light slide or gold, amber or sky on a bright field; carry a large form on a low-opacity fill; waive the fit check with boilerplate or widen `.lead` past 30ch outside `.closing`; write `transition: all` or zero every duration for reduced motion; leave an instruction in print the reader cannot follow; reach for an ornament on an ordinary slide; convert the OKLCH neutrals or "correct" the corporate hex.
 
-### Where a deck writes its own CSS
+## Where a deck writes its own CSS
 
-Per-deck CSS inherits nothing: a rule the theme retired is retired in the theme
-alone, and the next deck that hand-rolls a component brings it back. Eight of
-the rules above are therefore checked mechanically over every `<style>` block
-and `style=""` attribute under `talks/` — viewport units or `clamp()` inside the
-canvas, `transition: all`, a shadow on in-flow content, the retired card (a
-fill plus a hairline plus a radius), hand-written type under the floor for
-where it sits (`--fs-caption` inside the canvas, `--fs-footer` in the chrome), a
-corporate colour spelled out where a token exists, hero centring the theme owns
-at `.present`, and an animation that does not take its duration from
-`var(--draw-run)`. `tools/audit.py` reports them as errors, so CI fails on the
-drift rather than a later sweep finding it. The rules the checks cannot read —
-measure, register, hierarchy, whether a composition is authored or template —
-are still read by eye.
-
-The site pages outside `talks/` — the landing page and the 404 — hand-roll
-their CSS the same way, and a `transition: all` on the landing page's Open cue
-outlived every deck's. They are not slides: they size against the viewport,
-keep their own type scale and have no motion switch, so only the two rules that
-hold on any page are checked there — `transition: all` and a corporate colour
-spelled out by hand (a `:root` token *defining* the palette is the exception
-the rule exists to point at).
-
-Two things the hand sweep got wrong before it was folded in, recorded so the
-next check does not repeat them. A rule parser that never resets its brace
-depth reads **one** rule out of a stylesheet and reports every deck clean, so
-each check here carries a known-bad fixture that proves it still fires — a
-clean report from an unproven check is not evidence. And a contrast probe that
-round-trips a colour through canvas `fillStyle` does **not** resolve `oklch()`:
-it reads the OKLCH components as RGB and invents failures. Paint the colour and
-read the pixel back, and measure it against the WCAG threshold that applies —
-`--green` at 24px/700 is large text, so it answers to 3:1, and its 3.87:1
-passes.
-
-### Readable evidence
-
-An audience should be able to read the observation without deciphering a
-full dashboard screenshot. Pair a native text or bar-chart extract with the
-complete, zoomable source. Label the date, unit and limits of an extract;
-do not silently turn an incomplete distribution into percentages of a whole.
-The Stellenbosch aggregate and relationship slides demonstrate this pattern.
-
-- `.evidence-pair` gives an archival source and its transcription equal
-  columns, separated by a rule. Kansas's Ewé transcription is the example.
-- `.evidence-reference` holds the complete source image and its caption
-  beneath a readable interpretation. The image remains whole and zoomable.
-- `.evidence-reading` uses a semantic definition list for a selected
-  observation, with its type, value and context visible at projection size.
-  A separate callout states the interpretive limit.
-
-Reading editions use the same typefaces, colour tokens and ruled hierarchy,
-but normal document flow and mobile-sized text. They do not inherit the
-fixed canvas or auto-fit transforms of the projected presentation.
+`tools/audit.py` checks every `<style>` block and `style=""` under `talks/` and fails CI on eight rules: viewport units or `clamp()` in the canvas; `transition: all`; a shadow on in-flow content; the retired card (fill, hairline and radius); type under `--fs-caption` in the canvas or `--fs-footer` in the chrome; a corporate hex where a token exists; hero centring the theme owns; an animation not timed by `var(--draw-run)`. The landing page and 404 get the two rules that hold on any page (`transition: all`, hand-spelled corporate colours outside a `:root` palette). Each check carries a known-bad fixture. Measure contrast by painting a colour and reading the pixel back, against the threshold that applies (`--green` at 24px/700 is large text: 3.87:1 passes 3:1). Measure, register and whether a slide reads as authored are judged by eye.
 
 ## Brand skin: ZMO
 
-Broadsheet is the house system and everything above describes it. A talk given
-for the Leibniz-Zentrum Moderner Orient (ZMO) can instead wear the ZMO skin,
-which reproduces the institute's PowerPoint template on the same engine. It is
-a separate visual system with its own authority — the ZMO Corporate Design
-Manual (2019) and `ZMO Powerpoint.pptx` — so Broadsheet's Named Rules (ruled
-not boxed, the inverted hierarchy, colour as fields) do not govern it.
+A talk for the Leibniz-Zentrum Moderner Orient (ZMO) can wear the ZMO skin, which reproduces the institute's PowerPoint template on the same engine. Its authorities are the ZMO Corporate Design Manual (2019) and `ZMO Powerpoint.pptx`; Broadsheet's Named Rules (ruled not boxed, inverted hierarchy, colour as fields, sentence-case labels) do not govern it. Judge a ZMO slide against the PPT.
 
-**Isolation.** The skin lives in `shared/brands/zmo/` (built from
-`shared/src/brands/zmo/` by `tools/build-shared.mjs`) beside its logos and the
-Carlito font. A deck opts in twice: it links `shared/brands/zmo/zmo.css` after
-`theme.css` and `zmo.js` after `deck.js`, and its `<body>` carries
-`data-brand="zmo"`; every rule is scoped to that attribute. `theme.css` and
-`deck.js` do not change for it, so no Bayreuth deck can be affected. Start one
-with `tools/new-talk.py --brand zmo`, which copies `talks/_template-zmo/`.
+**Isolation.** The skin lives in `shared/brands/zmo/`, built from `shared/src/brands/zmo/` by `tools/build-shared.mjs`, with its logos and Carlito. A deck links `zmo.css` after `theme.css` and `zmo.js` after `deck.js` and sets `<body data-brand="zmo">`; every rule is scoped to that attribute, and `theme.css`/`deck.js` never change for it. Start with `tools/new-talk.py --brand zmo` (copies `talks/_template-zmo/`).
 
-**Measured, not interpreted.** Geometry is taken from the PPT on the
-1280 × 720 canvas (128 px per inch): a 137 px ZMO-blue band carrying the
-extended-square motif and the white 32 pt slide title, the line under it at
-18 pt blue, the text area x 64→1175 and y 166→606, the logo at the foot left
-and `www.leibniz-zmo.de` at 9 pt foot right. Type is Calibri (Carlito where
-Calibri is not installed), 16 pt body, 13 pt in cards.
+**Geometry** (1280×720, 128px per inch): a 137px blue band with the extended-square motif and the white 32pt title (shrunk by `zmo.js` to one line, floor 20pt); text area x 64→1175, y 166→606; logo foot left; folio and `www.leibniz-zmo.de` at 9pt foot right. Calibri (Carlito fallback), 16pt body, 13pt in cards. **One left edge:** band title, lead, text and every box start at x 64.
 
 | Token | Value | Role |
 |---|---|---|
-| `--zmo-blue` | `#143c73` | ZMO-Blau: band, fields, headings, bold lead-ins |
-| `--zmo-orange` | `#eb8241` | ZMO-Orange: marks and labels on blue only |
-| `--zmo-orange-ink` | `#cf7239` | orange text on white and cards (3.43 / 3.05 : 1) |
+| `--zmo-blue` | `#143c73` | band, fields, headings, bold lead-ins |
+| `--zmo-orange` | `#eb8241` | marks and labels on blue only (4.06:1 there) |
+| `--zmo-orange-ink` | `#cf7239` | orange text on white and cards (3.43 / 3.05:1); the one departure from the PPT, whose orange is 2.69:1 on white |
 | `--zmo-text` | `#1f2937` | running text |
-| `--zmo-muted` | `#5b6573` | sources and captions |
-| `--zmo-card` | `#eef2f7` | rounded card and step fill |
+| `--zmo-muted` | `#5b6573` | sources and captions (5.91:1) |
+| `--zmo-card` | `#eef2f7` | card, step, cell and tier fill |
+| `--zmo-on-blue-soft` | `#b8c2ce` | secondary text on blue (6.05:1) |
+| `--zmo-blue-grey` | `#7d8a9c` | flow arrows, the quiet quadrant dot (3.51:1 on white, 3.12:1 on card) |
+| `--zmo-radius` | `16px` | every box: cards, callouts, steps, pills, matrix cells, tiers |
+| `--zmo-radius-frame` | `8px` | browser frames |
 
-The one deliberate departure from the PPT is `--zmo-orange-ink`: the brand
-orange measures 2.69:1 on white, under the 3:1 that bold display text needs,
-so orange words are set 12% darker and the exact orange stays on marks and on
-the blue field (4.06:1).
+**Layouts.** `.cover` (A · Titelfolie), `.section` (C · Titelfolie weiß; `.sec-no` hidden), plain content slides (Titel und Inhalt), `.cover.address` as the closing (B · Titelfolie mit Adresse; never `.closing`, whose auto-fit reserve pushes the meta lines into the foot band) and `.brand-logo` (Startfolie Logo). `.cols` and `.flow` grow to the foot, a lone callout fills its column, a final paragraph drops to the bottom line, and `.stat-grid` keeps 24px below it.
 
-**Layouts.** `.cover` (A · Titelfolie), `.section` (C · Titelfolie weiß),
-plain content slides (Titel und Inhalt), `.cover.address` as the closing
-(B · Titelfolie mit Adresse — not Broadsheet's `.closing`, whose auto-fit
-reserve would push the meta lines into the foot band) and `.brand-logo`
-(Startfolie Logo). Content fills the text area as the PPT's shapes do:
-`.cols` and `.flow` rows grow to the foot, a lone callout fills its column,
-and a final takeaway paragraph drops to the bottom line. The engine's footer
-keeps only its navigation, hidden until a pointer or keyboard reaches it.
+**Balance.** A lone callout (and a `.matrix` callout) centres its content (`align-content: center`). In a `.cols.cards` row whose fullest card fills under 60% of its height, `zmo.js` (`balance()`) sets `--zmo-above` / `--zmo-below` on two zero-basis spacer pseudo-elements so every card's content sits the same height down, just above centre. Neither can grow a box or trigger auto-fit.
+
+**Folio.** `zmo.js` (`stampFolios()`) writes `data-zmo-folio` per leaf slide in the engine's vocabulary (`01…N`; uncounted annexes `A01…`; hidden slides skipped; a vertical stack shares one number). It prints before the URL on content slides and dividers, not on the cover, closing, `.brand-logo` or `.media`, and in the PDF.
+
+**Chrome.** No running head, rule or progress bar; the footer keeps only its navigation, hidden until a pointer or keyboard reaches it. Live frames follow the engine's contract unchanged: the notice hides once the site answers and stays, with its Open link, when the site cannot be reached. Type floor: frame-bar URL and Open, QR URL and card foot at `--fs-caption` (10pt); the foot URL and folio stay at 9pt.
+
+**Components.** Contracts are in `zmo.css` § 7. Most have a working slide in `talks/_template-zmo/` (14 slides); the rest are used in `talks/2026-11-12-zmo-unit-pv/`. The slides skill's `references/deck-system.md` tabulates them.
