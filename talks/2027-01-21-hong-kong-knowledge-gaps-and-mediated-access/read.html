@@ -36,7 +36,7 @@
     <p class="reader-meta">12 slides</p>
   </header>
   <main id="content">
-    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue of research data held elsewhere</a></li><li><a href="#slide-3">Two tools this pilot builds on</a></li><li><a href="#slide-4">A label and a list, but no definition</a></li><li><a href="#slide-5">The vocabularies mostly identify the concept; they rarely explain it</a></li><li><a href="#slide-6">The pipeline</a></li><li><a href="#slide-7">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-8">Four models reading AMIRA on highlife</a></li><li><a href="#slide-9">The same models without AMIRA’s sources</a></li><li><a href="#slide-10">Three limits of the pilot</a></li><li><a href="#slide-11">What comes next in the pilot</a></li><li><a href="#slide-12">Definitions drafted from the collection, checked by code, decided by researchers.</a></li></ol></nav></details>
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue of research data held elsewhere</a></li><li><a href="#slide-3">Two tools this pilot builds on</a></li><li><a href="#slide-4">A label and a list, but no definition</a></li><li><a href="#slide-5">Standard vocabularies identify a concept but rarely explain it</a></li><li><a href="#slide-6">The pipeline</a></li><li><a href="#slide-7">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-8">Four models reading AMIRA on highlife</a></li><li><a href="#slide-9">The same models without AMIRA’s sources</a></li><li><a href="#slide-10">Three limits of the pilot</a></li><li><a href="#slide-11">What comes next in the pilot</a></li><li><a href="#slide-12">Definitions drafted from the collection, checked by code, decided by researchers.</a></li></ol></nav></details>
     <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
 <p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
 <p class="eyebrow">HKADH 2027 · Education University of Hong Kong, 21 January 2027</p>
@@ -72,17 +72,17 @@
         <div class="col">
           <div class="col-head">Linking keywords to Wikidata</div>
           <ul>
-            <li>CAREL, led by Jiayu Yang: training-free linking</li>
-            <li>Rules first; a local open-source model for ambiguous cases</li>
-            <li>89.8% and 90.9% accuracy, LCSH-anchored benchmark</li>
+            <li>CAREL, led by Jiayu Yang: linking without task-specific training</li>
+            <li>Rules settle the clear cases; a local open-source model, the ambiguous ones</li>
+            <li>89.8% and 90.9% accuracy on Library of Congress headings</li>
           </ul>
           <p class="source">(Yang et al., JCDL 2026; CIKM 2026)</p>
         </div>
         <div class="col">
           <div class="col-head">AMIRA MCP server</div>
           <ul>
-            <li>Lets AI assistants query AMIRA, read-only</li>
-            <li>Every result carries the link to its record</li>
+            <li>AI assistants query AMIRA, read-only</li>
+            <li>Every result links to its record</li>
             <li>A curator mode also serves private full text</li>
           </ul>
         </div>
@@ -105,17 +105,17 @@
           </dl>
         </div>
         <div class="col">
-          <p class="lead">Readers may also need an explanation of a concept and of how it is used in the research catalogued in AMIRA.</p>
+          <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
           <div class="callout">
             <span class="callout-label">The Cluster’s agenda</span>
-            “world-making from the vantage point of Africa”, brought into catalogue practice.
+            Bringing “world-making from the vantage point of Africa” into catalogue practice.
           </div>
         </div>
       </div>
 </section>
 <section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
 <p class="reader-folio"><a href="index.html#/4">Slide 5</a></p>
-<h2 class="slide-title" id="slide-5-title">The vocabularies mostly identify the concept; they rarely explain it</h2>
+<h2 class="slide-title" id="slide-5-title">Standard vocabularies identify a concept but rarely explain it</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Library of Congress</div>
@@ -166,7 +166,7 @@
         </tbody>
       </table></div>
       <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
-      <p class="source">Claude Haiku 5.5, route D, comparison run of 16 November 2026. Sources: articles in the journal <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
+      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
 </section>
 <section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
 <p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
@@ -186,7 +186,7 @@
         <span class="callout-label">Read with care</span>
         One run per model: anecdotes, not measurements.<br>
         Mistral Small 4: three quotes over the 25-word limit, one not found in the text it read.<br>
-        Not yet run: the locally run Ministral 3.
+        Still to come: Ministral 3, run locally.
       </div>
 </section>
 <section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
@@ -196,7 +196,7 @@
         <div class="col">
           <div class="col-head">Model alone (route C)</div>
           <ul>
-            <li>All four: 51 to 96 fluent words in under ten seconds</li>
+            <li>All four: a fluent definition of 51 to 96 words, in under ten seconds</li>
             <li>A common account: Ghana, early 1900s, local rhythms, Western brass</li>
             <li>No source to check it against</li>
           </ul>
@@ -206,13 +206,13 @@
           <ul>
             <li>Reports what the journal’s authors say</li>
             <li>Konkomba singing bands, the vernaculars, weekend gatherings, a debated origin</li>
-            <li>Each claim cites a quote; code checks it in the text read</li>
+            <li>Each claim cites a quote that code checks against the text read</li>
           </ul>
         </div>
       </div>
       <div class="callout wide">
         <span class="callout-label">Not an accuracy result</span>
-        On highlife, and again on the lesser-known timbila, the models alone stayed fluent and plausible. The difference shown is traceability and emphasis. One run per model per route.
+        On highlife, and again on the lesser-known timbila, the models alone stayed fluent and plausible. The difference shown is one of traceability and emphasis. One run per model per route.
       </div>
 </section>
 <section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
@@ -221,13 +221,13 @@
       <div class="cols">
         <div class="col">
           <div class="col-head">The archive is not one voice</div>
-          <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">“tribal” per 10,000 words, 1957 and 1962</span></div>
+          <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">uses of “tribal” per 10,000 words, 1957 and 1962</span></div>
           <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. Definitions must date their sources.</p>
         </div>
         <div class="col">
           <div class="col-head">A mention is not a subject</div>
           <div class="stat"><span class="stat-num">0 of 46</span><span class="stat-label">articles that mention “timbila” carry a heading for it</span></div>
-          <p>31 of the 46 mention it once or twice. “Mbira”: in 219 full texts; the heading “Mbira music” on 18 records.</p>
+          <p>31 of the 46 mention it once or twice. “Mbira” occurs in 219 full texts; 18 records carry the heading “Mbira music”.</p>
         </div>
         <div class="col">
           <div class="col-head">Quotes are checked; claims are not</div>
@@ -244,13 +244,13 @@
         <div class="flow-step">
           <span class="step-n">1</span>
           <span class="step-h">Repeated runs</span>
-          <p>Several runs per model, and a calibrated judge model, before anything counts as a measurement.</p>
+          <p>Several runs per model and a calibrated judge model, before anything counts as a measurement.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">2</span>
           <span class="step-h">A local model</span>
-          <p>Ministral 3, to reduce reliance on services of major US technology companies. Hardware and maintenance capacity differ across partner institutions.</p>
+          <p>Ministral 3, to reduce reliance on the services of major US technology companies. Hardware and maintenance capacity differ across partner institutions.</p>
         </div>
         
         <div class="flow-step">
@@ -261,7 +261,7 @@
         
         <div class="flow-step">
           <span class="step-n">4</span>
-          <span class="step-h">Researchers review</span>
+          <span class="step-h">Review by researchers</span>
           <p>Contributing researchers and subject specialists assess and revise the drafts.</p>
           <span class="step-q">“Would you put this on the record?”</span>
         </div>

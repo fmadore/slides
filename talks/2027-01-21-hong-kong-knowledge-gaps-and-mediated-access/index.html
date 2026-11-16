@@ -124,7 +124,7 @@
         <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
       </div>
       <aside class="notes">
-        <p>Thank you. I'm Frédérick Madore, a historian and the Data Curator of the Africa Multiple Cluster of Excellence at the University of Bayreuth. This paper is joint work with Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld. It reports on a small pilot: language models drafting definitions from a catalogue's own sources.</p>
+        <p>Thank you. I'm Frédérick Madore, a historian and the Data Curator of the Africa Multiple Cluster of Excellence at the University of Bayreuth. This paper is joint work with Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld. It reports on a small pilot in which language models draft definitions from a catalogue's own sources.</p>
       </aside>
     </section>
 
@@ -152,17 +152,17 @@
         <div class="col">
           <div class="col-head">Linking keywords to Wikidata</div>
           <ul>
-            <li>CAREL, led by Jiayu Yang: training-free linking</li>
-            <li>Rules first; a local open-source model for ambiguous cases</li>
-            <li>89.8% and 90.9% accuracy, LCSH-anchored benchmark</li>
+            <li>CAREL, led by Jiayu Yang: linking without task-specific training</li>
+            <li>Rules settle the clear cases; a local open-source model, the ambiguous ones</li>
+            <li>89.8% and 90.9% accuracy on Library of Congress headings</li>
           </ul>
           <p class="source">(Yang et al., JCDL 2026; CIKM 2026)</p>
         </div>
         <div class="col">
           <div class="col-head">AMIRA MCP server</div>
           <ul>
-            <li>Lets AI assistants query AMIRA, read-only</li>
-            <li>Every result carries the link to its record</li>
+            <li>AI assistants query AMIRA, read-only</li>
+            <li>Every result links to its record</li>
             <li>A curator mode also serves private full text</li>
           </ul>
         </div>
@@ -172,8 +172,8 @@
         Wording of the CAREL summary; whether its Wikidata links are live in AMIRA.
       </div>
       <aside class="notes">
-        <p>Two pieces of earlier work make the pilot possible. The first is CAREL, led by Jiayu Yang. It links the keywords already in our research metadata to Wikidata identifiers, without any task-specific training. Rules settle the clear cases, and only the ambiguous keywords go to an open-source language model that runs locally. That keeps the cost down and avoids sending research metadata to external services. On a benchmark anchored in Library of Congress headings, it reaches 89.8 and 90.9 per cent accuracy with two different models. The papers appeared at JCDL and CIKM in 2026.</p>
-        <p>The second is the AMIRA MCP server. It lets AI assistants query AMIRA on our terms: read-only, and every result carries the link to the record it came from. A curator mode, behind a personal token, also serves private records, including their full text. The pilot depends on that mode.</p>
+        <p>Two pieces of earlier work make the pilot possible. The first is CAREL, led by Jiayu Yang. It links the keywords already in our research metadata to Wikidata identifiers, without any task-specific training. Rules settle the clear cases, and only the ambiguous keywords go to an open-source language model that runs locally. This routing keeps the cost down and avoids sending research metadata to external services. On a benchmark anchored in Library of Congress headings, it reaches 89.8 and 90.9 per cent accuracy with two different models. The papers appeared at JCDL and CIKM in 2026.</p>
+        <p>The second is the AMIRA MCP server. It lets AI assistants query AMIRA on our terms: access is read-only, and every result links to the record it came from. A curator mode, behind a personal token, also serves private records, including their full text. The pilot depends on that mode.</p>
       </aside>
     </section>
 
@@ -189,10 +189,10 @@
           </dl>
         </div>
         <div class="col">
-          <p class="lead">Readers may also need an explanation of a concept and of how it is used in the research catalogued in AMIRA.</p>
+          <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
           <div class="callout">
             <span class="callout-label">The Cluster’s agenda</span>
-            “world-making from the vantage point of Africa”, brought into catalogue practice.
+            Bringing “world-making from the vantage point of Africa” into catalogue practice.
           </div>
         </div>
       </div>
@@ -203,7 +203,7 @@
     </section>
 
     <section data-toc="LCSH and Wikidata">
-      <h2 class="slide-title">The vocabularies mostly identify the concept; they rarely explain it</h2>
+      <h2 class="slide-title">Standard vocabularies identify a concept but rarely explain it</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Library of Congress</div>
@@ -252,7 +252,7 @@
         <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory and cites nothing.</p>
         <p>[→ route D] Route D is the same model reading AMIRA through the MCP server: it searches, reads full texts and quotes them. Music is our test bed because AMIRA holds the full text of the journal African Music, 1954 to 2023. That text is private, so you will only see short quotes from it. On our first attempt, the model would not open the private texts, because the server's notes told it not to cite private material. Version 1.38.1 now informs the model and leaves the decision to the curator.</p>
         <p>[→ the cited definition] The answer comes back as a record: a definition of at most 120 words, and claims, each with a quote of at most twenty-five words and its source. Code checks every quote against the text the model read.</p>
-        <p>[→ review] Review has three layers: code, a judge model, and researchers. The judge model is not calibrated yet, so I report no judge scores today.</p>
+        <p>[→ review] Review has three layers: code, a judge model and researchers. The judge model is not calibrated yet, so I report no judge scores today.</p>
       </aside>
     </section>
 
@@ -270,9 +270,9 @@
         </tbody>
       </table>
       <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
-      <p class="source">Claude Haiku 5.5, route D, comparison run of 16 November 2026. Sources: articles in the journal <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
+      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
       <aside class="notes">
-        <p>This is the definition Claude Haiku 5.5 wrote for highlife through route D, in a run on 16 November 2026. It has 95 words and seven claims, and every claim carries a quote found in the text the model read. Three of them are on the slide. That highlife is a compromise between African traditional forms and Western music, and that it is sung in the various vernaculars, both come from Edna Smith's article of 1962. That it emerged in the 1950s as a national rather than ethnic music comes from Austin Emielu, in 2013.</p>
+        <p>This is the definition Claude Haiku 5.5 wrote for highlife through route D, in a run on 16 November 2026. It has 95 words and seven claims, and every claim carries a quote found in the text the model read. Three of them are on the slide. Two come from Edna Smith's article of 1962: highlife as a compromise between African traditional forms and Western music, and highlife sung in the various vernaculars. The third, that it emerged in the 1950s as a national rather than ethnic music, comes from Austin Emielu, in 2013.</p>
         <p>The model supplies only the record identifier and the quote. Title, author, year and link are filled in afterwards from AMIRA's own metadata, so a reader can follow each claim to its record. The model also noted where its sources disagree about origins.</p>
       </aside>
     </section>
@@ -294,11 +294,11 @@
         <span class="callout-label">Read with care</span>
         One run per model: anecdotes, not measurements.<br>
         Mistral Small 4: three quotes over the 25-word limit, one not found in the text it read.<br>
-        Not yet run: the locally run Ministral 3.
+        Still to come: Ministral 3, run locally.
       </div>
       <aside class="notes">
         <p>We gave the same prompt to four hosted small models, on the same day. All four opened private full texts, and all four judged the evidence sufficient. They made between three and seven claims. Mistral Small 4 made five, but three of its quotes ran past the twenty-five-word limit by stitching separate sentences together, and one could not be found in the text it read. Each run cost under three US cents, estimated from list prices.</p>
-        <p>Each model ran once, so the table is not a ranking of the models. This table is route D only, and what it does show is the check catching problems. The fifth model, Ministral 3, which runs locally, has not been run yet.</p>
+        <p>Each model ran once, and only through route D, so the table does not rank the models. It does show the check catching problems. The fifth model, Ministral 3, which runs locally, has not been run yet.</p>
       </aside>
     </section>
 
@@ -308,7 +308,7 @@
         <div class="col">
           <div class="col-head">Model alone (route C)</div>
           <ul>
-            <li>All four: 51 to 96 fluent words in under ten seconds</li>
+            <li>All four: a fluent definition of 51 to 96 words, in under ten seconds</li>
             <li>A common account: Ghana, early 1900s, local rhythms, Western brass</li>
             <li>No source to check it against</li>
           </ul>
@@ -318,16 +318,16 @@
           <ul>
             <li>Reports what the journal’s authors say</li>
             <li>Konkomba singing bands, the vernaculars, weekend gatherings, a debated origin</li>
-            <li>Each claim cites a quote; code checks it in the text read</li>
+            <li>Each claim cites a quote that code checks against the text read</li>
           </ul>
         </div>
       </div>
       <div class="callout wide">
         <span class="callout-label">Not an accuracy result</span>
-        On highlife, and again on the lesser-known timbila, the models alone stayed fluent and plausible. The difference shown is traceability and emphasis. One run per model per route.
+        On highlife, and again on the lesser-known timbila, the models alone stayed fluent and plausible. The difference shown is one of traceability and emphasis. One run per model per route.
       </div>
       <aside class="notes">
-        <p>Now the same four models without AMIRA's sources. With no tools, each wrote a fluent definition in under ten seconds, for a fraction of a cent. They tell much the same story: Ghana, the early twentieth century, local rhythms with Western brass and dance music. There is nothing in them to check.</p>
+        <p>Now the same four models without AMIRA's sources. With no tools, each wrote a fluent definition in under ten seconds, for a fraction of a cent. They tell much the same story: Ghana, the early twentieth century, local rhythms with Western brass and dance music. Nothing in them can be checked against a source.</p>
         <p>Through AMIRA, Haiku's answer reports what the journal's authors say, and it dwells on other things: Konkomba singing bands, the vernaculars, weekend gatherings, an origin still debated. Highlife is well documented, so we also tried timbila, which has no heading at all. The models alone were fluent and plausible there too. Three of the four mentioned UNESCO recognition; none of the answers drawn from the journal did. So the two routes differ in traceability and in emphasis, and these runs say nothing about which is more accurate.</p>
       </aside>
     </section>
@@ -337,13 +337,13 @@
       <div class="cols" style="--cols:3">
         <div class="col">
           <div class="col-head">The archive is not one voice</div>
-          <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">“tribal” per 10,000 words, 1957 and 1962</span></div>
+          <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">uses of “tribal” per 10,000 words, 1957 and 1962</span></div>
           <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. Definitions must date their sources.</p>
         </div>
         <div class="col">
           <div class="col-head">A mention is not a subject</div>
           <div class="stat"><span class="stat-num">0 of 46</span><span class="stat-label">articles that mention “timbila” carry a heading for it</span></div>
-          <p>31 of the 46 mention it once or twice. “Mbira”: in 219 full texts; the heading “Mbira music” on 18 records.</p>
+          <p>31 of the 46 mention it once or twice. “Mbira” occurs in 219 full texts; 18 records carry the heading “Mbira music”.</p>
         </div>
         <div class="col">
           <div class="col-head">Quotes are checked; claims are not</div>
@@ -353,7 +353,7 @@
       </div>
       <p class="source">“Tribal”: AMIRA MCP server, full-text map of 657 <em>African Music</em> articles, 16 November 2026.</p>
       <aside class="notes">
-        <p>Three limits. First, the archive is not one voice. African Music began in 1954, and its early volumes use the vocabulary of their time: 'tribal' appears six to seven times per ten thousand words in 1957 and 1962, and under once from 2007 to 2023, apart from one year with only two articles. Grounding a definition in AMIRA does not by itself make it a view from Africa. Gemini, for instance, took 'intertribal' from the 1962 article and used it in its own voice.</p>
+        <p>Three limits. First, the archive is not one voice. African Music began in 1954, and its early volumes use the vocabulary of their time: 'tribal' appears six to seven times per ten thousand words in 1957 and 1962, and less than once from 2007 to 2023, apart from one year with only two articles. Grounding a definition in AMIRA does not by itself make it a view from Africa. Gemini, for instance, took 'intertribal' from the 1962 article and used it in its own voice.</p>
         <p>Second, a mention is not a subject. Forty-six articles mention timbila and none carries a heading for it, because no such heading exists yet. But thirty-one of them mention it only once or twice. Deciding what an article is about stays with the curator.</p>
         <p>Third, a found quote is not a true claim. The code finds the quote; whether the claim is right needs a reader who knows the field.</p>
       </aside>
@@ -365,13 +365,13 @@
         <div class="flow-step">
           <span class="step-n">1</span>
           <span class="step-h">Repeated runs</span>
-          <p>Several runs per model, and a calibrated judge model, before anything counts as a measurement.</p>
+          <p>Several runs per model and a calibrated judge model, before anything counts as a measurement.</p>
         </div>
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
           <span class="step-n">2</span>
           <span class="step-h">A local model</span>
-          <p>Ministral 3, to reduce reliance on services of major US technology companies. Hardware and maintenance capacity differ across partner institutions.</p>
+          <p>Ministral 3, to reduce reliance on the services of major US technology companies. Hardware and maintenance capacity differ across partner institutions.</p>
         </div>
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
@@ -382,7 +382,7 @@
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
           <span class="step-n">4</span>
-          <span class="step-h">Researchers review</span>
+          <span class="step-h">Review by researchers</span>
           <p>Contributing researchers and subject specialists assess and revise the drafts.</p>
           <span class="step-q">“Would you put this on the record?”</span>
         </div>
