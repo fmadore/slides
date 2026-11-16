@@ -3,6 +3,30 @@
   "site": "https://slides.frederickmadore.com",
   "talks": [
     {
+      "slug": "2027-01-21-hong-kong-knowledge-gaps-and-mediated-access",
+      "date": "2027-01-21",
+      "language": "en",
+      "event": "HKADH 2027 · Education University of Hong Kong",
+      "venue": "HKADH 2027 · Hong Kong · 21 January 2027",
+      "title": "Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data",
+      "shortTitle": "Knowledge gaps and mediated access",
+      "description": "A pilot in which small language models write cited definitions for AMIRA's authority records from the platform's own sources.",
+      "presenters": [
+        "Frédérick Madore",
+        "Jiayu Yang",
+        "Oliver Baumann",
+        "Neeraj Thandayan Viswajith",
+        "Durgesh Nandini",
+        "Mirco Schönfeld"
+      ],
+      "tags": [
+        "AMIRA",
+        "metadata",
+        "language models",
+        "African studies"
+      ]
+    },
+    {
       "slug": "2026-11-12-zmo-unit-pv",
       "date": "2026-11-12",
       "language": "en",
