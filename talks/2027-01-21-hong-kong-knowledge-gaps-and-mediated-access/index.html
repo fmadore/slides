@@ -45,9 +45,17 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Cover: the co-authors under the presenter's affiliation. */
+    /* Cover: one list of the six authors, in order, none set apart. */
     .reveal section.cover .subtitle { max-width: none; }
-    .reveal .byline .coauthors { margin-top: var(--space-xs); max-width: none; }
+    .reveal section.cover .byline .authors-list { font-weight: 500; max-width: none; }
+
+    /* AMIRA: the figures beside the live home page. */
+    .reveal section.amira-slide .cols { align-items: stretch; }
+    .reveal section.amira-slide .stat-grid { gap: 0 var(--space-xl); }
+    .reveal section.amira-slide .site-frame { height: 100%; min-height: 0; }
+    /* Zoomed out, so the half-width column shows the home page's desktop
+       layout rather than its phone one (as in the Kansas deck). */
+    .reveal section.amira-slide .site-frame-view > iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; }
 
     /* Closing: the line is a sentence, set at headline size so it clears
        the corner QR (as in the Rhodes deck's closing). */
@@ -112,10 +120,7 @@
       <h1>Knowledge gaps and mediated access</h1>
       <p class="subtitle">AI infrastructure and practice for African research data</p>
       <div class="byline">
-        <span class="name">Frédérick Madore</span>
-        <span class="role">Data Curator</span>
-        <span class="affil">Africa Multiple Cluster of Excellence</span>
-        <span class="affil coauthors">with Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span>
+        <span class="name authors-list">Frédérick Madore, Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span>
       </div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div data-contact></div>
@@ -128,18 +133,32 @@
       </aside>
     </section>
 
-    <section data-toc="AMIRA">
+    <section class="amira-slide" data-toc="AMIRA">
       <h2 class="slide-title">A catalogue of research data held elsewhere</h2>
-      <p>AMIRA is the research-data platform of the Africa Multiple Cluster of Excellence, University of Bayreuth. The material usually stays with the researchers, archives and libraries that hold it; the metadata is shared.</p>
-      <div class="stat-grid">
-        <div class="stat"><span class="stat-num" data-count="3975">3,975</span><span class="stat-label">Research items</span></div>
-        <div class="stat"><span class="stat-num" data-count="106">106</span><span class="stat-label">Projects</span></div>
-        <div class="stat"><span class="stat-num" data-count="813">813</span><span class="stat-label">Publications</span></div>
-        <div class="stat"><span class="stat-num" data-count="28">28</span><span class="stat-label">Languages</span></div>
-        <div class="stat"><span class="stat-num" data-count="43">43</span><span class="stat-label">Podcasts</span></div>
-        <div class="stat"><span class="stat-num" data-count="142">142</span><span class="stat-label">Videos</span></div>
+      <div class="cols">
+        <div>
+          <p>The Africa Multiple Interactive Research Atlas (AMIRA) is the research-data platform of the Africa Multiple Cluster of Excellence, University of Bayreuth (Germany). The material usually stays with the researchers, archives and libraries that hold it; the metadata is shared.</p>
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-num" data-count="3975">3,975</span><span class="stat-label">Research items</span></div>
+            <div class="stat"><span class="stat-num" data-count="106">106</span><span class="stat-label">Projects</span></div>
+            <div class="stat"><span class="stat-num" data-count="813">813</span><span class="stat-label">Publications</span></div>
+            <div class="stat"><span class="stat-num" data-count="28">28</span><span class="stat-label">Languages</span></div>
+            <div class="stat"><span class="stat-num" data-count="43">43</span><span class="stat-label">Podcasts</span></div>
+            <div class="stat"><span class="stat-num" data-count="142">142</span><span class="stat-label">Videos</span></div>
+          </div>
+          <p class="source">AMIRA MCP server, collection overview, 16 November 2026</p>
+        </div>
+        <figure class="site-frame">
+          <div class="site-frame-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="site-frame-url">data.africamultiple.uni-bayreuth.de</span>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" target="_blank" rel="noopener">Open AMIRA ↗</a>
+          </div>
+          <div class="site-frame-view">
+            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" title="AMIRA — Africa Multiple Interactive Research Atlas (home page)" allowfullscreen allow="fullscreen"></iframe>
+          </div>
+        </figure>
       </div>
-      <p class="source">AMIRA MCP server, collection overview, 16 November 2026</p>
       <aside class="notes">
         <p>AMIRA, the Africa Multiple Interactive Research Atlas, is a catalogue. The recordings, photographs, documents and articles it describes mostly stay with the people and institutions that look after them, and every record says whom to ask for access. Bayreuth holds the metadata layer that points to them, so research data becomes findable without being relocated.</p>
         <p>These figures come from our own server in mid-November 2026. The catalogue connects all this material through subjects, concepts and named entities, many of them linked to Library of Congress Subject Headings or to Wikidata. Those links are where this paper begins.</p>
@@ -156,24 +175,25 @@
             <li>Rules settle the clear cases; a local open-source model, the ambiguous ones</li>
             <li>89.8% and 90.9% accuracy on Library of Congress headings</li>
           </ul>
-          <p class="source">(Yang et al., JCDL 2026; CIKM 2026)</p>
+          <p class="source">Yang et al., JCDL 2026, <a href="https://doi.org/10.1145/3805696.3846031" target="_blank" rel="noopener">doi:10.1145/3805696.3846031</a>; CIKM 2026, <a href="https://doi.org/10.1145/3799682.3840034" target="_blank" rel="noopener">doi:10.1145/3799682.3840034</a></p>
         </div>
         <div class="col">
           <div class="col-head">AMIRA MCP server</div>
           <ul>
-            <li>AI assistants query AMIRA, read-only</li>
+            <li>AI assistants query AMIRA through read-only tools</li>
+            <li>The server, not the model, computes counts, facets and related records</li>
             <li>Every result links to its record</li>
             <li>A curator mode also serves private full text</li>
           </ul>
+          <div class="slides-qr">
+            <img src="assets/qr-amira-mcp.png" alt="QR code linking to the AMIRA MCP server repository on GitHub" width="492" height="492">
+            <span class="qr-label"><b>Code on GitHub</b><span class="qr-url">github.com/AM-Digital-Research-Environment/<wbr>amira-mcp-server</span></span>
+          </div>
         </div>
-      </div>
-      <div class="callout warm wide">
-        <span class="callout-label">To confirm with Jiayu</span>
-        Wording of the CAREL summary; whether its Wikidata links are live in AMIRA.
       </div>
       <aside class="notes">
         <p>Two pieces of earlier work make the pilot possible. The first is CAREL, led by Jiayu Yang. It links the keywords already in our research metadata to Wikidata identifiers, without any task-specific training. Rules settle the clear cases, and only the ambiguous keywords go to an open-source language model that runs locally. This routing keeps the cost down and avoids sending research metadata to external services. On a benchmark anchored in Library of Congress headings, it reaches 89.8 and 90.9 per cent accuracy with two different models. The papers appeared at JCDL and CIKM in 2026.</p>
-        <p>The second is the AMIRA MCP server. It lets AI assistants query AMIRA on our terms: access is read-only, and every result links to the record it came from. A curator mode, behind a personal token, also serves private records, including their full text. The pilot depends on that mode.</p>
+        <p>The second is the AMIRA MCP server. It lets AI assistants query AMIRA on our terms: access is read-only, the server rather than the model computes counts, facets and related records, and every result links to the record it came from. The code is open on GitHub. A curator mode, behind a personal token, also serves private records, including their full text. The pilot depends on that mode.</p>
       </aside>
     </section>
 
