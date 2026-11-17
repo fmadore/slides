@@ -585,7 +585,7 @@ html.reveal-print .reveal .slides .pdf-page > section.balance { display: flex !i
   padding: 0.55em 0; border-bottom: var(--hair);
 }
 .reveal .stat-grid .stat:nth-child(1), .reveal .stat-grid .stat:nth-child(2) { border-top: 3px solid var(--rule); }
-.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); }
+.reveal .stat-grid .stat .stat-num { font-size: var(--fs-h3); order: 2; color: var(--green-deep); text-align: right; }
 .reveal .stat-grid .stat .stat-label { order: 1; max-width: none; align-self: center; }
 
 /* Citation line / source */

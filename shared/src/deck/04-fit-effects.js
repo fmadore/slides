@@ -181,6 +181,12 @@
       // final value so a numeral can never be left reading 0. setTimeout still
       // fires when rAF is throttled.
       el._countTO = setTimeout(function () { if (el._countRAF) { cancelAnimationFrame(el._countRAF); el._countRAF = null; } el.textContent = done; }, dur + 600);
+      /* Hold the numeral at its final width while it rolls: "0" is narrower
+         than "3,975", so a growing numeral took room from the label beside it
+         in a .stat-grid row, rewrapped the label and shifted every row below.
+         offsetWidth is layout width, unaffected by the deck's scale. */
+      el.textContent = done;
+      el.style.minWidth = el.offsetWidth + "px";
       el.textContent = fmt(0);
       el._countRAF = requestAnimationFrame(tick);
     });
