@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DECK_META:START (generated from talks/talks.json) -->
+  <title>Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection — Frédérick Madore</title>
+  <meta name="description" content="One authority file for six countries: how AI agents and a curator decide which record a name in the West African press refers to.">
+  <link rel="canonical" href="https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Slides — Frédérick Madore">
+  <meta property="og:title" content="Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection">
+  <meta property="og:description" content="One authority file for six countries: how AI agents and a curator decide which record a name in the West African press refers to.">
+  <meta property="og:url" content="https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/">
+  <meta property="og:image" content="https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/social-card.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="720">
+  <meta property="og:image:alt" content="Cover slide: Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "PresentationDigitalDocument", "name": "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection", "description": "One authority file for six countries: how AI agents and a curator decide which record a name in the West African press refers to.", "url": "https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/", "inLanguage": "en", "datePublished": "2026-12-03", "author": [{"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/", "sameAs": "https://orcid.org/0000-0003-0959-2092"}], "keywords": "IWAC, entity linking, authority records, AI agents, metadata", "image": "https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/social-card.png", "encoding": {"@type": "MediaObject", "contentUrl": "https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/slides.pdf", "encodingFormat": "application/pdf"}, "publisher": {"@type": "Person", "name": "Frédérick Madore", "url": "https://www.frederickmadore.com/", "sameAs": "https://orcid.org/0000-0003-0959-2092"}, "releasedEvent": {"@type": "Event", "name": "Data Modelling in the Project Alevi Archive · SAW Leipzig", "startDate": "2026-12-03"}}</script>
+  <meta name="author" content="Frédérick Madore">
+  <meta name="citation_title" content="Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection">
+  <meta name="citation_author" content="Frédérick Madore">
+  <meta name="citation_publication_date" content="2026/12/03">
+  <meta name="citation_conference_title" content="Data Modelling in the Project Alevi Archive · SAW Leipzig">
+  <meta name="citation_language" content="en">
+  <meta name="citation_pdf_url" content="https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/slides.pdf">
+  <meta name="citation_keywords" content="IWAC">
+  <meta name="citation_keywords" content="entity linking">
+  <meta name="citation_keywords" content="authority records">
+  <meta name="citation_keywords" content="AI agents">
+  <meta name="citation_keywords" content="metadata">
+  <!-- DECK_META:END -->
+  <link rel="icon" href="../../shared/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="../../shared/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../shared/apple-touch-icon.png">
+  <link rel="stylesheet" href="../../shared/reveal/reset.css">
+  <link rel="stylesheet" href="../../shared/reveal/reveal.css">
+  <link rel="stylesheet" href="../../shared/theme.css">
+
+  <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched.
+       Stable, reusable components live in shared/theme.css — only add rules here
+       that are genuinely specific to this one talk. -->
+  <style data-part="a">
+  /* Part A: slides 1-11 (classes prefixed sn-a-) */
+  .reveal .sn-a-wide { max-width: none; }
+  .reveal .sn-a-group { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--track-case); color: var(--ink-soft); margin: 0 0 var(--space-xs); }
+
+  /* Slide 2: the one record (a flat Sunken inset) and the four men it held,
+     hung from one rule like a bracket. */
+  .reveal .sn-a-split { display: grid; grid-template-columns: 21rem 1fr; gap: var(--space-3xl); align-items: start; margin-top: var(--space-md); }
+  .reveal .sn-a-record { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .reveal .sn-a-rec-id { font-family: var(--font-mono); font-size: var(--fs-caption); }
+  .reveal .sn-a-rec-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); line-height: 1.05; letter-spacing: var(--track-tight); color: var(--ink-bold); }
+  .reveal .sn-a-rec-fields { margin: var(--space-sm) 0; }
+  .reveal .sn-a-rec-fields > div { display: flex; justify-content: space-between; gap: var(--space-md); padding: var(--space-xs) 0; border-bottom: var(--hair); }
+  .reveal .sn-a-rec-fields dt { font-family: var(--font-label); font-size: var(--fs-label); color: var(--ink-soft); }
+  .reveal .sn-a-rec-fields dd { margin: 0; font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; }
+  .reveal .sn-a-record .source { margin: 0; }
+  .reveal .sn-a-men { border-left: 3px solid var(--rule); padding-left: var(--space-xl); }
+  .reveal .sn-a-men ul { max-width: none; margin: 0 0 var(--space-lg); }
+  .reveal .sn-a-men ul:last-child { margin-bottom: 0; }
+  .reveal .sn-a-men li { padding-left: 0; margin: 0 0 var(--space-md); }
+  .reveal .sn-a-men li::before { left: calc(-1 * var(--space-xl)); top: 0.7em; width: var(--space-lg); height: 3px; border-radius: 0; background: var(--rule); }
+  .reveal .sn-a-who { display: block; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-body); line-height: 1.2; color: var(--ink-bold); }
+  .reveal .sn-a-who .chip { margin-left: var(--space-xs); vertical-align: 0.15em; font-size: var(--fs-caption); }
+  .reveal .sn-a-what { display: block; margin-top: var(--space-2xs); font-size: var(--fs-body); line-height: 1.25; color: var(--ink-soft); }
+
+  /* Slide 4a: the live home page beside three lines. Zoomed out so the
+     column shows the desktop layout (as in the Kansas deck). */
+  .reveal .sn-a-iwac .cols { align-items: start; }
+  .reveal .sn-a-iwac .site-frame { height: 29.5rem; margin: 0; }
+  .reveal .sn-a-iwac .site-frame-view { overflow: hidden; }
+  .reveal .sn-a-iwac .site-frame-view > iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; }
+  .reveal .sn-a-iwac .frame-fallback,
+  .reveal .sn-a-frame-1057 .frame-fallback { padding: 0; }
+  .reveal .sn-a-iwac .frame-fallback img,
+  .reveal .sn-a-frame-1057 .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top left; margin: 0; }
+  .reveal .sn-a-facts { margin: 0; }
+  .reveal .sn-a-facts > div { padding: var(--space-sm) 0 var(--space-md); border-top: var(--hair); }
+  .reveal .sn-a-facts > div:first-child { border-top: 3px solid var(--rule); }
+  .reveal .sn-a-facts dt { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--track-case); color: var(--ink-soft); }
+  .reveal .sn-a-facts dd { margin: var(--space-2xs) 0 0; font-size: var(--fs-body); line-height: 1.3; }
+
+  /* Slide 4b */
+  .reveal .sn-a-same { max-width: none; margin-top: var(--space-xl); }
+
+  /* Slide 5: the table of shared names, record ids in the mono face. */
+  .reveal .sn-a-names .slide-title, .reveal .sn-a-names .lead { max-width: none; }
+  .reveal .sn-a-names .lead { margin-bottom: var(--space-xs); }
+  .reveal .sn-a-table { margin-top: var(--space-sm); }
+  .reveal .sn-a-table th, .reveal .sn-a-table td { padding: 0.32em 0.6em; vertical-align: top; line-height: 1.22; }
+  .reveal .sn-a-table th[scope="row"] { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; color: var(--ink-bold); border-bottom: var(--hair); }
+  .reveal .sn-a-table thead th:nth-child(1) { width: 17%; }
+  .reveal .sn-a-table thead th:nth-child(2) { width: 26%; }
+  .reveal .sn-a-table thead th:nth-child(3) { width: 21%; }
+  .reveal .sn-a-table thead th:nth-child(4) { width: 20%; }
+  .reveal .sn-a-table thead th:nth-child(5) { width: 16%; }
+  .reveal .sn-a-id { display: inline-block; margin: 0.15em 0.6em 0 0; font-family: var(--font-mono); font-size: var(--fs-caption); }
+
+  /* Slide 6: the live record beside its nineteen alternative names. The
+     frame shows the page at 840px wide, the width of the saved view. */
+  .reveal .sn-a-pair { display: grid; grid-template-columns: 27rem 1fr; gap: var(--space-2xl); align-items: start; margin-top: var(--space-sm); }
+  .reveal .sn-a-frame-1057 { height: 27rem; margin: 0; }
+  .reveal .sn-a-frame-1057 .site-frame-view { overflow: hidden; }
+  .reveal .sn-a-frame-1057 .site-frame-view > iframe { width: 194.5%; height: 194.5%; transform: scale(0.5143); transform-origin: top left; }
+  .reveal .sn-a-variants dl { margin: 0; }
+  .reveal .sn-a-variants dl > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--space-md); padding: 0.45em 0; border-bottom: var(--hair); }
+  .reveal .sn-a-variants dl > div:first-child { border-top: 3px solid var(--rule); }
+  .reveal .sn-a-variants dt { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--track-case); color: var(--ink-soft); padding-top: 0.1em; }
+  .reveal .sn-a-variants dd { margin: 0; font-size: var(--fs-small); line-height: 1.3; }
+  .reveal .sn-a-variants dd span { white-space: nowrap; }
+  .reveal section.cover .byline .affil { max-width: none; }
+  .reveal .sn-a-reverse { margin: var(--space-md) 0 0; font-size: var(--fs-small); color: var(--ink-soft); max-width: none; }
+
+  /* Slide 7: the mention is drawn on a broken rule, because IWAC keeps no
+     object for it. */
+  .reveal .sn-a-mention .flow { margin-top: var(--space-xl); }
+  .reveal .sn-a-mention .flow-step { gap: var(--space-sm); }
+  .reveal .sn-a-mention .flow-step p { font-size: var(--fs-body); line-height: 1.3; color: var(--ink); }
+  .reveal .sn-a-mention .flow-step .step-vec { font-size: var(--fs-small); }
+  .reveal .sn-a-mention .callout { font-size: var(--fs-body); margin-top: var(--space-xl); }
+  .reveal .sn-a-mention .flow-step .step-h { font-size: var(--fs-h3); font-weight: 700; }
+  .reveal .sn-a-mention .flow-step.sn-a-unstored { border-top-style: dashed; border-top-color: var(--ink-faint); }
+
+  /* Slide 9: who acts at each step, under the step's name. */
+  .reveal .sn-a-pipeline .pipeline { margin-top: var(--space-sm); }
+  .reveal .sn-a-pipeline .pipeline > figcaption { margin-bottom: var(--space-md); }
+  .reveal .sn-a-pipeline [data-pipeline-art] { height: 7.5rem; }
+  .reveal .sn-a-pipeline .pipeline-controls { margin-top: var(--space-sm); }
+  .reveal .sn-a-pipeline .pipeline-step h3 { font-size: var(--fs-body); margin: var(--space-sm) 0 var(--space-xs); }
+  .reveal .sn-a-pipeline .pipeline-step p { font-size: var(--fs-small); line-height: 1.3; }
+  .reveal .sn-a-pipeline .pipeline-step p.sn-a-actor { margin: 0 0 var(--space-sm); font-family: var(--font-label); font-size: var(--fs-caption); font-weight: 600; color: var(--ink-soft); }
+  .reveal .sn-a-actor .chip { display: table; font-size: var(--fs-caption); margin-bottom: var(--space-2xs); }
+  .reveal .sn-a-pipeline code { font-size: var(--fs-caption); }
+
+  /* Slide 10: the rules, and the shape of one input. */
+  .reveal .sn-a-rules { max-width: none; }
+  .reveal .sn-a-rules li { font-size: var(--fs-body); line-height: 1.3; margin-bottom: var(--space-md); }
+  .reveal .sn-a-run .slide-title, .reveal .sn-a-run .source { max-width: none; }
+  .reveal .sn-a-run .callout { font-size: var(--fs-body); margin-top: var(--space-xl); }
+  .reveal section.cover .subtitle { max-width: 48ch; }
+  .reveal .sn-a-input { margin: 0 0 var(--space-xs); }
+  .reveal .sn-a-kv { margin: 0 0 var(--space-sm); }
+  .reveal .sn-a-kv > div { display: grid; grid-template-columns: 12.5rem 1fr; gap: var(--space-md); padding: 0.3em 0; }
+  .reveal .sn-a-kv dt { font-family: var(--font-label); font-size: var(--fs-label); color: var(--ink-soft); }
+  .reveal .sn-a-kv dd { margin: 0; font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; }
+  .reveal .sn-a-cands { margin: 0; max-width: none; }
+  .reveal .sn-a-cands > li { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--space-md); padding: var(--space-xs) 0; margin: 0; border-top: var(--hair); font-size: var(--fs-small); line-height: 1.3; }
+  .reveal .sn-a-cands > li::before { content: none; }
+  .reveal .sn-a-cid { align-self: start; justify-self: start; font-family: var(--font-mono); font-size: var(--fs-caption); margin-top: 0.2em; }
+  .reveal .sn-a-cands i { color: var(--ink-soft); }
+  .reveal .sn-a-outcomes { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin: var(--space-sm) 0 0; }
+  .reveal .sn-a-decide .source { margin: 0; }
+  </style>
+  <style data-part="b">
+  /* Part B: slides 12-21 and annexe (classes prefixed sn-b-) */
+
+  /* Case slides: a live record frame that takes the height of its text column.
+     The frame renders the page at twice its width, scaled by half, so the
+     record reads as a page rather than as a sliver. */
+  .reveal section.sn-b-case .cols { align-items: stretch; }
+  .reveal section.sn-b-case .cols.ratio-3-2 { grid-template-columns: 1.4fr 1fr; gap: var(--space-2xl); }
+  .reveal .sn-b-frame { height: 100%; min-height: 0; }
+  .reveal .sn-b-frame .site-frame-view > iframe { width: 200%; height: 200%; transform: scale(0.5); transform-origin: top left; }
+  .reveal .sn-b-frame .frame-fallback { padding: 0; }
+  .reveal .sn-b-frame .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top left; margin: 0; }
+
+  /* Case 1: one record splitting into its destinations (rules, no boxes). */
+  .reveal .sn-b-split { display: grid; grid-template-columns: 10.5rem 1fr; align-items: center; margin-bottom: var(--space-md); }
+  .reveal .sn-b-src { display: flex; flex-direction: column; padding: var(--space-xs) var(--space-lg) var(--space-xs) 0; border-top: var(--bar) solid var(--rule); }
+  .reveal .sn-b-label { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); color: var(--ink-soft); }
+  .reveal .sn-b-name { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); line-height: 1.05; color: var(--ink-bold); margin-top: var(--space-2xs); }
+  .reveal .sn-b-big { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h2); line-height: 1; letter-spacing: -0.03em; color: var(--ink-bold); margin-top: var(--space-xs); font-variant-numeric: tabular-nums; }
+  .reveal .sn-b-gloss { font-family: var(--font-serif); font-size: var(--fs-caption); line-height: 1.25; color: var(--ink-soft); }
+  .reveal .sn-b-dest { border-left: 3px solid var(--rule); padding-left: var(--space-lg); }
+  .reveal .sn-b-row { position: relative; display: grid; grid-template-columns: 2.6rem 1fr; column-gap: var(--space-sm); align-items: baseline; padding: 0.3rem 0; border-top: var(--hair); }
+  .reveal .sn-b-row:first-child { border-top: 0; }
+  .reveal .sn-b-row::before { content: ""; position: absolute; left: calc(-1 * var(--space-lg)); top: 1.15rem; width: calc(var(--space-lg) - var(--space-xs)); border-top: 3px solid var(--rule); }
+  .reveal .sn-b-n { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h3); line-height: 1; text-align: right; color: var(--ink-bold); font-variant-numeric: tabular-nums; }
+  .reveal .sn-b-to { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-small); line-height: 1.25; color: var(--ink); }
+  .reveal .sn-b-sub { display: block; font-family: var(--font-serif); font-weight: 500; font-size: var(--fs-caption); color: var(--ink-soft); }
+  .reveal .sn-b-row.is-new .sn-b-n, .reveal .sn-b-row.is-new .sn-b-to { color: var(--green-deep); }
+  .reveal .sn-b-row.is-new::before { border-top-color: var(--green); }
+  .reveal .sn-b-row.is-open .sn-b-n { color: var(--ink-faint); }
+  .reveal .sn-b-row.is-open::before { border-top-style: dotted; }
+  .reveal section.sn-b-case .callout { max-width: none; }
+
+  /* Case 2: the records after the split, and the unlinked fifth outcome. */
+  .reveal .sn-b-recs { border-top: 3px solid var(--rule); }
+  .reveal .sn-b-rec { display: grid; grid-template-columns: 5.6rem 1fr auto; column-gap: var(--space-md); align-items: baseline; padding: var(--space-xs) 0; border-bottom: var(--hair); }
+  .reveal .sn-b-id { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--green-deep); }
+  .reveal .sn-b-who { font-family: var(--font-serif); font-size: var(--fs-small); line-height: 1.3; color: var(--ink); }
+  .reveal .sn-b-who .chip { font-size: var(--fs-caption); padding: 0.08em 0.45em; margin-right: var(--space-2xs); vertical-align: 0.08em; }
+  .reveal .sn-b-tag { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-caption); color: var(--ink-soft); }
+  .reveal .sn-b-rec.is-kept .sn-b-tag { color: var(--green-deep); }
+  .reveal .sn-b-rec.is-unlinked { margin-top: var(--space-sm); border: 2px dashed var(--line-strong); border-radius: var(--radius-sm); padding: var(--space-xs) var(--space-sm); }
+  .reveal .sn-b-rec.is-unlinked .sn-b-id { color: var(--ink-faint); font-family: var(--font-label); font-weight: 700; }
+  .reveal .sn-b-rec.is-unlinked .sn-b-who { font-style: italic; }
+  .reveal .sn-b-rec.is-unlinked .sn-b-tag { color: var(--brown-deep); }
+  .reveal .sn-b-points { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); margin-top: var(--space-lg); }
+  .reveal .sn-b-points p { margin: 0; padding-top: var(--space-xs); border-top: 3px solid var(--green); font-family: var(--font-label); font-weight: 700; font-size: var(--fs-small); line-height: 1.25; color: var(--ink-bold); }
+
+  /* Case 3: acronyms. */
+  .reveal section.sn-b-acro .lead { max-width: none; margin-bottom: var(--space-lg); }
+  .reveal section.sn-b-acro .share-bars { margin-bottom: var(--space-lg); }
+  .reveal .sn-b-ledger > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-lg); padding: var(--space-xs) 0; border-bottom: var(--hair); font-family: var(--font-serif); font-size: var(--fs-small); line-height: 1.3; }
+  .reveal .sn-b-ledger > div:first-child { border-top: 3px solid var(--rule); }
+  .reveal .sn-b-ledger b { flex: none; font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lead); color: var(--green-deep); font-variant-numeric: tabular-nums; }
+  .reveal .sn-b-keys { margin-bottom: var(--space-lg); }
+  .reveal .sn-b-keys > div { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-xs) 0; border-bottom: var(--hair); }
+  .reveal .sn-b-keys code { font-family: var(--font-mono); font-size: var(--fs-body); background: none; padding: 0; color: var(--ink-bold); }
+  .reveal .sn-b-yes, .reveal .sn-b-no { font-family: var(--font-label); font-weight: 700; font-size: var(--fs-label); }
+  .reveal .sn-b-yes { color: var(--green-deep); }
+  .reveal .sn-b-yes::before { content: "✓ "; }
+  .reveal .sn-b-no { color: var(--brown-deep); }
+  .reveal .sn-b-no::before { content: "✕ "; }
+
+  /* Case 3, continued: Danemark. */
+  .reveal .sn-b-figure { margin: 0; font-family: var(--font-display); font-weight: 800; line-height: 1; color: var(--ink-bold); }
+  .reveal .sn-b-figure b { font-size: var(--fs-display); letter-spacing: -0.03em; }
+  .reveal .sn-b-figure span { font-size: var(--fs-h3); font-weight: 700; color: var(--ink-soft); }
+  .reveal .sn-b-figcap { font-size: var(--fs-body); margin: var(--space-sm) 0 var(--space-lg); max-width: 34ch; }
+
+  /* Where the curator sits: head and gloss on one row, so five fit. */
+  .reveal section.sn-b-fixed .index-list > li { grid-template-columns: 2.4rem 22rem 1fr; padding: var(--space-sm) 0; }
+  .reveal section.sn-b-fixed .index-list .idx-title { font-size: var(--fs-lead); }
+  .reveal section.sn-b-fixed .index-list .idx-desc { grid-column: 3; grid-row: 1; margin-top: 0; font-size: var(--fs-body); line-height: 1.3; color: var(--ink); }
+
+  /* Who validates? */
+  .reveal .sn-b-worth { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); line-height: 1.08; letter-spacing: -0.012em; color: var(--ink-bold); margin: var(--space-sm) 0; }
+  .reveal section.sn-b-checks .col p:not(.sn-b-worth) { font-size: var(--fs-body); }
+  .reveal section.sn-b-checks .sn-b-close { max-width: none; margin-top: var(--space-xl); padding-top: var(--space-sm); border-top: 3px solid var(--rule); }
+
+  /* Four decisions as a 2 x 2. */
+  .reveal .cols.sn-b-grid { row-gap: var(--space-2xl); }
+  .reveal .sn-b-grid .panel h3 { margin: 0 0 var(--space-xs); }
+  .reveal .sn-b-grid .panel p { margin: 0; }
+  .reveal .panel.sn-b-open { border-top-color: var(--brown); }
+
+  /* Questions: a long list in the body size. */
+  .reveal section.sn-b-questions ol { max-width: 52rem; margin-top: var(--space-md); }
+  .reveal section.sn-b-questions ol > li { font-size: var(--fs-lead); line-height: 1.24; margin-bottom: var(--space-lg); }
+
+  /* Annexe A2: the twelve acronyms as a grid of terms. */
+  .reveal .sn-b-acros { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 3px solid var(--rule); margin-bottom: var(--space-lg); }
+  .reveal .sn-b-acros > div { display: flex; flex-direction: column; padding: var(--space-sm) var(--space-xs); border-bottom: var(--hair); }
+  .reveal .sn-b-acros code { font-family: var(--font-mono); font-size: var(--fs-h3); background: none; padding: 0; color: var(--ink-bold); }
+  .reveal .sn-b-acros span { font-family: var(--font-label); font-weight: 600; font-size: var(--fs-caption); color: var(--green-deep); }
+  .reveal .sn-b-audit { max-width: 62ch; }
+  .reveal section.sn-b-end h2 { font-size: var(--fs-h2); max-width: 24ch; }
+  .reveal section.sn-b-end .byline .affil { max-width: none; }
+  .reveal .sn-b-grid .panel p { font-size: var(--fs-body); }
+  </style>
+</head>
+<body>
+
+<script>
+  window.DECK_CONFIG = {
+    // DECK_CONFIG_META:START (generated from talks/talks.json)
+    presenter: "Frédérick Madore",
+    talkTitle: "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection",
+    talkShort: "Same name, different country",
+    venue:     "Alevi Archive workshop · SAW Leipzig · 3 December 2026",
+    tocEyebrow: "Outline",
+    // DECK_CONFIG_META:END
+    transition:"fade",
+    links: {
+      github:  "https://github.com/fmadore",
+      website: "https://www.frederickmadore.com/",
+      orcid:   "https://orcid.org/0000-0003-0959-2092",
+      linkedin:"https://www.linkedin.com/in/frederickmadore/",
+      email:   "frederick.madore@uni-bayreuth.de"
+    }
+  };
+</script>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- PART A START -->
+    <section class="cover" data-footer="light">
+      <p class="eyebrow">Data Modelling in the Project Alevi Archive · SAW Leipzig, 3 December 2026</p>
+      <h1>Same name, different country</h1>
+      <p class="subtitle">AI agents, human oversight and entity disambiguation in the Islam West Africa Collection</p>
+      <div class="byline">
+        <span class="name">Frédérick Madore</span>
+        <span class="role">Data Curator</span>
+        <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
+      </div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <div data-contact></div>
+      <div class="slides-qr corner">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="540" height="540">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
+      <aside class="notes">
+        <p>Thank you. I'm Frédérick Madore, a historian and the Data Curator of the Africa Multiple Cluster of Excellence at the University of Bayreuth. I also curate the Islam West Africa Collection, hosted at the Leibniz-Zentrum Moderner Orient in Berlin, and I do that mostly on my own.</p>
+        <p>This talk takes one concrete problem, the same name in different countries, and what it forced me to decide about the data model.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-hook" data-toc="One record, four men">
+      <h2 class="slide-title">One record, four men</h2>
+      <div class="sn-a-split">
+        <div class="panel sunken sn-a-record">
+          <span class="sn-a-rec-id"><a href="https://islam.zmo.de/s/westafrica/item/1314" target="_blank" rel="noopener">Item 1314</a></span>
+          <span class="sn-a-rec-name">Mamadou Bamba</span>
+          <dl class="sn-a-rec-fields">
+            <div><dt>Type</dt><dd>Person</dd></div>
+            <div><dt>Preferred name</dt><dd>One</dd></div>
+            <div><dt>Entity</dt><dd>One</dd></div>
+          </dl>
+          <p class="source">The record as the database saw it, before October 2026</p>
+        </div>
+        <div class="sn-a-men">
+          <p class="sn-a-group">Whom the record describes</p>
+          <ul>
+            <li><span class="sn-a-who">Researcher <span class="chip green">Scholarly reference</span></span><span class="sn-a-what">Author of a 2002 work on Sufi orders in Côte d'Ivoire</span></li>
+          </ul>
+          <p class="sn-a-group">Attached by name matching</p>
+          <ul>
+            <li><span class="sn-a-who">Politician <span class="chip">Côte d'Ivoire</span></span><span class="sn-a-what">National Assembly vice-president, 1989; foreign minister, 2003</span></li>
+            <li><span class="sn-a-who">Lieutenant-colonel <span class="chip">Burkina Faso</span></span><span class="sn-a-what">Announced on television the dissolution of the Transition's bodies, September 2015</span></li>
+            <li><span class="sn-a-who">Deputy imam of Yamoussoukro <span class="chip">Côte d'Ivoire</span></span><span class="sn-a-what">Led the end-of-Ramadan prayer, 1986</span></li>
+          </ul>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>I'll start with one record. Until October, the person record Mamadou Bamba, item 1314, existed because of a scholarly reference: a researcher who wrote on the Sufi orders of Côte d'Ivoire in 2002.</p>
+        <p>Matching by name had hung on it the press mentions of three other men: a politician, an army officer and an imam, two Ivorian and one Burkinabè, between 1986 and 2015. A reader opening the researcher's page found articles about a failed coup and a Ramadan prayer.</p>
+        <p>The record held one name and the type person. Nothing in it could tell these four apart.</p>
+      </aside>
+    </section>
+
+    <section class="section" data-toc="The problem">
+      <h2>One authority file, six countries</h2>
+      <p class="sec-sub">What a record asserts</p>
+      <aside class="notes">
+        <p>First, the problem, and what a record in the collection asserts.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-iwac" data-toc="The collection">
+      <h2 class="slide-title">The Islam West Africa Collection</h2>
+      <div class="cols ratio-3-2">
+        <figure class="site-frame">
+          <div class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">islam.zmo.de/s/westafrica</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/page/home" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="site-frame-view">
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://islam.zmo.de/s/westafrica/page/home" title="Islam West Africa Collection, live home page" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/iwac-home.jpg" alt="Saved view of the Islam West Africa Collection home page: the collection's description, search box and figures (21,034 items, 6,056 index records, 86 newspapers, 6 countries), 17 November 2026.">
+            </div>
+          </div>
+        </figure>
+        <dl class="sn-a-facts">
+          <div><dt>Scope</dt><dd>Open-access archive of Muslim public life in Benin, Burkina Faso, Côte d'Ivoire, Niger, Nigeria and Togo</dd></div>
+          <div><dt>Holdings</dt><dd>Press articles, Islamic periodicals, documents, audiovisual recordings, photographs, scholarly references</dd></div>
+          <div><dt>Home</dt><dd>Hosted at the Leibniz-Zentrum Moderner Orient (ZMO), Berlin; built and curated by one person</dd></div>
+        </dl>
+      </div>
+      <aside class="notes">
+        <p>For those who have not seen it, this is the Islam West Africa Collection, IWAC. It grew out of my fieldwork in Benin, Togo, Côte d'Ivoire and Burkina Faso, where I scanned press clippings and Islamic publications. I wanted other researchers to be able to use them, so I built a public database. It is open access and hosted at the Leibniz-Zentrum Moderner Orient in Berlin.</p>
+        <p>Most of the text comes from newspapers, predominantly in French, digitised and run through OCR. Islamic periodicals, documents, recordings, photographs and the scholarly literature sit alongside them.</p>
+        <p>I'm not an archivist, and I work on the collection mostly alone: the collecting, the cataloguing, the code and the AI pipelines. That is why the workflow in this talk exists at all. No single person can read what the collection now holds.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-scale" data-toc="One curator, one authority file">
+      <h2 class="slide-title">One curator, one authority file</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">Curator</span><span class="stat-num">1</span></div>
+        <div class="stat"><span class="stat-label">Countries</span><span class="stat-num">6</span></div>
+        <div class="stat"><span class="stat-label">Items</span><span class="stat-num" data-count="20000" data-count-suffix="+">20,000+</span></div>
+        <div class="stat"><span class="stat-label">Authority records</span><span class="stat-num" data-count="6000" data-count-suffix="+">6,000+</span></div>
+        <div class="stat"><span class="stat-label">Words</span><span class="stat-num">32 million+</span></div>
+        <div class="stat"><span class="stat-label">Record types: persons, organisations, places, events, subjects</span><span class="stat-num">5</span></div>
+      </div>
+      <p class="lead sn-a-same">Press articles, Islamic publications and scholarly references all link to the <strong>same</strong> set of records.</p>
+      <aside class="notes">
+        <p>These are the figures to keep in mind for the rest of the talk. One curator, more than twenty thousand items, over thirty-two million words, six countries. With no team of cataloguers, every design choice has to be one that a single person can maintain and check.</p>
+        <p>The figure that matters today is the authority file. Press articles, Islamic publications and scholarly references all point to one set of just over six thousand records. The person set also holds the authors and editors of the scholarly references, so a researcher can share a name with an imam, a minister or an officer in the press. Behind those records sit some three thousand stubs I have not yet sorted.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-names" data-toc="Shared names">
+      <h2 class="slide-title">The same name in several countries</h2>
+      <p class="lead">A script that matches by name turns each row into one entity.</p>
+      <table class="sn-a-table">
+        <thead>
+          <tr><th>Name</th><th>Burkina Faso</th><th>Côte d'Ivoire</th><th>Benin</th><th>Scholarly author</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Mamadou Bamba</th>
+            <td>Lieutenant-colonel, 2015 coup<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/188934" target="_blank" rel="noopener">188934</a></td>
+            <td>Politician; deputy imam<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/188930" target="_blank" rel="noopener">188930</a> <a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/188954" target="_blank" rel="noopener">188954</a></td>
+            <td></td>
+            <td>Researcher, 2002<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/1314" target="_blank" rel="noopener">1314</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Kassoum Coulibaly</th>
+            <td>Defence minister, 2023–24<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127886" target="_blank" rel="noopener">127886</a></td>
+            <td>Cited 1982–83<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/67772" target="_blank" rel="noopener">67772</a></td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <th scope="row">Mamadou Traoré</th>
+            <td>Army colonel, 2007–09<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127891" target="_blank" rel="noopener">127891</a></td>
+            <td>Ivorian namesake<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/23631" target="_blank" rel="noopener">23631</a></td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <th scope="row">Yacouba Traoré</th>
+            <td>Imam, Muslim community of Poni<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127901" target="_blank" rel="noopener">127901</a></td>
+            <td>Ivorian namesake<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/64666" target="_blank" rel="noopener">64666</a></td>
+            <td></td><td></td>
+          </tr>
+          <tr>
+            <th scope="row">Boukary Savadogo</th>
+            <td>Ambassador to Saudi Arabia<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127895" target="_blank" rel="noopener">127895</a></td>
+            <td></td><td></td>
+            <td>Author<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/1295" target="_blank" rel="noopener">1295</a></td>
+          </tr>
+          <tr>
+            <th scope="row">CNOPM</th>
+            <td>Hajj commission, 1979–2018<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/579" target="_blank" rel="noopener">579</a></td>
+            <td>Hajj committee, 1993–2007<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/23540" target="_blank" rel="noopener">23540</a></td>
+            <td>Hajj committee, 1972–83<br><a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127882" target="_blank" rel="noopener">127882</a></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+      <aside class="notes">
+        <p>Here are some of the names the Burkinabè run brought out. Kassoum Coulibaly is Burkina Faso's minister of defence today, and an Ivorian of the same name was cited in 1982 and 1983. Boukary Savadogo is Burkina Faso's ambassador in Riyadh, and also an author in the scholarly references.</p>
+        <p>The newspaper's country does not settle the question, because newspapers regularly report on the neighbouring countries. Institutions repeat in the same way: every country has a health ministry and a national committee for the pilgrimage to Mecca, often under the same acronym.</p>
+        <p>One caution. So far only the press of Burkina Faso has had the full run, which is why every row pairs Burkina Faso with a neighbour. Runs on Côte d'Ivoire and Benin should add rows this table cannot show yet.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-variants-slide" data-toc="Unstable names">
+      <h2 class="slide-title">One imam, twenty names</h2>
+      <div class="sn-a-pair">
+        <figure class="site-frame sn-a-frame-1057">
+          <div class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">islam.zmo.de/s/westafrica/item/1057</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/item/1057" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="site-frame-view">
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://islam.zmo.de/s/westafrica/item/1057" title="IWAC authority record 1057, Idriss Koudouss Koné, live" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/iwac-item-1057.png" alt="Saved view of IWAC record 1057, Idriss Koudouss Koné: type person, description Ivorian imam, and nineteen alternative titles.">
+            </div>
+          </div>
+        </figure>
+        <div class="sn-a-variants">
+          <p class="sn-a-group">Nineteen alternative names on record <a href="https://islam.zmo.de/s/westafrica/item/1057" target="_blank" rel="noopener">1057</a></p>
+          <dl>
+            <div><dt>Word order</dt><dd><span>Koné Idriss Koudouss</span> · <span>Idriss Koné Koudouss</span> · <span>Koudouss Idriss Koné</span> · <span>Koudouss Koné Idriss</span></dd></div>
+            <div><dt>Honorific</dt><dd><span>El Hadj Idriss Koudouss Koné</span> · <span>Imam Koudouss</span></dd></div>
+            <div><dt>One s</dt><dd><span>Idriss Koudous Koné</span> · <span>Idriss Koné Koudous</span> · <span>Idriss Koudous</span> · <span>Koné Idriss Koudous</span></dd></div>
+            <div><dt>Given name</dt><dd><span>Koudouss Drissa Koné</span> · <span>Koné Idrissa Koudouss</span> · <span>Koudouss Idrissa Koné</span></dd></div>
+            <div><dt>Shortened</dt><dd><span>Idriss Koudouss</span> · <span>Koudouss</span> · <span>Koudouss Koné</span> · <span>Idriss Koné</span> · <span>Koudouss Idriss</span> · <span>Koné Koudouss</span></dd></div>
+          </dl>
+          <p class="sn-a-reverse">The reverse also happens: one string for several things, as with <em>foi</em> and Danyi (case 3).</p>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>Names are unstable in the other direction too. Idriss Koudouss Koné, an Ivorian imam of the Conseil National Islamique, is in the press from 1992 to 2020, and his record carries nineteen alternative names. Newspapers reverse his names, add El Hadj or Imam, write Koudouss with one s, and call him Idriss, Idrissa or Drissa. Each of these strings is also a matching key.</p>
+        <p>The preferred label consolidates a historical figure, and it flattens the naming practices of the sources. My normalisation rules strip El Hadj from the preferred name: that buys consistency, at the cost of the pilgrimage status the source thought worth recording.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-mention" data-toc="Mention and identity">
+      <h2 class="slide-title">Mention, link and record</h2>
+      <div class="flow">
+        <div class="flow-step sn-a-unstored">
+          <span class="step-n">In the source</span>
+          <span class="step-h">Mention</span>
+          <p>A string found in a source, at a date, in a context.</p>
+          <span class="step-vec">“Imam Koudouss”</span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">On the article</span>
+          <span class="step-h">Link</span>
+          <p>Asserts that this mention is that entity.</p>
+          <span class="step-vec">article → <a href="https://islam.zmo.de/s/westafrica/item/1057" target="_blank" rel="noopener">item 1057</a></span>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">In the authority file</span>
+          <span class="step-h">Authority record</span>
+          <p>Asserts that one entity exists, under one preferred name, with a type and a country.</p>
+          <span class="step-vec">Idriss Koudouss Koné · person · Côte d'Ivoire</span>
+        </div>
+      </div>
+      <div class="callout sn-a-wide">
+        <span class="callout-label">What IWAC stores</span>
+        The link and the record. The mention is not kept as an object of its own.
+      </div>
+      <aside class="notes">
+        <p>A mention is what the source gives us: a string, in an article, at a date, in a context. A link is a claim, made by a person or a program, that this mention is that entity. And an authority record asserts four things at once: one entity, one preferred name, a type and a country.</p>
+        <p>This is where IWAC differs from a factoid model. The article points straight at the record, and a string such as "Imam Koudouss" is not stored as an object of its own. So a wrong link looks exactly like a right one, unless something records which model or script made it.</p>
+      </aside>
+    </section>
+
+    <section class="section navy" data-toc="The workflow">
+      <h2>The workflow</h2>
+      <p class="sec-sub">A model extracts, code matches, a model rereads, the curator decides</p>
+      <aside class="notes">
+        <p>Now the workflow, step by step, with who does what.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-pipeline" data-toc="Five steps">
+      <h2 class="slide-title">Five steps, and who acts at each</h2>
+      <figure class="pipeline" data-pipeline>
+        <figcaption>Press of Burkina Faso, 8,045 articles, 20–22 October 2026</figcaption>
+        <ol class="pipeline-steps">
+          <li class="pipeline-step">
+            <span class="pipeline-number">1</span>
+            <div data-pipeline-art="entities" aria-hidden="true"></div>
+            <h3>Extract</h3>
+            <p class="sn-a-actor"><span class="chip navy">Model</span> one call per article</p>
+            <p>Names of persons, organisations and places; one to six subjects.</p>
+          </li>
+          <li class="pipeline-step">
+            <span class="pipeline-number">2</span>
+            <div data-pipeline-art="match" aria-hidden="true"></div>
+            <h3>Match</h3>
+            <p class="sn-a-actor"><span class="chip">Code</span> no model</p>
+            <p>Exact keys first. Ambiguous or fuzzy candidates are flagged, never linked.</p>
+          </li>
+          <li class="pipeline-step">
+            <span class="pipeline-number">3</span>
+            <div data-pipeline-art="text" aria-hidden="true"></div>
+            <h3>Check in context</h3>
+            <p class="sn-a-actor"><span class="chip navy">Model</span> one call per article</p>
+            <p>Keep, choose or drop, only among the ids it was offered.</p>
+          </li>
+          <li class="pipeline-step">
+            <span class="pipeline-number">4</span>
+            <div data-pipeline-art="table" aria-hidden="true"></div>
+            <h3>Write</h3>
+            <p class="sn-a-actor"><span class="chip">Scripts</span> no model</p>
+            <p>Dry run first. Each link annotated with its model: <code>iwac:nerModel</code>.</p>
+          </li>
+          <li class="pipeline-step">
+            <span class="pipeline-number">5</span>
+            <div data-pipeline-art="review" aria-hidden="true"></div>
+            <h3>Leftovers</h3>
+            <p class="sn-a-actor"><span class="chip green">Agents</span> then the curator</p>
+            <p>Reviewer agents propose new records. The curator approves each plan.</p>
+          </li>
+        </ol>
+      </figure>
+      <aside class="notes">
+        <p>[on arrival: step 1] The workflow as run on the Burkinabè press in October. Step one: Claude Haiku 5.5 reads each article once and returns the persons, organisations, places and a few subjects. One model call per article, with no tools.</p>
+        <p>[→ step 2] Step two, matching, is code with no model: exact keys first, looser keys only when every exact key has missed. A name that fits several records, or only approximately, is left unlinked.</p>
+        <p>[→ step 3] Step three decides the country. The same model rereads each article with its candidates, and keeps, chooses or drops each link, only among the ids it was offered.</p>
+        <p>[→ step 4] Step four: scripts write after a dry run, and every link names the model that proposed it.</p>
+        <p>[→ step 5] Step five handles the names nothing matched. Here, and only here, I use agents in the strict sense: Claude Code subagents, one per batch, proposing new records. I approve the plans, and a script creates the records.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-decide" data-toc="Deciding the country">
+      <h2 class="slide-title">How the country is decided</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head">Rules in the prompt</div>
+          <ul class="sn-a-rules">
+            <li>“Use the text first, the newspaper’s country second.”</li>
+            <li>“A body of another country is not this one.”</li>
+            <li>A contradiction is only “a different country, an incompatible calling … or dates that cannot fit”.</li>
+            <li>“Choose only among the candidates of that entry. Never invent an id.”</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head alt">What the model is given for one name</div>
+          <div class="panel sunken sn-a-input">
+            <dl class="sn-a-kv">
+              <div><dt>Name as found</dt><dd>Kassoum Coulibaly</dd></div>
+              <div><dt>Newspaper’s country</dt><dd>Burkina Faso</dd></div>
+            </dl>
+            <ol class="sn-a-cands">
+              <li><a class="sn-a-cid" href="https://islam.zmo.de/s/westafrica/item/67772" target="_blank" rel="noopener">67772</a><span><b>Coulibaly Kassoum</b> · person · Côte d'Ivoire<br><i>No description</i></span></li>
+              <li><a class="sn-a-cid" href="https://islam.zmo.de/s/westafrica/item/127886" target="_blank" rel="noopener">127886</a><span><b>Kassoum Coulibaly</b> · person · Burkina Faso<br><i>Minister of state, minister of defence</i></span></li>
+            </ol>
+            <p class="sn-a-outcomes"><span class="chip">Keep</span> <span class="chip">Choose</span> <span class="chip">Drop: leave unlinked</span></p>
+          </div>
+          <p class="source">Illustration of the input’s shape, not the transcript of a real call</p>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>I wrote the rules into the prompt. The text comes first, the newspaper's country second. Only three things count as a contradiction: another country, an incompatible calling, or dates that cannot fit.</p>
+        <p>On the right, as an illustration, is the shape of what it receives for one name: Kassoum Coulibaly in a Burkinabè paper, with an Ivorian record cited in 1982 and 1983 and the Burkinabè defence minister as candidates. It can keep, choose or drop, and the code refuses any id it was not offered. Leaving a name unlinked is an acceptable answer.</p>
+        <p>The rules came from mistakes. After the pilot, the model dropped Souleymane Compaoré because his description says "former"; the prompt now says descriptions are written today. After the full run, it dropped Tertius Zongo for being described in another post. A new rule says a role the description does not mention is no contradiction, and on a re-check the drops fell from 2,656 to 1,776.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-run" data-toc="The first run">
+      <h2 class="slide-title">The first full run, Burkina Faso</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">Articles</span><span class="stat-num" data-count="8045">8,045</span></div>
+        <div class="stat"><span class="stat-label">Matches kept in context</span><span class="stat-num" data-count="88250">88,250</span></div>
+        <div class="stat"><span class="stat-label">Matches dropped, after the re-check</span><span class="stat-num" data-count="1776">1,776</span></div>
+        <div class="stat"><span class="stat-label">Fuzzy or ambiguous names linked by the check</span><span class="stat-num" data-count="522">522</span></div>
+        <div class="stat"><span class="stat-label">Links written: 10,036 place, 40,763 subject</span><span class="stat-num" data-count="50799">50,799</span></div>
+        <div class="stat"><span class="stat-label">New authority records from the leftovers</span><span class="stat-num" data-count="674">674</span></div>
+      </div>
+      <p class="source">Claude Haiku 5.5. Extraction 20 October (1 h 38, about $6.50); leftovers 21 October; context check and write 22 October. From the pipeline changelog and run files.</p>
+      <div class="callout sn-a-wide">
+        <span class="callout-label">The other countries</span>
+        Togo: 1,570 articles extracted and matched on 23 October; no context check, nothing written. Côte d'Ivoire, Benin, Niger and Nigeria: not run.
+      </div>
+      <aside class="notes">
+        <p>After the re-check, the model kept 88,250 matches, dropped 1,776 and settled 522 names the code had left open. The scripts wrote some fifty thousand place and subject links to 7,709 articles; matches kept and links written count different things. The leftovers produced 674 new records. The extraction took an hour and thirty-eight minutes and cost about six and a half dollars; for the context check I have only the pilot's figure, about eight cents per hundred articles.</p>
+        <p>Scale is the reason for using a model at all: nobody reads eight thousand articles to check fifty thousand links. There is no hand-checked error rate yet, for any step. These figures count decisions, not correct decisions.</p>
+      </aside>
+    </section>
+    <!-- PART A END -->
+
+    <!-- PART B START -->
+    <section class="section" data-toc="Three cases">
+      <h2>Three cases</h2>
+      <p class="sec-sub">Where the workflow went wrong or could not decide</p>
+      <aside class="notes">
+        <p>Three cases now, each followed from the wrong state of a record to the decision that put it right, or left it open.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-case" data-toc="Case 1: the pilgrimage committees">
+      <h2 class="slide-title">Case 1: one acronym, three countries’ committees</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="sn-b-split">
+            <div class="sn-b-src">
+              <span class="sn-b-label">Record <a href="https://islam.zmo.de/s/westafrica/item/654" target="_blank" rel="noopener">654</a> · Burkina Faso</span>
+              <span class="sn-b-name">CNOPM</span>
+              <span class="sn-b-big">32</span>
+              <span class="sn-b-gloss">articles, most from Ivorian and Beninese papers</span>
+            </div>
+            <div class="sn-b-dest" role="list" aria-label="Where the 32 articles went on 21 October 2026">
+              <div class="sn-b-row" role="listitem"><b class="sn-b-n">12</b><span class="sn-b-to">To the Ivorian committee · <a href="https://islam.zmo.de/s/westafrica/item/23540" target="_blank" rel="noopener">23540</a></span></div>
+              <div class="sn-b-row is-new" role="listitem"><b class="sn-b-n">7</b><span class="sn-b-to">To a new record for Benin’s state committee · <a href="https://islam.zmo.de/s/westafrica/item/127882" target="_blank" rel="noopener">127882</a><span class="sn-b-sub">Daho-Express and Ehuzu, 1972–1983</span></span></div>
+              <div class="sn-b-row" role="listitem"><b class="sn-b-n">2</b><span class="sn-b-to">To a Burkinabè record · <a href="https://islam.zmo.de/s/westafrica/item/665" target="_blank" rel="noopener">665</a></span></div>
+              <div class="sn-b-row" role="listitem"><b class="sn-b-n">1</b><span class="sn-b-to">To the AMOP · <a href="https://islam.zmo.de/s/westafrica/item/46321" target="_blank" rel="noopener">46321</a></span></div>
+              <div class="sn-b-row is-open" role="listitem"><b class="sn-b-n">10</b><span class="sn-b-to">Left on 654 for the curator<span class="sn-b-sub">settled one by one on 23 October</span></span></div>
+            </div>
+          </div>
+          <div class="callout">
+            <span class="callout-label">The rule that followed</span>
+            Every generic national body carries its country in its title: “Ministère de la Santé (Burkina Faso)”.
+          </div>
+        </div>
+        <figure class="site-frame sn-b-frame">
+          <div class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">islam.zmo.de/s/westafrica/item/127882</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/item/127882" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="site-frame-view">
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://islam.zmo.de/s/westafrica/item/127882" title="IWAC record 127882: the national pilgrimage committee of Benin, live" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/iwac-item-127882.png" alt="Saved view of IWAC record 127882, Comité national d'organisation du pèlerinage à la Mecque (Bénin): an organisation whose description reads that it was the state committee of Dahomey, then Benin, chaired by the interior minister from 1972 to 1981 and by the foreign minister in 1982 and 1983.">
+            </div>
+          </div>
+        </figure>
+      </div>
+      <aside class="notes">
+        <p>The first case starts with an acronym. Burkina Faso, Côte d’Ivoire and Benin each have a national committee for the pilgrimage to Mecca, with nearly identical names, and the press calls more than one of them CNOPM. A second Burkinabè CNOPM record, number 654, held 32 articles, most from Ivorian and Beninese newspapers.</p>
+        <p>On 21 October the model read each article and gave the passage that decided where it belonged. I read those passages and approved the moves: twelve to the Ivorian committee, two to a Burkinabè record, one to the AMOP. Ten I kept back, and settled two days later.</p>
+        <p>The last seven came from Daho-Express and Ehuzu, between 1972 and 1983, and described a state committee chaired by the interior minister, then the foreign minister. IWAC had no record for it. The review recovered an entity the collection did not know it had; its record is on the right.</p>
+        <p>The rule that followed: every generic national body carries its country in its title.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-case" data-toc="Case 2: Mamadou Bamba">
+      <h2 class="slide-title">Case 2: the researcher and his namesakes</h2>
+      <div class="cols ratio-2-3">
+        <figure class="site-frame sn-b-frame">
+          <div class="site-frame-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="site-frame-url">islam.zmo.de/s/westafrica/item/1314</span><a class="site-frame-open" href="https://islam.zmo.de/s/westafrica/item/1314" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="site-frame-view">
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://islam.zmo.de/s/westafrica/item/1314" title="IWAC record 1314: Mamadou Bamba, the researcher, live" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/iwac-item-1314.png" alt="Saved view of IWAC person record 1314, Mamadou Bamba, described as a researcher who wrote a work in 2002 at the Université Félix Houphouët-Boigny on the Sufi communities of Côte d'Ivoire from the 1920s to 1963.">
+            </div>
+          </div>
+        </figure>
+        <div class="col">
+          <div class="sn-b-recs" role="list" aria-label="Record 1314 after the split of 23 October 2026">
+            <div class="sn-b-rec is-kept" role="listitem"><a class="sn-b-id" href="https://islam.zmo.de/s/westafrica/item/1314" target="_blank" rel="noopener">1314</a><span class="sn-b-who"><span class="chip green">Scholarly reference</span> Researcher, 2002 work on Sufi communities in Côte d’Ivoire</span><span class="sn-b-tag">Kept</span></div>
+            <div class="sn-b-rec" role="listitem"><a class="sn-b-id" href="https://islam.zmo.de/s/westafrica/item/188930" target="_blank" rel="noopener">188930</a><span class="sn-b-who"><span class="chip">Côte d’Ivoire</span> Politician, Assembly vice-president 1989, foreign minister 2003</span><span class="sn-b-tag">New</span></div>
+            <div class="sn-b-rec" role="listitem"><a class="sn-b-id" href="https://islam.zmo.de/s/westafrica/item/188934" target="_blank" rel="noopener">188934</a><span class="sn-b-who"><span class="chip">Burkina Faso</span> Lieutenant-colonel, spokesman of the failed coup of September 2015</span><span class="sn-b-tag">New</span></div>
+            <div class="sn-b-rec" role="listitem"><a class="sn-b-id" href="https://islam.zmo.de/s/westafrica/item/188954" target="_blank" rel="noopener">188954</a><span class="sn-b-who"><span class="chip">Côte d’Ivoire</span> Deputy imam of Yamoussoukro, end-of-Ramadan prayer 1986</span><span class="sn-b-tag">New</span></div>
+            <div class="sn-b-rec is-unlinked" role="listitem"><span class="sn-b-id">No record</span><span class="sn-b-who">“El Hadji Mamadou Bamba”, 1979: cannot be placed</span><span class="sn-b-tag">Unlinked</span></div>
+          </div>
+          <div class="sn-b-points">
+            <p>“Unknown” has to be representable</p>
+            <p>Authors and actors share one person set</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>The second case is the record from the start of the talk. Mamadou Bamba, record 1314, is in IWAC because of a scholarly reference: a researcher who wrote in 2002 on the Sufi communities of Côte d’Ivoire. Authors and people in the press share one person set, so his record had collected the press mentions of three other men.</p>
+        <p>After reading the articles, I kept 1314 for the researcher and created three new records: the Ivorian politician, the Burkinabè lieutenant-colonel and the deputy imam of Yamoussoukro.</p>
+        <p>One mention fitted nowhere. A 1979 article names an “El Hadji Mamadou Bamba”, and nothing says which of these men he is, or whether he is a fifth. So the link was removed and no record created. In IWAC that is the only way to say “unknown”, so it appears here as an outcome of its own.</p>
+        <p>Likewise, Boukary Savadogo the scholar, record 1295, is not the ambassador in Riyadh, now record 127895.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-acro" data-toc="Case 3: foi and the FOI">
+      <h2 class="slide-title">Case 3: acronyms that are also words</h2>
+      <p class="lead">The authority records hold 408 acronyms. Twelve are also common words in the articles.</p>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <div class="chart-head">Times written in lower case in the articles</div>
+          <ul class="share-bars" aria-label="Lower-case occurrences in the articles: un 43,823, foi 2,245, aide 971">
+            <li style="--p:100%"><div class="share-head"><span>UN · un</span><b>43,823</b></div><div class="share-track"></div></li>
+            <li style="--p:5.1%"><div class="share-head"><span>FOI · foi, “faith”</span><b>2,245</b></div><div class="share-track"></div></li>
+            <li style="--p:2.2%"><div class="share-head"><span>AIDE · aide, “help”</span><b>971</b></div><div class="share-track"></div></li>
+          </ul>
+          <div class="sn-b-ledger">
+            <div><span>Links on the FOI record (<a href="https://islam.zmo.de/s/westafrica/item/23699" target="_blank" rel="noopener">23699</a>) that were the word <i>foi</i></span><b>317 of 410</b></div>
+            <div><span>Matches of “Foi” and “Aide” in the Burkinabè run, all dropped</span><b>199 + 27</b></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="col-head">The rule now: capitals only</div>
+          <div class="sn-b-keys" role="list" aria-label="Which spellings give an acronym key">
+            <div role="listitem"><code>FOI</code><span class="sn-b-yes">key</span></div>
+            <div role="listitem"><code>F.O.I</code><span class="sn-b-yes">same key</span></div>
+            <div role="listitem"><code>Foi</code><span class="sn-b-no">no key</span></div>
+            <div role="listitem"><code>foi</code><span class="sn-b-no">no key</span></div>
+          </div>
+          <div class="callout">
+            <span class="callout-label">Lesson</span>
+            An alternative label is also a matching key.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>The third case is a kind of name no rule had anticipated: acronyms that are also ordinary words. Twelve of the 408 acronyms in the authority records are. “UN” appears almost 44,000 times in lower case: it is the French indefinite article.</p>
+        <p>The Front de la Oumma Islamique, an Ivorian organisation known as the FOI, had 410 links. The model reread them, a full-text check tested its verdicts, and 317 were the French word for faith, including every Burkinabè, Beninese and Togolese link. I approved their removal; four the model wanted to drop did name the Front, and stayed. In the Burkinabè run, the context check had already dropped 199 matches of “Foi”, and 27 of “Aide”.</p>
+        <p>The fix sits in the matching code: an acronym is now a key only when it is written in capitals.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-dk" data-toc="Case 3: Danyi read as Denmark">
+      <h2 class="slide-title">Danyi and Dankpen, read as Denmark</h2>
+      <div class="cols ratio-3-2">
+        <div class="col">
+          <p class="sn-b-figure"><b>93</b> <span>of 124</span></p>
+          <p class="sn-b-figcap">place links on Danemark (<a href="https://islam.zmo.de/s/westafrica/item/428" target="_blank" rel="noopener">428</a>) were Togolese agency reports, 2020–2024, naming the prefectures of Danyi and Dankpen</p>
+          <ul class="share-bars" aria-label="93 of 124 links wrong">
+            <li style="--p:75%"><div class="share-head"><span>Wrong links, removed</span><b>75%</b></div><div class="share-track"></div></li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head">Who made the error?</div>
+          <p>A pass older than the <code>iwac:nerModel</code> annotation. Nothing records which model or script made these links.</p>
+          <div class="callout green">
+            <span class="callout-label">Lesson</span>
+            Provenance belongs on each link.
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>The second half of this case is a place. Danemark, record 428, had 124 links, and 93 of them were Togolese agency reports that never mention Denmark. They name Danyi and Dankpen, two prefectures of Togo. The model read all 124, its verdicts matched a plain word count exactly, and the 93 were removed. What I cannot tell you is who made the error. These links predate the annotation, so nothing records which pass created them.</p>
+      </aside>
+    </section>
+
+    <section class="section navy" data-toc="Human oversight">
+      <h2>What stays human</h2>
+      <p class="sec-sub">One curator, some 50,000 links from one country run</p>
+      <aside class="notes">
+        <p>Which leaves the question of what stays with the human, when one person faces some fifty thousand links from a single country.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-fixed" data-toc="Where the curator sits">
+      <h2 class="slide-title">Where the curator sits</h2>
+      <ol class="index-list">
+        <li><span class="idx-title">Rules before runs</span><span class="idx-desc">Written by the curator, rewritten after reading what went wrong</span></li>
+        <li><span class="idx-title">Ambiguity is never settled by code</span><span class="idx-desc">The model chooses among the records offered, or leaves the name unlinked</span></li>
+        <li><span class="idx-title">Every new record is approved</span><span class="idx-desc">731 proposed in the first pass: 18 held back as possibly existing, 39 flagged</span></li>
+        <li><span class="idx-title">Merges and splits are the curator’s</span><span class="idx-desc">59 merge pairs drawn from the reviewers’ remarks, withdrawn unapplied</span></li>
+        <li><span class="idx-title">Agents never write</span><span class="idx-desc">Scripts do: dry run, backup of each item, dump of every payload</span></li>
+      </ol>
+      <aside class="notes">
+        <p>Human in the loop does not mean here that a person checks every link. The Burkinabè run alone wrote about fifty thousand. So I sit at five fixed points.</p>
+        <p>I write the rules and rewrite them after reading what went wrong: “descriptions are written today” came from a batch of wrong decisions I had read. Code never settles an ambiguity. New records reach the archive only through plans I have read: of 731 proposals in the first pass, 18 were held back as possibly existing, and 39 more had been flagged.</p>
+        <p>Merges and splits stay mine. Turned into pairs, the reviewers’ remarks would have folded the Yirgou clashes into the village, and the arrest of Inoussa Kanazoé into the man himself. I withdrew 59 such pairs. And no agent writes to the archive: scripts do, after a dry run, with a backup of every item.</p>
+        <p>So the human reviews decisions about records and the rules that produce links, not the links themselves.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-checks" data-toc="Who validates?">
+      <h2 class="slide-title">Who validates?</h2>
+      <div class="cols" style="--cols:3">
+        <div class="col">
+          <div class="col-head">The same model rereads</div>
+          <p class="sn-b-worth">A second reading, not an independent one</p>
+          <p>Extractor and checker are both Claude Haiku 5.5.</p>
+        </div>
+        <div class="col">
+          <div class="col-head">A deterministic test</div>
+          <p class="sn-b-worth">Independent, but narrow</p>
+          <p>A full-text count overturned wrong drops: 4 on the FOI, 10 on other acronyms.</p>
+        </div>
+        <div class="col">
+          <div class="col-head alt">A human sample</div>
+          <p class="sn-b-worth">None yet</p>
+          <p>No hand-checked error rate for any country.</p>
+        </div>
+      </div>
+      <p class="lead sn-b-close">What escapes the loop is what no rule anticipated.</p>
+      <aside class="notes">
+        <p>There are three kinds of check here, and they are not worth the same.</p>
+        <p>The context check is a second reading, but by the same model that did the extraction, with the same blind spots. I would not call it independent.</p>
+        <p>The deterministic test looks for the name in the full text. It overturned four of the model’s drop verdicts on the FOI and ten on the other acronyms: articles that did name the organisation. On Denmark, the count and the model agreed on every link. A count is blunt, and that is its use: it fails differently from the model.</p>
+        <p>The third would be a human sample, links drawn at random and checked by hand. It does not exist yet, so I have no error rate to give you.</p>
+        <p>What escapes all three is what no rule anticipated, like the word <i>foi</i>.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-decide" data-toc="Modelling decisions">
+      <h2 class="slide-title">Four modelling decisions the cases forced</h2>
+      <div class="cols sn-b-grid">
+        <div class="panel">
+          <h3>Country in the title</h3>
+          <p>For generic bodies, identity includes jurisdiction.</p>
+        </div>
+        <div class="panel">
+          <h3>Unlinked is an outcome</h3>
+          <p>A mention may stay a mention when the source cannot settle it.</p>
+        </div>
+        <div class="panel">
+          <h3>Provenance on each link</h3>
+          <p><code>iwac:nerModel</code>, <code>iwac:descriptionModel</code>: which model proposed this value.</p>
+        </div>
+        <div class="panel sn-b-open">
+          <h3>Descriptions carry no date</h3>
+          <p>Written today about articles decades old. Patched by a prompt rule; a temporal marker is what IWAC lacks.</p>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>The cases forced four decisions. For generic bodies, identity includes jurisdiction, so the country sits in the title. An unlinked mention is a legitimate outcome. Provenance goes on each link, naming the model that proposed it; Denmark showed what happens without it.</p>
+        <p>The fourth is unresolved. Descriptions are written today, about articles decades old, and “ancien président” in one made the model drop a correct link. A prompt rule fixed it, but it is a patch. What IWAC lacks is what your temporal marker gives you: a date on every statement.</p>
+        <p>This is where, in my reading, the two projects meet. A factoid model keeps statements plural and tied to their sources. Each factoid still attaches to an entity, though, and the authority layer above the factoids is where the single, persisting group comes back in.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-questions" data-toc="Questions">
+      <h2 class="slide-title">Questions for the Alevi Archive</h2>
+      <ol>
+        <li>Where does the identity of a person or a <i>cemaat</i> live, and who decides that two factoids are about the same entity?</li>
+        <li>Can a probabilistic identification stay marked as such once it is in the graph?</li>
+        <li>Is a check by the same model a verification at all? What would count as an independent one?</li>
+        <li>When the source cannot settle an identity: an unlinked mention, a provisional record, or a “possibly the same as” relation?</li>
+      </ol>
+      <aside class="notes">
+        <p>These four questions come out of the cases I have shown, and I suspect each has a counterpart in your sources, which also cross borders and empires. The first is the one I would most like to take up tomorrow morning, once we have seen your data model: where identity lives when every statement is plural. The last one I have answered for IWAC, provisionally, with the unlinked mention. I am not sure it is the right answer for a graph. Thank you, and I look forward to the discussion.</p>
+      </aside>
+    </section>
+
+    <section class="closing sn-b-end" data-footer="dark">
+      <p class="kicker">Thank you</p>
+      <h2>The model proposes and checks links. The curator decides what counts as one entity.</h2>
+      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span></div>
+      <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
+      <div data-contact></div>
+      <div class="slides-qr corner">
+        <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
+        <span class="qr-label"><b>Scan for these slides</b><span class="qr-url">slides.frederickmadore.com</span></span>
+      </div>
+      <aside class="notes">
+        <p>Thank you for listening.</p>
+      </aside>
+    </section>
+
+    <section class="section" data-toc="Appendix" data-visibility="uncounted">
+      <h2>Appendix</h2>
+      <p class="sec-sub">Held back for questions</p>
+    </section>
+
+    <section data-visibility="uncounted" data-toc="A1 Matching rules">
+      <h2 class="slide-title">How step 2 matches names</h2>
+      <p class="lead">Code, no model. Looser keys are tried only once every exact key has missed.</p>
+      <ul>
+        <li>Exact keys: lower case, no accents, spaces or dashes</li>
+        <li>A key shared by two records is ambiguous, never resolved</li>
+        <li>Word order: “Coulibaly Kassoum” = “Kassoum Coulibaly”; never for initials</li>
+        <li>Plural fold for non-person subjects; accents kept, “Jeunes” ≠ “Jeûne”</li>
+        <li>Acronyms of 2–6 capitals get a case-sensitive key only</li>
+        <li>“(Country)” titles are also keyed bare within that country’s run</li>
+      </ul>
+      <aside class="notes">
+        <p>These are the rules of the deterministic matching step. Ambiguous and fuzzy terms are never linked by name alone; only the context check may link them, and only to a record it was offered.</p>
+      </aside>
+    </section>
+
+    <section data-visibility="uncounted" data-toc="A2 Acronyms that are also words">
+      <h2 class="slide-title">Twelve acronyms that are also words</h2>
+      <div class="sn-b-acros" role="list" aria-label="The twelve acronyms">
+        <div role="listitem"><code>UN</code><span>43,823 in lower case</span></div>
+        <div role="listitem"><code>FOI</code><span>2,245</span></div>
+        <div role="listitem"><code>AIDE</code><span>971</span></div>
+        <div role="listitem"><code>AU</code></div>
+        <div role="listitem"><code>CAR</code></div>
+        <div role="listitem"><code>CET</code></div>
+        <div role="listitem"><code>AIT</code></div>
+        <div role="listitem"><code>UNIR</code></div>
+        <div role="listitem"><code>UL</code></div>
+        <div role="listitem"><code>SEMI</code></div>
+        <div role="listitem"><code>AD</code></div>
+        <div role="listitem"><code>UP</code></div>
+      </div>
+      <p class="sn-b-audit">The other ten acronym records had 722 item links; 579 name the record in full or in capitals. The model read the other 143, and a full-text check overturned ten of its drops (seven “Nations-Unies”, two Tidjania, one bishops’ conference). 108 links were removed, 99 of them “aide”.</p>
+      <aside class="notes">
+        <p>Only three of the lower-case counts are in my records. The audit of 23 October covered the other ten acronym records that are also words, after the FOI.</p>
+      </aside>
+    </section>
+
+    <section data-visibility="uncounted" data-toc="A3 Reviewer merge proposals">
+      <h2 class="slide-title">When reviewers propose merges</h2>
+      <div class="cols">
+        <div class="col">
+          <div class="col-head alt">Withdrawn, 59 pairs</div>
+          <ul>
+            <li>The Yirgou clashes into the village of Yirgou</li>
+            <li>The arrest of Inoussa Kanazoé into the man</li>
+            <li>The FAIB into the AIMB</li>
+            <li>Nas-Air into Air Afrique</li>
+          </ul>
+        </div>
+        <div class="col">
+          <div class="col-head">Merged, 21 October 2026</div>
+          <ul>
+            <li>BID: <a href="https://islam.zmo.de/s/westafrica/item/14587" target="_blank" rel="noopener">14587</a> → <a href="https://islam.zmo.de/s/westafrica/item/636" target="_blank" rel="noopener">636</a></li>
+            <li>CCI-BF: <a href="https://islam.zmo.de/s/westafrica/item/126600" target="_blank" rel="noopener">126600</a> → <a href="https://islam.zmo.de/s/westafrica/item/126067" target="_blank" rel="noopener">126067</a></li>
+            <li>FAMa: <a href="https://islam.zmo.de/s/westafrica/item/126779" target="_blank" rel="noopener">126779</a> → <a href="https://islam.zmo.de/s/westafrica/item/126000" target="_blank" rel="noopener">126000</a></li>
+            <li>Kaaba: <a href="https://islam.zmo.de/s/westafrica/item/15008" target="_blank" rel="noopener">15008</a> → <a href="https://islam.zmo.de/s/westafrica/item/76313" target="_blank" rel="noopener">76313</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="small">Event, place, person and organisation are types a language model blurs.</p>
+      <aside class="notes">
+        <p>Turned into pairs by the aggregation step, the reviewers’ remarks paired events with their places and persons, and unrelated bodies with each other. None of those pairs was applied; the four real merges were decided separately.</p>
+      </aside>
+    </section>
+
+    <section class="sn-b-questions" data-visibility="uncounted" data-toc="A4 Further questions">
+      <h2 class="slide-title">Further questions</h2>
+      <ol>
+        <li>Should provenance sit on every link, and what does that cost in a factoid model where links are the data?</li>
+        <li>How do you tell apart two people, or two <i>ocak</i>s, of one name in different regions? Is that decision a factoid, with a source and an author?</li>
+        <li>Does every factoid pass a person, and would it still if the data grew tenfold?</li>
+      </ol>
+      <aside class="notes">
+        <p>Three more questions from my preparation, kept here in case the discussion turns to provenance, to sources that cross borders and empires, or to scale.</p>
+      </aside>
+    </section>
+
+    <section data-visibility="uncounted" data-toc="A5 Extraction prompt revision">
+      <h2 class="slide-title">What the first extraction prompt picked up</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">Generic themes extracted as subjects</span><span class="stat-num">13,582</span></div>
+        <div class="stat"><span class="stat-label">of them “Islam”</span><span class="stat-num">4,983</span></div>
+        <div class="stat"><span class="stat-label">of them “Religion”</span><span class="stat-num">1,115</span></div>
+        <div class="stat"><span class="stat-label">Mentions of the article’s own source outlet</span><span class="stat-num">1,700</span></div>
+      </div>
+      <p>The revised prompt, tested on 18 articles: subject entries fell from 185 to 127, and “Islam” from 12 articles to none. The Burkinabè run used the first prompt; Togo, the revised one.</p>
+      <aside class="notes">
+        <p>These mentions were discarded after the first run, on 20 October. The outlets extracted most often were the Agence d’Information du Burkina, with 691 mentions, and Sidwaya, with 269.</p>
+      </aside>
+    </section>
+    <!-- PART B END -->
+
+  </div>
+</div>
+
+<!-- reveal.js core + plugins (vendored), then the deck engine. -->
+<script src="../../shared/reveal/reveal.js"></script>
+
+<!-- SYNTAX HIGHLIGHTING — the slim vendored build (highlight.js core + only
+     the languages the decks use, ~40 KB; see shared/vendor-manifest.json).
+     deck.js highlights every <pre><code> via window.hljs. To add a language,
+     edit LANGUAGES in tools/fetch-highlight.py and re-run it. If your talk
+     has NO code slides and no scrollable file embed, delete this line. -->
+<script src="../../shared/highlight.min.js"></script>
+
+<script src="../../shared/reveal/plugin/notes.js"></script>
+<script src="../../shared/reveal/plugin/zoom.js"></script>
+<script src="../../shared/reveal/plugin/search.js"></script>
+<script src="../../shared/deck.js"></script>
+
+</body>
+</html>
