@@ -294,9 +294,11 @@ via `window.hljs`. To add a language, edit `LANGUAGES` in
 version + checksum are recorded in `shared/vendor-manifest.json`). A talk with
 no code slides and no file embed can simply drop the `<script>` line.
 
-**Reader and slide links.** Each catalogue entry has a Read link to
-`?view=scroll&scrollLayout=compact`. Slides keep their fixed canvas in reading
-order. The footer's link button copies a URL to the current slide; author an
+**Reader and slide links.** Each catalogue entry has a Read link to the talk's
+generated `read.html` (see Reading editions below). To read the slides
+themselves as one page, append `?view=scroll` to the deck URL, or
+`?view=scroll&scrollLayout=compact` on a phone; slides keep their fixed canvas
+in reading order. The footer's link button copies a URL to the current slide; author an
 explicit `<section id="stable-name">` when the link must survive title edits.
 Otherwise the engine derives an ID from the slide label/title.
 
