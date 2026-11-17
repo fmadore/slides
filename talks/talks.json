@@ -27,6 +27,26 @@
       ]
     },
     {
+      "slug": "2026-12-03-leipzig-same-name-different-country-ai",
+      "date": "2026-12-03",
+      "language": "en",
+      "event": "Data Modelling in the Project Alevi Archive · SAW Leipzig",
+      "venue": "Alevi Archive workshop · SAW Leipzig · 3 December 2026",
+      "title": "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection",
+      "shortTitle": "Same name, different country",
+      "description": "One authority file for six countries: how AI agents and a curator decide which record a name in the West African press refers to.",
+      "presenters": [
+        "Frédérick Madore"
+      ],
+      "tags": [
+        "IWAC",
+        "entity linking",
+        "authority records",
+        "AI agents",
+        "metadata"
+      ]
+    },
+    {
       "slug": "2026-11-12-zmo-unit-pv",
       "date": "2026-11-12",
       "language": "en",
