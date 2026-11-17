@@ -149,3 +149,16 @@ export async function mapLimit(values, limit, worker) {
   });
   await Promise.all(runners);
 }
+
+// A request cancelled because the page moved on: the next goto aborts a frame
+// or a lazy load that was still in flight. Chromium reports net::ERR_ABORTED;
+// Firefox reports NS_BINDING_ABORTED (or no code at all once headers had
+// arrived) and WebKit "cancelled". A request that already received a
+// successful response is not a missing resource either: HTTP errors are
+// caught separately from the response status.
+const CANCELLED = /^(net::ERR_ABORTED|NS_BINDING_ABORTED|NS_ERROR_ABORT|cancelled)$/i;
+export async function isCancelledRequest(request) {
+  if (CANCELLED.test(request.failure()?.errorText || '')) return true;
+  const response = await request.response().catch(() => null);
+  return Boolean(response && response.status() < 400);
+}

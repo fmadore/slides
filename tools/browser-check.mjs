@@ -37,6 +37,7 @@ import { browserDiagnostics } from './lib/browser-diagnostics.mjs';
 import { checkReaders } from './lib/reader-check.mjs';
 import { checkInteractions } from './lib/interactions.mjs';
 import {
+  isCancelledRequest,
   intArg,
   launchChromium,
   listDecks,
@@ -98,9 +99,9 @@ async function openPage(ctx, url) {
     if (/(Content Security Policy directive: "frame-ancestors|in a frame because it set 'X-Frame-Options')/.test(t) && !isLocal(t)) return;
     errors.push(t);
   });
-  page.on('requestfailed', r => {
-    if (r.url().startsWith(BASE) && r.failure()?.errorText !== 'net::ERR_ABORTED') {
-      errors.push(`request failed: ${r.url()}`);
+  page.on('requestfailed', async r => {
+    if (r.url().startsWith(BASE) && !await isCancelledRequest(r)) {
+      errors.push(`request failed (${r.failure()?.errorText}): ${r.url()}`);
     }
   });
   await page.goto(url, { waitUntil: 'load', timeout: 30000 });

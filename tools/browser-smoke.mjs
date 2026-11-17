@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { listDecks, launchChromium, startStaticServer, valueArg } from './lib/runtime.mjs';
+import { isCancelledRequest, listDecks, launchChromium, startStaticServer, valueArg } from './lib/runtime.mjs';
 import { browserDiagnostics } from './lib/browser-diagnostics.mjs';
 
 const args = process.argv.slice(2);
@@ -33,8 +33,8 @@ try {
   page.on('response', response => {
     if (response.url().startsWith(site.base) && response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
   });
-  page.on('requestfailed', request => {
-    if (request.url().startsWith(site.base) && request.failure()?.errorText !== 'net::ERR_ABORTED') errors.push(`failed ${request.url()}`);
+  page.on('requestfailed', async request => {
+    if (request.url().startsWith(site.base) && !await isCancelledRequest(request)) errors.push(`failed (${request.failure()?.errorText}) ${request.url()}`);
   });
   await page.goto(`${site.base}/?q=zz-no-matching-talk-smoke-test`, { waitUntil: 'load' });
   assert.equal(await page.locator('li.talk:visible').count(), 0, 'search URL must restore its filter');
