@@ -29,7 +29,7 @@ class Scan(HTMLParser):
 
 class Reader(unittest.TestCase):
     def test_pipeline_keeps_all_authored_steps_without_runtime_or_controls(self):
-        source = (Path(__file__).resolve().parents[1] / "talks/_showcase/index.html").read_text()
+        source = (Path(__file__).resolve().parents[1] / "talks/_showcase/index.html").read_text(encoding="utf-8")
         page, _ = render_reader(source, TALK, "https://slides.example.test")
         for label in ("Source scan", "Text extraction", "Entity extraction", "Authority matching", "Human review"):
             self.assertIn(label, page)
