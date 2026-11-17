@@ -32,7 +32,7 @@
     <p class="reader-meta">29 slides</p>
   </header>
   <main id="content">
-    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Same name, different country</a></li><li><a href="#slide-2">One record, four men</a></li><li><a href="#slide-3">One authority file, six countries</a></li><li><a href="#slide-4">The Islam West Africa Collection</a></li><li><a href="#slide-5">One curator, one authority file</a></li><li><a href="#slide-6">The same name in several countries</a></li><li><a href="#slide-7">One imam, twenty names</a></li><li><a href="#slide-8">Mention, link and record</a></li><li><a href="#slide-9">The workflow</a></li><li><a href="#slide-10">Five steps, and who acts at each</a></li><li><a href="#slide-11">How the country is decided</a></li><li><a href="#slide-12">The first full run, Burkina Faso</a></li><li><a href="#slide-13">Three cases</a></li><li><a href="#slide-14">Case 1: one acronym, three countries’ committees</a></li><li><a href="#slide-15">Case 2: the researcher and his namesakes</a></li><li><a href="#slide-16">Case 3: acronyms that are also words</a></li><li><a href="#slide-17">Danyi and Dankpen, read as Denmark</a></li><li><a href="#slide-18">What stays human</a></li><li><a href="#slide-19">Where the curator sits</a></li><li><a href="#slide-20">Who validates?</a></li><li><a href="#slide-21">Four modelling decisions the cases forced</a></li><li><a href="#slide-22">Questions for the Alevi Archive</a></li><li><a href="#slide-23">The model proposes and checks links. The curator decides what counts as one entity.</a></li><li><a href="#slide-24">Appendix</a></li><li><a href="#slide-25">How step 2 matches names</a></li><li><a href="#slide-26">Twelve acronyms that are also words</a></li><li><a href="#slide-27">When reviewers propose merges</a></li><li><a href="#slide-28">Further questions</a></li><li><a href="#slide-29">What the first extraction prompt picked up</a></li></ol></nav></details>
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Same name, different country</a></li><li><a href="#slide-2">One record, four men</a></li><li><a href="#slide-3">One authority file, six countries</a></li><li><a href="#slide-4">The Islam West Africa Collection</a></li><li><a href="#slide-5">One curator, one authority file</a></li><li><a href="#slide-6">The same name in several countries</a></li><li><a href="#slide-7">One imam, twenty names</a></li><li><a href="#slide-8">Mention, link and record</a></li><li><a href="#slide-9">The workflow</a></li><li><a href="#slide-10">Five steps, and who acts at each</a></li><li><a href="#slide-11">How the country is decided</a></li><li><a href="#slide-12">The first full run, Burkina Faso</a></li><li><a href="#slide-13">Three cases</a></li><li><a href="#slide-14">Case 1: one acronym, three countries’ committees</a></li><li><a href="#slide-15">Case 2: the researcher and his namesakes</a></li><li><a href="#slide-16">Case 3: acronyms that are also words</a></li><li><a href="#slide-17">Danyi and Dankpen, read as Denmark</a></li><li><a href="#slide-18">What stays human</a></li><li><a href="#slide-19">Where the curator sits</a></li><li><a href="#slide-20">Who validates?</a></li><li><a href="#slide-21">Four modelling decisions the cases forced</a></li><li><a href="#slide-22">Questions for the Alevi Archive</a></li><li><a href="#slide-23">The curator approves records, merges and splits. The links still await a hand check.</a></li><li><a href="#slide-24">Appendix</a></li><li><a href="#slide-25">How step 2 matches names</a></li><li><a href="#slide-26">Twelve acronyms that are also words</a></li><li><a href="#slide-27">When reviewers propose merges</a></li><li><a href="#slide-28">Further questions</a></li><li><a href="#slide-29">What the first extraction prompt picked up</a></li></ol></nav></details>
     <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
 <p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
 <p class="eyebrow">Data Modelling in the Project Alevi Archive · SAW Leipzig, 3 December 2026</p>
@@ -40,7 +40,7 @@
       <p class="subtitle">AI agents, human oversight and entity disambiguation in the Islam West Africa Collection</p>
       <div class="byline">
         <span class="name">Frédérick Madore</span>
-        <span class="role">Data Curator</span>
+        <span class="role">Researcher and Data Curator</span>
         <span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span>
       </div>
       <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
@@ -221,7 +221,7 @@
 <section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
 <p class="reader-folio"><a href="index.html#/8">Slide 9</a></p>
 <h2 id="slide-9-title">The workflow</h2>
-      <p class="sec-sub">A model extracts, code matches, a model rereads, the curator decides</p>
+      <p class="sec-sub">Which steps are model calls, which are code, which are agents</p>
 </section>
 <section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
 <p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
@@ -429,7 +429,7 @@
         <div class="col">
           <div class="col-head">Who made the error?</div>
           <p>A pass older than the <code>iwac:nerModel</code> annotation. Nothing records which model or script made these links.</p>
-          <div class="callout green">
+          <div class="callout">
             <span class="callout-label">Lesson</span>
             Provenance belongs on each link.
           </div>
@@ -458,7 +458,7 @@
       <div class="cols">
         <div class="col">
           <div class="col-head">The same model rereads</div>
-          <p class="sn-b-worth">A second reading, not an independent one</p>
+          <p class="sn-b-worth">Not independent</p>
           <p>Extractor and checker are both Claude Haiku 5.5.</p>
         </div>
         <div class="col">
@@ -483,7 +483,7 @@
           <p>For generic bodies, identity includes jurisdiction.</p>
         </div>
         <div class="panel">
-          <h3>Unlinked is an outcome</h3>
+          <h3>Unlinked as an outcome</h3>
           <p>A mention may stay a mention when the source cannot settle it.</p>
         </div>
         <div class="panel">
@@ -491,8 +491,8 @@
           <p><code>iwac:nerModel</code>, <code>iwac:descriptionModel</code>: which model proposed this value.</p>
         </div>
         <div class="panel sn-b-open">
-          <h3>Descriptions carry no date</h3>
-          <p>Written today about articles decades old. Patched by a prompt rule; a temporal marker is what IWAC lacks.</p>
+          <h3>Undated descriptions</h3>
+          <p>Written today about articles decades old. Patched by a prompt rule; IWAC lacks a temporal marker.</p>
         </div>
       </div>
 </section>
@@ -509,8 +509,8 @@
 <section class="reader-slide" id="slide-23" aria-labelledby="slide-23-title">
 <p class="reader-folio"><a href="index.html#/22">Slide 23</a></p>
 <p class="kicker">Thank you</p>
-      <h2 id="slide-23-title">The model proposes and checks links. The curator decides what counts as one entity.</h2>
-      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span></div>
+      <h2 id="slide-23-title">The curator approves records, merges and splits. The links still await a hand check.</h2>
+      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Researcher and Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence, University of Bayreuth</span></div>
       <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
       <div></div>
 </section>
