@@ -45,12 +45,20 @@
 
   <!-- Per-talk styles only (one-off looks). The shared engine/theme is untouched. -->
   <style>
-    /* Cover: one list of the six authors, in order, none set apart. */
+    /* Cover and closing: one list of the six authors, in order, none set apart. */
     .reveal section.cover .subtitle { max-width: none; }
-    .reveal section.cover .byline .authors-list { font-weight: 500; max-width: none; }
+    .reveal section.cover .byline .authors-list,
+    .reveal section.closing .byline .authors-list { font-weight: 500; max-width: none; }
+    .reveal section.closing .byline .authors-list { max-width: 40ch; }
+
+    /* The gap: the live subject record beside the two facts that matter. */
+    .reveal section.gap-slide .cols { align-items: stretch; }
+    .reveal section.gap-slide .site-frame { height: 100%; min-height: 0; }
+    .reveal section.gap-slide .site-frame-view > iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; }
 
     /* AMIRA: the figures beside the live home page. */
     .reveal section.amira-slide .cols { align-items: stretch; }
+    .reveal section.ilam-slide .ilam-uses { margin-top: var(--space-md); }
     .reveal section.amira-slide .stat-grid { gap: 0 var(--space-xl); }
     .reveal section.amira-slide .site-frame { height: 100%; min-height: 0; }
     /* Zoomed out, so the half-width column shows the home page's desktop
@@ -61,13 +69,100 @@
        the corner QR (as in the Rhodes deck's closing). */
     .reveal section.closing h2 { font-size: var(--fs-h2); max-width: 24ch; }
 
-    /* Pipeline: the frame keeps the figure's own 1216:576 ratio at full
-       column width, so the slide needs no auto-fit and clears the footer.
-       The iframe takes no pointer events: a click would advance the figure
-       out of step with the deck and take keyboard focus from it. */
-    .reveal section.pipeline-slide .site-frame { flex: none; }
-    .reveal section.pipeline-slide .site-frame-view { flex: none; aspect-ratio: 1216 / 576; }
-    .reveal section.pipeline-slide .site-frame-view > iframe { pointer-events: none; }
+    /* Pipeline: the figure is native slide markup, laid out on a 1280 x 720
+       stage cropped to 1216 x 576 and scaled to the column (script below sets
+       --pl-scale). Each fragment shows its next stage. Ported from
+       assets/pipeline.html, which the reading edition shows as an image. */
+    .reveal .pl { --pl-paper: oklch(0.991 0.001 250);
+      --pl-panel: oklch(0.972 0.002 250);
+      --pl-sunken: oklch(0.945 0.004 250);
+      --pl-line: oklch(0.744 0.005 250);
+      --pl-rule: oklch(0.165 0.014 258);
+      --pl-ink: oklch(0.205 0.016 258);
+      --pl-ink-soft: oklch(0.405 0.018 258);
+      --pl-ink-faint: oklch(0.530 0.016 256);
+      --pl-green: #009260;
+      --pl-green-deep: color-mix(in oklch, #009260, #06140d 26%);
+      --pl-green-wash: color-mix(in oklch, #009260, oklch(0.991 0.001 250) 90%);
+      --pl-navy: #00268a;
+      --pl-gold: #cca352;
+      --pl-on-field: #ffffff;
+      --pl-font-body: var(--font-serif);
+      --pl-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+      position: relative; width: 100%; aspect-ratio: 1216 / 576; }
+    .reveal .pl .pl-fit { position: absolute; left: 0; top: 0; width: 1216px; height: 576px; transform-origin: 0 0; transform: scale(var(--pl-scale, 0.93)); overflow: hidden; }
+    .reveal .pl .pl-stage { position: absolute; left: -32px; top: -112px; width: 1280px; height: 720px; color: var(--pl-ink); font-family: var(--pl-font-body); text-align: left; }
+    .reveal .pl .pl-stage * { box-sizing: border-box; }
+    .reveal .pl .abs { position: absolute; }
+  .reveal .pl .col-head { border-top: 4px solid var(--pl-rule); padding-top: 9px; font: 700 18px/1.2 var(--font-label); }
+  .reveal .pl .col-head b { color: var(--pl-green-deep); margin-right: 6px; }
+
+  /* 1 · the catalogue record */
+  .reveal .pl .record { background: var(--pl-panel); padding: 18px 18px 20px; }
+  .reveal .pl .record .id { font: 500 18px/1 var(--font-label); color: var(--pl-ink-faint); }
+  .reveal .pl .record .rec-title { font: 700 25px/1.05 var(--font-label); letter-spacing: -0.012em; margin: 10px 0 16px; }
+  .reveal .pl .record .rec-list { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 9px 14px; font-size: 18px; line-height: 1.2; }
+  .reveal .pl .record .rec-k { color: var(--pl-ink-soft); }
+  .reveal .pl .record .rec-v { margin: 0; font: 600 18px/1.35 var(--font-label); text-align: right; }
+  .reveal .pl .record .gap { grid-column: 1 / -1; margin-top: 8px; padding: 12px 12px 14px; border: 2px dashed var(--pl-gold); font: 600 18px/1.25 var(--font-label); }
+  .reveal .pl .record .gap span { display: block; font: 500 18px/1.25 var(--pl-font-body); color: var(--pl-ink-soft); margin-top: 3px; }
+
+  /* 2 · the four routes */
+  .reveal .pl .route { display: grid; grid-template-columns: 44px 1fr; align-items: center; column-gap: 10px; padding: 0 16px 0 14px; border-top: 2px solid var(--pl-line); }
+  .reveal .pl .route .tag { font: 700 30px/1 var(--font-label); color: var(--pl-navy); }
+  .reveal .pl .route .r-h { font: 700 18px/1.15 var(--font-label); margin: 0 0 4px; }
+  .reveal .pl .route .r-p { font-size: 18px; line-height: 1.22; color: var(--pl-ink-soft); margin: 0; }
+  .reveal .pl .route.amira { background: var(--pl-green-deep); border-top: 0; color: var(--pl-on-field); }
+  .reveal .pl .route.amira .tag, .reveal .pl .route.amira .r-p { color: var(--pl-on-field); }
+  .reveal .pl .route.amira .loop { font: 600 18px/1.2 var(--font-label); margin-top: 8px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .reveal .pl .route.amira .loop i { font-style: normal; opacity: 0.75; }
+  .reveal .pl .route.amira .loop span { padding: 3px 6px; border: 1.5px solid currentColor; border-radius: 3px; }
+  .reveal .pl .route.amira .run { font: 500 18px/1.2 var(--font-label); margin-top: 8px; }
+  .reveal .pl .server { background: var(--pl-navy); color: var(--pl-on-field); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font: 700 18px/1.2 var(--font-label); }
+  .reveal .pl .server small { font: 500 18px/1.2 var(--font-label); opacity: 0.9; }
+  .reveal .pl .models { font: 500 17px/1.3 var(--pl-font-body); color: var(--pl-ink-soft); }
+  .reveal .pl .models b { font: 700 16px/1.3 var(--font-label); color: var(--pl-ink); }
+
+  /* 3 · the definition record */
+  .reveal .pl .result { border-top: 2px solid var(--pl-line); padding: 14px 2px 0 2px; }
+  .reveal .pl .result .meta { font: 500 18px/1.25 var(--font-label); color: var(--pl-ink-soft); }
+  .reveal .pl .result .quote { margin: 10px 0 14px; font-size: 18.5px; line-height: 1.26; }
+  .reveal .pl .claims { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+  .reveal .pl .claims .claim { display: grid; grid-template-columns: 1fr 22px; align-items: center; gap: 10px; }
+  .reveal .pl .claims .bar { height: 9px; background: var(--pl-sunken); }
+  .reveal .pl .claims .src { font: 500 18px/1 var(--font-label); color: var(--pl-ink-soft); padding: 5px 7px; background: var(--pl-panel); }
+  .reveal .pl .tick { width: 22px; height: 22px; }
+  .reveal .pl .tick path { fill: none; stroke: var(--pl-green-deep); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; }
+  .reveal .pl .verdict { margin-top: 14px; padding-top: 10px; border-top: 2px solid var(--pl-green-deep); font: 700 18px/1.25 var(--font-label); color: var(--pl-green-deep); }
+
+  /* 4 · review */
+  .reveal .pl .review { border-top: 2px solid var(--pl-line); padding-top: 12px; }
+  .reveal .pl .review .r-h { font: 700 18px/1.15 var(--font-label); margin: 0 0 5px; }
+  .reveal .pl .review .r-p { font-size: 18px; line-height: 1.22; color: var(--pl-ink-soft); margin: 0; }
+
+  /* connectors */
+  .reveal .pl svg.wires { position: absolute; inset: 0; width: 1280px; height: 720px; pointer-events: none; overflow: visible; }
+  .reveal .pl .wire { fill: none; stroke: var(--pl-ink-faint); stroke-width: 2; }
+  .reveal .pl .wire.main { stroke: var(--pl-green-deep); stroke-width: 3.5; }
+  .reveal .pl .pulse { fill: var(--pl-green-deep); }
+  .reveal .pl .pulse.light { fill: var(--pl-gold); }
+
+  /* stepping: a part appears when the stage reaches its step */
+  .reveal .pl [data-step] { transition: opacity 0.55s var(--pl-ease), transform 0.55s var(--pl-ease); }
+  .reveal .pl .pl-stage.instant [data-step], .reveal .pl .pl-stage.instant .wire, .reveal .pl .pl-stage.instant .tick path, .reveal .pl .pl-stage.instant .verdict { transition: none !important; }
+  .reveal .pl [data-step].off { opacity: 0; transform: translateY(10px); }
+  .reveal .pl svg [data-step].off { transform: none; }
+  .reveal .pl .wire[data-step] { stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s var(--pl-ease), opacity 0.2s; }
+  .reveal .pl .wire[data-step].off { stroke-dashoffset: 1; opacity: 1; }
+  .reveal .pl .ticked .tick path { stroke-dashoffset: 0; transition: stroke-dashoffset 0.45s var(--pl-ease); transition-delay: calc(var(--i) * 0.16s + 0.5s); }
+  .reveal .pl .verdict { opacity: 0; transition: opacity 0.5s var(--pl-ease) 1.3s; }
+  .reveal .pl .ticked .verdict { opacity: 1; }
+
+
+ @media (prefers-reduced-motion: reduce) {
+    .reveal .pl [data-step], .reveal .pl .wire[data-step], .reveal .pl .tick path, .reveal .pl .verdict { transition: none !important; }
+    .reveal .pl .pulse { display: none; }
+  }
 
     /* The vocabularies slide: concept, then what each vocabulary says. */
     .reveal .vocab { margin: 0; }
@@ -79,6 +174,11 @@
     .reveal section.definition-slide blockquote { font-size: var(--fs-body); max-width: none; margin: 0 0 var(--space-sm); }
     .reveal section.definition-slide table { margin: var(--space-sm) 0; }
     .reveal section.definition-slide .tally { margin: 0; max-width: none; font-size: var(--fs-small); }
+
+    /* Four definitions: a five-column comparison at reading size. */
+    .reveal section.compare-slide .lead { margin-bottom: var(--space-sm); max-width: none; }
+    .reveal section.compare-slide table { font-size: var(--fs-small); }
+    .reveal section.compare-slide td:first-child { font-weight: 700; white-space: nowrap; }
 
     /* Full-width notes under full-width blocks, so their rules line up. */
     .reveal .callout.wide { max-width: none; }
@@ -165,6 +265,44 @@
       </aside>
     </section>
 
+    <section class="mcp-slide" data-toc="What MCP does">
+      <h2 class="slide-title">What an MCP server does</h2>
+      <p class="lead">The Model Context Protocol (MCP), an open standard since late 2024, lets an AI assistant use tools that another organisation publishes.</p>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="step-n">1</span>
+          <span class="step-h">A person asks</span>
+          <p>In Claude, ChatGPT or another assistant: “What does AMIRA hold on highlife?”</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">2</span>
+          <span class="step-h">The assistant calls AMIRA’s tools</span>
+          <p>Search, count, read a record. It can only use the tools the server offers.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">3</span>
+          <span class="step-h">The server answers from the catalogue</span>
+          <p>Records, counts and passages, each with a link to its page in AMIRA.</p>
+        </div>
+        <div class="flow-arrow" aria-hidden="true">→</div>
+        <div class="flow-step">
+          <span class="step-n">4</span>
+          <span class="step-h">The assistant writes the answer</span>
+          <p>In its own words, ideally citing the records it received.</p>
+        </div>
+      </div>
+      <div class="callout wide">
+        <span class="callout-label">Who decides what</span>
+        We decide which tools exist and what they return. The assistant and its provider decide what reaches the answer.
+      </div>
+      <aside class="notes">
+        <p>A word on MCP, the Model Context Protocol. It is an open standard, released in late 2024, that lets an AI assistant use tools published by someone else. A person asks a question in the assistant they already use, such as Claude or ChatGPT. The assistant calls the tools our server offers: search the catalogue, count records, open one. The server answers from AMIRA's records, and every result carries a link back to its page. The assistant then writes the answer in its own words.</p>
+        <p>So control is split. We decide which tools exist and what they return. The assistant and the company behind it decide what reaches the answer, and whether the links survive.</p>
+      </aside>
+    </section>
+
     <section data-toc="Groundwork">
       <h2 class="slide-title">Two tools this pilot builds on</h2>
       <div class="cols">
@@ -197,18 +335,24 @@
       </aside>
     </section>
 
-    <section data-toc="The gap">
+    <section class="gap-slide" data-toc="The gap">
       <h2 class="slide-title">A label and a list, but no definition</h2>
-      <div class="cols ratio-2-3">
+      <div class="cols ratio-3-2">
+        <figure class="site-frame">
+          <div class="site-frame-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="site-frame-url">data.africamultiple.uni-bayreuth.de/s/amira/item/3270</span>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/3270" target="_blank" rel="noopener">Open record ↗</a>
+          </div>
+          <div class="site-frame-view">
+            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/item/3270" title="AMIRA subject record Highlife (Music): its label, Library of Congress heading and linked records, with no definition" allowfullscreen allow="fullscreen"></iframe>
+          </div>
+        </figure>
         <div class="col">
           <dl class="evidence-reading">
-            <div><dt>AMIRA subject</dt><dd>Highlife (Music)</dd></div>
             <div><dt>Records</dt><dd>55</dd></div>
-            <div><dt>Library of Congress heading</dt><dd>sh90004527</dd></div>
             <div><dt>Definition</dt><dd>None</dd></div>
           </dl>
-        </div>
-        <div class="col">
           <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
           <div class="callout">
             <span class="callout-label">The Cluster’s agenda</span>
@@ -249,17 +393,131 @@
       </aside>
     </section>
 
+    <section class="amira-slide ilam-slide" data-toc="ILAM">
+      <h2 class="slide-title">The sources: ILAM’s journal <em>African Music</em></h2>
+      <div class="cols">
+        <div>
+          <p>The International Library of African Music (ILAM), at Rhodes University (South Africa), holds recordings, journals and photographs of music from across Africa.</p>
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-num">1954–2023</span><span class="stat-label">Years</span></div>
+            <div class="stat"><span class="stat-num" data-count="45">45</span><span class="stat-label">Issues</span></div>
+            <div class="stat"><span class="stat-num" data-count="1032">1,032</span><span class="stat-label">Articles</span></div>
+            <div class="stat"><span class="stat-num" data-count="935">935</span><span class="stat-label">With full text</span></div>
+          </div>
+          <ul class="ilam-uses">
+            <li>Definitions quoted from seventy years of research</li>
+            <li>Articles found by what they discuss</li>
+            <li>Vocabulary dated, article by article</li>
+          </ul>
+          <p class="source">AMIRA, ILAM collection page and full-text map, 16 November 2026. The full text is private.</p>
+        </div>
+        <figure class="site-frame">
+          <div class="site-frame-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="site-frame-url">data.africamultiple.uni-bayreuth.de</span>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" target="_blank" rel="noopener">Open the collection ↗</a>
+          </div>
+          <div class="site-frame-view">
+            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" title="ILAM, the International Library of African Music: its collection page in AMIRA" allowfullscreen allow="fullscreen"></iframe>
+          </div>
+        </figure>
+      </div>
+      <aside class="notes">
+        <p>Our sources come from ILAM, the International Library of African Music at Rhodes University in South Africa. It holds recordings, journals and photographs of music from across the continent. AMIRA describes its journal, African Music: forty-five issues and 1,032 articles from 1954 to 2023, 935 of them with full text.</p>
+        <p>That text is private in AMIRA, and the curator mode of our MCP server lets a model read it. Seventy years of research on African music give a model something to quote when it defines a concept. The same text lets us find articles by what they discuss as well as by their headings, and date changes in vocabulary, which I come back to at the end.</p>
+      </aside>
+    </section>
+
     <section class="pipeline-slide" data-toc="The pipeline">
-      <div class="site-frame">
-        <div class="site-frame-bar">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="site-frame-url">pipeline.html</span>
-          <a class="site-frame-open" href="assets/pipeline.html?fonts=../../../shared/fonts/fonts.css" target="_blank" rel="noopener">Open ↗</a>
+      <div class="pl" role="img" aria-label="Pipeline: an AMIRA subject record with no definition is defined four ways (Library of Congress heading, Wikidata, a small model alone, the same model reading AMIRA through its MCP server). The route D result is a definition record whose quotes are checked by code against the text the model read. Review by a judge model and by researchers is planned.">
+        <div class="pl-fit" aria-hidden="true"><div class="pl-stage">
+        <!-- column heads -->
+        <div class="col-head abs" data-step="0" style="left:48px;  top:128px; width:232px;"><b>1</b>The gap</div>
+        <div class="col-head abs" data-step="1" style="left:328px; top:128px; width:402px;"><b>2</b>Four ways to fill it</div>
+        <div class="col-head abs" data-step="4" style="left:778px; top:128px; width:262px;"><b>3</b>A cited definition</div>
+        <div class="col-head abs" data-step="5" style="left:1088px; top:128px; width:144px;"><b>4</b>Review</div>
+
+        <!-- 1 -->
+        <div class="record abs" data-step="0" style="left:48px; top:176px; width:232px;">
+        <div class="id">AMIRA · subject 2412</div>
+        <div class="rec-title">Highlife (Music)</div>
+        <div class="rec-list">
+        <div class="rec-k">Records</div><div class="rec-v">55</div>
+        <div class="rec-k">LCSH</div><div class="rec-v">sh90004527</div>
+        <div class="gap">Definition: none<span>The reader gets a label and a list.</span></div>
         </div>
-        <div class="site-frame-view">
-          <iframe data-frame-trusted src="assets/pipeline.html?play=0&amp;controls=0&amp;fonts=../../../shared/fonts/fonts.css" title="Pipeline: from an AMIRA subject without a definition, through four routes, to a cited definition record and its review"></iframe>
-          <img class="frame-fallback" src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code; a judge model and researchers are planned.">
         </div>
+
+        <!-- wires -->
+        <svg class="wires" viewBox="0 0 1280 720" aria-hidden="true">
+        <path class="wire" data-step="1" pathLength="1" d="M280 300 C304 300 304 221 328 221"/>
+        <path class="wire" data-step="1" pathLength="1" d="M280 300 C304 300 304 319 328 319"/>
+        <path class="wire" data-step="2" pathLength="1" d="M280 300 C304 300 304 417 328 417"/>
+        <path class="wire main" data-step="3" pathLength="1" d="M280 300 C304 300 304 533 328 533"/>
+        <path class="wire main" data-step="4" pathLength="1" id="pl-out-d" d="M730 533 C752 533 752 380 768 380"/>
+        <path class="wire main" data-step="3" pathLength="1" d="M500 600 V628"/>
+        <path class="wire main" data-step="3" pathLength="1" d="M560 600 V628"/>
+        <path id="pl-down" d="M500 600 V628" fill="none"/>
+        <path id="pl-up" d="M560 628 V600" fill="none"/>
+        <g data-step="3">
+        <circle class="pulse light" r="5"><animateMotion dur="1.1s" repeatCount="indefinite"><mpath href="#pl-down"/></animateMotion></circle>
+        <circle class="pulse light" r="5"><animateMotion dur="1.1s" begin="0.55s" repeatCount="indefinite"><mpath href="#pl-up"/></animateMotion></circle>
+        </g>
+        <g data-step="4">
+        <circle class="pulse" r="5.5"><animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#pl-out-d"/></animateMotion></circle>
+        </g>
+        </svg>
+
+        <!-- 2 -->
+        <div class="route abs" data-step="1" style="left:328px; top:176px; width:402px; height:90px;">
+        <div class="tag">A</div>
+        <div><div class="r-h">Library of Congress heading</div><div class="r-p">No scope note for this heading.</div></div>
+        </div>
+        <div class="route abs" data-step="1" style="left:328px; top:274px; width:402px; height:90px;">
+        <div class="tag">B</div>
+        <div><div class="r-h">Wikidata</div><div class="r-p">“musical genre originating in Ghana”</div></div>
+        </div>
+        <div class="route abs" data-step="2" style="left:328px; top:372px; width:402px; height:90px;">
+        <div class="tag">C</div>
+        <div><div class="r-h">A small model, alone</div><div class="r-p">Writes from memory. Cites nothing.</div></div>
+        </div>
+        <div class="route amira abs" data-step="3" style="left:328px; top:470px; width:402px; height:130px;">
+        <div class="tag">D</div>
+        <div>
+        <div class="r-h">The same model, reading AMIRA</div>
+        <div class="loop"><span>search</span><i>→</i><span>read</span><i>→</i><span>quote</span></div>
+        <div class="run">10 tool calls · 5 full texts</div>
+        </div>
+        </div>
+        <div class="server abs" data-step="3" style="left:328px; top:628px; width:402px; height:46px;">
+        AMIRA MCP server <small>935 ILAM full texts</small>
+        </div>
+
+        <!-- 3 -->
+        <div class="result abs" data-step="4" data-pl-result style="left:778px; top:176px; width:262px;">
+        <div class="meta">Claude Haiku 5.5<br>95 words · 7 claims</div>
+        <div class="quote">Highlife is a popular dance music of urban West Africa, above all Ghana and Nigeria, that fuses African and Western musical styles…</div>
+        <div class="claims">
+        <div class="claim" style="--i:0"><span class="src">Smith 1962 · 3 quotes</span><svg class="tick" viewBox="0 0 22 22"><path d="M4 12l5 5 9-11"/></svg></div>
+        <div class="claim" style="--i:1"><span class="src">Emielu 2013 · 1 quote</span><svg class="tick" viewBox="0 0 22 22"><path d="M4 12l5 5 9-11"/></svg></div>
+        <div class="claim" style="--i:2"><span class="src">Otchere 2016 · 2 quotes</span><svg class="tick" viewBox="0 0 22 22"><path d="M4 12l5 5 9-11"/></svg></div>
+        <div class="claim" style="--i:3"><span class="src">Jackson 2012 · 1 quote</span><svg class="tick" viewBox="0 0 22 22"><path d="M4 12l5 5 9-11"/></svg></div>
+        </div>
+        <div class="verdict">7 of 7 claims carry a quote found in the text the model read.</div>
+        </div>
+
+        <!-- 4 -->
+        <div class="review abs" data-step="5" style="left:1088px; top:176px; width:144px;">
+        <div class="r-h">Code</div><div class="r-p">Is each quote in the text the model read?</div>
+        </div>
+        <div class="review abs" data-step="5" style="left:1088px; top:296px; width:144px;">
+        <div class="r-h">A judge model (planned)</div><div class="r-p">Faithful? Useful? In the concept’s own terms?</div>
+        </div>
+        <div class="review abs" data-step="5" style="left:1088px; top:446px; width:144px;">
+        <div class="r-h">Researchers (planned)</div><div class="r-p">Would you put this on the record?</div>
+        </div>
+        </div></div>
+        <img class="viz-fallback" hidden src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code; a judge model and researchers are planned.">
       </div>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
@@ -270,7 +528,7 @@
         <p>[on arrival: the gap] Here is the pilot as a pipeline. It starts from the gap: the highlife record, with no definition.</p>
         <p>[→ four ways: A and B] Routes A and B are the two baselines I have just shown.</p>
         <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory and cites nothing.</p>
-        <p>[→ route D] Route D is the same model reading AMIRA through the MCP server: it searches, reads full texts and quotes them. Music is our test bed because AMIRA holds the full text of the journal African Music, 1954 to 2023. That text is private, so you will only see short quotes from it. On our first attempt, the model would not open the private texts, because the server's notes told it not to cite private material. Version 1.38.1 now informs the model and leaves the decision to the curator.</p>
+        <p>[→ route D] Route D is the same model reading AMIRA through the MCP server: it searches, reads full texts and quotes them. ILAM's text is private, so you will only see short quotes from it. On our first attempt, the model would not open the private texts, because the server's notes told it not to cite private material. Version 1.38.1 now informs the model and leaves the decision to the curator.</p>
         <p>[→ the cited definition] The answer comes back as a record: a definition of at most 120 words, and claims, each with a quote of at most twenty-five words and its source. Code checks every quote against the text the model read.</p>
         <p>[→ review] Review has three layers: code, a judge model and researchers. The judge model is not calibrated yet, so I report no judge scores today.</p>
       </aside>
@@ -322,6 +580,28 @@
       </aside>
     </section>
 
+    <section class="compare-slide" data-toc="Four definitions">
+      <h2 class="slide-title">Four definitions of highlife, read side by side</h2>
+      <p class="lead">All four: an urban popular music of West Africa, chiefly Ghana and Nigeria, mixing African and Western forms.</p>
+      <table>
+        <thead>
+          <tr><th>Model</th><th>Origin</th><th>What it adds</th><th class="num">Quotes found</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claude Haiku 5.5</td><td>Debated: Konkomba singing bands, several streams</td><td>Vernaculars; a national music by the 1950s</td><td class="num">7 of 7</td></tr>
+          <tr><td>GPT-6 Luna</td><td>Ghana, then across West Africa</td><td>Variation by place and period</td><td class="num">3 of 3</td></tr>
+          <tr><td>Gemini 3.5 Flash-Lite</td><td>Local forms with brass band, jazz and ballroom</td><td>“Intertribal” music; love and social commentary</td><td class="num">3 of 3</td></tr>
+          <tr><td>Mistral Small 4</td><td>Local forms with ballroom, brass band and Latin American music</td><td>Harmony in thirds or sixths; mid-twentieth century</td><td class="num">1 of 5</td></tr>
+        </tbody>
+      </table>
+      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words.</p>
+      <aside class="notes">
+        <p>Here are the four definitions side by side. They agree on the core: an urban popular music of West Africa, chiefly Ghana and Nigeria, that combines African and Western forms.</p>
+        <p>They part on origins. Only Haiku reports that the origin is debated, citing Konkomba singing bands and several streams of highlife; the others give a single account, either Ghana first or a blend of local forms with brass band, jazz, ballroom or Latin American music. Two date it, two do not. Each adds something of its own: Haiku the vernaculars and weekend gatherings, GPT-6 Luna the variation by place and period, Gemini themes of love and social commentary, Mistral harmony in thirds or sixths.</p>
+        <p>Two differences matter for a catalogue. Gemini calls highlife an intertribal music, a word it took from a 1962 article and used in its own voice. And only one of Mistral's five claims has a quote the code could find, so most of its definition cannot be traced to the text it read.</p>
+      </aside>
+    </section>
+
     <section data-toc="With and without sources">
       <h2 class="slide-title">The same models without AMIRA’s sources</h2>
       <div class="cols">
@@ -356,26 +636,26 @@
       <h2 class="slide-title">Three limits of the pilot</h2>
       <div class="cols" style="--cols:3">
         <div class="col">
-          <div class="col-head">The archive is not one voice</div>
+          <div class="col-head">Older articles use older vocabulary</div>
           <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">uses of “tribal” per 10,000 words, 1957 and 1962</span></div>
-          <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. Definitions must date their sources.</p>
+          <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. A definition needs the dates of its sources.</p>
         </div>
         <div class="col">
-          <div class="col-head">A mention is not a subject</div>
+          <div class="col-head">Most mentions are in passing</div>
           <div class="stat"><span class="stat-num">0 of 46</span><span class="stat-label">articles that mention “timbila” carry a heading for it</span></div>
           <p>31 of the 46 mention it once or twice. “Mbira” occurs in 219 full texts; 18 records carry the heading “Mbira music”.</p>
         </div>
         <div class="col">
-          <div class="col-head">Quotes are checked; claims are not</div>
+          <div class="col-head">The code checks quotes only</div>
           <div class="stat"><span class="stat-num">7 of 7</span><span class="stat-label">claims with a quote found in the text</span></div>
-          <p>The code checks that each quote is in the text the model read. It does not check that the claim is right.</p>
+          <p>It confirms that each quote appears in the text the model read. Whether the claim is right needs a reader who knows the field.</p>
         </div>
       </div>
       <p class="source">“Tribal”: AMIRA MCP server, full-text map of 657 <em>African Music</em> articles, 16 November 2026.</p>
       <aside class="notes">
-        <p>Three limits. First, the archive is not one voice. African Music began in 1954, and its early volumes use the vocabulary of their time: 'tribal' appears six to seven times per ten thousand words in 1957 and 1962, and less than once from 2007 to 2023, apart from one year with only two articles. Grounding a definition in AMIRA does not by itself make it a view from Africa. Gemini, for instance, took 'intertribal' from the 1962 article and used it in its own voice.</p>
-        <p>Second, a mention is not a subject. Forty-six articles mention timbila and none carries a heading for it, because no such heading exists yet. But thirty-one of them mention it only once or twice. Deciding what an article is about stays with the curator.</p>
-        <p>Third, a found quote is not a true claim. The code finds the quote; whether the claim is right needs a reader who knows the field.</p>
+        <p>Three limits. First, older articles use older vocabulary. African Music began in 1954, and its early volumes use the vocabulary of their time: 'tribal' appears six to seven times per ten thousand words in 1957 and 1962, and less than once from 2007 to 2023, apart from one year with only two articles. Grounding a definition in AMIRA does not by itself make it a view from Africa. Gemini, for instance, took 'intertribal' from the 1962 article and used it in its own voice.</p>
+        <p>Second, most mentions are in passing. Forty-six articles mention timbila and none carries a heading for it, because no such heading exists yet. Thirty-one of them mention it only once or twice. Deciding what an article is about stays with the curator.</p>
+        <p>Third, the code checks quotes only. It finds each quote in the text the model read; whether the claim is right needs a reader who knows the field.</p>
       </aside>
     </section>
 
@@ -416,8 +696,8 @@
     <section class="closing" data-footer="dark">
       <p class="kicker">Thank you</p>
       <h2>Definitions drafted from the collection, checked by code, decided by researchers.</h2>
-      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
-      <div data-contact></div>
+      <div class="byline"><span class="name authors-list">Frédérick Madore, Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span></div>
+      <div class="contact"><a href="https://github.com/AM-Digital-Research-Environment" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span><span>github.com/AM-Digital-Research-Environment</span></a><a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M3 12h18M12 2.8c2.6 2.6 3.9 6.2 3.9 9.2s-1.3 6.6-3.9 9.2c-2.6-2.6-3.9-6.2-3.9-9.2S9.4 5.4 12 2.8z"/></svg></span><span>Africa Multiple · Digital Solutions</span></a></div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
       <div class="slides-qr corner">
         <img src="assets/qr-slides.png" alt="QR code linking to these slides online" width="444" height="444">
@@ -438,34 +718,33 @@
 <script src="../../shared/reveal/plugin/search.js"></script>
 <script src="../../shared/deck.js"></script>
 <script>
-  /* The pipeline figure steps with the deck: each → shows its next stage. */
+  /* The pipeline steps with the deck: each fragment shows the figure's next
+     stage. Print and scroll views show it complete. */
   (function () {
     var sec = document.querySelector("section.pipeline-slide");
-    var frame = sec && sec.querySelector("iframe");
-    if (!frame || !window.Reveal) return;
+    var pl = sec && sec.querySelector(".pl");
+    if (!pl || !window.Reveal) return;
+    var stage = pl.querySelector(".pl-stage");
+    var parts = Array.prototype.slice.call(stage.querySelectorAll("[data-step]"));
+    var result = stage.querySelector("[data-pl-result]");
+    var LAST = 5, at = -1;
+    function fit() { if (pl.clientWidth) pl.style.setProperty("--pl-scale", pl.clientWidth / 1216); }
+    function show(step) {
+      var jump = Math.abs(step - at) > 1;
+      at = step;
+      if (jump) stage.classList.add("instant");
+      parts.forEach(function (part) { part.classList.toggle("off", Number(part.dataset.step) > at); });
+      result.classList.toggle("ticked", at >= 4);
+      if (jump) { void stage.offsetHeight; requestAnimationFrame(function () { stage.classList.remove("instant"); }); }
+    }
     function sync() {
-      if (!frame.contentWindow) return;
-      var step = sec.querySelectorAll("[data-pipeline-step].visible").length;
-      frame.contentWindow.postMessage({ pipelineStep: step }, "*");
+      var whole = document.documentElement.classList.contains("reveal-print") || document.querySelector(".reveal-scroll");
+      show(whole ? LAST : sec.querySelectorAll("[data-pipeline-step].visible").length);
     }
-    frame.addEventListener("load", sync);
     ["ready", "slidechanged", "fragmentshown", "fragmenthidden"].forEach(function (e) { Reveal.on(e, sync); });
-    /* The figure starts complete (play=0) and its load event waits for its
-       font stylesheet, so the complete figure flashed for a frame or two on
-       arrival. The figure is same-origin: send the step as soon as its
-       document is parsed (its message listener is registered by then). */
-    function early() {
-      var tries = 0;
-      (function poll() {
-        try {
-          var doc = frame.contentDocument;
-          if (doc && doc.URL.indexOf("pipeline.html") !== -1 && doc.readyState !== "loading") { sync(); return; }
-        } catch (err) { return; }
-        if (++tries < 120) requestAnimationFrame(poll);
-      })();
-    }
-    Reveal.on("slidechanged", function (ev) { if (ev.currentSlide === sec) early(); });
-    Reveal.on("ready", function (ev) { if (ev.currentSlide === sec) early(); });
+    ["ready", "resize", "slidechanged"].forEach(function (e) { Reveal.on(e, fit); });
+    fit();
+    sync();
   })();
 </script>
 

@@ -33,10 +33,10 @@
     <h1>Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data</h1>
     <p class="reader-byline">Frédérick Madore · Jiayu Yang · Oliver Baumann · Neeraj Thandayan Viswajith · Durgesh Nandini · Mirco Schönfeld</p>
     <p>HKADH 2027 · Hong Kong · 21 January 2027</p>
-    <p class="reader-meta">12 slides</p>
+    <p class="reader-meta">15 slides</p>
   </header>
   <main id="content">
-    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue of research data held elsewhere</a></li><li><a href="#slide-3">Two tools this pilot builds on</a></li><li><a href="#slide-4">A label and a list, but no definition</a></li><li><a href="#slide-5">Standard vocabularies identify a concept but rarely explain it</a></li><li><a href="#slide-6">The pipeline</a></li><li><a href="#slide-7">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-8">Four models reading AMIRA on highlife</a></li><li><a href="#slide-9">The same models without AMIRA’s sources</a></li><li><a href="#slide-10">Three limits of the pilot</a></li><li><a href="#slide-11">What comes next in the pilot</a></li><li><a href="#slide-12">Definitions drafted from the collection, checked by code, decided by researchers.</a></li></ol></nav></details>
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue of research data held elsewhere</a></li><li><a href="#slide-3">What an MCP server does</a></li><li><a href="#slide-4">Two tools this pilot builds on</a></li><li><a href="#slide-5">A label and a list, but no definition</a></li><li><a href="#slide-6">Standard vocabularies identify a concept but rarely explain it</a></li><li><a href="#slide-7">The sources: ILAM’s journal African Music</a></li><li><a href="#slide-8">The pipeline</a></li><li><a href="#slide-9">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-10">Four models reading AMIRA on highlife</a></li><li><a href="#slide-11">Four definitions of highlife, read side by side</a></li><li><a href="#slide-12">The same models without AMIRA’s sources</a></li><li><a href="#slide-13">Three limits of the pilot</a></li><li><a href="#slide-14">What comes next in the pilot</a></li><li><a href="#slide-15">Definitions drafted from the collection, checked by code, decided by researchers.</a></li></ol></nav></details>
     <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
 <p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
 <p class="eyebrow">HKADH 2027 · Education University of Hong Kong, 21 January 2027</p>
@@ -78,7 +78,41 @@
 </section>
 <section class="reader-slide" id="slide-3" aria-labelledby="slide-3-title">
 <p class="reader-folio"><a href="index.html#/2">Slide 3</a></p>
-<h2 class="slide-title" id="slide-3-title">Two tools this pilot builds on</h2>
+<h2 class="slide-title" id="slide-3-title">What an MCP server does</h2>
+      <p class="lead">The Model Context Protocol (MCP), an open standard since late 2024, lets an AI assistant use tools that another organisation publishes.</p>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="step-n">1</span>
+          <span class="step-h">A person asks</span>
+          <p>In Claude, ChatGPT or another assistant: “What does AMIRA hold on highlife?”</p>
+        </div>
+        
+        <div class="flow-step">
+          <span class="step-n">2</span>
+          <span class="step-h">The assistant calls AMIRA’s tools</span>
+          <p>Search, count, read a record. It can only use the tools the server offers.</p>
+        </div>
+        
+        <div class="flow-step">
+          <span class="step-n">3</span>
+          <span class="step-h">The server answers from the catalogue</span>
+          <p>Records, counts and passages, each with a link to its page in AMIRA.</p>
+        </div>
+        
+        <div class="flow-step">
+          <span class="step-n">4</span>
+          <span class="step-h">The assistant writes the answer</span>
+          <p>In its own words, ideally citing the records it received.</p>
+        </div>
+      </div>
+      <div class="callout wide">
+        <span class="callout-label">Who decides what</span>
+        We decide which tools exist and what they return. The assistant and its provider decide what reaches the answer.
+      </div>
+</section>
+<section class="reader-slide" id="slide-4" aria-labelledby="slide-4-title">
+<p class="reader-folio"><a href="index.html#/3">Slide 4</a></p>
+<h2 class="slide-title" id="slide-4-title">Two tools this pilot builds on</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Linking keywords to Wikidata</div>
@@ -101,19 +135,25 @@
         </div>
       </div>
 </section>
-<section class="reader-slide" id="slide-4" aria-labelledby="slide-4-title">
-<p class="reader-folio"><a href="index.html#/3">Slide 4</a></p>
-<h2 class="slide-title" id="slide-4-title">A label and a list, but no definition</h2>
-      <div class="cols ratio-2-3">
+<section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
+<p class="reader-folio"><a href="index.html#/4">Slide 5</a></p>
+<h2 class="slide-title" id="slide-5-title">A label and a list, but no definition</h2>
+      <div class="cols ratio-3-2">
+        <figure class="site-frame">
+          <div class="site-frame-bar">
+            
+            <span class="site-frame-url">data.africamultiple.uni-bayreuth.de/s/amira/item/3270</span>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/3270">Open record ↗</a>
+          </div>
+          <div class="site-frame-view">
+            <p class="reader-interactive"><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/3270">Open interactive resource: AMIRA subject record Highlife (Music): its label, Library of Congress heading and linked records, with no definition</a></p>
+          </div>
+        </figure>
         <div class="col">
           <dl class="evidence-reading">
-            <div><dt>AMIRA subject</dt><dd>Highlife (Music)</dd></div>
             <div><dt>Records</dt><dd>55</dd></div>
-            <div><dt>Library of Congress heading</dt><dd>sh90004527</dd></div>
             <div><dt>Definition</dt><dd>None</dd></div>
           </dl>
-        </div>
-        <div class="col">
           <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
           <div class="callout">
             <span class="callout-label">The Cluster’s agenda</span>
@@ -122,9 +162,9 @@
         </div>
       </div>
 </section>
-<section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
-<p class="reader-folio"><a href="index.html#/4">Slide 5</a></p>
-<h2 class="slide-title" id="slide-5-title">Standard vocabularies identify a concept but rarely explain it</h2>
+<section class="reader-slide" id="slide-6" aria-labelledby="slide-6-title">
+<p class="reader-folio"><a href="index.html#/5">Slide 6</a></p>
+<h2 class="slide-title" id="slide-6-title">Standard vocabularies identify a concept but rarely explain it</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Library of Congress</div>
@@ -145,24 +185,48 @@
       </div>
       <p class="source">id.loc.gov and wikidata.org, read 16 November 2026</p>
 </section>
-<section class="reader-slide" id="slide-6" aria-labelledby="slide-6-title">
-<p class="reader-folio"><a href="index.html#/5">Slide 6</a></p>
-<h2 id="slide-6-title" class="reader-fallback-title">The pipeline</h2>
-      <div class="site-frame">
-        <div class="site-frame-bar">
-          
-          <span class="site-frame-url">pipeline.html</span>
-          <a class="site-frame-open" href="assets/pipeline.html?fonts=../../../shared/fonts/fonts.css">Open ↗</a>
-        </div>
-        <div class="site-frame-view">
-          <p class="reader-interactive"><a href="assets/pipeline.html?play=0&amp;controls=0&amp;fonts=../../../shared/fonts/fonts.css">Open interactive resource: Pipeline: from an AMIRA subject without a definition, through four routes, to a cited definition record and its review</a></p>
-          <a class="reader-image" href="assets/pipeline.png"><img class="frame-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code; a judge model and researchers are planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
-        </div>
-      </div>
-</section>
 <section class="reader-slide" id="slide-7" aria-labelledby="slide-7-title">
 <p class="reader-folio"><a href="index.html#/6">Slide 7</a></p>
-<h2 class="slide-title" id="slide-7-title">Highlife, defined from AMIRA’s sources</h2>
+<h2 class="slide-title" id="slide-7-title">The sources: ILAM’s journal <em>African Music</em></h2>
+      <div class="cols">
+        <div>
+          <p>The International Library of African Music (ILAM), at Rhodes University (South Africa), holds recordings, journals and photographs of music from across Africa.</p>
+          <div class="stat-grid">
+            <div class="stat"><span class="stat-num">1954–2023</span><span class="stat-label">Years</span></div>
+            <div class="stat"><span class="stat-num">45</span><span class="stat-label">Issues</span></div>
+            <div class="stat"><span class="stat-num">1,032</span><span class="stat-label">Articles</span></div>
+            <div class="stat"><span class="stat-num">935</span><span class="stat-label">With full text</span></div>
+          </div>
+          <ul class="ilam-uses">
+            <li>Definitions quoted from seventy years of research</li>
+            <li>Articles found by what they discuss</li>
+            <li>Vocabulary dated, article by article</li>
+          </ul>
+          <p class="source">AMIRA, ILAM collection page and full-text map, 16 November 2026. The full text is private.</p>
+        </div>
+        <figure class="site-frame">
+          <div class="site-frame-bar">
+            
+            <span class="site-frame-url">data.africamultiple.uni-bayreuth.de</span>
+            <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam">Open the collection ↗</a>
+          </div>
+          <div class="site-frame-view">
+            <p class="reader-interactive"><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam">Open interactive resource: ILAM, the International Library of African Music: its collection page in AMIRA</a></p>
+          </div>
+        </figure>
+      </div>
+</section>
+<section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
+<p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
+<h2 id="slide-8-title" class="reader-fallback-title">The pipeline</h2>
+      <div class="pl">
+        
+        <a class="reader-image" href="assets/pipeline.png"><img class="viz-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code; a judge model and researchers are planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
+      </div>
+</section>
+<section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
+<p class="reader-folio"><a href="index.html#/8">Slide 9</a></p>
+<h2 class="slide-title" id="slide-9-title">Highlife, defined from AMIRA’s sources</h2>
       <blockquote><p>Highlife is a popular dance music of urban West Africa, above all Ghana and Nigeria, that fuses African and Western musical styles. Writers describe it as a compromise between African traditional forms and Western music, mostly sung in many vernaculars with simple, binary-form melodies. It emerged as a national rather than ethnic music in the 1950s.</p></blockquote>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
@@ -177,9 +241,9 @@
       <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
       <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
 </section>
-<section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
-<p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
-<h2 class="slide-title" id="slide-8-title">Four models reading AMIRA on highlife</h2>
+<section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
+<p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
+<h2 class="slide-title" id="slide-10-title">Four models reading AMIRA on highlife</h2>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
           <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th class="num">Claims with a quote found</th><th class="num">Est. cost, list prices (USD)</th></tr>
@@ -198,9 +262,26 @@
         Still to come: Ministral 3, run locally.
       </div>
 </section>
-<section class="reader-slide" id="slide-9" aria-labelledby="slide-9-title">
-<p class="reader-folio"><a href="index.html#/8">Slide 9</a></p>
-<h2 class="slide-title" id="slide-9-title">The same models without AMIRA’s sources</h2>
+<section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
+<p class="reader-folio"><a href="index.html#/10">Slide 11</a></p>
+<h2 class="slide-title" id="slide-11-title">Four definitions of highlife, read side by side</h2>
+      <p class="lead">All four: an urban popular music of West Africa, chiefly Ghana and Nigeria, mixing African and Western forms.</p>
+      <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
+        <thead>
+          <tr><th>Model</th><th>Origin</th><th>What it adds</th><th class="num">Quotes found</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claude Haiku 5.5</td><td>Debated: Konkomba singing bands, several streams</td><td>Vernaculars; a national music by the 1950s</td><td class="num">7 of 7</td></tr>
+          <tr><td>GPT-6 Luna</td><td>Ghana, then across West Africa</td><td>Variation by place and period</td><td class="num">3 of 3</td></tr>
+          <tr><td>Gemini 3.5 Flash-Lite</td><td>Local forms with brass band, jazz and ballroom</td><td>“Intertribal” music; love and social commentary</td><td class="num">3 of 3</td></tr>
+          <tr><td>Mistral Small 4</td><td>Local forms with ballroom, brass band and Latin American music</td><td>Harmony in thirds or sixths; mid-twentieth century</td><td class="num">1 of 5</td></tr>
+        </tbody>
+      </table></div>
+      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words.</p>
+</section>
+<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
+<p class="reader-folio"><a href="index.html#/11">Slide 12</a></p>
+<h2 class="slide-title" id="slide-12-title">The same models without AMIRA’s sources</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Model alone (route C)</div>
@@ -224,31 +305,31 @@
         On highlife, and again on the lesser-known timbila, the models alone stayed fluent and plausible. The difference shown is one of traceability and emphasis. One run per model per route.
       </div>
 </section>
-<section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
-<p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
-<h2 class="slide-title" id="slide-10-title">Three limits of the pilot</h2>
+<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
+<p class="reader-folio"><a href="index.html#/12">Slide 13</a></p>
+<h2 class="slide-title" id="slide-13-title">Three limits of the pilot</h2>
       <div class="cols">
         <div class="col">
-          <div class="col-head">The archive is not one voice</div>
+          <div class="col-head">Older articles use older vocabulary</div>
           <div class="stat"><span class="stat-num">6 to 7</span><span class="stat-label">uses of “tribal” per 10,000 words, 1957 and 1962</span></div>
-          <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. Definitions must date their sources.</p>
+          <p>Under 1 from 2007 to 2023, apart from one sparse year, in the journal <em>African Music</em>. A definition needs the dates of its sources.</p>
         </div>
         <div class="col">
-          <div class="col-head">A mention is not a subject</div>
+          <div class="col-head">Most mentions are in passing</div>
           <div class="stat"><span class="stat-num">0 of 46</span><span class="stat-label">articles that mention “timbila” carry a heading for it</span></div>
           <p>31 of the 46 mention it once or twice. “Mbira” occurs in 219 full texts; 18 records carry the heading “Mbira music”.</p>
         </div>
         <div class="col">
-          <div class="col-head">Quotes are checked; claims are not</div>
+          <div class="col-head">The code checks quotes only</div>
           <div class="stat"><span class="stat-num">7 of 7</span><span class="stat-label">claims with a quote found in the text</span></div>
-          <p>The code checks that each quote is in the text the model read. It does not check that the claim is right.</p>
+          <p>It confirms that each quote appears in the text the model read. Whether the claim is right needs a reader who knows the field.</p>
         </div>
       </div>
       <p class="source">“Tribal”: AMIRA MCP server, full-text map of 657 <em>African Music</em> articles, 16 November 2026.</p>
 </section>
-<section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
-<p class="reader-folio"><a href="index.html#/10">Slide 11</a></p>
-<h2 class="slide-title" id="slide-11-title">What comes next in the pilot</h2>
+<section class="reader-slide" id="slide-14" aria-labelledby="slide-14-title">
+<p class="reader-folio"><a href="index.html#/13">Slide 14</a></p>
+<h2 class="slide-title" id="slide-14-title">What comes next in the pilot</h2>
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1</span>
@@ -276,12 +357,12 @@
         </div>
       </div>
 </section>
-<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
-<p class="reader-folio"><a href="index.html#/11">Slide 12</a></p>
+<section class="reader-slide" id="slide-15" aria-labelledby="slide-15-title">
+<p class="reader-folio"><a href="index.html#/14">Slide 15</a></p>
 <p class="kicker">Thank you</p>
-      <h2 id="slide-12-title">Definitions drafted from the collection, checked by code, decided by researchers.</h2>
-      <div class="byline"><span class="name">Frédérick Madore</span><span class="role">Data Curator</span><span class="affil">Africa Multiple Cluster of Excellence</span></div>
-      <div></div>
+      <h2 id="slide-15-title">Definitions drafted from the collection, checked by code, decided by researchers.</h2>
+      <div class="byline"><span class="name authors-list">Frédérick Madore, Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span></div>
+      <div class="contact"><a href="https://github.com/AM-Digital-Research-Environment"><span class="ico"></span><span>github.com/AM-Digital-Research-Environment</span></a><a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"><span class="ico"></span><span>Africa Multiple · Digital Solutions</span></a></div>
       <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
 </section>
   </main>
