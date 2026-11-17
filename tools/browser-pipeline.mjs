@@ -81,6 +81,11 @@ try {
   await page.emulateMedia({ media: 'screen' });
 
   await open('?print-pdf');
+  // Reveal lays out its print pages after `ready`, so the figure can still be
+  // moving between containers here: wait for the settled state, then assert it.
+  await page.waitForFunction(() => document.querySelector('.reveal .pdf-page #pipeline-example')
+    && !document.querySelector('#pipeline-example .fragment'));
+  await pipeline.locator('[data-pipeline-art]').last().waitFor({ state: 'visible' });
   assert.equal(await pipeline.locator('.fragment').count(), 0);
   assert.equal(await pipeline.locator('button').isVisible(), false);
   assert.equal(await pipeline.locator('[data-pipeline-art]').last().isVisible(), true);
