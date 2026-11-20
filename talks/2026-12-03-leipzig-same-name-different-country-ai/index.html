@@ -132,7 +132,7 @@
   /* Slide 9: who acts at each step, under the step's name. */
   .reveal .sn-a-pipeline .pipeline { margin-top: var(--space-sm); }
   .reveal .sn-a-pipeline .pipeline > figcaption { margin-bottom: var(--space-md); }
-  .reveal .sn-a-pipeline [data-pipeline-art] { height: 6rem; }
+  .reveal .sn-a-pipeline [data-pipeline-art] { height: 5.25rem; }
   .reveal .sn-a-pipeline .pipeline-controls { margin-top: var(--space-sm); }
   .reveal .sn-a-pipeline .pipeline-step h3 { font-size: var(--fs-body); margin: var(--space-sm) 0 var(--space-xs); }
   .reveal .sn-a-pipeline .pipeline-step p { font-size: var(--fs-body); line-height: 1.28; }
@@ -161,6 +161,26 @@
   .reveal .sn-a-cands i { color: var(--ink-soft); }
   .reveal .sn-a-outcomes { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin: var(--space-sm) 0 0; }
   .reveal .sn-a-decide .source { margin: 0; }
+  .reveal .sn-a-loop { margin: var(--space-md) 0 0; padding-top: var(--space-xs); border-top: 3px dashed var(--green); font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; color: var(--green-deep); max-width: none; }
+  .reveal .sn-a-loop::before { content: "↺ "; }
+
+  /* The curator's workbook: six tabs on one rule, then five rows. */
+  .reveal .sn-a-sheet .slide-title, .reveal .sn-a-sheet .source { max-width: none; }
+  .reveal .sn-a-tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0 var(--space-md); max-width: none; margin: var(--space-sm) 0 var(--space-md); padding: 0; border-top: 3px solid var(--rule); }
+  .reveal .sn-a-tabs > li { display: flex; flex-direction: column; margin: 0; padding: var(--space-xs) 0 0; }
+  .reveal .sn-a-tabs > li::before { content: none; }
+  .reveal .sn-a-tabs b { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h3); line-height: 1; color: var(--ink-bold); font-variant-numeric: tabular-nums; }
+  .reveal .sn-a-tabs > li > span { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; line-height: 1.2; color: var(--ink-soft); }
+  .reveal .sn-a-rows { font-size: var(--fs-small); }
+  .reveal .sn-a-rows thead th:nth-child(1) { width: 24%; }
+  .reveal .sn-a-rows thead th:nth-child(2) { width: 24%; }
+  .reveal .sn-a-rows thead th:nth-child(3) { width: 19%; }
+  .reveal .sn-a-rows thead th:nth-child(4) { width: 33%; }
+  .reveal .sn-a-rows td:nth-child(3) { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; color: var(--ink-soft); }
+  .reveal .sn-a-rows .sn-a-id { margin: 0; }
+  .reveal .sn-a-m { font-family: var(--font-label); font-weight: 600; color: var(--green-deep); margin-left: var(--space-2xs); }
+  .reveal .sn-a-none { font-style: italic; color: var(--ink-soft); }
+  .reveal .sn-a-sheet .source { margin-top: var(--space-sm); }
   </style>
   <style data-part="b">
   /* Part B: slides 12-21 and annexe (classes prefixed sn-b-) */
@@ -559,18 +579,20 @@
           <li class="pipeline-step">
             <span class="pipeline-number">5</span>
             <div data-pipeline-art="review" aria-hidden="true"></div>
-            <h3>Leftovers</h3>
+            <h3>Proposals</h3>
             <p class="sn-a-actor"><span class="chip green">Agents</span> then the curator</p>
-            <p>Reviewer agents propose new records. The curator approves each plan.</p>
+            <p>Reviewers propose records and names. The curator decides each.</p>
           </li>
         </ol>
+        <p class="sn-a-loop">Alternative names the curator accepts go back to step 2 as matching keys.</p>
       </figure>
       <aside class="notes">
         <p>[on arrival: step 1] The workflow as run on the Burkinabè press in October. Step one: Claude Haiku 5.5 reads each article once and returns the persons, organisations, places and a few subjects. One model call per article, with no tools.</p>
         <p>[→ step 2] Step two, matching, is code with no model: exact keys first, looser keys only when every exact key has missed. A name that fits several records, or only approximately, is left unlinked.</p>
         <p>[→ step 3] Step three decides the country. The same model rereads each article with its candidates, and keeps, chooses or drops each link, only among the ids it was offered.</p>
         <p>[→ step 4] Step four: scripts write after a dry run, and every link names the model that proposed it.</p>
-        <p>[→ step 5] Step five handles the names nothing matched. Here, and only here, I use agents in the strict sense: Claude Code subagents, one per batch, proposing new records. I approve the plans, and a script creates the records.</p>
+        <p>[→ step 5] Step five handles the names nothing matched. Here, and only here, I use agents in the strict sense: Claude Code subagents, one per batch, proposing new records, or another name for a record that already exists. I decide each proposal, and a script writes what I approve.</p>
+        <p>The loop at the bottom matters. An alternative name I accept becomes a matching key, so the next run links that form at step two, without a model.</p>
       </aside>
     </section>
 
@@ -622,11 +644,42 @@
       <p class="source">Claude Haiku 5.5. Extraction 20 October (1 h 38, about $6.50); leftovers 21 October; context check and write 22 October. From the pipeline changelog and run files.</p>
       <div class="callout sn-a-wide">
         <span class="callout-label">The other countries</span>
-        Togo: 1,570 articles extracted and matched on 23 October; no context check, nothing written. Côte d'Ivoire, Benin, Niger and Nigeria: not run.
+        Togo: 1,570 articles extracted and matched on 23 October; leftovers reviewed on 20 November; nothing written. Côte d'Ivoire, Benin, Niger and Nigeria: not run.
       </div>
       <aside class="notes">
         <p>After the re-check, the model kept 88,250 matches, dropped 1,776 and settled 522 names the code had left open. The scripts wrote some fifty thousand place and subject links to 7,709 articles; matches kept and links written count different things. The leftovers produced 674 new records. The extraction took an hour and thirty-eight minutes and cost about six and a half dollars; for the context check I have only the pilot's figure, about eight cents per hundred articles.</p>
         <p>Nobody reads eight thousand articles to check fifty thousand links. But there is no hand-checked error rate yet, for any step, so these figures count the model's decisions, and I cannot say how many are correct.</p>
+      </aside>
+    </section>
+
+    <section class="sn-a-sheet" data-toc="The curator’s workbook">
+      <h2 class="slide-title">What the curator receives</h2>
+      <ol class="sn-a-tabs" aria-label="The six tabs of the Togo workbook, with the number of rows in each">
+        <li><b>28</b><span>Alternatives to add</span></li>
+        <li><b>38</b><span>Stubs to file</span></li>
+        <li><b>134</b><span>New records</span></li>
+        <li><b>22</b><span>Possible duplicates</span></li>
+        <li><b>21</b><span>To decide</span></li>
+        <li><b>12</b><span>Set aside</span></li>
+      </ol>
+      <table class="sn-a-table sn-a-rows">
+        <thead>
+          <tr><th scope="col">Name in the articles</th><th scope="col">Proposal</th><th scope="col">Flags</th><th scope="col">Reviewer’s note</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Agence nationale de l’aviation civile <span class="sn-a-m">7</span></th><td>New record, “(Togo)” in the title</td><td>High · homonym risk</td><td>ANAC is also Burkinabè record <a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/127039" target="_blank" rel="noopener">127039</a>, a different body.</td></tr>
+          <tr><th scope="row">Église évangélique presbytérienne <span class="sn-a-m">13</span></th><td>Alternative name for <a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/845" target="_blank" rel="noopener">845</a></td><td>High · homonym risk</td><td>Not the Église évangélique du Togo (<a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/851" target="_blank" rel="noopener">851</a>), a different church.</td></tr>
+          <tr><th scope="row">Kanté <span class="sn-a-m">14</span></th><td>New place record</td><td>High · homonym risk</td><td>A town in the Kéran, not the person Issiaka Kanté (<a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/63517" target="_blank" rel="noopener">63517</a>).</td></tr>
+          <tr><th scope="row">Stade de Kégué <span class="sn-a-m">5</span></th><td>Alternative name for the Stade Gnassingbé Eyadéma (<a class="sn-a-id" href="https://islam.zmo.de/s/westafrica/item/73296" target="_blank" rel="noopener">73296</a>)</td><td>Medium · general knowledge</td><td>The snippets do not say so; the curator should confirm.</td></tr>
+          <tr><th scope="row">Zongo <span class="sn-a-m">34</span></th><td class="sn-a-none">No proposal</td><td>—</td><td>A quarter name in Kpalimé, Lomé and Elavagnon: no single place is meant.</td></tr>
+        </tbody>
+      </table>
+      <p class="source">Togo, 1,570 articles; Claude Haiku 5.5 as reviewer, 20 November 2026. Five of 255 rows, chosen by hand and translated. Figure: articles using that form. Nothing written yet.</p>
+      <aside class="notes">
+        <p>This is what step five hands me, for Togo. Not a list of links, but a workbook in six tabs: names to add to existing records, stubs to file, new records, possible duplicates, cases to decide, and terms set aside.</p>
+        <p>I chose five rows. The aviation agency gets a new record with Togo in its title, because ANAC is also the Burkinabè agency, which we already have. The Presbyterian church is added as another name for its record, and the reviewer warns that it is not the Evangelical Church of Togo. Kanté is a town, not the man called Kanté.</p>
+        <p>The stadium row is flagged differently: the reviewer knows that Kégué stadium is the Eyadéma stadium, but the articles do not say so, and the flag tells me to check. And Zongo, named in thirty-four articles, gets no proposal at all. Several towns have a quarter called Zongo, so the decision stays with me, or the name stays unlinked.</p>
+        <p>Nothing in this workbook has been written to the archive yet.</p>
       </aside>
     </section>
     <!-- PART A END -->
