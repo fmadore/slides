@@ -255,7 +255,7 @@ next steps:
   1. Edit talks/{slug}/index.html — the slides and speaker notes.
   2. Preview:  python3 serve-deck.py   →  http://localhost:8742/talks/{slug}/
      (append ?check to see auto-fit / overflow diagnostics)
-  3. Validate: npm test && python3 tools/audit.py --strict
+  3. Validate: npm run validate
   4. Commit and push — the Pages workflow publishes {url}
 """)
     return 0

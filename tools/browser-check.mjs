@@ -13,8 +13,14 @@
  *                 (≤640px) chrome, whose tighter slide padding re-runs auto-fit
  *                 at a different scale than the desktop pass measures
  *
+ * Every page opened at every size also fails on page errors and on any local
+ * resource answering HTTP >= 400 (tools/lib/runtime.mjs watchPage).
+ *
  * Then once, on the component catalogue: the motion switch — .no-draw must
- * zero --draw-run and reach every animated mark and every counting numeral.
+ * zero --draw-run and reach every animated mark and every counting numeral;
+ * the interaction journeys and the .barchart 2:1 geometry; and on the ZMO
+ * starter, its contents rows and nav focus ring (tools/lib/interactions.mjs).
+ * Reading editions of the selected published decks are checked too.
  * The landing page (1280×720 and 390×844) and the 404 page get the same axe
  * pass as the slides.
  *
@@ -35,15 +41,15 @@ import { fileURLToPath } from 'node:url';
 import { auditDeck, axeFindings } from './lib/a11y.mjs';
 import { browserDiagnostics } from './lib/browser-diagnostics.mjs';
 import { checkReaders } from './lib/reader-check.mjs';
-import { checkInteractions } from './lib/interactions.mjs';
+import { checkBarchartGeometry, checkBrandChrome, checkInteractions } from './lib/interactions.mjs';
 import {
-  isCancelledRequest,
   intArg,
   launchChromium,
   listDecks,
   mapLimit,
   startStaticServer,
   valueArg,
+  watchPage,
 } from './lib/runtime.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -77,37 +83,18 @@ async function newContext(options) {
   return diagnostics.attach(await browser.newContext(options));
 }
 
-// True when a console message is about our own origin rather than a third party.
-function isLocal(text) { return text.includes('127.0.0.1') || text.includes('localhost'); }
-
+// Every openPage() caller reports `errors` (via failErrors) before closing: a
+// pass that drops them lets a missing local script, font or image through.
 async function openPage(ctx, url) {
   const page = await ctx.newPage();
-  await page.route('**/*', route => route.request().url().startsWith(BASE) ? route.continue() : route.abort());
-  const errors = [];
-  page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
-  page.on('console', m => {
-    // Count JS errors and *local* resource failures; ignore flaky external
-    // fetches (live iframes, remote embeds) so CI stays hermetic.
-    if (m.type() !== 'error') return;
-    const t = m.text();
-    if (/Failed to load resource|net::ERR/.test(t) && !isLocal(t)) return;
-    // A remote site refusing to be framed (X-Frame-Options / frame-ancestors)
-    // is the exact condition .site-frame's placeholder fallback exists for, and
-    // it depends on the *remote* server's headers — so it says nothing about
-    // this deck. Whether it fires at all depends on whether the runner has
-    // network, which made the gate flaky in both directions.
-    if (/(Content Security Policy directive: "frame-ancestors|in a frame because it set 'X-Frame-Options')/.test(t) && !isLocal(t)) return;
-    errors.push(t);
-  });
-  page.on('requestfailed', async r => {
-    if (r.url().startsWith(BASE) && !await isCancelledRequest(r)) {
-      errors.push(`request failed (${r.failure()?.errorText}): ${r.url()}`);
-    }
-  });
+  const errors = await watchPage(page, BASE);
   await page.goto(url, { waitUntil: 'load', timeout: 30000 });
   await page.evaluate(() => document.fonts ? document.fonts.ready : null);
   await page.waitForTimeout(600);
   return { page, errors };
+}
+function failErrors(where, errors, scope = 'console') {
+  for (const e of errors) fail(where, `${scope}: ${e}`);
 }
 
 const isDeckReady = () => typeof window.Reveal !== 'undefined' && Reveal.isReady && Reveal.isReady();
@@ -155,14 +142,14 @@ async function checkDeck(deck) {
     } catch (error) {
       fail(where, `could not run the accessibility check: ${error.message}`);
     }
-    for (const e of errors) fail(where, `console: ${e}`);
+    failErrors(where, errors);
     await ctx.close();
   }
 
   // ---- 844×390: footer must never cover slide content -------------------
   {
     const ctx = await newContext({ viewport: { width: 844, height: 390 }, hasTouch: true });
-    const { page } = await openPage(ctx, url);
+    const { page, errors } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     const bad = await page.evaluate(async () => {
       const footer = document.querySelector('.deck-footer').getBoundingClientRect();
@@ -178,13 +165,14 @@ async function checkDeck(deck) {
     }).catch(() => ['inspect error']);
     if (bad.length) fail(where, `844×390 — footer overlaps slides: ${bad.join(', ')}`);
     else ok(where, '844×390 — footer clear of all slides');
+    failErrors(where, errors, '844×390');
     await ctx.close();
   }
 
   // ---- 390×844: fixed canvas, no scroll view, no horizontal clipping ----
   {
     const ctx = await newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
-    const { page } = await openPage(ctx, url);
+    const { page, errors } = await openPage(ctx, url);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     // Auto-fit only measures once webfonts settle; wait so the walk below sees
     // real data-fit stamps instead of racing them.
@@ -213,15 +201,23 @@ async function checkDeck(deck) {
       for (const f of r.fitFails) fail(where, `390×844 — slide auto-fitted below threshold: ${f} (trim it or add data-fit-allow)`);
       if (!r.scroll && r.left >= -1 && r.right <= r.vw + 1 && !r.fitFails.length) ok(where, '390×844 — fixed canvas, no clipping, no fit failures');
     }
+    failErrors(where, errors, '390×844');
     await ctx.close();
   }
 }
 
 await mapLimit(decks, CONCURRENCY, checkDeck);
-await checkReaders({ browser, root: ROOT, base: BASE, fail, ok, diagnostics });
+await checkReaders({ browser, root: ROOT, base: BASE, fail, ok, diagnostics, only: ONLY });
 if (decks.includes('_showcase')) {
   try { await checkInteractions(browser, BASE, diagnostics); }
   catch (error) { fail('interactions', error.stack || String(error)); }
+  try { await checkBarchartGeometry(browser, BASE, diagnostics); }
+  catch (error) { fail('barchart geometry', error.stack || String(error)); }
+}
+// The ZMO skin's chrome, on its starter: with the interaction run, or alone.
+if (decks.includes('_template-zmo') || (decks.includes('_showcase') && existsSync(join(ROOT, 'talks', '_template-zmo', 'index.html')))) {
+  try { await checkBrandChrome(browser, BASE, diagnostics); }
+  catch (error) { fail('brand chrome', error.stack || String(error)); }
 }
 
 // ---- landing page and 404 ---------------------------------------------------
@@ -231,14 +227,14 @@ if (decks.includes('_showcase')) {
   const talks = await page.evaluate(() => document.querySelectorAll('li.talk').length);
   if (talks < 1) fail('index.html', 'landing page lists no talks');
   else ok('index.html', `landing page lists ${talks} talks`);
-  for (const e of errors) fail('index.html', `console: ${e}`);
+  failErrors('index.html', errors);
   await ctx.close();
 }
 for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.html', 1280, 720]]) {
   const where = path === '/' ? 'index.html' : path.slice(1);
   if (!existsSync(join(ROOT, path === '/' ? 'index.html' : path.slice(1)))) continue;
   const ctx = await newContext({ viewport: { width, height } });
-  const { page } = await openPage(ctx, `${BASE}${path}`);
+  const { page, errors } = await openPage(ctx, `${BASE}${path}`);
   try {
     const findings = await axeFindings(page);
     for (const finding of findings) fail(where, `a11y ${width}×${height}: ${finding}`);
@@ -246,6 +242,7 @@ for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.h
   } catch (error) {
     fail(where, `could not run the accessibility check: ${error.message}`);
   }
+  failErrors(where, errors, `${width}×${height}`);
   await ctx.close();
 }
 
@@ -263,7 +260,7 @@ for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.h
     viewport: { width: 1280, height: 720 },
     reducedMotion: 'no-preference',   // the switch under test must be the only one thrown
   });
-  const { page } = await openPage(ctx, `${BASE}/talks/${stillDeck}/`);
+  const { page, errors } = await openPage(ctx, `${BASE}/talks/${stillDeck}/`);
   await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
   const report = await page.evaluate(() => {
     const ms = value => {
@@ -343,6 +340,7 @@ for (const [path, width, height] of [['/', 1280, 720], ['/', 390, 844], ['/404.h
       ok(where, `motion switch — .no-draw stills all ${drew} animated mark(s) and ${counters} count(s)`);
     }
   }
+  failErrors(where, errors, 'motion switch');
   await ctx.close();
 }
 
@@ -362,7 +360,7 @@ if (SHOT_DIR) {
   ];
   for (const [w, h] of [[1280, 720], [844, 390], [390, 844]]) {
     const ctx = await newContext({ viewport: { width: w, height: h } });
-    const { page } = await openPage(ctx, `${BASE}/talks/${shotDeck}/`);
+    const { page, errors } = await openPage(ctx, `${BASE}/talks/${shotDeck}/`);
     await page.waitForFunction(isDeckReady, null, { timeout: 15000 }).catch(() => {});
     const markedShots = await page.evaluate(() => Reveal.getHorizontalSlides()
       .map((slide, index) => ({ name: slide.dataset.visualTest, index }))
@@ -380,6 +378,7 @@ if (SHOT_DIR) {
       await page.waitForTimeout(1800); // let transitions, rule-draw and count-ups settle
       await page.screenshot({ path: join(SHOT_DIR, `catalogue-${shot.name}-${w}x${h}.png`) });
     }
+    failErrors('screenshots', errors, `${shotDeck} @ ${w}×${h}`);
     await ctx.close();
     console.log(`ok    screenshots: ${shotDeck} @ ${w}×${h} → ${SHOT_DIR}`);
   }

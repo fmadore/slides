@@ -7,14 +7,6 @@ export async function slideInventory(page) {
   })));
 }
 
-export async function visitSlide(page, slide, { fragments = true } = {}) {
-  await page.evaluate(async ({ slide, fragments }) => {
-    Reveal.slide(slide.h, slide.v || 0);
-    if (fragments) while (Reveal.nextFragment()) { /* reveal final content */ }
-    await window.DeckRuntime.settle();
-  }, { slide, fragments });
-}
-
 export async function settlePrint(page) {
   await page.emulateMedia({ media: 'print' });
   await page.evaluate(() => window.DeckRuntime.ready);

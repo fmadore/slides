@@ -1,6 +1,147 @@
 import assert from 'node:assert/strict';
+import { settleAnimations } from './a11y.mjs';
 import { settlePrint, printGeometry } from './slides.mjs';
 import { checkRuntimeRegressions } from './runtime-regressions.mjs';
+
+async function hermeticContext(browser, base, diagnostics, label, options = {}) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: 'reduce', ...options });
+  if (diagnostics) await diagnostics.attach(ctx, label);
+  await ctx.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+  return ctx;
+}
+
+async function openDeck(page, base, deck) {
+  await page.goto(`${base}/talks/${deck}/`);
+  await page.evaluate(() => window.DeckRuntime.ready);
+  await page.evaluate(() => window.DeckRuntime.settle());
+}
+
+/** The ZMO skin restyles chrome the Broadsheet journeys never open. On its
+ *  starter deck: the contents overlay's rows must not inherit the skin's list
+ *  bullets or hanging indent, and on a dark-register slide (footer.on-dark)
+ *  a keyboard-focused nav control must draw a ring that shows against the
+ *  skin's white pill — WCAG 2.4.7 / 1.4.11, so 3:1 against the pill. */
+export async function checkBrandChrome(browser, base, diagnostics = null, deck = '_template-zmo') {
+  const ctx = await hermeticContext(browser, base, diagnostics, 'brand-chrome');
+  try {
+    const page = await ctx.newPage();
+    await openDeck(page, base, deck);
+    assert.equal(await page.evaluate(() => document.body.dataset.brand), 'zmo', `${deck} is not a ZMO-skin deck`);
+
+    await page.keyboard.press('t');
+    await page.locator('.toc-overlay').waitFor({ state: 'visible' });
+    const rows = await page.locator('.toc-list > li').evaluateAll(items => items.map(li => ({
+      label: li.textContent.trim().replace(/\s+/g, ' ').slice(0, 30),
+      marker: getComputedStyle(li, '::before').content,
+      padding: getComputedStyle(li).paddingLeft,
+    })));
+    assert.ok(rows.length > 0, 'contents overlay lists no rows');
+    const marked = rows.filter(row => !['none', 'normal'].includes(row.marker)).map(row => `${row.label} (${row.marker})`);
+    const indented = rows.filter(row => row.padding !== '0px').map(row => `${row.label} (${row.padding})`);
+    assert.deepEqual(marked, [], 'ZMO contents rows carry a list marker');
+    assert.deepEqual(indented, [], 'ZMO contents rows carry list padding');
+    await page.keyboard.press('Escape');
+    await page.locator('.toc-overlay').waitFor({ state: 'hidden' });
+
+    const dark = await page.evaluate(async () => {
+      for (const leaf of window.DeckRuntime.leafSlides()) {
+        const { h, v = 0 } = Reveal.getIndices(leaf);
+        Reveal.slide(h, v);
+        await window.DeckRuntime.settle();
+        if (document.querySelector('.deck-footer').classList.contains('on-dark')) return `#${h + 1}.${v}`;
+      }
+      return null;
+    });
+    assert.ok(dark, `${deck} has no dark-register slide to test the nav focus ring on`);
+    const controls = await page.locator('.deck-nav button:not([disabled])').count();
+    assert.ok(controls > 0, 'no enabled nav controls');
+    for (let i = 0; i < controls; i++) {
+      const button = page.locator('.deck-nav button:not([disabled])').nth(i);
+      // A key press first, so the programmatic focus counts as keyboard focus.
+      await page.keyboard.press('Shift');
+      await button.focus();
+      await settleAnimations(page);
+      const ring = await button.evaluate(el => {
+        const canvas = Object.assign(document.createElement('canvas'), { width: 1, height: 1 });
+        const paint = canvas.getContext('2d', { willReadFrequently: true });
+        const rgb = color => {   // any CSS colour, composited on white, as sRGB
+          paint.fillStyle = '#fff'; paint.fillRect(0, 0, 1, 1);
+          paint.fillStyle = color; paint.fillRect(0, 0, 1, 1);
+          return [...paint.getImageData(0, 0, 1, 1).data].slice(0, 3);
+        };
+        const luminance = c => c.map(v => v / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+          .reduce((sum, v, k) => sum + v * [0.2126, 0.7152, 0.0722][k], 0);
+        const nav = el.closest('.deck-nav'), cs = getComputedStyle(el), pill = getComputedStyle(nav).backgroundColor;
+        const [a, b] = [luminance(rgb(cs.outlineColor)), luminance(rgb(pill))];
+        return { name: el.getAttribute('aria-label') || el.className, focusVisible: el.matches(':focus-visible'),
+          style: cs.outlineStyle, width: parseFloat(cs.outlineWidth), color: cs.outlineColor, pill,
+          opacity: getComputedStyle(nav).opacity, contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) };
+      });
+      const what = `${dark} ${ring.name}`;
+      assert.ok(ring.focusVisible, `${what}: focus did not register as keyboard focus`);
+      assert.equal(ring.opacity, '1', `${what}: nav pill stays hidden while a control has focus`);
+      assert.ok(ring.style !== 'none' && ring.width >= 1, `${what}: no focus outline (${ring.style} ${ring.width}px)`);
+      assert.ok(ring.contrast >= 3, `${what}: focus ring ${ring.color} on pill ${ring.pill} is ${ring.contrast.toFixed(2)}:1, needs 3:1`);
+    }
+    console.log(`ok    brand chrome: ${deck} contents rows unmarked and flush; nav focus ring visible on dark slide ${dark}`);
+  } catch (error) {
+    diagnostics?.capture('brand chrome', error.stack || String(error));
+    throw error;
+  } finally {
+    await ctx.close();
+  }
+}
+
+/** --h is a share of the plot, so bar fills must stay proportional: a bar at
+ *  100% measures twice one at 50% (±2%) once settled. The fixture reuses the
+ *  catalogue's own bar markup, so it follows whatever structure the theme's
+ *  chart takes; the fill is the tallest painted box inside a bar outside its
+ *  value label, pseudo-elements included. */
+export async function checkBarchartGeometry(browser, base, diagnostics = null) {
+  const ctx = await hermeticContext(browser, base, diagnostics, 'barchart-geometry');
+  try {
+    const page = await ctx.newPage();
+    await openDeck(page, base, '_showcase');
+    await page.evaluate(async () => {
+      const chart = document.querySelector('.barchart');
+      if (!chart) throw new Error('the catalogue has no .barchart to build the fixture from');
+      const template = chart.querySelector('.bar');
+      chart.replaceChildren(...['100%', '50%'].map(h => {
+        const bar = template.cloneNode(true);
+        bar.classList.remove('is-peak', 'is-mute');
+        bar.style.setProperty('--h', h);
+        bar.dataset.fixture = h;
+        return bar;
+      }));
+      const { h, v = 0 } = Reveal.getIndices(chart.closest('section'));
+      Reveal.slide(h, v);
+      await window.DeckRuntime.settle();
+    });
+    await settleAnimations(page);
+    const heights = await page.evaluate(() => Object.fromEntries([...document.querySelectorAll('.bar[data-fixture]')].map(bar => {
+      const painted = cs => cs.display !== 'none' && !/rgba\(.*,\s*0\)$|transparent/.test(cs.backgroundColor);
+      let tallest = 0;
+      for (const el of [bar, ...bar.querySelectorAll('*')]) {
+        if (el.closest('.bar-v')) continue;
+        if (el !== bar && painted(getComputedStyle(el))) tallest = Math.max(tallest, el.getBoundingClientRect().height);
+        for (const pseudo of ['::before', '::after']) {
+          const cs = getComputedStyle(el, pseudo);
+          if (!['none', 'normal'].includes(cs.content) && painted(cs)) tallest = Math.max(tallest, parseFloat(cs.height) || 0);
+        }
+      }
+      return [bar.dataset.fixture, tallest];
+    })));
+    assert.ok(heights['50%'] > 0, `no painted fill found in the 50% bar: ${JSON.stringify(heights)}`);
+    const ratio = heights['100%'] / heights['50%'];
+    assert.ok(Math.abs(ratio - 2) <= 0.04, `bars at --h 100% and 50% measure ${heights['100%'].toFixed(1)}px and ${heights['50%'].toFixed(1)}px (${ratio.toFixed(3)}:1), not 2:1`);
+    console.log(`ok    barchart geometry: --h 100% and 50% measure ${ratio.toFixed(3)}:1`);
+  } catch (error) {
+    diagnostics?.capture('barchart geometry', error.stack || String(error));
+    throw error;
+  } finally {
+    await ctx.close();
+  }
+}
 
 /** Focused failure journeys, isolated from remote services. */
 export async function checkInteractions(browser, base, diagnostics = null) {
@@ -145,7 +286,8 @@ export async function checkInteractions(browser, base, diagnostics = null) {
     assert.equal(await page.locator('li.talk:visible a.talk-row[href*="dga-dormant-collections"]').count(), 1);
     // A talk's number is its own: filtering the list does not renumber it.
     assert.equal(await numberOf('dga-dormant-collections'), dgaNumber);
-    assert.equal(new URL(page.url()).searchParams.get('q'), 'OCR');
+    // The URL write is debounced, so wait for it, not for the keystroke.
+    await page.waitForFunction(() => new URLSearchParams(location.search).get('q') === 'OCR');
     // …and a shared filtered URL restores its state on load.
     await page.goto(`${base}/?tag=AMIRA`);
     assert.equal(await page.locator('#f-tag').inputValue(), 'AMIRA');

@@ -208,8 +208,9 @@ body[data-brand="zmo"] .deck-nav:focus-within { opacity: 1; }
 @media (hover: none) {
   body[data-brand="zmo"] .deck-nav { opacity: 1; }
 }
-/* The nav pill is white on every slide, so the on-dark register never applies. */
-body[data-brand="zmo"] .deck-footer.on-dark { color: var(--ink-soft); }
+/* The nav pill is white on every slide, so the on-dark register never applies,
+   its white focus ring included (1:1 on the pill): keep the skin's ring. */
+body[data-brand="zmo"] .deck-footer.on-dark { color: var(--ink-soft); --focus-ring: var(--zmo-orange-ink); }
 body[data-brand="zmo"] .deck-footer.on-dark .deck-nav .counter .cur { color: var(--zmo-blue); }
 body[data-brand="zmo"] .deck-footer.on-dark .deck-btn {
   background: transparent; border-color: var(--line-strong); color: var(--ink-soft);
@@ -260,14 +261,24 @@ body[data-brand="zmo"] .reveal .slides section[data-zmo-folio]:not(.stack, .cove
    the foot. Growers never shrink below their content, so an overfull slide
    still reads as overfull to the engine's auto-fit. reveal writes
    display:block inline on the present slide, hence !important (Broadsheet
-   does the same for its hero layouts). */
+   does the same for its hero layouts). The scroll view (?view=scroll) gets
+   the same column for every slide, not only the one reveal marks present, so
+   a slide does not re-lay itself out as it scrolls into view; the children
+   never shrink (below), so the column cannot hide an overfull slide.
+   Auto-fit: the engine wraps an overfull slide's children in a .fit box of
+   its own (a flex column), so each "section > child" rule here also names
+   "section > .fit > child", through :where() so its specificity is unchanged. */
 body[data-brand="zmo"] .reveal .slides section.present:not(.stack, .cover, .brand-logo, .media),
+body[data-brand="zmo"].reveal-scroll .reveal .slides .scroll-page-content > section:not(.stack, .cover, .brand-logo, .media),
 html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section:not(.stack, .cover, .brand-logo, .media) {
   display: flex !important; flex-direction: column;
 }
-body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) > * { flex-shrink: 0; }
-body[data-brand="zmo"] .reveal .slides section > :is(.cols, .flow) { flex: 1 0 auto; min-height: auto; }
-body[data-brand="zmo"] .reveal .slides section > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table, .pill-row, .tiers, .matrix) ~ p:nth-last-child(1 of :not(aside)) {
+body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) > *,
+body[data-brand="zmo"] .reveal .slides section:not(.stack, .cover, .brand-logo, .media) > :where(.fit) > * { flex-shrink: 0; }
+body[data-brand="zmo"] .reveal .slides section > :is(.cols, .flow),
+body[data-brand="zmo"] .reveal .slides section > :where(.fit) > :is(.cols, .flow) { flex: 1 0 auto; min-height: auto; }
+body[data-brand="zmo"] .reveal .slides section > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table, .pill-row, .tiers, .matrix) ~ p:nth-last-child(1 of :not(aside)),
+body[data-brand="zmo"] .reveal .slides section > :where(.fit) > :is(ul, ol, .cols, dl, .flow, .stat-grid, .figrow, figure, table, .pill-row, .tiers, .matrix) ~ p:nth-last-child(1 of :not(aside)) {
   margin-top: auto; margin-bottom: 0;
 }
 body[data-brand="zmo"] .reveal .cols { align-items: stretch; }
@@ -301,7 +312,8 @@ body[data-brand="zmo"] .reveal h4 { font-family: var(--zmo-font); letter-spacing
    frame while cards, callouts and figures sit on the frame edge, so the lead
    line started 13 px right of the card under it on almost every slide. Here
    the band title, the lead, running text and every box share x 64. */
-body[data-brand="zmo"] .reveal .slides section > :is(p, ul, ol, dl, h3, .stat-grid) { margin-inline: 0; }
+body[data-brand="zmo"] .reveal .slides section > :is(p, ul, ol, dl, h3, .stat-grid),
+body[data-brand="zmo"] .reveal .slides section > :where(.fit) > :is(p, ul, ol, dl, h3, .stat-grid) { margin-inline: 0; }
 
 /* The band title: white, 32 pt, top-anchored in the band. zmo.js shrinks a
    title that would wrap, the way PowerPoint's "shrink text on overflow" does. */
@@ -319,21 +331,24 @@ body[data-brand="zmo"] .reveal .slides section .lead {
   margin-top: 0; margin-bottom: 16px; max-width: none;
 }
 
-/* Lists: round bullets in the text colour, single-spaced items. */
-body[data-brand="zmo"] .reveal ul,
-body[data-brand="zmo"] .reveal ol { max-width: none; }
-body[data-brand="zmo"] .reveal ul > li { padding-left: 1.05em; margin: 0 0 0.6em; }
-body[data-brand="zmo"] .reveal ul > li::before {
+/* Lists: round bullets in the text colour, single-spaced items. Scoped to the
+   slides with :where(.slides), which adds no specificity: unscoped, these
+   rules outranked the engine's .toc-list reset and put a stray bullet and
+   indent on every row of the contents overlay. */
+body[data-brand="zmo"] .reveal :where(.slides) ul,
+body[data-brand="zmo"] .reveal :where(.slides) ol { max-width: none; }
+body[data-brand="zmo"] .reveal :where(.slides) ul > li { padding-left: 1.05em; margin: 0 0 0.6em; }
+body[data-brand="zmo"] .reveal :where(.slides) ul > li::before {
   content: "•"; top: 0; left: 0; width: auto; height: auto; border-radius: 0;
   background: none; color: currentColor; font-weight: 400;
 }
-body[data-brand="zmo"] .reveal li ul > li::before { content: "–"; background: none; }
+body[data-brand="zmo"] .reveal :where(.slides) li ul > li::before { content: "–"; background: none; }
 /* Nothing hangs below a column's last block: the PPT measures its text boxes
    to the last line, and a stray block margin pushed full slides into auto-fit. */
-body[data-brand="zmo"] .reveal :is(ul, ol) > li:last-child { margin-bottom: 0; }
+body[data-brand="zmo"] .reveal :where(.slides) :is(ul, ol) > li:last-child { margin-bottom: 0; }
 body[data-brand="zmo"] .reveal .cols > .col > :last-child { margin-bottom: 0; }
-body[data-brand="zmo"] .reveal ol > li { padding-left: 1.4em; margin: 0 0 0.6em; }
-body[data-brand="zmo"] .reveal ol > li::before {
+body[data-brand="zmo"] .reveal :where(.slides) ol > li { padding-left: 1.4em; margin: 0 0 0.6em; }
+body[data-brand="zmo"] .reveal :where(.slides) ol > li::before {
   content: counter(list-item) "."; top: 0; font-size: 1em; font-weight: 700;
   font-family: var(--zmo-font); color: var(--zmo-blue); letter-spacing: 0;
 }
@@ -439,19 +454,25 @@ body[data-brand="zmo"] .reveal .slides section.cover {
   font: 400 2.469rem/1.2 var(--zmo-font);
 }
 body[data-brand="zmo"] .reveal .slides > section.cover.present,
+body[data-brand="zmo"].reveal-scroll .reveal .slides .scroll-page-content > section.cover,
 html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section.cover {
   justify-content: flex-start; align-items: stretch;
 }
 body[data-brand="zmo"] .reveal section.cover > :is(p, .eyebrow, .byline),
-body[data-brand="zmo"] .reveal section.cover > .byline :is(.name, .role, .affil) {
+body[data-brand="zmo"] .reveal section.cover > :where(.fit) > :is(p, .eyebrow, .byline),
+body[data-brand="zmo"] .reveal section.cover > .byline :is(.name, .role, .affil),
+body[data-brand="zmo"] .reveal section.cover > :where(.fit) > .byline :is(.name, .role, .affil) {
   display: block; margin: 0; padding: 0; border: 0; max-width: none;
   font: inherit; font-style: normal; color: #ffffff; letter-spacing: 0; text-transform: none;
 }
-body[data-brand="zmo"] .reveal section.cover > .contact {
+body[data-brand="zmo"] .reveal section.cover > .contact,
+body[data-brand="zmo"] .reveal section.cover > :where(.fit) > .contact {
   justify-content: center; margin-top: 14px; font-size: var(--fs-caption);
 }
 body[data-brand="zmo"] .reveal section.cover > .contact a,
-body[data-brand="zmo"] .reveal section.cover > .contact a .ico { color: #ffffff; font-size: var(--fs-caption); }
+body[data-brand="zmo"] .reveal section.cover > :where(.fit) > .contact a,
+body[data-brand="zmo"] .reveal section.cover > .contact a .ico,
+body[data-brand="zmo"] .reveal section.cover > :where(.fit) > .contact a .ico { color: #ffffff; font-size: var(--fs-caption); }
 body[data-brand="zmo"] .reveal section.cover a {
   color: #ffffff; text-decoration-color: color-mix(in oklch, #ffffff, transparent 45%);
 }
@@ -500,6 +521,7 @@ body[data-brand="zmo"] .reveal section.compact {
   --zmo-card-pad: 16px 22px 18px;
 }
 body[data-brand="zmo"] .reveal .slides section.compact > :is(ul, ol, p):not(.lead),
+body[data-brand="zmo"] .reveal .slides section.compact > :where(.fit) > :is(ul, ol, p):not(.lead),
 body[data-brand="zmo"] .reveal .slides section.compact .cols:not(.cards) > .col > :is(ul, ol, p) { font-size: 1.333rem; }
 body[data-brand="zmo"] .reveal :is(.col-head, .card-head).alt { color: var(--zmo-orange-ink); }
 body[data-brand="zmo"] .reveal :is(.col-head, .card-head)::before { content: none; }
@@ -525,6 +547,9 @@ body[data-brand="zmo"] .reveal .stat-grid + .callout { max-width: none; }
 body[data-brand="zmo"] .reveal .callout.light { background: var(--zmo-card); color: var(--zmo-text); }
 body[data-brand="zmo"] .reveal .callout.light :is(strong, b, h3) { color: var(--zmo-blue); }
 body[data-brand="zmo"] .reveal .callout.light .callout-label { color: var(--zmo-orange-ink); }
+/* The blue box's white links and pale captions vanish on the card fill. */
+body[data-brand="zmo"] .reveal .callout.light a { color: var(--zmo-blue); }
+body[data-brand="zmo"] .reveal .callout.light :is(.small, .muted, .source) { color: var(--zmo-muted); }
 
 /* Facts ledger: an orange label column beside its text (dl.facts). */
 body[data-brand="zmo"] .reveal dl.facts {
@@ -589,7 +614,8 @@ body[data-brand="zmo"] .reveal .stat-grid .stat .stat-label {
    to two rows). .cols.hold: a row that keeps its content height instead of
    growing to the foot, for a row with more content after it. */
 body[data-brand="zmo"] .reveal .cols.three { --cols: 3; }
-body[data-brand="zmo"] .reveal .slides section > .cols.hold { flex: 0 0 auto; }
+body[data-brand="zmo"] .reveal .slides section > .cols.hold,
+body[data-brand="zmo"] .reveal .slides section > :where(.fit) > .cols.hold { flex: 0 0 auto; }
 
 /* QR in a card: p.card-meta (muted lines under the card head), .card-qr (the
    card's list beside a 128 px QR code) and p.card-foot (the link line, pinned
@@ -628,7 +654,8 @@ body[data-brand="zmo"] .reveal dl.facts.tight dd { font-size: 1.556rem; }
 
 /* .flow.bare: numbered steps without their cards, for a row under a figure.
    It keeps its own height instead of growing to the foot. */
-body[data-brand="zmo"] .reveal .slides section > .flow.bare { flex: 0 0 auto; margin-top: 14px; }
+body[data-brand="zmo"] .reveal .slides section > .flow.bare,
+body[data-brand="zmo"] .reveal .slides section > :where(.fit) > .flow.bare { flex: 0 0 auto; margin-top: 14px; }
 body[data-brand="zmo"] .reveal .flow.bare .flow-step { background: none; padding: 4px 6px 0 56px; }
 body[data-brand="zmo"] .reveal .flow.bare .flow-step .step-n { left: 0; top: 4px; }
 
@@ -761,9 +788,10 @@ body[data-brand="zmo"] .reveal .site-frame-view.has-shot {
 
 /* Figures: a hairline frame, the caption in the muted source voice. An image
    is held to the text area's height (y 230→606 less a caption line) and
-   shown whole. */
+   shown whole. The PDF export's capture of a live frame (.pdf-frame-capture)
+   keeps the frame's own height instead. */
 body[data-brand="zmo"] .reveal figure { margin: 0; }
-body[data-brand="zmo"] .reveal .slides section figure img {
+body[data-brand="zmo"] .reveal .slides section figure img:where(:not(.pdf-frame-capture)) {
   display: block; width: auto; height: auto; max-width: 100%; max-height: 320px;
 }
 body[data-brand="zmo"] .reveal figure figcaption { margin-top: 6px; }
@@ -784,5 +812,14 @@ html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page > section.bra
   padding: 0 !important;
 }
 /* Hidden, not removed: the export's bounds check reads the imprint's top as
-   the page's last line of text. */
+   the page's last line of text, so it sits on the ZMO layout's last line, not
+   Broadsheet's (y 678, under the logo): the foot of the text area (y 606) on
+   master slides, the top of the white foot band (y 537) on the cover and the
+   closing. A .media page keeps the engine's position. */
 body[data-brand="zmo"] .pdf-imprint { visibility: hidden; }
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page:has(> section:not(.stack, .cover, .brand-logo, .media)) > .pdf-imprint {
+  top: 606px; bottom: auto;
+}
+html.reveal-print body[data-brand="zmo"] .reveal .slides .pdf-page:has(> section.cover) > .pdf-imprint {
+  top: 537px; bottom: auto;
+}

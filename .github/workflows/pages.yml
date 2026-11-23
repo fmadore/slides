@@ -113,7 +113,10 @@ jobs:
         run: |
           BASE=$(git merge-base "origin/$BASE_REF" HEAD)
           CHANGED=$(git diff --name-only "$BASE" HEAD)
-          if grep -qE '^(shared/|talks/|index\.html|404\.html|tools/(build-|capture-visual|visual-|lib/browser))' <<< "$CHANGED"; then
+          # The browser build (package-lock.json, setup-playwright) and the
+          # capture's own helpers (settleAnimations, the static server) change
+          # pixels as surely as the theme does.
+          if grep -qE '^(shared/|talks/|index\.html|404\.html|package-lock\.json|\.github/actions/setup-playwright/|tools/(build-|capture-visual|visual-|lib/(browser|a11y|runtime)))' <<< "$CHANGED"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -187,6 +190,11 @@ jobs:
 
       # PDFs + social cards are expensive: restore the last run's outputs and
       # let export-pdf's content-hash check skip every unchanged deck.
+      # The run_id suffix is deliberate: actions/cache never re-saves on an
+      # exact key hit, and a deck whose live-frame capture failed is re-exported
+      # once that evidence expires (an hour, tools/lib/export-cache.mjs). Without
+      # the suffix the repaired export would never reach the cache, and every
+      # later run would restore the failure and export that deck again.
       - name: Restore PDF/social-card cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:

@@ -67,7 +67,9 @@
   transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .deck-btn svg { width: 1.05rem; height: 1.05rem; }
-.deck-btn:hover { color: var(--paper); border-color: var(--green); background: var(--green); transform: translateY(-1px); }
+/* Green-deep, as on .toc-close: Paper on raw green is 3.87:1, under 4.5:1 for
+   the Contents button's small caps; on green-deep it is 6.12:1. */
+.deck-btn:hover { color: var(--paper); border-color: var(--green-deep); background: var(--green-deep); transform: translateY(-1px); }
 .deck-btn:active { transform: translateY(0); }
 .deck-btn:disabled { opacity: 0.3; cursor: default; transform: none; background: transparent; border-color: var(--line); color: var(--ink-faint); }
 /* The ring follows the field: green measured 1.28:1 on the green divider, so
@@ -197,6 +199,7 @@
   color: var(--ink-soft); transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .toc-close:hover { background: var(--green-deep); color: var(--paper); border-color: var(--green-deep); }
+.toc-close:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .toc-close svg { width: 1rem; height: 1rem; }
 .deck-status {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

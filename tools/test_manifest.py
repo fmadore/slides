@@ -154,6 +154,20 @@ class CitationMetadata(unittest.TestCase):
         start = head.index('<script type="application/ld+json">') + len('<script type="application/ld+json">')
         return json.loads(head[start:head.index("</script>", start)].replace("<\\/", "</"))
 
+    def test_title_names_one_two_or_first_et_al(self):
+        cases = {
+            ("Frédérick Madore",): "Frédérick Madore",
+            ("Vincent Hiribarren", "Frédérick Madore"): "Hiribarren &amp; Madore",
+            ("Frédérick Madore", "Jiayu Yang", "Oliver Baumann"): "Madore et al.",
+            tuple(f"P. Person{n}" for n in range(6)): "Person0 et al.",
+        }
+        for presenters, label in cases.items():
+            with self.subTest(presenters=presenters):
+                head = self.head(presenters=list(presenters))
+                self.assertIn(f"<title>Landing title — {label}</title>", head)
+                # every presenter is still credited to citation managers
+                self.assertEqual(self.meta(head, "citation_author"), list(presenters))
+
     def test_highwire_tags_describe_the_talk_as_a_conference_paper(self):
         head = self.head()
         self.assertEqual(self.meta(head, "citation_title"), ["Longer deck title"])

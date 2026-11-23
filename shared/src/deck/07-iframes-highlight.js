@@ -19,7 +19,11 @@
          declares data-frame-trusted for this page's origin (an empty value
          trusts any origin) and the site is reachable. Otherwise the saved
          view is what the room sees — which is right for a site that refuses
-         to be framed here. */
+         to be framed here.
+     A .site-frame-view.has-shot paints a saved screenshot as its background:
+     the frame still shows as soon as the site answers, but while it is being
+     reached, or if it cannot be, the screenshot shows instead of an opaque
+     notice, and the status is announced without covering it. */
   function lazifyFrames() {
     document.querySelectorAll(".reveal .slides .site-frame-view > iframe[src]").forEach(function (f) {
       if (!f.hasAttribute("data-src")) f.setAttribute("data-src", f.getAttribute("src"));
@@ -33,10 +37,12 @@
     var activation = new WeakMap();
     window.addEventListener("message", function (event) {
       frames.forEach(function (f) {
+        // Cheap identity checks first: only the frame that sent the message
+        // is worth parsing a URL for.
         var type = f.getAttribute("data-ready-message");
-        var url = new URL(f.getAttribute("data-src") || f.src, location.href);
-        if (type && event.source === f.contentWindow && event.origin === url.origin &&
-            event.data && event.data.type === type && leafSlideFor(f) === Reveal.getCurrentSlide()) {
+        if (!type || event.source !== f.contentWindow || !event.data || event.data.type !== type) return;
+        var url = new URL(frameURL(f) || f.src, location.href);
+        if (event.origin === url.origin && leafSlideFor(f) === Reveal.getCurrentSlide()) {
           f.setAttribute("data-frame-ready", "");
           clearTimeout(fallbackTimers.get(f));
           hideFallback(f);
@@ -51,14 +57,22 @@
       var v = f.getAttribute("data-frame-trusted").trim();
       return v === "" || v === location.origin;
     }
+    /* A view with .has-shot paints the author's saved screenshot as its own
+       background-image (the ZMO decks), so that screenshot is the saved view. */
+    function hasShot(f) { return f.parentElement.classList.contains("has-shot"); }
     /* The generated notice: a ruled paper-ground fallback with the persistent
        external link. It covers the frame only while the site is being reached
-       or once it has proved unreachable. */
+       or once it has proved unreachable. Over a .has-shot view it is a status
+       for assistive technology only (data-frame-notice="quiet", visually
+       hidden): the screenshot stays in view, and the frame bar keeps the Open
+       link, so the notice carries none of its own. */
     function generatedFallback(f) {
       var view = f.parentElement;
+      var quiet = hasShot(f);
       var openLink = f.closest(".site-frame") && f.closest(".site-frame").querySelector(".site-frame-open");
-      var href = f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || frameURL(f);
+      var href = quiet ? "" : f.getAttribute("data-fallback-href") || (openLink && openLink.getAttribute("href")) || frameURL(f);
       var fb = elem('<div class="frame-fallback" data-frame-notice role="status"><p></p></div>');
+      if (quiet) fb.setAttribute("data-frame-notice", "quiet");
       if (href) {
         var link = document.createElement("a");
         link.href = href;
@@ -76,9 +90,11 @@
       if (fb) fb.hidden = true;
       f.style.visibility = "";
     }
+    // Only the engine's own notice is rewritten; an author's fallback copy is
+    // theirs to word.
     function markUnavailable(fb) {
-      var text = fb.querySelector("p");
-      if (text && fb.classList.contains("frame-fallback")) text.textContent = STR.frameUnavailable;
+      var text = fb.hasAttribute("data-frame-notice") && fb.querySelector("p");
+      if (text) text.textContent = STR.frameUnavailable;
     }
     function watchCurrent() {
       frames.forEach(function (f) {
@@ -96,7 +112,9 @@
         var generated = fallback.hasAttribute("data-frame-notice");
         if (generated) fallback.querySelector("p").textContent = STR.frameLoading;
         fallback.hidden = false;
-        if (fallback.matches("img")) f.style.visibility = "hidden";
+        // Whatever the fallback, the frame behind it leaves the tab order and
+        // the accessibility tree; over .has-shot it also uncovers the screenshot.
+        f.style.visibility = "hidden";
         var handshake = f.hasAttribute("data-ready-message");
         // Reachability decides whether the frame may show; a saved view the
         // author kept gives way only on a handshake or a trust declaration.

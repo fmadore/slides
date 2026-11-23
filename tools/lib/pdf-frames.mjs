@@ -248,18 +248,36 @@ export async function installPrintFrameSnapshots(page, captures) {
       const occurrence = seen.get(url) || 0;
       seen.set(url, occurrence + 1);
       const record = byKey.get(`${url}${separator}${occurrence}`);
-      // A capture keeps the height it was taken at; the 120 px floor is for
-      // placeholders, which need room for their notice.
-      const height = record?.dataUrl && record.height > 1
-        ? record.height
-        : Math.max(120, record?.height || frame.getBoundingClientRect().height || frame.clientHeight || 360);
       let replacement;
-      const fallbacks = [...frame.parentElement.querySelectorAll('.frame-fallback, .viz-fallback, .amrc-fallback')];
-      const authored = fallbacks.map(fallback => fallback.matches('img') ? fallback : fallback.querySelector('img'))
+      const view = frame.parentElement;
+      const fallbacks = [...view.querySelectorAll('.frame-fallback, .viz-fallback, .amrc-fallback')];
+      const authoredImg = fallbacks.map(fallback => fallback.matches('img') ? fallback : fallback.querySelector('img'))
         .find(image => image && (image.getAttribute('data-src') || image.getAttribute('src')));
+      // A .site-frame-view.has-shot paints the author's saved view as its own
+      // background-image; it is an authored fallback like an <img>, framed as
+      // the background frames it.
+      let authored = null;
+      if (authoredImg) {
+        const look = getComputedStyle(authoredImg);
+        authored = {
+          src: authoredImg.getAttribute('data-src') || authoredImg.getAttribute('src'),
+          alt: authoredImg.alt, fit: look.objectFit, position: look.objectPosition,
+        };
+      } else if (view.classList.contains('has-shot')) {
+        const look = getComputedStyle(view);
+        const match = /url\(\s*(['"]?)(.*?)\1\s*\)/.exec(look.backgroundImage);
+        if (match) {
+          const size = look.backgroundSize;
+          authored = {
+            src: match[2], alt: '',
+            fit: size === 'contain' ? 'contain' : size === 'cover' ? 'cover' : 'none',
+            position: look.backgroundPosition,
+          };
+        }
+      }
       let authoredImage;
       if (!record?.dataUrl && authored) {
-        const source = new URL(authored.getAttribute('data-src') || authored.getAttribute('src'), document.baseURI);
+        const source = new URL(authored.src, document.baseURI);
         // Prefer a checked local screenshot over an unavailable live site.
         if (source.origin === location.origin || source.protocol === 'data:') {
           const candidate = new Image();
@@ -277,7 +295,10 @@ export async function installPrintFrameSnapshots(page, captures) {
         replacement = authoredImage;
         replacement.alt = authored.alt || frame.title || 'Saved view of live web content';
         replacement.className = `${frame.className || ''} pdf-frame-capture`.trim();
-        replacement.style.objectFit = 'contain';
+        // Framed as the live view frames it (the theme's cover, or the
+        // author's own object-fit), not letterboxed.
+        replacement.style.objectFit = authored.fit || 'cover';
+        if (authored.position) replacement.style.objectPosition = authored.position;
         authoredFallbacks += 1;
       } else {
         replacement = document.createElement('div');
@@ -292,6 +313,15 @@ export async function installPrintFrameSnapshots(page, captures) {
         replacement.append(label, title, address);
         placeholders += 1;
       }
+      // A capture keeps the height it was taken at and an authored fallback
+      // the frame's own; only a generated placeholder takes the 120 px floor,
+      // which it needs for its notice.
+      const frameHeight = frame.getBoundingClientRect().height || frame.clientHeight;
+      const height = record?.dataUrl && record.height > 1
+        ? record.height
+        : authoredImage
+          ? (record?.height || frameHeight || 360)
+          : Math.max(120, record?.height || frameHeight || 360);
       replacement.style.height = `${height}px`;
       replacement.dataset.pdfFrameState = record?.dataUrl ? 'screenshot' : authoredImage ? 'authored-fallback' : 'placeholder';
       fallbacks.forEach(fallback => { fallback.hidden = true; });

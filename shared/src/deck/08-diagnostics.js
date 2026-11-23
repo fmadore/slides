@@ -143,8 +143,10 @@
     });
 
     Reveal.on("slidechanged", update);
-    Reveal.on("overviewshown", function () { if (footer) footer.style.opacity = "0"; });
-    Reveal.on("overviewhidden", function () { if (footer) footer.style.opacity = ""; });
+    // Overview hides the footer; inert takes its buttons out of the tab order
+    // and the pointer path too, so nothing invisible stays clickable.
+    Reveal.on("overviewshown", function () { if (footer) { footer.style.opacity = "0"; footer.inert = true; } });
+    Reveal.on("overviewhidden", function () { if (footer) { footer.style.opacity = ""; footer.inert = false; } });
   }
 
   function revealPlugins() {

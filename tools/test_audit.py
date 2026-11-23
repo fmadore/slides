@@ -287,6 +287,16 @@ DRIFT = [
     ("animation no stiller can reach",
      ".reveal .ruse .n { animation: count-up 900ms var(--ease) both; }",
      "the duration does not come from var(--draw-run)"),
+    # Issue #31: three loopholes the first sweep left open.
+    ("corporate hex parked in a custom property",
+     ".reveal .pl { --pl-green: #009260; }",
+     "even inside a custom property"),
+    ("type under the floor, spelled in the font shorthand",
+     ".reveal .kvm-tag { font: 600 0.62rem/1.2 var(--font-label); }",
+     "under the 1.00rem floor for the canvas"),
+    ("type under the chrome floor on the PDF imprint",
+     ".pdf-imprint { font-size: 0.70rem; }",
+     "under the 0.80rem floor for chrome"),
 ]
 
 CLEAN = [
@@ -328,6 +338,14 @@ CLEAN = [
      ".reveal .bar { animation: grow-up var(--draw-run) var(--ease) both; }"),
     ("an animation turned off",
      ".reveal .bar { animation: none; }"),
+    ("a custom property that takes the token",
+     ".reveal .pl { --pl-green: var(--green);"
+     " --pl-wash: color-mix(in oklch, var(--green), #ffffff 90%); --pl-gap: 0.5rem; }"),
+    ("the font shorthand at the floor, and with no length at all",
+     ".reveal .r-h { font: 700 18px/1.15 var(--font-label); }"
+     " .reveal .r-p { font: inherit; } .reveal .r-q { font: italic 600 1rem/1.2 serif; }"),
+    ("the PDF imprint is chrome, outside the canvas",
+     ".pdf-imprint { font-size: 0.80rem; }"),
 ]
 
 
@@ -399,7 +417,7 @@ class DeckCssRules(DeckCssCase):
                     parser.feed(handle.read())
                 with self.subTest(slug):
                     for source, first_line in parser.styles:
-                        rules = list(audit.iter_css_rules(source, first_line))
+                        rules = list(audit.css_audit.iter_css_rules(source, first_line))
                         self.assertGreater(len(rules), source.count("\n") // 10)
                     audit.audit_deck_css(deck, rep)
         finally:
@@ -416,7 +434,7 @@ class CssRuleParser(AuditCase):
     """
 
     def rules(self, css, first_line=1):
-        return list(audit.iter_css_rules(css, first_line))
+        return list(audit.css_audit.iter_css_rules(css, first_line))
 
     def test_every_rule_of_a_long_stylesheet_is_read(self):
         css = "\n".join(f".reveal .r{n} {{ color: var(--ink); }}" for n in range(64))
@@ -459,7 +477,7 @@ class CssRuleParser(AuditCase):
 
     def test_declarations_carry_their_own_line_number(self):
         rule = self.rules(".reveal .a {\n  color: var(--ink);\n  font-size: 0.62rem;\n}", 5)[0]
-        sizes = [d for d in audit.iter_css_declarations(rule.body, rule.line)
+        sizes = [d for d in audit.css_audit.iter_css_declarations(rule.body, rule.line)
                  if d.prop == "font-size"]
         self.assertEqual(rule.line, 5)
         self.assertEqual(sizes[0].line, 7)
@@ -467,23 +485,104 @@ class CssRuleParser(AuditCase):
     def test_a_semicolon_or_comma_inside_a_value_does_not_split_it(self):
         rule = self.rules('.reveal .a { background: url("a;b.png") no-repeat;'
                           ' font-family: "Libre Franklin", sans-serif; }')[0]
-        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        decls = list(audit.css_audit.iter_css_declarations(rule.body, rule.line))
         self.assertEqual([d.prop for d in decls], ["background", "font-family"])
 
     def test_a_comment_inside_a_block_is_not_read_as_a_declaration(self):
         rule = self.rules(".reveal .a { /* never `all`: it sweeps the focus ring in */"
                           " transition: color 220ms; }")[0]
-        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        decls = list(audit.css_audit.iter_css_declarations(rule.body, rule.line))
         self.assertEqual([(d.prop, d.value) for d in decls], [("transition", "color 220ms")])
 
     def test_important_is_not_part_of_the_value(self):
         rule = self.rules(".reveal .a { display: flex !important; }")[0]
-        self.assertEqual(list(audit.iter_css_declarations(rule.body))[0].value, "flex")
+        self.assertEqual(list(audit.css_audit.iter_css_declarations(rule.body))[0].value, "flex")
 
     def test_custom_properties_are_left_to_the_theme(self):
         rule = self.rules(".reveal .a { --fs-local: 0.5rem; font-size: var(--fs-local); }")[0]
-        decls = list(audit.iter_css_declarations(rule.body, rule.line))
+        decls = list(audit.css_audit.iter_css_declarations(rule.body, rule.line))
         self.assertEqual([d.prop for d in decls], ["font-size"])
+
+    def test_custom_properties_are_read_when_asked_for(self):
+        rule = self.rules(".reveal .a { --pl-green: #009260; color: var(--pl-green); }")[0]
+        decls = list(audit.css_audit.iter_css_declarations(rule.body, rule.line,
+                                                           custom_properties=True))
+        self.assertEqual([d.prop for d in decls], ["--pl-green", "color"])
+
+    def test_a_custom_property_below_the_floor_is_not_a_size(self):
+        """Only the hex rule reads custom properties: `--gap: 0.5rem` is not
+        type until a font-size takes it."""
+        path = self.write("talks/2026-01-01-demo/index.html",
+                          "<html><head><style>.reveal .a { --gap: 0.5rem; --w: 40vw; }"
+                          "</style></head></html>")
+        audit.audit_deck_css(path, self.rep)
+        self.assertSilent()
+
+    def test_a_rule_knows_the_media_query_it_sits_in(self):
+        css = ("@media print {\n  .reveal .a { display: none; }\n}\n"
+               "@media (prefers-reduced-motion: reduce) { @supports (display: grid) {"
+               " .reveal .b { color: red; } } }\n"
+               ".reveal .c { color: var(--ink); }\n")
+        self.assertEqual([(r.selector, r.context) for r in self.rules(css)],
+                         [(".reveal .a", "@media print"),
+                          (".reveal .b", "@media (prefers-reduced-motion: reduce) "
+                                         "@supports (display: grid)"),
+                          (".reveal .c", "")])
+
+
+# SVG SMIL (<animate>, <animateMotion>, ...) runs on the SVG's own timeline, out
+# of reach of var(--draw-run): the deck has to hide the animated element itself
+# under every stiller.
+SMIL_SVG = ('<svg viewBox="0 0 10 10"><path id="route" d="M0 0 H10"/><g class="lane">'
+            '<circle class="pulse" r="1"><animateMotion dur="1s" repeatCount="indefinite">'
+            '<mpath href="#route"/></animateMotion></circle></g></svg>')
+SMIL_GATED = (".reveal .pulse { fill: var(--green); }\n"
+              "@media (prefers-reduced-motion: reduce) { .reveal .pulse { display: none; } }\n"
+              ".reveal.no-draw .pulse, html.reveal-print .reveal .pulse { display: none; }\n")
+
+
+class SmilMotion(DeckCssCase):
+    """check_smil: SVG animations the motion switch cannot reach."""
+
+    def test_an_ungated_smil_animation_fails(self):
+        self.audit(".reveal .pulse { fill: var(--green); }", body=SMIL_SVG)
+        self.assertReports("<animateMotion> (line")
+        self.assertReports("prefers-reduced-motion, .no-draw, print")
+
+    def test_reduced_motion_alone_is_not_enough(self):
+        self.audit("@media (prefers-reduced-motion: reduce) { .reveal .pulse { display: none; } }",
+                   body=SMIL_SVG)
+        self.assertReports("under .no-draw, print")
+
+    def test_hidden_under_every_stiller_is_silent(self):
+        self.audit(SMIL_GATED, body=SMIL_SVG)
+        self.assertSilent()
+
+    def test_media_print_and_an_ancestor_count(self):
+        self.audit(SMIL_GATED.replace("html.reveal-print .reveal .pulse",
+                                      ".reveal section.no-draw .pulse")
+                   + "@media print { .reveal .lane { visibility: hidden; } }", body=SMIL_SVG)
+        self.assertSilent()
+
+    def test_a_hide_rule_for_another_class_does_not_count(self):
+        self.audit(SMIL_GATED.replace(".pulse", ".pulsar"), body=SMIL_SVG)
+        self.assertReports("runs on the SVG's own clock")
+
+    def test_an_animation_with_nothing_to_hide_it_by(self):
+        self.audit(SMIL_GATED, body='<svg><rect width="1" height="1">'
+                                    '<animate attributeName="x" dur="1s"/></rect></svg>')
+        self.assertReports("no class or id")
+
+    def test_an_href_target_is_hidden_by_its_id(self):
+        body = ('<svg><rect id="blink" width="1" height="1"/>'
+                '<set href="#blink" attributeName="opacity" to="0" begin="1s"/></svg>')
+        self.audit("@media (prefers-reduced-motion: reduce) { #blink { display: none; } }\n"
+                   ".no-draw #blink, html.reveal-print #blink { display: none; }", body=body)
+        self.assertSilent()
+
+    def test_markup_outside_svg_is_not_mistaken_for_smil(self):
+        self.audit("", body="<p>A <span>set</span> of slides.</p><set></set>")
+        self.assertSilent()
 
 
 class ManifestSync(AuditCase):
@@ -548,6 +647,12 @@ class PlaceholderQr(AuditCase):
         self.write(f"talks/{TALK['slug']}/assets/qr-slides.png", b"placeholder-qr-bytes")
         audit.audit_placeholder_qr(self.rep, [TALK["slug"]])
         self.assertReports("qr-slides.png is the template's placeholder QR")
+
+    def test_the_zmo_starter_placeholder_is_caught_even_when_it_differs(self):
+        self.write("talks/_template-zmo/assets/qr-slides.png", b"zmo-placeholder-bytes")
+        self.write(f"talks/{TALK['slug']}/assets/qr-slides.png", b"zmo-placeholder-bytes")
+        audit.audit_placeholder_qr(self.rep, [TALK["slug"]])
+        self.assertReports("talks/_template-zmo/assets/qr-slides.png")
 
     def test_real_qr_is_silent(self):
         self.write(f"talks/{TALK['slug']}/assets/qr-slides.png", b"a-real-qr-code")
@@ -643,6 +748,20 @@ class VendorIntegrity(AuditCase):
         self.write("shared/vendor-manifest.json", "{not json")
         audit.audit_vendor(self.rep)
         self.assertReports("unreadable vendor manifest")
+
+    def test_every_vendored_font_is_in_the_repository_manifest(self):
+        """A font the manifest does not list is a font nobody verifies: the
+        Carlito subsets of the ZMO skin went unchecked this way (#31)."""
+        shared = os.path.join(self._real_root, "shared")
+        with open(os.path.join(shared, "vendor-manifest.json"), encoding="utf-8") as handle:
+            manifest = json.load(handle)
+        listed = {f for entry in manifest.values()
+                  for f in entry.get("files") or [entry.get("file")]}
+        fonts = sorted(os.path.relpath(os.path.join(d, n), shared).replace(os.sep, "/")
+                       for d, _, names in os.walk(shared) for n in names
+                       if n.endswith(".woff2") and "src" not in os.path.relpath(d, shared).split(os.sep))
+        self.assertTrue(any("carlito" in f for f in fonts))
+        self.assertEqual([f for f in fonts if f not in listed], [])
 
     def test_repository_manifest_matches_its_vendored_files(self):
         """The real shared/ tree, not a fixture — the check CI actually runs."""
@@ -759,6 +878,16 @@ class AssetHygiene(AuditCase):
         audit.audit_assets(self.rep)
         self.assertReports("exact duplicate files", "warnings")
 
+    def test_duplicate_files_warn_whatever_the_case_of_the_extension(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html",
+                   '<img src="assets/COPY.PNG" alt="a">'
+                   '<img src="../../shared/assets/copy.Png" alt="b">')
+        self.write(f"talks/{TALK['slug']}/assets/COPY.PNG", b"identical")
+        self.write("shared/assets/copy.Png", b"identical")
+        audit.audit_assets(self.rep)
+        self.assertReports("exact duplicate files", "warnings")
+
     def test_starter_and_showcase_may_share_placeholders(self):
         self.make_repo()
         self.write("talks/_template/index.html",
@@ -799,7 +928,7 @@ class ImageWeight(AuditCase):
         self.make_repo()
         self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/fat.png" alt="x">')
         self.write(f"talks/{TALK['slug']}/assets/fat.png",
-                   self.png(800, 600, pad=audit.BYTE_CEILING + 1))
+                   self.png(800, 600, pad=audit.asset_audit.BYTE_CEILING + 1))
         audit.audit_image_weight(self.rep)
         self.assertReports("people download as a PDF", "warnings")
 
@@ -809,6 +938,14 @@ class ImageWeight(AuditCase):
         self.write(f"talks/{TALK['slug']}/assets/small.webp", b"RIFF\x00\x00\x00\x00WEBPVP8 ")
         audit.audit_image_weight(self.rep)
         self.assertReports("WebP ships to the PDF export", "warnings")
+
+    def test_the_warning_names_the_file_from_the_repository_root(self):
+        self.make_repo()
+        self.write(f"talks/{TALK['slug']}/index.html", '<img src="assets/huge.png" alt="x">')
+        self.write(f"talks/{TALK['slug']}/assets/huge.png", self.png(4000, 2000))
+        audit.audit_image_weight(self.rep)
+        self.assertEqual([where for where, _ in self.rep.warnings],
+                         [os.path.join("talks", TALK["slug"], "assets", "huge.png")])
 
     def test_unpublished_decks_are_not_policed(self):
         self.make_repo()
@@ -830,10 +967,10 @@ class ImageWeight(AuditCase):
         for ext, (blob, expected) in cases.items():
             with self.subTest(ext):
                 path = self.write(f"probe.{ext}", blob)
-                self.assertEqual(audit.image_size(path), expected)
+                self.assertEqual(audit.asset_audit.image_size(path), expected)
 
     def test_image_size_returns_none_for_a_non_image(self):
-        self.assertIsNone(audit.image_size(self.write("notes.txt", b"not an image at all")))
+        self.assertIsNone(audit.asset_audit.image_size(self.write("notes.txt", b"not an image at all")))
 
 
 class EndToEnd(AuditCase):
@@ -900,6 +1037,17 @@ class EndToEnd(AuditCase):
         self.landing(":root { --green: #009260; --navy: #00268a; }"
                      ".go { color: var(--green); transition: opacity 220ms, transform 220ms; }")
         self.assertEqual(self.run_audit([]), 0)
+
+    def test_gitignored_scratch_folders_are_not_audited(self):
+        for folder in ("tmp", "visual-diff"):
+            with self.subTest(folder):
+                self.write(f"{folder}/review/page.html", '<img src="gone.png">')
+                self.write(f"{folder}/review/page.css", '.x { background: url(gone.png); }')
+                self.assertEqual(self.run_audit(["--strict"]), 0)
+
+    def test_a_folder_that_is_not_scratch_is_still_audited(self):
+        self.write("scratch-not-ignored/page.html", '<img src="gone.png" alt="x">')
+        self.assertEqual(self.run_audit([]), 1)
 
     def test_tampered_vendor_file_fails_the_audit(self):
         self.write("shared/highlight.min.js", "window.hljs={};\n/* injected */\n")

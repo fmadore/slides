@@ -25,6 +25,9 @@ node_modules
 # Local output of tools/visual-diff.mjs (the before/after guard for design passes)
 visual-diff/
 
+# Chromium's crash/diagnostic log, written to the working directory on Windows
+debug.log
+
 # Local scratch space (screenshots, one-off check scripts)
 /tmp/
 /scratchpad/

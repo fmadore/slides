@@ -30,13 +30,13 @@
       --navy-field: color-mix(in oklch, var(--navy), #03081c 8%);
       --paper: oklch(0.991 0.001 250);
       --panel: oklch(0.972 0.002 250);
-      --line: oklch(0.872 0.005 250);
-      --line-strong: oklch(0.700 0.010 256);
+      --line: oklch(0.744 0.005 250);
+      --line-strong: oklch(0.623 0.010 256);
       --rule: oklch(0.165 0.014 258);
       --ink: oklch(0.205 0.016 258);
       --ink-bold: oklch(0.150 0.016 262);
       --ink-soft: oklch(0.405 0.018 258);
-      --ink-faint: oklch(0.560 0.016 256);
+      --ink-faint: oklch(0.530 0.016 256);
       --display: "Libre Franklin", system-ui, sans-serif;
       --serif: "EB Garamond", Georgia, serif;
       --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
@@ -61,13 +61,13 @@
     /* ── Masthead ─────────────────────────────────────────────────────────── */
     header.masthead { padding: clamp(3rem, 7vw, 6rem) 0 clamp(1.6rem, 3vw, 2.4rem); }
     .masthead h1 {
-      font-family: var(--display); font-weight: 800; letter-spacing: -0.035em;
+      font-family: var(--display); font-weight: 700; letter-spacing: -0.035em;
       font-size: clamp(3.4rem, 11vw, 8rem); line-height: 0.9; margin: 0;
       color: var(--ink-bold); text-wrap: balance;
     }
     .masthead .byline {
       display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35em;
-      font-family: var(--display); font-weight: 800; letter-spacing: -0.025em;
+      font-family: var(--display); font-weight: 700; letter-spacing: -0.025em;
       font-size: clamp(1.45rem, 3.4vw, 2.4rem); line-height: 1.05;
       color: var(--ink-bold); margin: 0.9rem 0 0;
     }
@@ -136,7 +136,7 @@
          a CSS counter renumbered the whole archive whenever a talk was added,
          and again whenever the list was filtered. */
       content: attr(data-no);
-      font-family: var(--display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+      font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem, 2.6vw, 1.9rem);
       color: var(--green-deep); letter-spacing: -0.02em; line-height: 1;
       font-variant-numeric: tabular-nums;
     }
@@ -148,7 +148,7 @@
     }
     .talk-title {
       grid-area: title; min-width: 0;
-      font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
+      font-family: var(--display); font-weight: 700; letter-spacing: -0.02em;
       font-size: clamp(1.5rem, 3.2vw, 2.3rem); line-height: 1.02; color: var(--ink-bold);
       margin: 0; text-wrap: balance;
     }
@@ -191,11 +191,15 @@
     /* Read / PDF / Event are small words but must be 24px targets (WCAG 2.2
        2.5.8): the padding grows the hit area and the equal negative margin
        gives the line box its height back, so the row does not move. */
+    /* Underlined at rest, as in-slide links are (DESIGN.md, Links): green-deep
+       against the faint grey row is not 3:1, so colour alone cannot mark them. */
     .talk-extras a {
       font-weight: 600; color: var(--green-deep);
       display: inline-block; padding-block: 0.3rem; margin-block: -0.3rem;
+      text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 0.16em;
+      text-decoration-color: color-mix(in oklch, currentColor, transparent 50%);
     }
-    .talk-extras a:hover { text-decoration: underline; }
+    .talk-extras a:hover { text-decoration-color: currentColor; }
     .talk-extras a:focus-visible, footer.colophon a:focus-visible {
       outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 3px;
     }
@@ -218,7 +222,7 @@
     }
     .talk-filters input[type="search"] { flex: 1 1 14rem; min-width: 10rem; }
     .talk-filters input[type="search"]:focus-visible, .talk-filters select:focus-visible {
-      outline: 2px solid var(--green); outline-offset: 1px;
+      outline: 2px solid var(--focus-ring); outline-offset: 1px;
     }
 
     /* empty state */
@@ -236,7 +240,8 @@
       padding: 0.45em 0 0.35em; margin-left: 0.6em; cursor: pointer;
       transition: color var(--dur,220ms) var(--ease);
     }
-    .empty button:hover { color: var(--green); }
+    /* Raw green is 3.87:1 on Paper, under 4.5:1 for these small caps. */
+    .empty button:hover { color: var(--ink-bold); }
     .empty button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 3px; }
 
     /* ── Footer ───────────────────────────────────────────────────────────── */
@@ -249,7 +254,7 @@
     footer.colophon .top-rule { height: 4px; background: var(--gold); margin-bottom: clamp(1.6rem,3vw,2.4rem); }
     .colophon-grid { display: flex; flex-wrap: wrap; gap: 2rem 3rem; align-items: flex-start; justify-content: space-between; }
     .colophon h2 {
-      font-family: var(--display); font-weight: 800; font-size: clamp(1.4rem,3vw,2rem);
+      font-family: var(--display); font-weight: 700; font-size: clamp(1.4rem,3vw,2rem);
       letter-spacing: -0.02em; margin: 0; color: var(--paper); max-width: 18ch;
     }
     .colophon p.sub { font-family: var(--serif); font-style: italic; color: color-mix(in oklch, var(--paper), transparent 28%); margin: 0.6rem 0 0; max-width: 38ch; }
@@ -484,7 +489,8 @@
       // Populate the selects from the list itself.
       const langs = [...new Set(items.map(li => li.dataset.lang))].sort();
       const years = [...new Set(items.map(li => li.dataset.year))].sort().reverse();
-      const tags = [...new Set(items.flatMap(li => li.dataset.tags.split("|").filter(Boolean)))].sort();
+      const tags = [...new Set(items.flatMap(li => li.dataset.tags.split("|").filter(Boolean)))]
+        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
       const LANG_LABEL = { en: "English", fr: "Français" };
       langs.forEach(l => selLang.add(new Option(LANG_LABEL[l] || l.toUpperCase(), l)));
       years.forEach(y => selYear.add(new Option(y, y)));
@@ -508,15 +514,28 @@
           ? String(total).padStart(2, "0") + (total === 1 ? " talk" : " talks")
           : String(shown).padStart(2, "0") + " of " + String(total).padStart(2, "0") + " talks";
         noMatch.hidden = shown > 0;
-        if (updateUrl) {
-          const p = new URLSearchParams();
-          if (needle) p.set("q", q.value.trim());
-          if (selLang.value) p.set("lang", selLang.value);
-          if (selYear.value) p.set("year", selYear.value);
-          if (selTag.value) p.set("tag", selTag.value);
-          const qs = p.toString();
-          history.replaceState(null, "", qs ? "?" + qs : location.pathname);
-        }
+        if (updateUrl) syncUrl();
+      }
+
+      // The URL follows the filters, debounced: Safari throttles replaceState
+      // (100 calls per 30 s), and a search keystroke need not rewrite history.
+      // The first change of a burst is written at once (a pasted query or a
+      // select change lands immediately); the rest settle 300 ms after the
+      // last keystroke.
+      let urlTimer = 0;
+      function writeUrl() {
+        const p = new URLSearchParams();
+        if (q.value.trim()) p.set("q", q.value.trim());
+        if (selLang.value) p.set("lang", selLang.value);
+        if (selYear.value) p.set("year", selYear.value);
+        if (selTag.value) p.set("tag", selTag.value);
+        const qs = p.toString();
+        history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+      }
+      function syncUrl() {
+        if (urlTimer) clearTimeout(urlTimer);
+        else writeUrl();
+        urlTimer = setTimeout(() => { urlTimer = 0; writeUrl(); }, 300);
       }
 
       // Restore any filter state from the URL.

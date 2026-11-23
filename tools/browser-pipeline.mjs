@@ -89,7 +89,9 @@ try {
   assert.equal(await pipeline.locator('.fragment').count(), 0);
   assert.equal(await pipeline.locator('button').isVisible(), false);
   assert.equal(await pipeline.locator('[data-pipeline-art]').last().isVisible(), true);
-  await page.pdf({ path: '/tmp/slides-pipeline-check.pdf', preferCSSPageSize: true, printBackground: true });
+  // Assert on the buffer: no path, so nothing is written (a /tmp path fails on Windows).
+  const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true });
+  assert.ok(pdf.length > 0 && pdf.subarray(0, 5).toString() === '%PDF-', 'print-pdf renders a PDF');
 
   await page.goto(url + '?view=scroll');
   await page.waitForFunction(() => window.Reveal?.isReady());

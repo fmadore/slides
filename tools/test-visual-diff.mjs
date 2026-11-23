@@ -13,7 +13,8 @@ test('visual comparisons reject empty or incomplete baselines', t => {
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const before = join(root, 'before'), after = join(root, 'after');
   mkdirSync(before); mkdirSync(after);
-  const run = () => spawnSync(process.execPath, [fileURLToPath(new URL('./visual-diff.mjs', import.meta.url)), '--before', before, '--after', after], { encoding: 'utf8' });
+  // --out keeps report.json in the temp root, not in the repo's visual-diff/.
+  const run = () => spawnSync(process.execPath, [fileURLToPath(new URL('./visual-diff.mjs', import.meta.url)), '--before', before, '--after', after, '--out', join(root, 'diff')], { encoding: 'utf8' });
   assert.equal(run().status, 1);
   const png = PNG.sync.write(new PNG({ width: 2, height: 2 }));
   writeFileSync(join(after, 'slide.png'), png);

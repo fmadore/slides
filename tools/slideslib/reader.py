@@ -86,6 +86,52 @@ def public_text(node):
     return " ".join(public_text(child) for child in node.children)
 
 
+# Elements a browser lays out as blocks without any stylesheet: a boundary
+# next to one of them is a line break already, in print and to a screen reader.
+BLOCK = {"aside", "blockquote", "caption", "col", "colgroup", "dd", "details", "div", "dl", "dt",
+         "figcaption", "figure", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "li", "ol", "p", "pre",
+         "section", "summary", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "ul"}
+# Inline elements that attach to the word beside them on purpose (a footnote
+# mark, an exponent, a line-break opportunity).
+GLUED = {"sup", "sub", "wbr", "br"}
+
+
+def edge_text(node):
+    """The public text of a node exactly as it runs, with nothing inserted."""
+    if isinstance(node, str):
+        return node
+    if excluded(node):
+        return ""
+    return "".join(edge_text(child) for child in node.children)
+
+
+def runs_together(before, after, previous_text, text):
+    """True if two adjacent inline siblings would read as one word.
+
+    A slide often sets a row of spans apart with a flex or grid gap alone
+    (`<span>Personae</span><span>Texts</span>`): the reading edition carries no
+    slide CSS, so those words run together on the page and in a screen
+    reader. A boundary between two word characters, with at least one side an
+    element and neither side a block or a deliberately glued mark, needs a
+    space — unless lower-case text simply finishes the element's word.
+    """
+    if not previous_text or not text:
+        return False
+    if not (previous_text[-1].isalnum() and text[0].isalnum()):
+        return False
+    if isinstance(before, str) and isinstance(after, str):
+        return False
+    # Plain text that carries on in lower case after an element finishes its
+    # word: a plural on an italic term (<i>ocak</i>s), an acronym spelled out
+    # letter by letter (<strong>A</strong>tlas).
+    if isinstance(after, str) and text[0].islower():
+        return False
+    for side in (before, after):
+        if isinstance(side, Element) and (side.tag in BLOCK or side.tag in GLUED):
+            return False
+    return True
+
+
 def public_walk(node):
     if excluded(node):
         return
@@ -148,8 +194,8 @@ def render_reader(source, talk, site, *, source_dir=None, root_dir=None):
     """Return (complete document, number of public slides)."""
     slides = public_slides(source)
     french = talk.language.startswith("fr")
-    labels = ({"read": "Lecture", "slides": "Diapositives", "contents": "Sommaire", "slide": "Diapositive", "open": "Ouvrir la ressource interactive", "back": "Toutes les présentations", "top": "Haut de page", "skip": "Aller au contenu"}
-              if french else {"read": "Reading edition", "slides": "Slides", "contents": "Contents", "slide": "Slide", "open": "Open interactive resource", "back": "All talks", "top": "Back to top", "skip": "Skip to content"})
+    labels = ({"read": "Lecture", "slides": "Diapositives", "contents": "Sommaire", "slide": "Diapositive", "open": "Ouvrir la ressource interactive", "back": "Toutes les présentations", "top": "Haut de page", "skip": "Aller au contenu", "table": "Tableau"}
+              if french else {"read": "Reading edition", "slides": "Slides", "contents": "Contents", "slide": "Slide", "open": "Open interactive resource", "back": "All talks", "top": "Back to top", "skip": "Skip to content", "table": "Table"})
     anchors = ["slide-" + (node.attrs.get("id") or str(index)) for index, (node, _) in enumerate(slides, 1)]
     ids = {node.attrs["id"]: f"{anchor}--{node.attrs['id']}"
            for (slide, _), anchor in zip(slides, anchors) for node in public_walk(slide) if node.attrs.get("id")}
@@ -163,7 +209,18 @@ def render_reader(source, talk, site, *, source_dir=None, root_dir=None):
         if heading and heading.attrs.get("id"):
             ids[heading.attrs["id"]] = anchor + "-title"
 
-    def render(node, main_heading=None, heading_id=None, inside_link=False):
+    def render_children(node, main_heading, heading_id, inside_link=False, verbatim=False):
+        parts, before, previous_text = [], None, ""
+        for child in node.children:
+            text = edge_text(child)
+            if not verbatim and runs_together(before, child, previous_text, text):
+                parts.append(" ")
+            parts.append(render(child, main_heading, heading_id, inside_link, verbatim))
+            if text:
+                before, previous_text = child, text
+        return "".join(parts)
+
+    def render(node, main_heading=None, heading_id=None, inside_link=False, verbatim=False):
         if isinstance(node, str):
             return escape(node)
         if excluded(node):
@@ -181,7 +238,8 @@ def render_reader(source, talk, site, *, source_dir=None, root_dir=None):
             if attribution:
                 content += f'<p class="source"><a href="{escape(attribution, quote=True)}">{escape(attribution)}</a></p>'
             return content
-        content = "".join(render(child, main_heading, heading_id, inside_link or node.tag == "a") for child in node.children)
+        content = render_children(node, main_heading, heading_id, inside_link or node.tag == "a",
+                                  verbatim or node.tag in {"pre", "code", "kbd", "samp"})
         if node.tag not in TAGS:
             return content
         tag = "h2" if node is main_heading or node.tag == "h1" else node.tag
@@ -211,7 +269,7 @@ def render_reader(source, talk, site, *, source_dir=None, root_dir=None):
                 "logo" in name or name == "mcp-mark" for name in node.classes):
             result = f'<a class="reader-image" href="{escape(attrs["src"], quote=True)}">{result}</a>'
         if node.tag == "table":
-            result = f'<div class="reader-table" role="region" aria-label="Table" tabindex="0">{result}</div>'
+            result = f'<div class="reader-table" role="region" aria-label="{labels["table"]}" tabindex="0">{result}</div>'
         return result
 
     articles, contents = [], []
@@ -219,7 +277,7 @@ def render_reader(source, talk, site, *, source_dir=None, root_dir=None):
         heading = headings[index - 1]
         title = " ".join(public_text(heading).split()) if heading else (slide.attrs.get("data-toc") or f'{labels["slide"]} {index}')
         heading_id = anchor + "-title"
-        content = "".join(render(child, heading, heading_id) for child in slide.children)
+        content = render_children(slide, heading, heading_id)
         if heading is None:
             content = f'<h2 id="{escape(heading_id)}" class="reader-fallback-title">{escape(title)}</h2>' + content
         source_hash = slide.attrs.get("id") or position

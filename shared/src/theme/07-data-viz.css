@@ -19,16 +19,24 @@
   display: flex; align-items: flex-end; gap: var(--space-md);
   height: var(--chart-h, 14rem); border-bottom: 3px solid var(--rule); margin: 0;
 }
+/* The value numeral's room (--bar-label: one caption line plus its 0.45em gap)
+   is reserved as the bar's top padding, and the numeral gives it back with an
+   equal negative margin. The fill's percentage then resolves against the track
+   below that room, so --h maps linearly to pixels (100% is the whole track,
+   50% exactly half), while the numeral stays in flow and rides up on the
+   growing fill. Nothing shrinks: both items keep flex-shrink 0. */
 .reveal .barchart .bar {
-  flex: 1 1 0; min-width: 0; height: 100%;
+  --bar-label: calc(var(--fs-caption) * 1.45);
+  flex: 1 1 0; min-width: 0; height: 100%; box-sizing: border-box; padding-top: var(--bar-label);
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
 }
 .reveal .barchart .bar-v {
+  flex: none; margin-top: calc(-1 * var(--bar-label));
   font-family: var(--font-label); font-weight: 800; font-size: var(--fs-caption);
   color: var(--ink-faint); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 0.45em;
 }
 .reveal .barchart .bar::after {
-  content: ""; display: block; width: 100%; max-width: 3.4rem;
+  content: ""; display: block; flex: none; width: 100%; max-width: 3.4rem;
   height: var(--h, 0%); background: var(--green); border-radius: 1px 1px 0 0;
 }
 .reveal .barchart .bar.is-peak .bar-v { color: var(--ink-bold); }

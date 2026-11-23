@@ -155,6 +155,49 @@ class Reader(unittest.TestCase):
         self.assertIn('id="slide-b-title"', page)
         self.assertNotIn('slide-b--future', page)
 
+    def test_items_a_slide_spaced_with_css_gaps_do_not_run_together(self):
+        page, _ = render('<section><h2>Pills</h2>'
+                         '<div class="pill-row"><span>Personae</span><span>Texts</span><span>Time</span></div>'
+                         '<div class="tier"><span class="t-dot">C</span><span class="t-name">Critical</span>'
+                         '<p><strong>Direct witnessing</strong>Physically documenting.</p></div>'
+                         '<div class="stat"><span class="stat-num">3,975</span><span class="stat-label">Research items</span></div>'
+                         '</section>')
+        self.assertIn('<span>Personae</span> <span>Texts</span> <span>Time</span>', page)
+        self.assertIn('<span class="t-dot">C</span> <span class="t-name">Critical</span>', page)
+        self.assertIn('<strong>Direct witnessing</strong> Physically', page)
+        self.assertIn('<span class="stat-num">3,975</span> <span class="stat-label">', page)
+
+    def test_words_that_are_meant_to_join_stay_joined(self):
+        page, _ = render('<section><h2>Joins</h2>'
+                         '<p>The <i>ocak</i>s of one name, <strong>A</strong>tlas, '
+                         'IWAC<sup>1</sup>, <a href="https://x.test">link</a>.</p>'
+                         '<p><span>a</span>\n<span>b</span></p><ul><li>One</li><li>Two</li></ul>'
+                         '<pre><code><span>def</span><span>name</span></code></pre></section>')
+        self.assertIn('<i>ocak</i>s', page)
+        self.assertIn('<strong>A</strong>tlas', page)
+        self.assertIn('IWAC<sup>1</sup>', page)
+        self.assertIn('<li>One</li><li>Two</li>', page)
+        self.assertIn('<span>def</span><span>name</span>', page)
+        self.assertIn('<span>a</span>\n<span>b</span>', page)
+
+    def test_the_table_label_follows_the_deck_language(self):
+        table = '<section><h2>T</h2><table><tr><td>1</td></tr></table></section>'
+        english, _ = render(table)
+        french_talk = Talk("2026-01-02-lecture", "2026-01-02", "fr", "Événement", "Lieu",
+                           "Lecture", "Test", "Résumé", ("Auteur",))
+        french, _ = render(table, french_talk)
+        self.assertIn('aria-label="Table"', english)
+        self.assertIn('aria-label="Tableau"', french)
+        self.assertNotIn('aria-label="Table"', french)
+
+    def test_reader_css_restores_the_gap_components_and_theme_rules(self):
+        css = (Path(__file__).resolve().parents[1] / "shared/reader.css").read_text(encoding="utf-8")
+        for selector in (".pipeline-steps {", ".pill-row {", ".tier {"):
+            self.assertIn(selector, css)
+        self.assertIn(".pipeline-steps { list-style: none;", css)
+        self.assertIn(":focus-visible { outline: 3px solid var(--green);", css)
+        self.assertNotIn("font-weight: 800", css)
+
     def test_existing_image_links_keep_their_destination_without_nested_anchors(self):
         page, _ = render('<section><h2>Source</h2><a href="https://archive.test"><img src="assets/a.png" alt="Document"></a></section>')
         self.assertIn('<a href="https://archive.test"><img', page)

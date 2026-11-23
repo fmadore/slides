@@ -162,3 +162,41 @@ export async function isCancelledRequest(request) {
   const response = await request.response().catch(() => null);
   return Boolean(response && response.status() < 400);
 }
+
+// True when a console message is about our own origin rather than a third party.
+const isLocal = text => text.includes('127.0.0.1') || text.includes('localhost');
+
+/** Keep `page` hermetic (anything outside `base` is aborted) and collect what
+ *  should fail a check: page errors, console errors, failed local requests and
+ *  any local response with status >= 400. The last needs its own listener:
+ *  Chromium's console text for an HTTP error names no URL, so it looks like a
+ *  third party's, and `requestfailed` never fires for an answered request.
+ *  Returns the live array the listeners append to. */
+export async function watchPage(page, base) {
+  await page.route('**/*', route => route.request().url().startsWith(base) ? route.continue() : route.abort());
+  const errors = [];
+  page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
+  page.on('console', m => {
+    // Count JS errors and *local* resource failures; ignore flaky external
+    // fetches (live iframes, remote embeds) so CI stays hermetic.
+    if (m.type() !== 'error') return;
+    const t = m.text();
+    if (/Failed to load resource|net::ERR/.test(t) && !isLocal(t)) return;
+    // A remote site refusing to be framed (X-Frame-Options / frame-ancestors)
+    // is the exact condition .site-frame's placeholder fallback exists for, and
+    // it depends on the *remote* server's headers — so it says nothing about
+    // this deck. Whether it fires at all depends on whether the runner has
+    // network, which made the gate flaky in both directions.
+    if (/(Content Security Policy directive: "frame-ancestors|in a frame because it set 'X-Frame-Options')/.test(t) && !isLocal(t)) return;
+    errors.push(t);
+  });
+  page.on('response', r => {
+    if (r.url().startsWith(base) && r.status() >= 400) errors.push(`HTTP ${r.status()}: ${r.url()}`);
+  });
+  page.on('requestfailed', async r => {
+    if (r.url().startsWith(base) && !await isCancelledRequest(r)) {
+      errors.push(`request failed (${r.failure()?.errorText}): ${r.url()}`);
+    }
+  });
+  return errors;
+}
