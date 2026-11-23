@@ -3,6 +3,9 @@
  * --root TREE --fixtures BASE_TREE --out DIR [--decks slug,...]
  * Both sides use the base catalogue's HTML/assets, even when a PR edits it.
  * Public pages/decks retain their actual content so authored changes are visible.
+ * The ZMO brand starter (talks/_template-zmo) is a second stable fixture, taken
+ * from the base tree like the catalogue: none of the sampled public decks need
+ * be a ZMO deck, and the skin restyles the chrome (nav pill, contents overlay).
  */
 import { cpSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -25,6 +28,8 @@ cpSync(join(root, 'shared'), join(stage, 'shared'), { recursive: true });
 for (const name of ['index.html', '404.html']) cpSync(join(root, name), join(stage, name));
 const catalogue = existsSync(join(fixtures, 'talks/_showcase/index.html')) ? '_showcase' : '_template';
 cpSync(join(fixtures, 'talks', catalogue), join(stage, 'talks', catalogue), { recursive: true });
+const brand = existsSync(join(fixtures, 'talks/_template-zmo/index.html')) ? '_template-zmo' : null;
+if (brand) cpSync(join(fixtures, 'talks', brand), join(stage, 'talks', brand), { recursive: true });
 for (const slug of selected) {
   // A removed talk is already represented by the archive change; preserve its
   // fixture for engine comparison instead of creating an incomplete baseline.
@@ -32,6 +37,7 @@ for (const slug of selected) {
   cpSync(join(source, 'talks', slug), join(stage, 'talks', slug), { recursive: true });
 }
 mkdirSync(out, { recursive: true });
+const label = slug => slug === catalogue ? 'catalogue' : slug === brand ? 'brand-zmo' : `deck-${slug}`;
 const diagnostics = browserDiagnostics(join(out, 'diagnostics'));
 const site = await startStaticServer(stage, { noStore: true });
 const { chromium } = await import('playwright');
@@ -48,16 +54,19 @@ try {
       await settleAnimations(page);
       await page.screenshot({ path: join(out, `page-${name}-${width}x${height}.png`) });
     }
-    for (const slug of [catalogue, ...selected]) {
+    for (const slug of [catalogue, ...(brand ? [brand] : []), ...selected]) {
       await page.goto(`${site.base}/talks/${slug}/`, { waitUntil: 'load' });
       await page.waitForFunction(() => window.DeckRuntime?.ready && window.Reveal?.isReady());
       await page.evaluate(() => window.DeckRuntime.ready);
-      const shots = await page.evaluate(isCatalogue => {
+      const shots = await page.evaluate(({ isCatalogue, isBrand }) => {
         const leaves = window.DeckRuntime.leafSlides();
         const point = (slide, name) => ({ name, ...Reveal.getIndices(slide) });
         if (isCatalogue) return leaves.filter(slide => slide.dataset.visualTest).map(slide => point(slide, slide.dataset.visualTest));
-        return [point(leaves[0], 'cover'), point(leaves[Math.floor(leaves.length / 2)], 'content'), point(leaves.at(-1), 'closing')];
-      }, slug === catalogue);
+        // The brand fixture adds its first dark divider: the footer's on-dark register.
+        const divider = isBrand && leaves.find(slide => slide.classList.contains('section'));
+        return [point(leaves[0], 'cover'), ...(divider ? [point(divider, 'divider')] : []),
+          point(leaves[Math.floor(leaves.length / 2)], 'content'), point(leaves.at(-1), 'closing')];
+      }, { isCatalogue: slug === catalogue, isBrand: slug === brand });
       if (!shots.length) throw new Error(`${slug}: no visual fixtures selected`);
       for (const shot of shots) {
         await page.evaluate(async ({ h, v }) => {
@@ -66,14 +75,22 @@ try {
           while (Reveal.nextFragment()) { /* final authored state */ }
         }, shot);
         await settleAnimations(page);
-        const label = slug === catalogue ? 'catalogue' : `deck-${slug}`;
-        await page.screenshot({ path: join(out, `${label}-${shot.name}-${width}x${height}.png`) });
+        await page.screenshot({ path: join(out, `${label(slug)}-${shot.name}-${width}x${height}.png`) });
+      }
+      if (slug === brand) {
+        // The brand restyles the contents overlay too; shoot it open.
+        await page.keyboard.press('t');
+        await page.locator('.toc-overlay').waitFor({ state: 'visible' });
+        await settleAnimations(page);
+        await page.screenshot({ path: join(out, `${label(slug)}-contents-${width}x${height}.png`) });
+        await page.keyboard.press('Escape');
+        await page.locator('.toc-overlay').waitFor({ state: 'hidden' });
       }
     }
     await context.close();
     context = null;
   }
-  console.log(`visual capture: ${selected.length} public decks, archive, 404 and stable catalogue → ${out}`);
+  console.log(`visual capture: ${selected.length} public decks, archive, 404, stable catalogue${brand ? ' and ZMO starter' : ''} → ${out}`);
 } catch (error) {
   diagnostics.capture('visual capture', error.stack || String(error));
   process.exitCode = 1;

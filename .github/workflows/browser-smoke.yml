@@ -7,9 +7,11 @@ on:
 permissions:
   contents: read
 
+# As in pages.yml: superseded pull-request runs are cancelled, main runs finish.
+# (Called from pages.yml, github.event_name is the caller's event.)
 concurrency:
   group: browsers-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   smoke:
@@ -32,12 +34,21 @@ jobs:
         run: |
           npx playwright install --with-deps "$BROWSER"
           python3 tools/strip-notes.py /tmp/site-smoke
+      # The newest talk plus the newest published ZMO-skin deck: the brand
+      # skin restyles the nav pill and the contents overlay, so one Broadsheet
+      # deck alone leaves half the chrome untested in these engines.
       - name: Phone navigation, contents and reader smoke
         env:
           BROWSER: ${{ matrix.browser }}
         run: |
-          DECK=$(node -p "require('./talks/talks.json').talks[0].slug")
-          node tools/browser-smoke.mjs --root /tmp/site-smoke --publication --browser "$BROWSER" --decks "$DECK" --artifacts browser-artifacts
+          DECKS=$(node -e "
+            const fs = require('fs');
+            const slugs = require('./talks/talks.json').talks.map(talk => talk.slug);
+            const zmo = slugs.find(slug => /<body[^>]*data-brand=.zmo./.test(fs.readFileSync('talks/' + slug + '/index.html', 'utf8')));
+            if (!zmo) throw new Error('no published deck uses the ZMO skin');
+            console.log([...new Set([slugs[0], zmo])].join(','));
+          ")
+          node tools/browser-smoke.mjs --root /tmp/site-smoke --publication --browser "$BROWSER" --decks "$DECKS" --artifacts browser-artifacts
       - name: Upload browser failure evidence
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7

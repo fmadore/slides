@@ -8,7 +8,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { PNG } from 'pngjs';
-import { launchChromium } from './lib/runtime.mjs';
+import { launchChromium, watchPage } from './lib/runtime.mjs';
 import { captureLiveFrames, installPrintFrameSnapshots } from './lib/pdf-frames.mjs';
 import { printGeometry } from './lib/slides.mjs';
 import { exportDeck } from './lib/export-deck.mjs';
@@ -41,6 +41,12 @@ const server = createServer((request, response) => {
   if (path === '/frame/redirect') { response.writeHead(302, { location: '/frame/ok' }); response.end(); return; }
   if (path === '/frame/offline') { request.socket.destroy(); return; }
   if (path === '/frame/slow') { response.writeHead(200, { 'content-type': 'text/html' }); response.flushHeaders(); return; }
+  if (path === '/talks/broken/missing-figure.png') { response.writeHead(404, { 'content-type': 'text/plain' }); response.end('not found'); return; }
+  if (path === '/talks/broken/' || path === '/talks/whole/') {
+    response.writeHead(200, { 'content-type': 'text/html' });
+    response.end(`<!doctype html><title>Deck</title><h1>Deck</h1>${path.includes('broken') ? '<img src="missing-figure.png" alt="A figure">' : ''}`);
+    return;
+  }
   if (path.startsWith('/frame/')) {
     const status = path === '/frame/404' ? 404 : path === '/frame/503' ? 503 : 200;
     response.writeHead(status, { 'content-type': 'text/html',
@@ -133,6 +139,20 @@ try {
     });
     assert.deepEqual(await printGeometry(page), []);
   }));
+  // browser-check's page watcher: Chromium's console line for a local 404 names
+  // no URL, so only the response listener can catch a deck's missing image.
+  await check('a deck with one missing local image fails the browser check; a whole deck passes', async () => {
+    for (const [slug, expected] of [['broken', /^HTTP 404: .*\/talks\/broken\/missing-figure\.png$/], ['whole', null]]) {
+      const context = await browser.newContext();
+      try {
+        const page = await context.newPage();
+        const errors = await watchPage(page, base);
+        await page.goto(`${base}/talks/${slug}/`, { waitUntil: 'load' });
+        if (expected) { assert.equal(errors.length, 1, errors.join('\n')); assert.match(errors[0], expected); }
+        else assert.deepEqual(errors, []);
+      } finally { await context.close(); }
+    }
+  });
   await check('export writes a valid artifact set and reuses its cache', async () => {
     const options = { browser, root, repo, base, slug: 'demo', log: quiet };
     const first = await exportDeck(options);

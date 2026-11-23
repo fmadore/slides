@@ -71,10 +71,16 @@ export async function exportDeck({ browser, root, repo, base, slug, sharedDigest
       throw new Error(`PDF has ${pageCount} pages / ${slideCount} print slides for ${expectedSlides.length} source slides`);
     }
 
-    await page.emulateMedia({ media: 'screen' });
+    // animations: 'disabled' only finishes CSS animations; the [data-count]
+    // roll is requestAnimationFrame, so reduced motion is what lands it on its
+    // final numeral. The card must not freeze a figure mid-count.
+    await page.emulateMedia({ media: 'screen', reducedMotion: 'reduce' });
     await page.goto(deckUrl, { waitUntil: 'load', timeout: 60000 });
     await page.evaluate(() => window.DeckRuntime.ready);
     await page.evaluate(() => window.DeckRuntime.settle());
+    await page.waitForFunction(() => [...(window.Reveal?.getCurrentSlide?.()?.querySelectorAll('[data-count]') || [])]
+      .every(el => !el._countRAF && (!el.hasAttribute('data-count-text') || el.textContent === el.getAttribute('data-count-text'))),
+    null, { timeout: 5000 }).catch(() => { throw new Error('social card: a [data-count] numeral was still rolling'); });
     const socialCard = await page.screenshot({ animations: 'disabled' });
     const evidence = { version: 1, createdAt: new Date().toISOString(), sourceDigest: hash,
       browser: browser.version(), pages: pageCount, options: { frameSnapshots, frameTimeoutMs },
