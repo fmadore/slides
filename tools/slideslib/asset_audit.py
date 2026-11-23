@@ -116,8 +116,8 @@ def audit_image_weight(rep, root):
     roots = [os.path.join(root, "shared")]
     roots += [os.path.join(root, "talks", slug) for slug in sorted(os.listdir(os.path.join(root, "talks")))
               if os.path.isdir(os.path.join(root, "talks", slug)) and not slug.startswith("_")]
-    for root in roots:
-        for dirpath, dirnames, filenames in os.walk(root):
+    for top in roots:
+        for dirpath, dirnames, filenames in os.walk(top):
             for name in sorted(filenames):
                 ext = os.path.splitext(name)[1].lower()
                 if ext not in RASTER_EXT:
@@ -155,7 +155,7 @@ def audit_assets(rep, root):
             for n in filenames:
                 path = os.path.join(dirpath, n)
                 rel = os.path.relpath(path, root)
-                ext = os.path.splitext(n)[1]
+                ext = os.path.splitext(n)[1].lower()
                 if n in {".gitkeep", "talks.json", "vendor-manifest.json"} or ext in {".html", ".py"}:
                     continue
                 if rel.startswith(os.path.join("shared", "src") + os.sep):

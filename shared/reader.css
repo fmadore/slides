@@ -18,7 +18,7 @@ body { margin: 0; font: 500 1.3rem/1.5 var(--serif); overflow-wrap: anywhere; }
 .reader-header, main, .reader-footer { width: min(100% - 3rem, 52rem); margin-inline: auto; }
 .reader-header { padding-block: 2rem; border-bottom: 4px solid var(--ink); }
 .reader-header nav { display: flex; flex-wrap: wrap; gap: .7rem 1.5rem; margin-bottom: 3rem; }
-h1, h2, h3 { font-family: var(--sans); font-weight: 800; line-height: 1.1; letter-spacing: -.025em; color: var(--ink); }
+h1, h2, h3 { font-family: var(--sans); font-weight: 700; line-height: 1.1; letter-spacing: -.025em; color: var(--ink); }
 h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin: .6em 0; }
 h2 { font-size: clamp(1.65rem, 4vw, 2.3rem); margin: .55em 0 .8em; }
 h3 { font-size: 1.5rem; margin-block: 1.25em .6em; }
@@ -26,7 +26,8 @@ h4 { font-size: 1.4rem; }
 p, ul, ol, dl, pre, blockquote, figure, table { margin-block: .8em; }
 a { color: var(--green-deep); text-underline-offset: .16em; }
 a:hover { color: var(--navy); }
-:focus-visible { outline: 3px solid var(--navy); outline-offset: 4px; }
+/* DESIGN.md, The Themed Focus Rule: --focus-ring is --green on light. */
+:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
 .reader-label, .reader-folio, .reader-header nav, .reader-meta, .reader-contents summary, .reader-footer { font: 650 .85rem/1.5 var(--sans); }
 .reader-label, .reader-folio { letter-spacing: .08em; text-transform: uppercase; }
 .reader-byline { font-weight: 650; }
@@ -77,6 +78,19 @@ pre code { white-space: pre; overflow-wrap: normal; }
 blockquote { margin-inline: 0; padding-left: 1rem; border-left: 4px solid var(--green); }
 ul, ol { padding-left: 1.5rem; }
 li { margin-block: .3em; }
+/* Components whose slide layout relied on flex or grid gaps. The builder
+   already puts a space between their items; these restore the shape. */
+.pipeline-steps { list-style: none; padding-left: 0; }
+.pipeline-step { border-top: 1px solid var(--line); padding-top: .5rem; }
+.pipeline-number { display: block; font: 700 .9rem/1.5 var(--sans); color: var(--green-deep); }
+.pipeline-step h3 { margin-top: .3em; }
+.pill-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
+.pill-row > * { font: 650 .85rem/1.5 var(--sans); border: 1px solid var(--line); padding: .15rem .7rem; }
+.tier { border-top: 1px solid var(--line); padding-block: .6rem; }
+.tier .t-dot, .tier .t-name, .tier .t-who { font: 700 .9rem/1.5 var(--sans); }
+.tier .t-dot { margin-inline-end: .4rem; color: var(--green-deep); }
+.tier .t-who { display: block; color: var(--ink-soft); font-weight: 650; }
+.tier p strong { display: block; }
 hr { border: 0; border-top: 1px solid var(--line); margin-block: 1.5rem; }
 @media (max-width: 480px) {
   .reader-header, main, .reader-footer { width: calc(100% - 2rem); }

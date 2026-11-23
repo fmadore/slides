@@ -404,7 +404,13 @@ chrome), a corporate colour spelled out in hex where a token exists, hero
 centring the theme already owns at `.present`, and an animation that does not
 take its duration from `var(--draw-run)` (so no stiller can reach it). Each
 check has a known-bad fixture in `tools/test_audit.py` that proves it still
-fires. The landing and 404 pages are held to the two of those rules that hold
+fires. The hex rule also reads custom properties (a raw hex parked in a
+local `--variable` is still a raw hex), the size floor also reads the `font:`
+shorthand, and SVG SMIL (`<animate>`, `<animateMotion>`) must be hidden under
+reduced motion, `.no-draw` and print, since `--draw-run` cannot reach it.
+`tools/preflight.py` adds advisory craft notes per deck (long runs of plain
+slides, dense slides, notes that repeat the screen, live frames with no saved
+view); they never change its exit status. The landing and 404 pages are held to the two of those rules that hold
 on any page — `transition: all` and a hand-spelled corporate hex — but not to
 the canvas rules, since they are not slides.
 

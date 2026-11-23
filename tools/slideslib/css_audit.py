@@ -20,7 +20,10 @@ from .html_refs import DeckParser
 # its brace depth, read one rule out of a 128-line stylesheet, and reported the
 # archives clean.
 
-CssRule = collections.namedtuple("CssRule", "selector body line")
+# `context` is the prelude of every @media/@supports block the rule sits in,
+# joined by " " (empty at the top level): enough to tell a rule that only
+# applies under `prefers-reduced-motion` or `print` from one that always does.
+CssRule = collections.namedtuple("CssRule", "selector body line context", defaults=("",))
 CssDecl = collections.namedtuple("CssDecl", "prop value line")
 
 # At-rules whose braces hold rules rather than declarations: descend into them.
@@ -94,6 +97,7 @@ def iter_css_rules(source, first_line=1):
     out of a whole stylesheet and call the archives clean.
     """
     prelude, prelude_line, line = [], first_line, first_line
+    containers = []                         # preludes of the open @media & co.
     i, n = 0, len(source)
     while i < n:
         ch = source[i]
@@ -113,12 +117,15 @@ def iter_css_rules(source, first_line=1):
             selector = "".join(prelude).strip()
             prelude = []
             if AT_CONTAINER_RE.match(selector):
+                containers.append(" ".join(selector.split()))
                 i += 1                      # its children are rules of their own
                 continue
             body, i, line = _read_css_block(source, i + 1, line)
             if selector:
-                yield CssRule(selector, body, prelude_line)
+                yield CssRule(selector, body, prelude_line, " ".join(containers))
             continue
+        if ch == "}" and containers:
+            containers.pop()                # the close of an @media & co.
         if ch == "}" or (ch == ";" and "".join(prelude).lstrip().startswith("@")):
             prelude = []                    # a stray close, or an @import statement
         elif prelude or not ch.isspace():
@@ -130,8 +137,14 @@ def iter_css_rules(source, first_line=1):
         i += 1
 
 
-def iter_css_declarations(body, first_line=1):
-    """Yield CssDecl for each `property: value` pair in a block body."""
+def iter_css_declarations(body, first_line=1, custom_properties=False):
+    """Yield CssDecl for each `property: value` pair in a block body.
+
+    Custom properties (`--name: value`) are skipped unless asked for: most
+    rules read what a value *does*, and a local variable does nothing until a
+    real property takes it. The corporate-hex rule asks for them, because a
+    hex parked in `--local: #009260` has left the token just the same.
+    """
     body = strip_css_comments(body)
     depth, start, i, n = 0, 0, 0, len(body)
     chunks = []
@@ -156,14 +169,14 @@ def iter_css_declarations(body, first_line=1):
         line = first_line + body.count("\n", 0, offset + len(text) - len(text.lstrip()))
         prop = prop.strip().lower()
         value = re.sub(r"!\s*important\s*$", "", value.strip(), flags=re.I).strip()
-        if prop and value and not prop.startswith("--"):
+        if prop and value and (custom_properties or not prop.startswith("--")):
             yield CssDecl(prop, value, line)
 
 
 # The chrome that lives outside the scaled 1280x720 canvas — the only place a
 # deck may size against the viewport (DESIGN.md, The Fixed Canvas Rule).
 OUTSIDE_CANVAS = (".deck-footer", ".deck-runhead", ".deck-nav", ".deck-progress",
-                  ".toc-", ".deck-lightbox", ".lightbox", ".print-imprint",
+                  ".toc-", ".deck-lightbox", ".lightbox", ".pdf-imprint",
                   "reveal-print", ".backgrounds")
 # Components that genuinely float above the deck, so a shadow is theirs to
 # carry (DESIGN.md, The Overlay-Only Shadow Rule).
@@ -177,6 +190,9 @@ VIEWPORT_UNIT_RE = re.compile(
     r"(?<![\w.-])\d*\.?\d+(?:v[wh]|vmin|vmax|vi|vb|[dsl]v[wh])\b", re.I)
 HEX_RE = re.compile(r"#[0-9a-fA-F]{3,8}\b")
 LENGTH_RE = re.compile(r"^(\d*\.?\d+)(rem|px|pt)$", re.I)
+# The size inside a `font:` shorthand is its first length: style, variant and
+# weight are keywords or unitless numbers, and the line height follows a `/`.
+FONT_SIZE_IN_SHORTHAND_RE = re.compile(r"(?<![\w.#-])(\d*\.?\d+(?:rem|px|pt))(?![\w-])", re.I)
 HAIRLINE_RE = re.compile(r"var\(\s*--hair\s*\)|1px\s+solid\s+var\(\s*--line\s*\)", re.I)
 DRAW_RUN_RE = re.compile(r"var\(\s*--draw-run\b", re.I)
 KEYWORDS = ("none", "initial", "inherit", "unset", "revert")
@@ -256,6 +272,16 @@ def check_css_declaration(decl, selector, rep, rel, page=False):
     """
     where = f"{selector} " if selector else "inline style "
     at = f"{{{decl.prop}: {decl.value}}} (line {decl.line})"
+    if decl.prop.startswith("--"):
+        # A local variable is held to the hex rule only. A site page may
+        # define the palette itself (it has no theme to take it from); a
+        # deck that parks a corporate hex in `--local` has left the token.
+        raw, token = _corporate_hex(decl.value)
+        if raw and not page:
+            rep.error(rel, f"{where}{at} — {raw} spells a corporate colour out by hand, even "
+                           f"inside a custom property; use var({token}), which follows the "
+                           f"theme when it moves")
+        return
     if decl.prop in ("transition", "transition-property") and \
             re.search(r"(?<![\w-])all(?![\w-])", decl.value, re.I):
         rep.error(rel, f"{where}{at} — `all` sweeps outline-color and outline-offset in too, so "
@@ -277,8 +303,12 @@ def check_css_declaration(decl, selector, rep, rel, page=False):
         rep.error(rel, f"{where}{at} — a shadow on in-flow slide content; slide content is "
                        f"flat, and a shadow belongs only to something that genuinely floats "
                        f"(TOC panel, lightbox, QR pop, the browser-chrome frame)")
-    if decl.prop == "font-size":
-        size, canvas = _rem(decl.value), _in_canvas(selector)
+    if decl.prop in ("font-size", "font"):
+        value = decl.value
+        if decl.prop == "font":
+            match = FONT_SIZE_IN_SHORTHAND_RE.search(value)
+            value = match.group(1) if match else ""
+        size, canvas = _rem(value), _in_canvas(selector)
         floor = CANVAS_FLOOR_REM if canvas else CHROME_FLOOR_REM
         if size is not None and size < floor - 1e-9:
             rep.error(rel, f"{where}{at} — {size * PX_PER_REM:.1f}px is under the "
@@ -296,8 +326,10 @@ def check_css_rule(rule, rep, rel):
     """The rules that need the whole declaration block to see."""
     fill = hairline = radius = None
     hero = _hero_subject(rule.selector)
-    for decl in iter_css_declarations(rule.body, rule.line):
+    for decl in iter_css_declarations(rule.body, rule.line, custom_properties=True):
         check_css_declaration(decl, rule.selector, rep, rel)
+        if decl.prop.startswith("--"):
+            continue
         if decl.prop in ("background", "background-color") and \
                 _keyword(decl.value) not in KEYWORDS + ("transparent",):
             fill = decl
@@ -325,16 +357,72 @@ def audit_deck_css(path, rep, root):
     with open(path, encoding="utf-8") as handle:
         parser = DeckParser()
         parser.feed(handle.read())
+    rules = []
     for source, first_line in parser.styles:
         for rule in iter_css_rules(source, first_line):
             if rule.selector.startswith("@"):
                 continue        # @keyframes / @font-face carry no slide styling
+            rules.append(rule)
             check_css_rule(rule, rep, rel)
     for declarations, line in parser.inline_styles:
         # An inline style has no selector, so it is read as in-canvas content:
         # everything a deck writes one on lives inside .slides.
-        for decl in iter_css_declarations(declarations, line):
+        for decl in iter_css_declarations(declarations, line, custom_properties=True):
             check_css_declaration(decl, "", rep, rel)
+    check_smil(parser.smil, rules, rep, rel)
+
+
+# --- SVG SMIL: motion outside the one clock ----------------------------------
+#
+# <animate>, <animateMotion> and friends run on the SVG's own timeline, so the
+# switch that stills every CSS animation — --draw-run set to 0s by print,
+# ?print-pdf, prefers-reduced-motion and .no-draw — cannot reach them. The one
+# thing a stylesheet can do is take the animated element out of the picture.
+# So a deck that uses SMIL must hide each animated element (display: none or
+# visibility: hidden, by a class it carries or the #id an href names) under
+# all three stillers, in its own CSS.
+SMIL_STILLERS = (
+    ("prefers-reduced-motion",
+     lambda part, context: "prefers-reduced-motion" in context.lower()),
+    (".no-draw",
+     lambda part, context: "no-draw" in part),
+    ("print (@media print or html.reveal-print)",
+     lambda part, context: "reveal-print" in part
+     or re.search(r"(?<![\w-])print(?![\w-])", context.lower()) is not None),
+)
+
+
+def _hides(rule):
+    for decl in iter_css_declarations(rule.body, rule.line):
+        if (decl.prop == "display" and _keyword(decl.value) == "none") or \
+                (decl.prop == "visibility" and _keyword(decl.value) == "hidden"):
+            return True
+    return False
+
+
+def _names(part, hooks):
+    return any(re.search(re.escape(hook) + r"(?![\w-])", part) for hook in hooks)
+
+
+def check_smil(smil, rules, rep, rel):
+    """Every SMIL element is hidden under every stiller (see above)."""
+    if not smil:
+        return
+    hiding = [(part.strip(), rule.context) for rule in rules if _hides(rule)
+              for part in rule.selector.split(",")]
+    for tag, line, hooks in smil:
+        if not hooks:
+            rep.error(rel, f"<{tag}> (line {line}) animates an element with no class or id, so "
+                           f"no stylesheet can hide it when print, reduced motion or .no-draw "
+                           f"still the deck; give its target a class and hide it under each")
+            continue
+        missing = [name for name, applies in SMIL_STILLERS
+                   if not any(applies(part, context) and _names(part, hooks)
+                              for part, context in hiding)]
+        if missing:
+            rep.error(rel, f"<{tag}> (line {line}) runs on the SVG's own clock, which "
+                           f"var(--draw-run) cannot still; hide {' or '.join(hooks[:3])} "
+                           f"(display: none) under " + ", ".join(missing))
 
 
 def audit_page_css(path, rep, root):

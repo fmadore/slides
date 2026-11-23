@@ -76,5 +76,31 @@
       "fonts/librefranklin-normal-latin-ext.woff2": "61216d8e3efe8c5a26861f8b92dc9a922645c662da95c37bf787a4a774a5c8d5",
       "fonts/librefranklin-normal-latin.woff2": "52e605852c72cc2df1473df1fb7f26a3a0be58e31835bc8f33f29b1918c82cbd"
     }
+  },
+  "carlito": {
+    "source": [
+      "https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    ],
+    "license": "OFL-1.1",
+    "files": [
+      "brands/zmo/fonts/carlito-italic-400-latin-ext.woff2",
+      "brands/zmo/fonts/carlito-italic-400-latin.woff2",
+      "brands/zmo/fonts/carlito-italic-700-latin-ext.woff2",
+      "brands/zmo/fonts/carlito-italic-700-latin.woff2",
+      "brands/zmo/fonts/carlito-normal-400-latin-ext.woff2",
+      "brands/zmo/fonts/carlito-normal-400-latin.woff2",
+      "brands/zmo/fonts/carlito-normal-700-latin-ext.woff2",
+      "brands/zmo/fonts/carlito-normal-700-latin.woff2"
+    ],
+    "sha256": {
+      "brands/zmo/fonts/carlito-italic-400-latin-ext.woff2": "8ebd4b55d954992bd302c1339e3be920459bb6de9e9c647b1f9a4717433f37b7",
+      "brands/zmo/fonts/carlito-italic-400-latin.woff2": "6bbdd83c5797d207bd2027f2687a70e428513c56130feaad1ffc0a1a7ace7c07",
+      "brands/zmo/fonts/carlito-italic-700-latin-ext.woff2": "768c03cb653619038eacf3522a6186c616c3183b597a7c24064e071c9712f488",
+      "brands/zmo/fonts/carlito-italic-700-latin.woff2": "e1bbd00245b0b22d0c540413ac73a91f7afff587899260a683acec3564f06ac3",
+      "brands/zmo/fonts/carlito-normal-400-latin-ext.woff2": "c62f0fc5db6a6c05165f542e6703d743d94a49312271de0876697f892bd5c14d",
+      "brands/zmo/fonts/carlito-normal-400-latin.woff2": "a29c4a4e61863753cf6a10831efaa05f849dcaa8f580422dbc41bc058c3b6b64",
+      "brands/zmo/fonts/carlito-normal-700-latin-ext.woff2": "ac72169e5c95728df58cd1cf18625228dd2fb7b49a0eb558d213a52529bdc4ce",
+      "brands/zmo/fonts/carlito-normal-700-latin.woff2": "af249cfe4107221070ff077c29a043004e8f2efea977dcbaaf217a24f3b7680e"
+    }
   }
 }

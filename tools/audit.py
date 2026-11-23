@@ -35,15 +35,11 @@ Usage:
   python3 tools/audit.py --browser       # also run the browser checks
 """
 import argparse
-import collections
-import hashlib
-import json
 import os
 import re
 import subprocess
 import sys
-from html.parser import HTMLParser
-from urllib.parse import unquote, urlparse
+from urllib.parse import urlparse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOOLS = os.path.dirname(os.path.abspath(__file__))
@@ -55,20 +51,21 @@ from slideslib.manifest import ManifestValidationError, load_manifest
 from slideslib.publication import reference_errors
 from slideslib.notes import remaining_notes
 from slideslib import asset_audit, css_audit, vendor_audit
-from slideslib.html_refs import (DeckParser, css_references, is_local, is_within, iter_html, local_path)
-from slideslib.css_audit import iter_css_rules, iter_css_declarations
-from slideslib.asset_audit import BYTE_CEILING, PIXEL_CEILING, image_size, file_digest
+from slideslib.html_refs import (DeckParser, PRUNED_DIRS, css_references, is_local, is_within,
+                                 iter_html, local_path)
+from slideslib.asset_audit import file_digest
 
 # Landing-page links that are generated at build time (they exist on the live
 # site, not in the repo).
 GENERATED = {"slides.pdf", "social-card.png"}
 
-# Directories the walks never descend into. `.claude` holds git worktrees, and a
+# Directories the walks never descend into: PRUNED_DIRS, the one set every walk
+# shares (slideslib/html_refs.py). `.claude` holds git worktrees, and a
 # worktree is a second copy of this repository: walked, its `shared/src`
 # partials fail the exclusion below (which tests a path relative to ROOT) and
 # get audited as standalone stylesheets, so the bundle-relative `fonts/fonts.css`
-# reads as a missing reference. One tree is audited at a time — its own.
-PRUNED_DIRS = {".git", ".claude", "node_modules", "_site"}
+# reads as a missing reference. One tree is audited at a time — its own. The
+# gitignored `tmp` and `visual-diff` scratch folders are not part of it either.
 
 # Files that must never appear in a publication build (see the allowlist in
 # tools/strip-notes.py).
@@ -82,12 +79,6 @@ DEV_ONLY = ["README.md", ".gitignore", ".gitattributes", "PRODUCT.md",
             os.path.join("shared", "reveal", "plugin", "notes.js")]
 
 PLACEHOLDER_RE = re.compile(r"\b(TODO|FIXME|XXX|lorem ipsum)\b", re.IGNORECASE)
-TEXT_EXT = {".html", ".css", ".js", ".json", ".md", ".svg", ".txt", ".py", ".yml"}
-MARKDOWN_REF_RE = re.compile(r"!?\[[^\]]*\]\(\s*(?P<url>[^\s)]+)")
-QUOTED_ASSET_RE = re.compile(
-    r"(?P<q>['\"])(?P<url>[^'\"\n]+\.(?:png|jpe?g|webp|svg|woff2?|md|pdf|css|m?js))(?P=q)",
-    re.IGNORECASE,
-)
 
 
 class Report:
@@ -230,15 +221,24 @@ def audit_manifest(rep):
     return published
 
 
+# Every starter tools/new-talk.py copies; each carries its own placeholder QR.
+STARTERS = ("_template", "_template-zmo")
+
+
 def audit_placeholder_qr(rep, published):
-    tpl = os.path.join(ROOT, "talks", "_template", "assets", "qr-slides.png")
-    if not os.path.exists(tpl):
+    placeholders = {}
+    for starter in STARTERS:
+        tpl = os.path.join(ROOT, "talks", starter, "assets", "qr-slides.png")
+        if os.path.exists(tpl):
+            placeholders.setdefault(file_digest(tpl), starter)
+    if not placeholders:
         return
-    tpl_md5 = file_digest(tpl)
     for slug in published:
         qr = os.path.join(ROOT, "talks", slug, "assets", "qr-slides.png")
-        if os.path.exists(qr) and file_digest(qr) == tpl_md5:
-            rep.error(f"talks/{slug}", "qr-slides.png is the template's placeholder QR")
+        starter = os.path.exists(qr) and placeholders.get(file_digest(qr))
+        if starter:
+            rep.error(f"talks/{slug}", f"qr-slides.png is the template's placeholder QR "
+                                       f"(talks/{starter}/assets/qr-slides.png)")
 
 
 def audit_vendor(rep):

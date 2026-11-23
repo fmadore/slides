@@ -71,12 +71,25 @@ def render_citation(talk: Talk, site: str) -> list[str]:
     return lines
 
 
+def title_author_label(presenters) -> str:
+    """The author part of a deck's <title>, in citation style.
+
+    One presenter by full name; two by surname, "A & B"; three or more as
+    "First et al." — six surnames joined by " & " made a tab title nobody
+    could read.
+    """
+    surnames = [presenter.rsplit(" ", 1)[-1] for presenter in presenters]
+    if len(presenters) == 1:
+        return presenters[0]
+    if len(presenters) == 2:
+        return " & ".join(surnames)
+    return f"{surnames[0]} et al."
+
+
 def render_head(talk: Talk, site: str) -> str:
     url = talk.canonical_url(site)
     locale = "fr_FR" if talk.language.startswith("fr") else "en_US"
-    author_label = talk.presenters[0] if len(talk.presenters) == 1 else " & ".join(
-        presenter.rsplit(" ", 1)[-1] for presenter in talk.presenters
-    )
+    author_label = title_author_label(talk.presenters)
     authors = [_person(presenter) for presenter in talk.presenters]
     # The card is a capture of the cover slide (tools/export-pdf.mjs).
     # A colon rather than quotation marks: titles carry quotes of their own.

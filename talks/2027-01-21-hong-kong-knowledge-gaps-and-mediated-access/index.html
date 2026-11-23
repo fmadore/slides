@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- DECK_META:START (generated from talks/talks.json) -->
-  <title>Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data — Madore &amp; Yang &amp; Baumann &amp; Viswajith &amp; Nandini &amp; Schönfeld</title>
+  <title>Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data — Madore et al.</title>
   <meta name="description" content="A pilot in which small language models write cited definitions for AMIRA&#x27;s authority records from the platform&#x27;s own sources.">
   <link rel="canonical" href="https://slides.frederickmadore.com/talks/2027-01-21-hong-kong-knowledge-gaps-and-mediated-access/">
   <meta property="og:type" content="article">
@@ -81,11 +81,11 @@
       --pl-ink: oklch(0.205 0.016 258);
       --pl-ink-soft: oklch(0.405 0.018 258);
       --pl-ink-faint: oklch(0.530 0.016 256);
-      --pl-green: #009260;
-      --pl-green-deep: color-mix(in oklch, #009260, #06140d 26%);
-      --pl-green-wash: color-mix(in oklch, #009260, oklch(0.991 0.001 250) 90%);
-      --pl-navy: #00268a;
-      --pl-gold: #cca352;
+      --pl-green: var(--green);
+      --pl-green-deep: color-mix(in oklch, var(--green), #06140d 26%);
+      --pl-green-wash: color-mix(in oklch, var(--green), oklch(0.991 0.001 250) 90%);
+      --pl-navy: var(--navy);
+      --pl-gold: var(--gold);
       --pl-on-field: #ffffff;
       --pl-font-body: var(--font-serif);
       --pl-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -167,6 +167,10 @@
     .reveal .pl [data-step], .reveal .pl .wire[data-step], .reveal .pl .tick path, .reveal .pl .verdict { transition: none !important; }
     .reveal .pl .pulse { display: none; }
   }
+  /* The pulses run on SMIL, which var(--draw-run) cannot reach: hide them
+     wherever the deck is stilled (.no-draw, print, the ?print-pdf export). */
+  .reveal.no-draw .pl .pulse, .reveal section.no-draw .pl .pulse, html.reveal-print .reveal .pl .pulse { display: none; }
+  @media print { .reveal .pl .pulse { display: none; } }
 
     /* The vocabularies slide: concept, then what each vocabulary says. */
     .reveal .vocab { margin: 0; }

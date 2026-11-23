@@ -149,6 +149,57 @@ class NewTalkTransaction(unittest.TestCase):
         self.assertNotIn('slides-qr', source)
         self.assertTrue((deck / 'read.html').is_file())
 
+    def scaffold_and_audit(self, *extra):
+        """Scaffold from the real starter, then run the deck audits on it.
+
+        The temporary root has no shared/ engine, so references into it are
+        the one thing left out; everything the deck itself carries is held to
+        the same checks as a published talk (#30).
+        """
+        shutil.copytree(HERE / "slideslib", self.root / "tools" / "slideslib", ignore=shutil.ignore_patterns('__pycache__'))
+        shutil.copy2(HERE / "build-index.py", self.root / "tools" / "build-index.py")
+        shutil.copy2(HERE.parent / "talks" / "_template" / "index.html", self.template / "index.html")
+        shutil.copytree(HERE.parent / "talks" / "_template-zmo", self.root / "talks" / "_template-zmo")
+        shutil.copy2(HERE.parent / "index.html", self.root / "index.html")
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(new_talk.main(self.args(*extra)), 0)
+        deck = self.root / 'talks' / '2099-03-04-test-city-archives-ai'
+        audit_spec = importlib.util.spec_from_file_location("audit_for_new_talk", HERE / "audit.py")
+        audit = importlib.util.module_from_spec(audit_spec)
+        audit_spec.loader.exec_module(audit)
+        audit.ROOT = str(self.root)
+        rep = audit.Report()
+        audit.audit_html(str(deck / "index.html"), rep, published_deck=True)
+        audit.audit_deck_css(str(deck / "index.html"), rep)
+        audit.audit_placeholder_qr(rep, [deck.name])
+        errors = [msg for _, msg in rep.errors if "../../shared/" not in msg]
+        return deck, errors, output.getvalue()
+
+    def test_no_qr_scaffold_passes_the_deck_audit_for_every_brand(self):
+        for brand in ("bayreuth", "zmo"):
+            with self.subTest(brand):
+                deck, errors, _ = self.scaffold_and_audit("--brand", brand)
+                self.assertEqual(errors, [])
+                self.assertFalse((deck / "assets" / "qr-slides.png").exists())
+                self.assertNotIn("slides-qr", (deck / "index.html").read_text(encoding="utf-8"))
+                shutil.rmtree(deck)
+                self.manifest.write_text(json.dumps({"site": "https://slides.example.test",
+                                                     "talks": []}), encoding="utf-8")
+                shutil.rmtree(self.root / "talks" / "_template-zmo")
+                shutil.rmtree(self.root / "tools")
+
+    def test_zmo_card_qr_examples_keep_their_own_placeholder(self):
+        deck, _, _ = self.scaffold_and_audit("--brand", "zmo")
+        source = (deck / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(source.count('src="assets/qr-example.png"'), 2)
+        self.assertTrue((deck / "assets" / "qr-example.png").is_file())
+
+    def test_next_steps_name_the_one_validation_command(self):
+        _, _, output = self.scaffold_and_audit()
+        self.assertIn("Validate: npm run validate", output)
+        self.assertNotIn("npm test &&", output)
+
     def test_unknown_brand_is_refused(self):
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
             new_talk.main(self.args("--brand", "nowhere"))

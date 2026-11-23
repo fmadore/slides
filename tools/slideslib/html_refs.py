@@ -5,7 +5,14 @@ from html.parser import HTMLParser
 from urllib.parse import unquote, urlparse
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PRUNED_DIRS = {".git", ".claude", "node_modules", "_site", "__pycache__"}
+# `tmp` and `visual-diff` are gitignored local scratch and report output: a
+# stray screenshot page or check script there is not part of the site.
+PRUNED_DIRS = {".git", ".claude", "node_modules", "_site", "__pycache__", "tmp", "visual-diff"}
+
+# SVG animation elements (html.parser lowercases tag names), spelled as SVG does.
+SMIL_TAGS = {"animate": "animate", "animatemotion": "animateMotion",
+             "animatetransform": "animateTransform", "animatecolor": "animateColor",
+             "set": "set"}
 
 class DeckParser(HTMLParser):
     """Collect the references and structures the audit cares about."""
@@ -22,10 +29,14 @@ class DeckParser(HTMLParser):
         self.notes = 0
         self.styles = []        # (css source, first line)  per-deck <style> blocks
         self.inline_styles = []  # (declarations, line)      style="…" attributes
+        self.smil = []          # (tag, line, hooks)  SVG animations and the
+        #                         classes/#ids a stylesheet could hide them by
         self._in_style = False
+        self._svg = []          # open elements inside an <svg>, as hook lists
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        self._track_svg(tag, a)
         if "id" in a:
             self.ids.append(a["id"])
         if (a.get("style") or "").strip():
@@ -79,6 +90,29 @@ class DeckParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "style":
             self._in_style = False
+        if self._svg:
+            # Inside SVG every element is closed (or self-closed), so the
+            # stack unwinds to the matching tag.
+            for depth in range(len(self._svg) - 1, -1, -1):
+                if self._svg[depth][0] == tag:
+                    del self._svg[depth:]
+                    break
+
+    def _track_svg(self, tag, a):
+        """Keep the open SVG elements, and record each SMIL animation."""
+        if not self._svg and tag != "svg":
+            return
+        hooks = ["." + c for c in (a.get("class") or "").split()]
+        if a.get("id"):
+            hooks.append("#" + a["id"])
+        if tag in SMIL_TAGS:
+            href = a.get("href") or a.get("xlink:href") or ""
+            if href.startswith("#"):
+                targets = [href]                     # animates the element it names
+            else:                                    # animates its parent, and so is
+                targets = [h for _, hs in reversed(self._svg) for h in hs]  # hidden with any ancestor
+            self.smil.append((SMIL_TAGS[tag], self.getpos()[0], targets))
+        self._svg.append((tag, hooks))
 
     def handle_data(self, data):
         # getpos() is the start of this data chunk, so a rule's line number
