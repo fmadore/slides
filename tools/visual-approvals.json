@@ -1,5 +1,31 @@
 {
   "version": 1,
-  "base": "8a89125a40cea6bdd4b27e8d09d7545aeb5e4b91",
-  "snapshots": []
+  "base": "b49bdf10aed6d3e9eeb4bbb7157ad4837ee5d4e4",
+  "snapshots": [
+    {
+      "name": "brand-zmo-contents-1280x720.png",
+      "afterSha256": "41eda5648ac479cb6936e46ad57570d80faeb86a84a100edcbaf51e646c5ce3b",
+      "reason": "Reviewed before/after: the ZMO list rules no longer reach the contents overlay (#26), so rows lose the stray 1.05em indent and 0.6em margin and sit as the Broadsheet overlay does. Slides are unchanged."
+    },
+    {
+      "name": "brand-zmo-contents-390x844.png",
+      "afterSha256": "584653823b28ad2f9b471f148053f8b17d88087baee49ce049fcfd1f0b8cb344",
+      "reason": "Reviewed before/after: the ZMO list rules no longer reach the contents overlay (#26), so rows lose the stray 1.05em indent and 0.6em margin and sit as the Broadsheet overlay does. Slides are unchanged."
+    },
+    {
+      "name": "page-404-1280x720.png",
+      "afterSha256": "a2cd8344fb923a0e3cba3ccd9e1253696cee8f4842bba421d30855e29e9fe362",
+      "reason": "Reviewed before/after: the retired eyebrow tick is removed, the eyebrow is upright, and the heading is weight 700 per DESIGN.md (#32). Layout and copy are unchanged."
+    },
+    {
+      "name": "page-404-390x844.png",
+      "afterSha256": "09cf97166e603465b0ac2c1a152d7747f99be2540cd9204867551717cbe068fd",
+      "reason": "Reviewed before/after: the retired eyebrow tick is removed, the eyebrow is upright, and the heading is weight 700 per DESIGN.md (#32). Layout and copy are unchanged."
+    },
+    {
+      "name": "page-index-390x844.png",
+      "afterSha256": "098b323e1430a47f563d0c75972b37db659083bf8a568d47fb8f662f7ba70412",
+      "reason": "Reviewed before/after: the landing page takes the theme's current line and ink tokens and weight 700 headings; control borders now reach 3:1 (#32). Layout and copy are unchanged."
+    }
+  ]
 }
