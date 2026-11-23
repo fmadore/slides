@@ -47,7 +47,10 @@
   float: left; font-family: var(--font-display); font-weight: 800; font-size: 3.4em;
   line-height: 0.66; padding: 0.06em 0.14em 0 0; color: var(--green-deep);
 }
-.reveal p.dropcap.gold::first-letter { color: var(--gold); }
+/* No gold versal on paper: raw gold measures 2.29:1 there, under the 3:1 that
+   even a large letter needs, and gold on a light slide breaks the One Gold
+   Spark Rule. A .gold versal keeps green-deep on paper and takes the gold
+   spark (--ond-mark) on the deep pole, as every versal does. */
 .reveal section.section p.dropcap::first-letter,
 .reveal section.closing p.dropcap::first-letter { color: var(--ond-mark); }
 

@@ -15,6 +15,7 @@
       --paper: oklch(0.991 0.001 250); --rule: oklch(0.165 0.014 258);
       --ink: oklch(0.205 0.016 258); --ink-bold: oklch(0.150 0.016 262);
       --ink-soft: oklch(0.405 0.018 258);
+      --focus-ring: var(--green);
     }
     * { box-sizing: border-box; }
     body {
@@ -25,13 +26,12 @@
     }
     main { max-width: 34rem; padding: 2rem; }
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 0.6em; margin: 0 0 1.2rem;
+      margin: 0 0 1.2rem; font-style: normal;
       font-family: "Libre Franklin", system-ui, sans-serif; font-weight: 700;
       font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-soft);
     }
-    .eyebrow::before { content: ""; width: 1.6em; height: 3px; background: var(--green); border-radius: 1px; }
     h1 {
-      font-family: "Libre Franklin", system-ui, sans-serif; font-weight: 800;
+      font-family: "Libre Franklin", system-ui, sans-serif; font-weight: 700;
       font-size: clamp(3rem, 10vw, 5rem); letter-spacing: -0.03em; line-height: 0.95;
       color: var(--ink-bold); margin: 0 0 1rem;
     }
@@ -43,7 +43,9 @@
       border-bottom: 3px solid var(--green);
       padding-bottom: 0.15em;
     }
-    a:hover { color: var(--green); }
+    /* Raw green is 3.87:1 on Paper, under 4.5:1 for these small caps. */
+    a:hover { color: var(--ink-bold); }
+    a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; border-radius: 3px; }
     hr { border: 0; height: 4px; background: var(--rule); margin: 0 0 1.6rem; }
   </style>
 </head>

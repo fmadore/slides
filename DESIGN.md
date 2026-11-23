@@ -125,7 +125,7 @@ components:
     rounded: "{rounded.sm}"
     size: "2rem"
   nav-button-hover:
-    backgroundColor: "{colors.lead-green}"
+    backgroundColor: "{colors.green-deep}"
     textColor: "{colors.paper}"
   flow-step:
     backgroundColor: "transparent"
@@ -287,7 +287,7 @@ Sharp by default. Radii: 3px (`--radius-sm`) chips, plate images, focus corners;
 
 **Institution logo.** `.org-logo` on cover and closing is 2.5rem tall and always follows the byline: an affiliation, never the credit or publisher slot. The footer's cluster mark is 1.4rem.
 
-**Deck nav button.** 2rem square, 3px radius, 1.5px Line Strong border, Ink Soft icon; hover fills Lead Green and lifts 1px; focus 2px `--focus-ring` at 2px offset; disabled 30%. On dark: 10%-Paper fill, `--ond-rule` border, `--ond-text` glyph, hover to `--ond-mark`. The footer is `role="contentinfo"` with its controls in a labelled `<nav class="deck-nav">`. Copy-link announces success and shows a tick for 2.4s.
+**Deck nav button.** 2rem square, 3px radius, 1.5px Line Strong border, Ink Soft icon; hover fills Green Deep (Paper on it 6.12:1; on raw green the Contents label was 3.87:1) and lifts 1px; focus 2px `--focus-ring` at 2px offset; disabled 30%. On dark: 10%-Paper fill, `--ond-rule` border, `--ond-text` glyph, hover to `--ond-mark`. The footer is `role="contentinfo"` with its controls in a labelled `<nav class="deck-nav">`. Copy-link announces success and shows a tick for 2.4s.
 
 **Print imprint** (`.pdf-imprint`). In print the live footer and running head are hidden and `buildPrintImprints()` (`02-chrome.js`) adds one imprint per `.pdf-page`: chrome voice, a 2px Rule above, title and venue left, folio right. On paper: title Ink Faint (5.15:1), folio green-deep (6.12:1). On dark pages it reads `fieldOf()` and the on-dark tokens, and is named in the deep-register list in `01-foundations.css` because it is the section's sibling (deep pole: title 6.22:1, gold folio 7.13:1, rule 3.71:1). It carries `print-color-adjust: exact`. Author strings go through `escapeHTML()`, as in all string-built chrome.
 
@@ -309,6 +309,8 @@ Sharp by default. Radii: 3px (`--radius-sm`) chips, plate images, focus corners;
 
 - A frame with no fallback of its own gets an engine notice (`div.frame-fallback[data-frame-notice]`, "Loading the site…"). It hides when a no-cors reachability request succeeds; if the site is unreachable, offline or still pending at 8 s it becomes the unavailable notice with a persistent "Open the site ↗" link.
 - An author's saved view (`<img class="frame-fallback">`) stays until the embed sends its `data-ready-message` (origin- and source-checked), or until the iframe's `data-frame-trusted` is empty or equals the page origin and the site is reachable. A load event is never evidence.
+- A `.site-frame-view.has-shot` (the ZMO decks) paints a saved screenshot as the view's background. The frame still shows once the site answers; until then, or if it cannot be reached, the frame is hidden over the screenshot and the engine notice is a visually hidden status (`data-frame-notice="quiet"`). The PDF export uses that background image as the authored fallback.
+- Whenever any fallback shows, the iframe behind it is `visibility: hidden`, out of the tab order. Only the engine's own notice is reworded; an author's fallback copy is never rewritten.
 - Every `.site-frame-open` opens a new tab; `audit.py` enforces it.
 - A site that refuses framing from an origin (as `islam.zmo.de` does from localhost) legitimately stays on its saved view there.
 
