@@ -634,18 +634,18 @@
     </section>
 
     <section class="panel-slide" data-toc="The blind panel">
-      <h2 class="slide-title">Reading AMIRA won where the models knew least</h2>
+      <h2 class="slide-title">Reading AMIRA helped most where the models knew least</h2>
       <div class="cols ratio-3-2">
         <div class="col">
           <table>
             <thead>
-              <tr><th>Blind verdicts, uncalibrated</th><th class="num">Model alone</th><th class="num">Reading AMIRA</th></tr>
+              <tr><th>Pairs, by majority of three judges</th><th class="num">Model alone</th><th class="num">Reading AMIRA</th><th class="num">Neither</th></tr>
             </thead>
             <tbody>
-              <tr><td>Known well: highlife, timbila</td><td class="num">18 of 24</td><td class="num">6 of 24</td></tr>
-              <tr><td>Three drums: dondo, dùndún, talking drum</td><td class="num">6 of 33</td><td class="num">27 of 33</td></tr>
-              <tr><td>The Cluster’s concepts: multiplicity, relationality, reflexivity</td><td class="num">9 of 36</td><td class="num">27 of 36</td></tr>
-              <tr class="sum"><td>All eight concepts</td><td class="num">33 of 93</td><td class="num">60 of 93</td></tr>
+              <tr><td>Well covered on Wikipedia: highlife, timbila, talking drum</td><td class="num">7</td><td class="num">3</td><td class="num">1</td></tr>
+              <tr><td>The Cluster’s concepts: multiplicity, relationality, reflexivity</td><td class="num">3</td><td class="num">5</td><td class="num">4</td></tr>
+              <tr><td>No Wikipedia article: dondo, dùndún</td><td class="num">0</td><td class="num">4</td><td class="num">4</td></tr>
+              <tr class="sum"><td>All eight concepts, 31 pairs</td><td class="num">10</td><td class="num">12</td><td class="num">9</td></tr>
             </tbody>
           </table>
         </div>
@@ -654,12 +654,13 @@
             <span class="callout-label">The judges know what the models know</span>
             They score from their own training, the knowledge the model alone draws on. No researcher has calibrated them.
           </div>
-          <p class="source">Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon chose between each author model’s two definitions, shown as text only. Definitions 16 and 17 November, verdicts 17 November 2026; one run per cell. All three judges agreed on 20 of 31 pairs. Talking drum: 9 verdicts, one grounded answer unusable.</p>
+          <p class="source">Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon chose between each author model’s two definitions, text only, in both orders; a verdict that changed with the order counts as neither. Both routes had the same writing rules. Verdicts 24 November 2026; one run per cell. Wikipedia measured after the first verdicts. Talking drum: 3 pairs.</p>
         </div>
       </div>
       <aside class="notes">
-        <p>Next, a blind panel. Three flagship models, Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon, saw the two definitions each author model wrote, one alone and one reading AMIRA, with no names, routes or quotes, and chose the one they would put on the record. Reading AMIRA won 60 of 93 verdicts. The split follows how well the models already know a concept. On highlife and timbila, which are well documented, the model alone won 18 of 24. On the three drums and the Cluster's three concepts, reading AMIRA won 54 of 69. The dondo is the clearest case: a mean score of about three alone, above four reading AMIRA.</p>
-        <p>So grounding pays where the archive knows something the models do not, and it costs something where they already know the concept. The judges' bias is part of that result. One marked down Haiku's highlife definition for 'a garbled Konkomba for konkoma', but Konkomba is the spelling in Edna Smith's 1962 article, which the model quoted. On the drums the same knowledge worked the other way: the judges placed the dondo with the Akan of Ghana unprompted. A judge model cannot stand in for a reader who knows the field.</p>
+        <p>Next, a blind panel. Three flagship models, Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon, saw the two definitions each author model wrote, one alone and one reading AMIRA, with no names, routes or quotes, and chose the one they would put on the record. Each judge read each pair twice, in both orders, and both routes had the same writing rules. Of thirty-one pairs, reading AMIRA won twelve and the model alone ten; nine were undecided.</p>
+        <p>The split runs along what the models are likely to know. Highlife, timbila and the talking drum are well covered on English Wikipedia, and there the model alone won seven pairs of eleven. The Cluster's concepts and the two regional drums have no article in the sense we mean, and there reading AMIRA won nine of twenty, the model alone three. We measured Wikipedia after the first verdicts, so this describes these eight concepts; it is a hypothesis for the next run, not a result. The dondo is the clearest case: reading AMIRA won three pairs of four, the model alone none.</p>
+        <p>The judges' bias is part of the result. One marked down Haiku's highlife definition for 'a garbled Konkomba for konkoma', but Konkomba is the spelling in Edna Smith's 1962 article, which the model quoted. On the drums the same knowledge worked the other way: the judges placed the dondo with the Akan of Ghana unprompted. A judge model cannot stand in for a reader who knows the field.</p>
       </aside>
     </section>
 
@@ -687,26 +688,27 @@
     </section>
 
     <section class="tokens-slide" data-toc="Context and cost">
-      <h2 class="slide-title">Passages fit a small model’s window, at a price</h2>
+      <h2 class="slide-title">Passages fit a small window; a tight budget cost quality</h2>
       <table>
         <thead>
-          <tr><th>Same 16 grounded runs</th><th class="num">Full texts allowed</th><th class="num">Passages only</th></tr>
+          <tr><th>Same 16 cells: 4 models, 4 concepts</th><th class="num">Full texts</th><th class="num">Passages</th><th class="num">Passages, tight budget</th></tr>
         </thead>
         <tbody>
-          <tr><td>Largest single call, median (tokens)</td><td class="num">48,092</td><td class="num">13,658</td></tr>
-          <tr><td>Runs whose largest call fits 32k</td><td class="num">6 of 16</td><td class="num">16 of 16</td></tr>
-          <tr><td>Est. cost (USD)</td><td class="num">0.377</td><td class="num">0.121</td></tr>
-          <tr><td>Blind panel’s choice, 45 verdicts</td><td class="num">38</td><td class="num">7</td></tr>
+          <tr><td>Largest single call, median (tokens)</td><td class="num">49,980</td><td class="num">19,632</td><td class="num">14,240</td></tr>
+          <tr><td>Runs whose largest call fits 32k</td><td class="num">2 of 16</td><td class="num">12 of 16</td><td class="num">16 of 16</td></tr>
+          <tr><td>Est. cost, 16 runs (USD)</td><td class="num">0.259</td><td class="num">0.138</td><td class="num">0.139</td></tr>
+          <tr><td>Drums kept apart, judges’ verdicts</td><td class="num">8 of 12</td><td class="num">9 of 12</td><td class="num">4 of 12</td></tr>
+          <tr><td>Full texts preferred, pairs by majority</td><td class="num">–</td><td class="num">8 of 15</td><td class="num">12 of 16</td></tr>
         </tbody>
       </table>
       <div class="callout warm wide">
-        <span class="callout-label">The price</span>
-        With passages only, all four models merged the Akan dondo with a Yoruba “dondon”: a short passage does not carry enough context to tell them apart.
+        <span class="callout-label">The price was the budget</span>
+        Six records a search, results cut short, twelve tool calls: two of four models then merged the Akan dondo with a Yoruba “dondon”.
       </div>
-      <p class="source">Provider token counts. Full texts 16–17 November; passages (no whole texts, at most 12 tool calls) and panel 17 November 2026. One run per cell; panel uncalibrated; no open-weight model yet.</p>
+      <p class="source">Highlife and three drums, one run per cell, 24 November 2026; provider token counts; panel in both orders, uncalibrated.</p>
       <aside class="notes">
-        <p>A co-author raised a fair worry: about two hundred thousand tokens for one definition is far too much for an open-weight model. That figure is the sum over a loop of tool calls, and each call resends the conversation. What a context window must hold is the largest single call. Over 32 grounded runs it ranged from about fifteen thousand to a hundred and forty thousand tokens, with a median of forty-six thousand. Eight fit a 32k window. On the sixteen runs in the table, the median is forty-eight thousand and six fit.</p>
-        <p>So we tried a passages-only variant: no whole texts, at most twelve tool calls, capped results. Every run fit 32k, and it cost a third as much. The price shows twice. All four models merged the Ghanaian drum with a Yoruba drum of a similar name, and the blind panel preferred the full-text definition in 38 of 45 verdicts. We have not yet run it on an open-weight model.</p>
+        <p>A co-author raised a fair worry: about two hundred thousand tokens for one definition is far too much for an open-weight model. That figure is the sum over a loop of tool calls, and each call resends the conversation. What a context window must hold is the largest single call. With full texts, the median is about fifty thousand tokens, and two runs of sixteen fit a 32k window.</p>
+        <p>So we tried reading passages only, no whole texts, in two ways: with a tight budget of six records a search, results cut short and twelve tool calls, and without it. With the budget every run fits 32k, but two of four models merged the Ghanaian drum with a Yoruba drum of a similar name, and the panel preferred full texts in twelve pairs of sixteen. Without the budget, passages cost the same, twelve runs of sixteen still fit 32k, and the drums stayed apart as often as with full texts. Full texts still won eight pairs of fifteen, passages four. We have not yet run this on an open-weight model.</p>
       </aside>
     </section>
 
@@ -770,7 +772,7 @@
 
     <section class="closing" data-footer="dark">
       <p class="kicker">Thank you</p>
-      <h2>Reading the archive pays where it knows more than the models.</h2>
+      <h2>Reading the archive helped most where the models knew least.</h2>
       <div class="byline"><span class="name authors-list">Frédérick Madore, Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span></div>
       <div class="contact"><a href="https://github.com/AM-Digital-Research-Environment" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span><span>github.com/AM-Digital-Research-Environment</span></a><a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener"><span class="ico"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M3 12h18M12 2.8c2.6 2.6 3.9 6.2 3.9 9.2s-1.3 6.6-3.9 9.2c-2.6-2.6-3.9-6.2-3.9-9.2S9.4 5.4 12 2.8z"/></svg></span><span>Africa Multiple · Digital Solutions</span></a></div>
       <img class="org-logo" src="../../shared/logo-bayreuth.svg" alt="University of Bayreuth">
