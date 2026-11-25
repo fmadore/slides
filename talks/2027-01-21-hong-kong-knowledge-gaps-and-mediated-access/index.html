@@ -52,6 +52,11 @@
     .reveal section.closing .byline .authors-list { max-width: 40ch; }
 
     /* The gap: the live subject record beside the two facts that matter. */
+    /* The title fills the shared 22ch cap to within a fraction of a pixel, and
+       under the print auto-fit's zoom Chromium 159 resolves ch from the rounded
+       zoomed font, so 22ch shrinks and the title wrapped onto a second line,
+       pushing the callout past the imprint. 24ch keeps it on one line. */
+    .reveal section.gap-slide .slide-title { max-width: 24ch; }
     .reveal section.gap-slide .cols { align-items: stretch; }
     .reveal section.gap-slide .site-frame { height: 100%; min-height: 0; }
     .reveal section.gap-slide .site-frame-view > iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; }
