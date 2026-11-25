@@ -61,7 +61,7 @@
           </ol>
           <div class="callout">
             <span class="callout-label">The question</span>
-            Can language models draft these definitions from AMIRA’s own holdings, with every claim traceable to a source? Does that do better than borrowing a definition, or asking a model alone?
+            Can language models draft definitions from AMIRA’s holdings, with every claim traced to a source? Does that improve on borrowing a definition or asking a model alone?
           </div>
         </div>
         <div class="col">
@@ -108,24 +108,24 @@
         <div class="col">
           <div class="col-head">An API</div>
           <ul>
-            <li>Written for programmers</li>
-            <li>Each new question needs someone to write code</li>
-            <li>AMIRA has one, from Omeka S; the MCP server reads it</li>
+            <li>Built for programmers</li>
+            <li>New code for each new question</li>
+            <li>Provided by Omeka S; read by the MCP server</li>
           </ul>
         </div>
         <div class="col">
           <div class="col-head alt">An MCP server</div>
           <ul>
-            <li>Describes the same catalogue to a language model</li>
-            <li>Named tools in plain words; the model picks one, no new code</li>
-            <li>Instructions on connecting: how to cite, what is private</li>
-            <li>One open standard: Claude, ChatGPT, our test harness</li>
+            <li>Exposes the same catalogue to language models</li>
+            <li>Plain-language tools the model selects itself</li>
+            <li>Built-in rules on citation and private text</li>
+            <li>One open standard across clients and our harness</li>
           </ul>
         </div>
       </div>
       <div class="callout wide">
         <span class="callout-label">Who decides what</span>
-        We decide which tools exist and what they return. The assistant and its provider decide what reaches the answer.
+        We set the tools and their outputs; the assistant and its provider control the final answer.
       </div>
 </section>
 <section class="reader-slide" id="slide-5" aria-labelledby="slide-5-title">
@@ -136,7 +136,7 @@
           <div class="col-head">Linking keywords to Wikidata</div>
           <ul>
             <li>CAREL, led by Jiayu Yang: linking without task-specific training</li>
-            <li>Rules settle the clear cases; a local open-source model, the ambiguous ones</li>
+            <li>Rules settle clear cases; a local open-source model handles ambiguous ones</li>
             <li>89.8% and 90.9% accuracy on Library of Congress headings</li>
           </ul>
           <p class="source">Yang et al., JCDL 2026, <a href="https://doi.org/10.1145/3805696.3846031">doi:10.1145/3805696.3846031</a>; CIKM 2026, <a href="https://doi.org/10.1145/3799682.3840034">doi:10.1145/3799682.3840034</a></p>
@@ -145,7 +145,7 @@
           <div class="col-head">AMIRA MCP server</div>
           <ul>
             <li>The server, not the model, computes counts, facets and related records</li>
-            <li>Curator mode: private records and full text, behind a personal token</li>
+            <li>Curator mode: private records and full text behind a personal token</li>
           </ul>
           
         </div>
@@ -299,7 +299,7 @@
       </div>
       <div class="callout wide">
         <span class="callout-label">Does one model keep the three drums apart?</span>
-        Verdicts “distinct”: model alone 3 of 9; reading full texts 6 of 9; passages only 0 of 9, each naming the dondo merged with a Yoruba drum.
+        Verdicts “distinct”: model alone 3 of 9; reading full texts 6 of 9; passages only 0 of 9, all flagging dondo merged with a Yoruba drum.
       </div>
       <p class="source">Articles: full-text matches in <em>African Music</em> (ILAM). Wikidata, definitions (four models, one run per cell) and open verdicts (no answer key: Claude Opus 5.5, GPT-6 Astra, Gemini 4 Argon; uncalibrated; unanimous), 17 November 2026. Claude Haiku 5.5 left out: no usable grounded talking-drum definition.</p>
 </section>
@@ -365,7 +365,7 @@
       </table></div>
       <div class="callout warm wide">
         <span class="callout-label">The price was the budget</span>
-        Six records a search, results cut short, twelve tool calls: two of four models then merged the Akan dondo with a Yoruba “dondon”.
+        Six records per search, truncated results, twelve tool calls: two of four models then merged the Akan dondo with a Yoruba “dondon”.
       </div>
       <p class="source">Highlife and three drums, one run per cell, 24 November 2026; provider token counts; panel in both orders, uncalibrated.</p>
 </section>
@@ -375,7 +375,7 @@
       <div class="cols">
         <div class="col">
           <div class="col-head">The judges know what the models know</div>
-          <p>They score from their own training, as the model alone writes from it, and no researcher has calibrated them. One marked down a 1962 spelling the model had quoted faithfully.</p>
+          <p>They score from the same training knowledge the model alone uses, and no researcher has calibrated them. One marked down a 1962 spelling the model had quoted faithfully.</p>
         </div>
         <div class="col">
           <div class="col-head">Keyword search finds a term only as written</div>
@@ -396,26 +396,26 @@
         <div class="flow-step">
           <span class="step-n">1</span>
           <span class="step-h">About 50 concepts</span>
-          <p>Chosen by family: lamellophones, xylophones, drums, popular genres. Three runs per cell.</p>
+          <p>Grouped by instrument family and genre; three runs per cell.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">2</span>
           <span class="step-h">A local open-weight model</span>
-          <p>On the passages variant, which fits a 32k window: a 27-billion-parameter model, run locally.</p>
+          <p>27B parameters run locally on the passages mode.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">3</span>
           <span class="step-h">Review by researchers</span>
-          <p>Subject specialists assess the drafts and calibrate the judges.</p>
+          <p>Specialists check drafts and calibrate the judges.</p>
           <span class="step-q">“Would you put this on the record?”</span>
         </div>
         
         <div class="flow-step">
           <span class="step-n">4</span>
           <span class="step-h">Retrieval by meaning</span>
-          <p>Behind the same server, so other languages and spellings are found.</p>
+          <p>Semantic search added to the same MCP server.</p>
         </div>
       </div>
 </section>
