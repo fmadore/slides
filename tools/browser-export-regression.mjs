@@ -149,10 +149,12 @@ try {
         <section class="stack" hidden>${pageOf(2, '<p>A fitting vertical slide.</p>', ' hidden')}${pageOf(3, '<p style="position:relative;top:800px">Runs off a hidden page</p><p hidden>Hidden copy is still skipped</p>', ' hidden')}</section>
         ${pageOf(4, '<p style="position:relative;top:800px">Also runs off</p>', ' hidden')}
       </div></div>`);
-    assert.deepEqual(await printGeometry(page), [
-      'page 3: Runs off a hidden page outside content bounds',
-      'page 4: Also runs off outside content bounds',
-    ]);
+    const failures = await printGeometry(page);
+    assert.equal(failures.length, 2, failures.join('\n'));
+    // The message names the edge crossed and the overrun, so a CI-only
+    // failure can be read from the log.
+    assert.match(failures[0], /^page 3: Runs off a hidden page outside content bounds \(bottom \+\d+px\)$/);
+    assert.match(failures[1], /^page 4: Also runs off outside content bounds \(bottom \+\d+px\)$/);
   }));
   // browser-check's page watcher: Chromium's console line for a local 404 names
   // no URL, so only the response listener can catch a deck's missing image.

@@ -49,10 +49,22 @@ export async function printGeometry(page) {
       }
       return { left, right, top, bottom, width: Math.max(0, right - left), height: Math.max(0, bottom - top) };
     }
+    // Name the edge crossed and by how much (worst case per label), with the
+    // slide's auto-fit scale: a CI-only failure must be diagnosable from the log.
+    const overruns = new Map();
     function inspect(rect, label) {
       if (!rect.width || !rect.height) return;
-      if (rect.left < box.left - 2 || rect.right > box.right + 2 || rect.top < box.top - 2 || rect.bottom > bottom + 2) {
-        failures.push(`page ${index + 1}: ${label} outside content bounds`);
+      const over = { left: box.left - rect.left, right: rect.right - box.right, top: box.top - rect.top, bottom: rect.bottom - bottom };
+      if (Object.values(over).every(px => px <= 2)) return;
+      const worst = overruns.get(label) || {};
+      for (const [edge, px] of Object.entries(over)) if (px > 2) worst[edge] = Math.max(worst[edge] || 0, px);
+      overruns.set(label, worst);
+    }
+    function reportOverruns() {
+      const fit = slide.dataset.fit ? `, fit ×${slide.dataset.fit}` : '';
+      for (const [label, worst] of overruns) {
+        const edges = Object.entries(worst).map(([edge, px]) => `${edge} +${Math.round(px)}px`).join(', ');
+        failures.push(`page ${index + 1}: ${label} outside content bounds (${edges}${fit})`);
       }
     }
     const walker = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
@@ -75,6 +87,7 @@ export async function printGeometry(page) {
         failures.push(`page ${index + 1}: image overlaps its caption`);
       }
     });
+    reportOverruns();
     if (!imprint) failures.push(`page ${index + 1}: missing imprint`);
     return [...new Set(failures)];
   }));
