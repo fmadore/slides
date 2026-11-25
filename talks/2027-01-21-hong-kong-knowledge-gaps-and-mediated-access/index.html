@@ -117,6 +117,8 @@
   .reveal .pl .record .rec-list { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 9px 14px; font-size: 18px; line-height: 1.2; }
   .reveal .pl .record .rec-k { color: var(--pl-ink-soft); }
   .reveal .pl .record .rec-v { margin: 0; font: 600 18px/1.35 var(--font-label); text-align: right; }
+  .reveal .pl .record .rec-n { grid-column: 1 / -1; }
+  .reveal .pl .record .rec-n b { font: 600 18px/1.35 var(--font-label); color: var(--pl-ink); }
   .reveal .pl .record .gap { grid-column: 1 / -1; margin-top: 8px; padding: 12px 12px 14px; border: 2px dashed var(--pl-gold); font: 600 18px/1.25 var(--font-label); }
   .reveal .pl .record .gap span { display: block; font: 500 18px/1.25 var(--pl-font-body); color: var(--pl-ink-soft); margin-top: 3px; }
 
@@ -333,6 +335,7 @@
             <li>Exposes the same catalogue to language models</li>
             <li>Plain-language tools the model selects itself</li>
             <li>Built-in rules on citation and private text</li>
+            <li>Named, read-only tools from a closed list</li>
             <li>One open standard across clients and our harness</li>
           </ul>
         </div>
@@ -342,8 +345,8 @@
         We set the tools and their outputs; the assistant and its provider control the final answer.
       </div>
       <aside class="notes">
-        <p>MCP stands for Model Context Protocol. AMIRA already exposes an Omeka S API, which requires a programmer to write a query for each new question. Our MCP server sits on top of it and presents the catalogue as named tools, alongside instructions on how to cite records and handle private text. A researcher asks a question in an assistant they already use, such as Claude, ChatGPT or a command-line agent, and the model picks the right tool, receives linked catalogue records and drafts a reply without anyone writing code.</p>
-        <p>Because the protocol is open, models from four providers ran against the same ten tools in our test harness. Control remains divided: we govern what the server exposes, while the model and its provider decide what enters the reply and whether our links survive. One practical constraint is keyword search, which misses variant spellings or other languages unless the record itself includes them.</p>
+        <p>MCP stands for Model Context Protocol. AMIRA already exposes an Omeka S API, which requires a programmer to write a query for each new question. Our MCP server sits on top of it and presents the catalogue as named tools, alongside instructions on how to cite records and handle private text. A researcher asks in an assistant they already use, and the model picks a tool, receives linked catalogue records and drafts a reply, with no code written.</p>
+        <p>Because the protocol is open, models from six makers ran against the same server in our harness. The harness gives them ten of its tools through a list in code, not through the prompt, and every tool only reads. Before any tool result, the instructions and tool descriptions take 3,901 to 7,470 tokens, depending on the provider. Control remains divided: we govern what the server exposes, while the model and its provider decide what enters the reply and whether our links survive.</p>
       </aside>
     </section>
 
@@ -395,7 +398,7 @@
         </figure>
         <div class="col">
           <dl class="evidence-reading">
-            <div><dt>Records</dt><dd>55</dd></div>
+            <div><dt>Records with this heading</dt><dd>55</dd></div>
             <div><dt>Definition</dt><dd>None</dd></div>
           </dl>
           <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
@@ -406,8 +409,8 @@
         </div>
       </div>
       <aside class="notes">
-        <p>Take the AMIRA subject Highlife (Music). It has fifty-five records and a link to its Library of Congress heading. A reader who has never heard of highlife gets a label and a list of records, and nothing that says what highlife is. Many authority records in AMIRA are in the same state; we have not yet counted how many.</p>
-        <p>The links show which records share a heading, but not what the concept means or how the researchers catalogued in AMIRA use it. That is the gap our pilot addresses: drafting a short definition grounded in those holdings, with every claim tied to an article.</p>
+        <p>Take the AMIRA subject Highlife (Music), linked to its Library of Congress heading. Fifty-five records carry that heading, as we read it on 25 November: fifty-two recordings and three articles. In full text, thirty-eight articles of the ILAM journal mention highlife, and only those three carry the heading. A reader who has never heard of highlife gets a label and a list, and nothing that says what highlife is. Many authority records in AMIRA are in the same state; we have not yet counted how many.</p>
+        <p>That is the gap our pilot addresses: drafting a short definition grounded in those holdings, with every claim tied to an article.</p>
       </aside>
     </section>
 
@@ -483,7 +486,7 @@
     </section>
 
     <section class="pipeline-slide" data-toc="The pipeline">
-      <div class="pl" role="img" aria-label="Pipeline: an AMIRA subject record with no definition is defined four ways (Library of Congress heading, Wikidata, a small model alone, the same model reading AMIRA through its MCP server). The route D result is a definition record whose quotes are checked by code against the text the model read. A blind panel of three larger models chooses between definitions; review by researchers is planned.">
+      <div class="pl" role="img" aria-label="Pipeline: an AMIRA subject record with no definition is defined four ways (Library of Congress heading, Wikidata, a small model alone, the same model reading AMIRA through its MCP server). The route D result is a definition record whose quotes are checked by code against the text the model read. A blind panel of four larger models chooses between definitions; review by researchers is planned.">
         <div class="pl-fit" aria-hidden="true"><div class="pl-stage">
         <!-- column heads -->
         <div class="col-head abs" data-step="0" style="left:48px;  top:128px; width:232px;"><b>1</b>The gap</div>
@@ -496,7 +499,7 @@
         <div class="id">AMIRA · subject 2412</div>
         <div class="rec-title">Highlife (Music)</div>
         <div class="rec-list">
-        <div class="rec-k">Records</div><div class="rec-v">55</div>
+        <div class="rec-k rec-n"><b>55</b> records with this heading</div>
         <div class="rec-k">LCSH</div><div class="rec-v">sh90004527</div>
         <div class="gap">Definition: none<span>The reader gets a label and a list.</span></div>
         </div>
@@ -565,13 +568,13 @@
         <div class="r-h">Code</div><div class="r-p">Is each quote in the text the model read?</div>
         </div>
         <div class="review abs" data-step="5" style="left:1088px; top:296px; width:144px;">
-        <div class="r-h">Three larger models, blind</div><div class="r-p">Which of two definitions goes on the record?</div>
+        <div class="r-h">Four larger models, blind</div><div class="r-p">Which of two definitions goes on the record?</div>
         </div>
         <div class="review abs" data-step="5" style="left:1088px; top:446px; width:144px;">
         <div class="r-h">Researchers (planned)</div><div class="r-p">Would you put this on the record?</div>
         </div>
         </div></div>
-        <img class="viz-fallback" hidden src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three larger models; review by researchers is planned.">
+        <img class="viz-fallback" hidden src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) is the heading of 55 records and has no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of four larger models; review by researchers is planned.">
       </div>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
@@ -579,12 +582,12 @@
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
       <aside class="notes">
-        <p>[on arrival: the gap] Here is the pilot as a pipeline. It starts from the gap: the highlife record, with no definition.</p>
-        <p>[→ four ways: A and B] Routes A and B are the two baselines I have just shown.</p>
-        <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory, which is likely to include Wikipedia, and cites nothing.</p>
+        <p>[on arrival: the gap] The pilot starts from the gap: the highlife record, with no definition. Its links to the Library of Congress and Wikidata rest on Jiayu Yang's work upstream, disambiguating our keywords and reconciling them with Wikidata.</p>
+        <p>[→ four ways: A and B] Routes A and B are the baselines I have just shown.</p>
+        <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory and cites nothing.</p>
         <p>[→ route D] Route D is the same model reading AMIRA through the MCP server: it searches, reads full texts and quotes them. ILAM's text is private, so you will only see short quotes from it.</p>
         <p>[→ the cited definition] The answer comes back as a record: a definition of at most 120 words, and claims, each with a short quote of about twenty-five words at most and its source. Code checks every quote against the cited record's own text.</p>
-        <p>[→ review] Review has three layers. Code checks the quotes. A blind panel of three flagship models, larger than the small ones that write, chooses between two definitions. I will show its verdicts, which no researcher has calibrated yet. Review by researchers is still to come.</p>
+        <p>[→ review] Review has three layers. Code checks the quotes. A blind panel of four flagship models, larger than the six small ones that write, chooses between two definitions. Review by researchers is still to come.</p>
       </aside>
     </section>
 
@@ -701,8 +704,9 @@
       </div>
       <p class="source">Articles: full-text matches in <em>African Music</em> (ILAM). Wikidata, definitions (four models, one run per cell) and open verdicts (no answer key: Claude Opus 5.5, GPT-6 Astra, Gemini 4 Argon; uncalibrated; unanimous), 17 November 2026. Claude Haiku 5.5 left out: no usable grounded talking-drum definition.</p>
       <aside class="notes">
-        <p>A co-author suggested this test: one English name for several distinct drums. 'Talking drum' is the generic term, with fifty-seven articles in the journal. The Yoruba dùndún of Nigeria has twenty-six. The Akan donno of Ghana, also spelled dondo, has nine under the first spelling. Wikidata has an item for the talking drum only, and the Yoruba label 'Dundun' sits on the item for the Mande dunun, a different drum.</p>
-        <p>The donno is where the archive knows something the models do not. Alone, only one of four definitions places it in Ghana; one assigns it to the Fula and the Sahel and says it is unsure, and one describes a slit drum. Reading the full texts, two definitions place it with the Akan of Ghana, and one reports that an older and a newer source disagree on who plays it. We asked the three judges, with no answer key, whether each model's three definitions keep the drums apart. Counting only the three models that produced usable grounded definitions for all three drums: alone, three of nine verdicts rated them distinct; reading full texts, six; with short passages only, none, and every verdict noted the same fault: dondo merged with a Yoruba drum.</p>
+        <p>A co-author suggested this test. 'Talking drum' is the generic term, with fifty-seven articles in the journal. The Yoruba dùndún of Nigeria has twenty-six. The Akan donno of Ghana, also spelled dondo, has nine under the first spelling. Wikidata has an item for the talking drum only, and the Yoruba label 'Dundun' sits on the item for the Mande dunun, a different drum.</p>
+        <p>AMIRA has one Library of Congress heading here, Talking drum, on seven records. The archive keeps the two drums related to it apart, mostly on records without that heading: twenty-three of the twenty-six on dùndún, eight of the nine on donno.</p>
+        <p>The donno is where the archive knows something the models do not. Alone, only one of four definitions places it in Ghana. Reading the full texts, two definitions place it with the Akan of Ghana. On 17 November we asked three judges, with no answer key, whether each model's three definitions keep the drums apart. Counting the three models with usable grounded definitions for all three drums: alone, three of nine verdicts rated them distinct; reading full texts, six; with short passages only, none, and every verdict noted the same fault: dondo merged with a Yoruba drum.</p>
       </aside>
     </section>
 
@@ -712,28 +716,30 @@
         <div class="col">
           <table>
             <thead>
-              <tr><th>Pairs, by majority of three judges</th><th class="num">Model alone</th><th class="num">Reading AMIRA</th><th class="num">Neither</th></tr>
+              <tr><th>45 pairs, by majority</th><th class="num">Reading AMIRA</th><th class="num">Model alone</th><th class="num">Neither</th></tr>
             </thead>
             <tbody>
-              <tr><td>Well covered on Wikipedia: highlife, timbila, talking drum</td><td class="num">7</td><td class="num">3</td><td class="num">1</td></tr>
-              <tr><td>The Cluster’s concepts: multiplicity, relationality, reflexivity</td><td class="num">3</td><td class="num">5</td><td class="num">4</td></tr>
-              <tr><td>No Wikipedia article: dondo, dùndún</td><td class="num">0</td><td class="num">4</td><td class="num">4</td></tr>
-              <tr class="sum"><td>All eight concepts, 31 pairs</td><td class="num">10</td><td class="num">12</td><td class="num">9</td></tr>
+              <tr class="sum"><td>Without the judge of the author’s family</td><td class="num">23</td><td class="num">13</td><td class="num">9</td></tr>
+              <tr><td>All four judges</td><td class="num">21</td><td class="num">9</td><td class="num">15</td></tr>
+              <tr><td>of which 5 concepts with little on Wikipedia</td><td class="num">16</td><td class="num">2</td><td class="num">11</td></tr>
+              <tr><td>of which 3 well covered: highlife, timbila, talking drum</td><td class="num">5</td><td class="num">7</td><td class="num">4</td></tr>
             </tbody>
           </table>
+          <p>The lead holds with any one judge or any one concept left out.</p>
         </div>
         <div class="col">
           <div class="callout warm">
-            <span class="callout-label">The judges know what the models know</span>
-            They score from their own training, the knowledge the model alone draws on. No researcher has calibrated them.
+            <span class="callout-label">Uncalibrated judges</span>
+            They score from their own training, the knowledge the model alone draws on. No researcher has checked them.
           </div>
-          <p class="source">Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon chose between each author model’s two definitions, text only, in both orders; a verdict that changed with the order counts as neither. Both routes had the same writing rules. Verdicts 24 November 2026; one run per cell. Wikipedia measured after the first verdicts. Talking drum: 3 pairs.</p>
+          <p class="source">Claude Opus 5.5, GPT-6 Astra, Gemini 4 Carbon and Qwen4 Max chose between each of six author models’ two definitions, text only, in both orders; a verdict that changed with the order counts as neither. Verdicts 25 November 2026; one run per cell. English Wikipedia measured after the first verdicts.</p>
         </div>
       </div>
       <aside class="notes">
-        <p>Next, a blind panel. Three flagship models, Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon, read each author model's two definitions, one written alone and one from AMIRA, stripped of names, routes and quotes. Their task was to choose which one belonged on the record. Each judge read each pair twice, in both orders, and both routes had the same writing rules. Of thirty-one pairs, reading AMIRA won twelve and the model alone ten; nine were undecided.</p>
-        <p>The split runs along what the models are likely to know. Highlife, timbila and the talking drum are well covered on English Wikipedia, and there the model alone won seven pairs of eleven. The Cluster's concepts and the two regional drums have no article in the sense we mean, and there reading AMIRA won nine of twenty, the model alone three. We measured Wikipedia after the first verdicts, so this pattern describes these eight concepts; it is a hypothesis for the next run, not a confirmed result. The dondo is the clearest case: reading AMIRA won three pairs of four, the model alone none.</p>
-        <p>The judges' bias is part of the result. One marked down Haiku's highlife definition for 'a garbled Konkomba for konkoma', but Konkomba is the spelling in Edna Smith's 1962 article, which the model quoted. On the drums the same knowledge worked the other way: the judges placed the dondo with the Akan of Ghana unprompted. A judge model cannot stand in for a reader who knows the field.</p>
+        <p>Next, a blind panel. Four flagship models, Claude Opus 5.5, GPT-6 Astra, Gemini 4 Carbon and Qwen4 Max, read each author's two definitions, one written alone and one from AMIRA, stripped of names, routes and quotes, and chose which belonged on the record, in both orders. Six small models wrote: the four you have seen, plus DeepSeek V4.1 Flash and Qwen3.8 27B. Each judge's maker also made one author, so we leave that judge out: reading AMIRA then wins twenty-three pairs of forty-five, the model alone thirteen. With all four judges it is twenty-one to nine. The lead holds with any one judge or any one concept left out.</p>
+        <p>Most of the gain over our earlier figure comes from the two new authors: of their fourteen pairs, reading AMIRA won eleven. For Claude Haiku and Gemini Flash-Lite, the panel prefers the model alone.</p>
+        <p>The split runs along what the models are likely to know. On the five concepts with little on Wikipedia, reading AMIRA won sixteen pairs, the model alone two. On highlife, timbila and the talking drum, the model alone won seven, reading AMIRA five. We measured Wikipedia after the first verdicts, so this describes these eight concepts; it tests nothing.</p>
+        <p>The judges' bias is part of the result. One faulted Haiku's highlife definition for its Konkomba singing bands, but Konkomba is the spelling in Edna Smith's 1962 article, which the model quoted. A judge model cannot stand in for a reader who knows the field.</p>
       </aside>
     </section>
 
@@ -750,12 +756,12 @@
         </div>
       </div>
       <div class="callout wide">
-        <span class="callout-label">57 verdicts by the same judges</span>
+        <span class="callout-label">57 verdicts by three judges, four authors</span>
         The grounded text extends or nuances Wikidata in every verdict; it never contradicts it, and never simply agrees. Multiplicity: another sense in 12 of 12. Talking drum: a category, not one hourglass drum, in 9 of 9.
       </div>
       <p class="source">Wikidata Q3860307, read 17 November 2026. Route D definition, 16 November 2026. Open comparison by the three judges, 17 November 2026; one run per cell.</p>
       <aside class="notes">
-        <p>How does the grounded text compare with Wikidata? We asked the same judges, this time openly. Across 57 verdicts, they never judged a grounded definition to contradict Wikidata, and never to simply agree with it; in every case it extends or nuances the entry. For highlife, the grounded texts widen the origin to West Africa or report it as debated. For the talking drum, all nine verdicts say the grounded texts treat it as a category, where Wikidata names one hourglass drum.</p>
+        <p>How does the grounded text compare with Wikidata? On 17 November we asked three judges, openly. Across 57 verdicts, they never judged a grounded definition to contradict Wikidata, and never to simply agree with it; in every case it extends or nuances the entry. For highlife, the grounded texts widen the origin to West Africa or report it as debated. For the talking drum, all nine verdicts say the grounded texts treat it as a category, where Wikidata names one hourglass drum.</p>
         <p>For multiplicity, the two are about different things in all twelve verdicts: Wikidata has the philosophical sense, from Husserl, Bergson and Deleuze; the Cluster uses the word for African and diasporic life-worlds. Only for timbila did a few verdicts, three of twelve, find Wikidata enough by itself. The grounded definitions add to these vocabularies; they do not replace them.</p>
       </aside>
     </section>
@@ -790,7 +796,7 @@
       <div class="cols" style="--cols:3">
         <div class="col">
           <div class="col-head">The judges know what the models know</div>
-          <p>They score from the same training knowledge the model alone uses, and no researcher has calibrated them. One marked down a 1962 spelling the model had quoted faithfully.</p>
+          <p>They score from the same training knowledge the model alone uses, and no researcher has calibrated them. Our aim is how this archive defines a concept, not the best definition: the model alone winning on highlife is no failure.</p>
         </div>
         <div class="col">
           <div class="col-head">Keyword search finds a term only as written</div>
@@ -804,8 +810,8 @@
       </div>
       <p class="source">“Tribal”: AMIRA MCP server, full-text map of 657 <em>African Music</em> articles, 16 November 2026. Every result in this talk: one run per cell.</p>
       <aside class="notes">
-        <p>Three limits. First, uncalibrated judges: they draw on the same training data as the unassisted models, and the Konkomba example shows how that can penalise faithful quotation. Second, keyword search finds a term only as it is written. A term in another language or spelling is missed unless the record carries it.</p>
-        <p>Third, older sources use older vocabulary and spellings. 'Tribal' appears six to seven times per ten thousand words in 1957 and 1962, and less than once from 2007 to 2023, apart from one sparse year. Grounding a definition in AMIRA does not by itself make it a view from Africa. And every result I have shown comes from one run per cell.</p>
+        <p>Three limits. First, uncalibrated judges: they draw on the same training data as the unassisted models. And our aim is not the best possible definition, but how this archive defines the concept; on that reading, the model alone winning on highlife is not a failure. Second, keyword search misses other languages and spellings unless the record carries them.</p>
+        <p>Third, older sources use older vocabulary and spellings. 'Tribal' appears six to seven times per ten thousand words in 1957 and 1962, and less than once from 2007 to 2023. Grounding a definition in AMIRA does not by itself make it a view from Africa. And every result I have shown comes from one run per cell.</p>
       </aside>
     </section>
 
@@ -814,32 +820,32 @@
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1</span>
-          <span class="step-h">About 50 concepts</span>
-          <p>Grouped by instrument family and genre; three runs per cell.</p>
+          <span class="step-h">Retrieval by rank and meaning</span>
+          <p>Results are not yet ranked by relevance; similarity exists per record, not per passage.</p>
         </div>
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
           <span class="step-n">2</span>
-          <span class="step-h">A local open-weight model</span>
-          <p>27B parameters run locally on the passages mode.</p>
+          <span class="step-h">Local open-weight models</span>
+          <p>Through Ollama, for small context windows: prepared, not yet run.</p>
         </div>
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
           <span class="step-n">3</span>
-          <span class="step-h">Review by researchers</span>
-          <p>Specialists check drafts and calibrate the judges.</p>
-          <span class="step-q">“Would you put this on the record?”</span>
+          <span class="step-h">About 50 concepts</span>
+          <p>Prompts frozen first; three runs per cell.</p>
         </div>
         <div class="flow-arrow" aria-hidden="true">→</div>
         <div class="flow-step">
           <span class="step-n">4</span>
-          <span class="step-h">Retrieval by meaning</span>
-          <p>Semantic search added to the same MCP server.</p>
+          <span class="step-h">Review by researchers</span>
+          <p>Specialists read the definitions and calibrate the judges.</p>
+          <span class="step-q">“Would you put this on the record?”</span>
         </div>
       </div>
       <aside class="notes">
-        <p>Four steps follow from this pilot. First, we expand from eight concepts to around fifty, grouped into families such as lamellophones, xylophones, drums and popular genres, so generic headings sit beside regional terms as with the talking drum; repeating each cell three times will separate real differences from chance. Second, a co-author will test a 27-billion-parameter open-weight model locally on the passages mode, which would reduce our dependence on a handful of commercial providers.</p>
-        <p>Third, contributing researchers and subject specialists will read both the draft definitions and a sample of claim-and-quotation pairs to calibrate the automated judges. Fourth, we plan to add semantic retrieval behind the same MCP server so queries reach sources written in other languages or variant spellings.</p>
+        <p>Four steps follow. First, retrieval. Search results now come in the catalogue's order, not by relevance, and the server's similarity works on whole records, not on passages. Ranking, then passages found by meaning, would cut tokens for small context windows and reach other languages and spellings. Second, local open-weight models through Ollama, which would reduce our dependence on a few commercial providers; this is prepared but has not run.</p>
+        <p>Third, we freeze the prompts and expand from eight concepts to about fifty, with three runs per cell to separate real differences from chance. Fourth, researchers and subject specialists will read the definitions and a sample of claims and quotations, to calibrate the judges.</p>
       </aside>
     </section>
 
@@ -897,7 +903,7 @@
     </section>
 
     <section class="compare-slide" data-toc="Highlife: reading and additions" data-visibility="uncounted">
-      <h2 class="slide-title">Highlife: what each model read and added</h2>
+      <h2 class="slide-title">Highlife: what four models read and added</h2>
       <table>
         <thead>
           <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th>What its definition adds</th></tr>
@@ -917,7 +923,7 @@
       <aside class="notes">
         <p>This adds to the main table what each model did and what its definition contributes. All four opened private full texts, between three and six of them, in six to eighteen tool calls, and all four judged the evidence sufficient.</p>
         <p>Each adds something of its own: Haiku the vernaculars and weekend gatherings, GPT-6 Luna the variation by place and period, Gemini themes of love and social commentary, Mistral harmony in thirds or sixths. Two date highlife, two do not.</p>
-        <p>Two differences matter for a catalogue. Gemini calls highlife an intertribal music, a word it took from a 1962 article and used in its own voice. And three of Mistral's quotes ran past the twenty-five-word limit by stitching separate sentences together, and one could not be found in the text it read. Each model ran once, so the table does not rank them. The fifth model, Ministral 3, which runs locally, has not been run yet.</p>
+        <p>Two differences matter for a catalogue. Gemini calls highlife an intertribal music, a word it took from a 1962 article and used in its own voice. And three of Mistral's quotes ran past the twenty-five-word limit by stitching separate sentences together, and one could not be found in the text it read. Each model ran once, so the table does not rank them. Local models through Ollama are prepared but have not run yet.</p>
       </aside>
     </section>
 

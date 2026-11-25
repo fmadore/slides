@@ -36,7 +36,7 @@
     <p class="reader-meta">23 slides</p>
   </header>
   <main id="content">
-    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue should define its own terms</a></li><li><a href="#slide-3">A catalogue of research data held elsewhere</a></li><li><a href="#slide-4">Why an MCP server, not just an API</a></li><li><a href="#slide-5">Two tools this pilot builds on</a></li><li><a href="#slide-6">A label and a list, but no definition</a></li><li><a href="#slide-7">Vocabularies identify a concept; Wikipedia explains only the well known</a></li><li><a href="#slide-8">The sources: ILAM’s journal African Music</a></li><li><a href="#slide-9">The pipeline</a></li><li><a href="#slide-10">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-11">Dondo, defined from AMIRA’s sources</a></li><li><a href="#slide-12">Multiplicity, defined from AMIRA’s sources</a></li><li><a href="#slide-13">Four models reading AMIRA on highlife</a></li><li><a href="#slide-14">One English name, three drums</a></li><li><a href="#slide-15">Reading AMIRA helped most where the models knew least</a></li><li><a href="#slide-16">Wikidata, extended but never contradicted</a></li><li><a href="#slide-17">Passages fit a small window; a tight budget cost quality</a></li><li><a href="#slide-18">Three limits of the pilot</a></li><li><a href="#slide-19">What comes next in the pilot</a></li><li><a href="#slide-20">Reading the archive helped most where the models knew least.</a></li><li><a href="#slide-21">Appendix</a></li><li><a href="#slide-22">What happens when someone asks</a></li><li><a href="#slide-23">Highlife: what each model read and added</a></li></ol></nav></details>
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue should define its own terms</a></li><li><a href="#slide-3">A catalogue of research data held elsewhere</a></li><li><a href="#slide-4">Why an MCP server, not just an API</a></li><li><a href="#slide-5">Two tools this pilot builds on</a></li><li><a href="#slide-6">A label and a list, but no definition</a></li><li><a href="#slide-7">Vocabularies identify a concept; Wikipedia explains only the well known</a></li><li><a href="#slide-8">The sources: ILAM’s journal African Music</a></li><li><a href="#slide-9">The pipeline</a></li><li><a href="#slide-10">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-11">Dondo, defined from AMIRA’s sources</a></li><li><a href="#slide-12">Multiplicity, defined from AMIRA’s sources</a></li><li><a href="#slide-13">Four models reading AMIRA on highlife</a></li><li><a href="#slide-14">One English name, three drums</a></li><li><a href="#slide-15">Reading AMIRA helped most where the models knew least</a></li><li><a href="#slide-16">Wikidata, extended but never contradicted</a></li><li><a href="#slide-17">Passages fit a small window; a tight budget cost quality</a></li><li><a href="#slide-18">Three limits of the pilot</a></li><li><a href="#slide-19">What comes next in the pilot</a></li><li><a href="#slide-20">Reading the archive helped most where the models knew least.</a></li><li><a href="#slide-21">Appendix</a></li><li><a href="#slide-22">What happens when someone asks</a></li><li><a href="#slide-23">Highlife: what four models read and added</a></li></ol></nav></details>
     <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
 <p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
 <p class="eyebrow">HKADH 2027 · Education University of Hong Kong, 21 January 2027</p>
@@ -119,6 +119,7 @@
             <li>Exposes the same catalogue to language models</li>
             <li>Plain-language tools the model selects itself</li>
             <li>Built-in rules on citation and private text</li>
+            <li>Named, read-only tools from a closed list</li>
             <li>One open standard across clients and our harness</li>
           </ul>
         </div>
@@ -170,7 +171,7 @@
         </figure>
         <div class="col">
           <dl class="evidence-reading">
-            <div><dt>Records</dt><dd>55</dd></div>
+            <div><dt>Records with this heading</dt><dd>55</dd></div>
             <div><dt>Definition</dt><dd>None</dd></div>
           </dl>
           <p class="lead">Readers also need to know what a concept means and how the research catalogued in AMIRA uses it.</p>
@@ -248,7 +249,7 @@
 <h2 id="slide-9-title" class="reader-fallback-title">The pipeline</h2>
       <div class="pl">
         
-        <a class="reader-image" href="assets/pipeline.png"><img class="viz-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three larger models; review by researchers is planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
+        <a class="reader-image" href="assets/pipeline.png"><img class="viz-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) is the heading of 55 records and has no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of four larger models; review by researchers is planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
       </div>
 </section>
 <section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
@@ -351,22 +352,23 @@
         <div class="col">
           <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
             <thead>
-              <tr><th>Pairs, by majority of three judges</th><th class="num">Model alone</th><th class="num">Reading AMIRA</th><th class="num">Neither</th></tr>
+              <tr><th>45 pairs, by majority</th><th class="num">Reading AMIRA</th><th class="num">Model alone</th><th class="num">Neither</th></tr>
             </thead>
             <tbody>
-              <tr><td>Well covered on Wikipedia: highlife, timbila, talking drum</td><td class="num">7</td><td class="num">3</td><td class="num">1</td></tr>
-              <tr><td>The Cluster’s concepts: multiplicity, relationality, reflexivity</td><td class="num">3</td><td class="num">5</td><td class="num">4</td></tr>
-              <tr><td>No Wikipedia article: dondo, dùndún</td><td class="num">0</td><td class="num">4</td><td class="num">4</td></tr>
-              <tr class="sum"><td>All eight concepts, 31 pairs</td><td class="num">10</td><td class="num">12</td><td class="num">9</td></tr>
+              <tr class="sum"><td>Without the judge of the author’s family</td><td class="num">23</td><td class="num">13</td><td class="num">9</td></tr>
+              <tr><td>All four judges</td><td class="num">21</td><td class="num">9</td><td class="num">15</td></tr>
+              <tr><td>of which 5 concepts with little on Wikipedia</td><td class="num">16</td><td class="num">2</td><td class="num">11</td></tr>
+              <tr><td>of which 3 well covered: highlife, timbila, talking drum</td><td class="num">5</td><td class="num">7</td><td class="num">4</td></tr>
             </tbody>
           </table></div>
+          <p>The lead holds with any one judge or any one concept left out.</p>
         </div>
         <div class="col">
           <div class="callout warm">
-            <span class="callout-label">The judges know what the models know</span>
-            They score from their own training, the knowledge the model alone draws on. No researcher has calibrated them.
+            <span class="callout-label">Uncalibrated judges</span>
+            They score from their own training, the knowledge the model alone draws on. No researcher has checked them.
           </div>
-          <p class="source">Claude Opus 5.5, GPT-6 Astra and Gemini 4 Argon chose between each author model’s two definitions, text only, in both orders; a verdict that changed with the order counts as neither. Both routes had the same writing rules. Verdicts 24 November 2026; one run per cell. Wikipedia measured after the first verdicts. Talking drum: 3 pairs.</p>
+          <p class="source">Claude Opus 5.5, GPT-6 Astra, Gemini 4 Carbon and Qwen4 Max chose between each of six author models’ two definitions, text only, in both orders; a verdict that changed with the order counts as neither. Verdicts 25 November 2026; one run per cell. English Wikipedia measured after the first verdicts.</p>
         </div>
       </div>
 </section>
@@ -384,7 +386,7 @@
         </div>
       </div>
       <div class="callout wide">
-        <span class="callout-label">57 verdicts by the same judges</span>
+        <span class="callout-label">57 verdicts by three judges, four authors</span>
         The grounded text extends or nuances Wikidata in every verdict; it never contradicts it, and never simply agrees. Multiplicity: another sense in 12 of 12. Talking drum: a category, not one hourglass drum, in 9 of 9.
       </div>
       <p class="source">Wikidata Q3860307, read 17 November 2026. Route D definition, 16 November 2026. Open comparison by the three judges, 17 November 2026; one run per cell.</p>
@@ -416,7 +418,7 @@
       <div class="cols">
         <div class="col">
           <div class="col-head">The judges know what the models know</div>
-          <p>They score from the same training knowledge the model alone uses, and no researcher has calibrated them. One marked down a 1962 spelling the model had quoted faithfully.</p>
+          <p>They score from the same training knowledge the model alone uses, and no researcher has calibrated them. Our aim is how this archive defines a concept, not the best definition: the model alone winning on highlife is no failure.</p>
         </div>
         <div class="col">
           <div class="col-head">Keyword search finds a term only as written</div>
@@ -436,27 +438,27 @@
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1</span>
-          <span class="step-h">About 50 concepts</span>
-          <p>Grouped by instrument family and genre; three runs per cell.</p>
+          <span class="step-h">Retrieval by rank and meaning</span>
+          <p>Results are not yet ranked by relevance; similarity exists per record, not per passage.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">2</span>
-          <span class="step-h">A local open-weight model</span>
-          <p>27B parameters run locally on the passages mode.</p>
+          <span class="step-h">Local open-weight models</span>
+          <p>Through Ollama, for small context windows: prepared, not yet run.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">3</span>
-          <span class="step-h">Review by researchers</span>
-          <p>Specialists check drafts and calibrate the judges.</p>
-          <span class="step-q">“Would you put this on the record?”</span>
+          <span class="step-h">About 50 concepts</span>
+          <p>Prompts frozen first; three runs per cell.</p>
         </div>
         
         <div class="flow-step">
           <span class="step-n">4</span>
-          <span class="step-h">Retrieval by meaning</span>
-          <p>Semantic search added to the same MCP server.</p>
+          <span class="step-h">Review by researchers</span>
+          <p>Specialists read the definitions and calibrate the judges.</p>
+          <span class="step-q">“Would you put this on the record?”</span>
         </div>
       </div>
 </section>
@@ -504,7 +506,7 @@
 </section>
 <section class="reader-slide" id="slide-23" aria-labelledby="slide-23-title">
 <p class="reader-folio"><a href="index.html#/20">Slide 23</a></p>
-<h2 class="slide-title" id="slide-23-title">Highlife: what each model read and added</h2>
+<h2 class="slide-title" id="slide-23-title">Highlife: what four models read and added</h2>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
           <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th>What its definition adds</th></tr>
