@@ -624,9 +624,14 @@
           <p class="source">Illustration of the input’s shape, not the transcript of a real call</p>
         </div>
       </div>
+      <div class="callout sn-a-wide">
+        <span class="callout-label">Descriptions decide</span>
+        A name cannot separate namesakes; a description gives country, calling and period. 1,021 of 1,611 were drafted by reviewer agents, then approved.
+      </div>
       <aside class="notes">
         <p>I wrote the rules into the prompt. The text comes first, the newspaper's country second. Only three things count as a contradiction: another country, an incompatible calling, or dates that cannot fit.</p>
         <p>On the right, as an illustration, is the shape of what it receives for one name: Kassoum Coulibaly in a Burkinabè paper, with an Ivorian record cited in 1982 and 1983 and the Burkinabè defence minister as candidates. It can keep, choose or drop, and the code refuses any id it was not offered. Leaving a name unlinked is an acceptable answer.</p>
+        <p>What lets it choose is the description. Two records named Kassoum Coulibaly are identical by name; one line saying "minister of defence, Burkina Faso" is what the article can agree or disagree with. The three contradictions in the prompt, country, calling and dates, are exactly what a description supplies. So writing descriptions became part of the linking work: reviewer agents draft one or two sentences from the archive's own articles, I approve them in a plan, and each carries the model that wrote it, iwac:descriptionModel. Of the 1,611 records that have a description, 1,021 were drafted this way. 4,313 records still have none, and for those the check has only the name and the country.</p>
         <p>The rules came from mistakes. After the pilot, the model dropped Souleymane Compaoré because his description says "former"; the prompt now says descriptions are written today. After the full run, it dropped Tertius Zongo for being described in another post. A new rule says a role the description does not mention is no contradiction, and on a re-check the drops fell from 2,656 to 1,776.</p>
       </aside>
     </section>
@@ -644,7 +649,7 @@
       <p class="source">Claude Haiku 5.5. Extraction 20 October (1 h 38, about $6.50); leftovers 21 October; context check and write 22 October. From the pipeline changelog and run files.</p>
       <div class="callout sn-a-wide">
         <span class="callout-label">The other countries</span>
-        Togo: 1,570 articles extracted and matched on 23 October; leftovers reviewed on 20 November; nothing written. Côte d'Ivoire, Benin, Niger and Nigeria: not run.
+        Togo: 1,570 articles extracted and matched on 23 October; leftovers reviewed and 6,005 links written on 20 and 24 November. Côte d'Ivoire, Benin, Niger and Nigeria: not run.
       </div>
       <aside class="notes">
         <p>After the re-check, the model kept 88,250 matches, dropped 1,776 and settled 522 names the code had left open. The scripts wrote some fifty thousand place and subject links to 7,709 articles; matches kept and links written count different things. The leftovers produced 674 new records. The extraction took an hour and thirty-eight minutes and cost about six and a half dollars; for the context check I have only the pilot's figure, about eight cents per hundred articles.</p>
@@ -674,12 +679,12 @@
           <tr><th scope="row">Zongo <span class="sn-a-m">34</span></th><td class="sn-a-none">No proposal</td><td>—</td><td>A quarter name in Kpalimé, Lomé and Elavagnon: no single place is meant.</td></tr>
         </tbody>
       </table>
-      <p class="source">Togo, 1,570 articles; Claude Haiku 5.5 as reviewer, 20 November 2026. Five of 255 rows, chosen by hand and translated. Figure: articles using that form. Nothing written yet.</p>
+      <p class="source">Togo, 1,570 articles; Claude Haiku 5.5 as reviewer, 20 November 2026. Five of 255 rows, chosen by hand and translated. Figure: articles using that form. Approved rows written on 20 and 24 November.</p>
       <aside class="notes">
         <p>This is what step five hands me, for Togo. Not a list of links, but a workbook in six tabs: names to add to existing records, stubs to file, new records, possible duplicates, cases to decide, and terms set aside.</p>
         <p>I chose five rows. The aviation agency gets a new record with Togo in its title, because ANAC is also the Burkinabè agency, which we already have. The Presbyterian church is added as another name for its record, and the reviewer warns that it is not the Evangelical Church of Togo. Kanté is a town, not the man called Kanté.</p>
         <p>The stadium row is flagged differently: the reviewer knows that Kégué stadium is the Eyadéma stadium, but the articles do not say so, and the flag tells me to check. And Zongo, named in thirty-four articles, gets no proposal at all. Several towns have a quarter called Zongo, so the decision stays with me, or the name stays unlinked.</p>
-        <p>Nothing in this workbook has been written to the archive yet.</p>
+        <p>Nothing in the workbook reaches the archive until I approve it. Since then I have decided these rows: the aviation agency has its record, the stadium name was added once I had confirmed it, and Zongo stays unlinked.</p>
       </aside>
     </section>
     <!-- PART A END -->
@@ -806,27 +811,28 @@
       </aside>
     </section>
 
-    <section class="sn-b-dk" data-toc="Case 3: Danyi read as Denmark">
-      <h2 class="slide-title">Danyi and Dankpen, read as Denmark</h2>
-      <div class="cols ratio-3-2">
+    <section class="sn-b-dk" data-toc="Case 3: read as a country">
+      <h2 class="slide-title">Read as a country: Danyi and “Koweït”</h2>
+      <div class="cols">
         <div class="col">
+          <div class="col-head">A place, read as Denmark</div>
           <p class="sn-b-figure"><b>93</b> <span>of 124</span></p>
           <p class="sn-b-figcap">place links on Danemark (<a href="https://islam.zmo.de/s/westafrica/item/428" target="_blank" rel="noopener">428</a>) were Togolese agency reports, 2020–2024, naming the prefectures of Danyi and Dankpen</p>
-          <ul class="share-bars" aria-label="93 of 124 links wrong">
-            <li style="--p:75%"><div class="share-head"><span>Wrong links, removed</span><b>75%</b></div><div class="share-track"></div></li>
-          </ul>
         </div>
         <div class="col">
-          <div class="col-head">Who made the error?</div>
-          <p>A pass older than the <code>iwac:nerModel</code> annotation. Nothing records which model or script made these links.</p>
-          <div class="callout">
-            <span class="callout-label">Lesson</span>
-            Provenance belongs on each link.
-          </div>
+          <div class="col-head alt">A man, read as Kuwait</div>
+          <p class="sn-b-figure"><b>18</b> <span>links</span></p>
+          <p class="sn-b-figcap">on Koweït (<a href="https://islam.zmo.de/s/westafrica/item/351" target="_blank" rel="noopener">351</a>) named Moustapha Diaby, “Koweït”, head of the Ivorian CSI, an Abidjan quarter, or nothing. He also had two records.</p>
         </div>
       </div>
+      <div class="callout sn-a-wide">
+        <span class="callout-label">Lesson</span>
+        None of the 93 and 17 of the 18 carry <code>iwac:nerModel</code>: nothing records who made them. Provenance belongs on each link.
+      </div>
       <aside class="notes">
-        <p>The same thing happened with a place. Danemark, record 428, had 124 links, and 93 of them were Togolese agency reports that never mention Denmark. They name Danyi and Dankpen, two prefectures of Togo. The model read all 124, its verdicts matched a plain word count exactly, and the 93 were removed. I cannot tell you who made the error: these links predate the annotation, so nothing records which pass created them.</p>
+        <p>The same thing happens with places, and with people. Danemark, record 428, had 124 links, and 93 of them were Togolese agency reports that never mention Denmark. They name Danyi and Dankpen, two prefectures of Togo. The model read all 124, its verdicts matched a plain word count exactly, and the 93 were removed.</p>
+        <p>On the right, the reverse: a man read as a country. Moustapha Diaby, who led the Conseil supérieur islamique of Côte d'Ivoire, was known in the press simply as "Koweït". Eighteen links on the record for Kuwait were his nickname, an Abidjan quarter of that name, or nothing at all. He also had two records, which I merged, and a namesake, a physician who died in 2020, had left his date of death on one of them.</p>
+        <p>I cannot tell you who made these errors. None of the Danemark links and seventeen of the eighteen carry no model annotation, so nothing records which pass, or which person, created them. The same review also found what was missing: 48 articles named Diaby without a link to him, and 219 mentioned Kuwait without a link to the country. A check that only removes links does not see those.</p>
       </aside>
     </section>
 
