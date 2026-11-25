@@ -406,9 +406,9 @@
       </aside>
     </section>
 
-    <section data-toc="LCSH and Wikidata">
-      <h2 class="slide-title">Standard vocabularies identify a concept but rarely explain it</h2>
-      <div class="cols">
+    <section data-toc="LCSH, Wikidata, Wikipedia">
+      <h2 class="slide-title">Vocabularies identify a concept; Wikipedia explains only the well known</h2>
+      <div class="cols" style="--cols:3">
         <div class="col">
           <div class="col-head">Library of Congress</div>
           <dl class="vocab">
@@ -423,11 +423,19 @@
             <dt>timbila, a xylophone</dt><dd>Listed with the alias “thumb pianos”</dd>
           </dl>
         </div>
+        <div class="col">
+          <div class="col-head alt">Wikipedia, in English</div>
+          <dl class="vocab">
+            <dt>Highlife</dt><dd>A full article, with editions in 24 languages</dd>
+            <dt>Dondo, an Akan drum</dt><dd><span class="none">No article.</span> “Donno” redirects to “Talking drum”</dd>
+          </dl>
+        </div>
       </div>
-      <p class="source">id.loc.gov and wikidata.org, read 16 and 17 November 2026</p>
+      <p class="source">id.loc.gov and wikidata.org, read 16 and 17 November 2026; en.wikipedia.org, 24 November 2026</p>
       <aside class="notes">
         <p>The obvious move is to borrow a definition. For highlife, the Library of Congress heading has no scope note at all. Where a note does exist, as for mbira music, it tells cataloguers what to file under the heading and says nothing about the music.</p>
-        <p>Wikidata gives highlife one line: 'musical genre originating in Ghana'. Its entries can also mislead: timbila, a xylophone, carries the alias 'thumb pianos'. Both vocabularies were built to identify concepts, and they describe them from outside the research we catalogue. The other move is to ask a language model directly.</p>
+        <p>Wikidata gives highlife one line: 'musical genre originating in Ghana'. Its entries can also mislead: timbila, a xylophone, carries the alias 'thumb pianos'. Both vocabularies were built to identify concepts, and they describe them from outside the research we catalogue.</p>
+        <p>Wikipedia does explain, but unequally. Highlife has a full article in English and editions in twenty-four languages. The dondo, an Akan drum from Ghana, has no article; its other spelling redirects to the general article on talking drums. That matters twice over, because Wikipedia is also among what language models have read. The other move is to ask a language model directly.</p>
       </aside>
     </section>
 
@@ -470,7 +478,7 @@
     </section>
 
     <section class="pipeline-slide" data-toc="The pipeline">
-      <div class="pl" role="img" aria-label="Pipeline: an AMIRA subject record with no definition is defined four ways (Library of Congress heading, Wikidata, a small model alone, the same model reading AMIRA through its MCP server). The route D result is a definition record whose quotes are checked by code against the text the model read. A blind panel of three judge models chooses between definitions; review by researchers is planned.">
+      <div class="pl" role="img" aria-label="Pipeline: an AMIRA subject record with no definition is defined four ways (Library of Congress heading, Wikidata, a small model alone, the same model reading AMIRA through its MCP server). The route D result is a definition record whose quotes are checked by code against the text the model read. A blind panel of three larger models chooses between definitions; review by researchers is planned.">
         <div class="pl-fit" aria-hidden="true"><div class="pl-stage">
         <!-- column heads -->
         <div class="col-head abs" data-step="0" style="left:48px;  top:128px; width:232px;"><b>1</b>The gap</div>
@@ -552,13 +560,13 @@
         <div class="r-h">Code</div><div class="r-p">Is each quote in the text the model read?</div>
         </div>
         <div class="review abs" data-step="5" style="left:1088px; top:296px; width:144px;">
-        <div class="r-h">Three judge models, blind</div><div class="r-p">Which of two definitions goes on the record?</div>
+        <div class="r-h">Three larger models, blind</div><div class="r-p">Which of two definitions goes on the record?</div>
         </div>
         <div class="review abs" data-step="5" style="left:1088px; top:446px; width:144px;">
         <div class="r-h">Researchers (planned)</div><div class="r-p">Would you put this on the record?</div>
         </div>
         </div></div>
-        <img class="viz-fallback" hidden src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three judge models; review by researchers is planned.">
+        <img class="viz-fallback" hidden src="assets/pipeline.png" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, 'musical genre originating in Ghana'; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three larger models; review by researchers is planned.">
       </div>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
       <span class="fragment" data-pipeline-step aria-hidden="true"></span>
@@ -568,14 +576,17 @@
       <aside class="notes">
         <p>[on arrival: the gap] Here is the pilot as a pipeline. It starts from the gap: the highlife record, with no definition.</p>
         <p>[→ four ways: A and B] Routes A and B are the two baselines I have just shown.</p>
-        <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory and cites nothing.</p>
+        <p>[→ route C] Route C is a small language model on its own, with no tools. It writes from memory, which is likely to include Wikipedia, and cites nothing.</p>
         <p>[→ route D] Route D is the same model reading AMIRA through the MCP server: it searches, reads full texts and quotes them. ILAM's text is private, so you will only see short quotes from it.</p>
         <p>[→ the cited definition] The answer comes back as a record: a definition of at most 120 words, and claims, each with a short quote of about twenty-five words at most and its source. Code checks every quote against the cited record's own text.</p>
-        <p>[→ review] Review has three layers. Code checks the quotes. A blind panel of three judge models chooses between two definitions, and I will show its verdicts, which no researcher has calibrated yet. Review by researchers is still to come.</p>
+        <p>[→ review] Review has three layers. Code checks the quotes. A blind panel of three flagship models, larger than the small ones that write, chooses between two definitions. I will show its verdicts, which no researcher has calibrated yet. Review by researchers is still to come.</p>
       </aside>
     </section>
 
-    <section class="definition-slide" data-toc="A cited definition">
+    <!-- A vertical stack: highlife is the talk's slide; dondo and multiplicity
+         sit under it (arrow down) and are skipped by the right arrow. -->
+    <section data-toc="A cited definition">
+    <section class="definition-slide">
       <h2 class="slide-title">Highlife, defined from AMIRA’s sources</h2>
       <blockquote><p>Highlife is a popular dance music of urban West Africa, above all Ghana and Nigeria, that fuses African and Western musical styles. Writers describe it as a compromise between African traditional forms and Western music, mostly sung in many vernaculars with simple, binary-form melodies. It emerged as a national rather than ethnic music in the 1950s.</p></blockquote>
       <table>
@@ -589,11 +600,55 @@
         </tbody>
       </table>
       <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
-      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
+      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records. Two more definitions below (↓): dondo and multiplicity.</p>
       <aside class="notes">
         <p>This is the definition Claude Haiku 5.5 wrote for highlife through route D, in a run on 16 November 2026. It has 95 words and seven claims, and every claim carries a quote found in the text the model read. Three of them are on the slide. Two come from Edna Smith's article of 1962: highlife as a compromise between African traditional forms and Western music, and highlife sung in the various vernaculars. The third, that it emerged in the 1950s as a national rather than ethnic music, comes from Austin Emielu, in 2013.</p>
         <p>The model supplies only the record identifier and the quote. Title, author, year and link are filled in from AMIRA's own metadata, so a reader can follow each claim to its record. The model also noted where its sources disagree about origins.</p>
+        <p>[Optional, arrow down: the same for the dondo and for multiplicity. Arrow right moves on to the four models.]</p>
       </aside>
+    </section>
+
+    <section class="definition-slide">
+      <h2 class="slide-title">Dondo, defined from AMIRA’s sources</h2>
+      <blockquote><p>Donno (also written dondo) is an hourglass-shaped drum with skins at both ends joined by woven strings, used in Ghanaian ensembles, chiefly Akan adowa and Kete. It is a support drum, often pitched lower than the lead talking drum (atumpan). In Akan practice it is used in girls’ puberty rites, and it was traditionally one of the few drums women were allowed to play.</p></blockquote>
+      <table>
+        <thead>
+          <tr><th class="num">Claim</th><th>Quote found in the text the model read</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">2</td><td>“donno hourglass-shaped tension drum, dawuro iron bell, and ntorowa gourd rattle”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31973" target="_blank" rel="noopener">Paulding 2017</a></td></tr>
+          <tr><td class="num">3</td><td>“the donno drums are sometimes pitched relatively lower than the principal drum”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31251" target="_blank" rel="noopener">Anku 2009</a></td></tr>
+          <tr><td class="num">4</td><td>“The only drums that women were allowed to play and still do play are the donno drums”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/27784" target="_blank" rel="noopener">Nketia 1954</a></td></tr>
+        </tbody>
+      </table>
+      <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
+      <p class="source">Claude Haiku 5.5, route D, run of 17 November 2026. Sources: articles in <em>African Music</em> (ILAM). This drum has no Wikipedia article and no Wikidata item.</p>
+      <aside class="notes">
+        <p>The dondo is the drum with no Wikipedia article and no Wikidata item. This is Claude Haiku 5.5 again, reading AMIRA, on 17 November: 96 words and seven claims, each with a quote found in the text it read. It places the drum in Ghana, in the Akan adowa and Kete ensembles, as a support drum pitched below the lead drum. The line on women comes from J. H. Nketia, writing in 1954.</p>
+        <p>The model also reported that its sources, from 1954 to 2019, describe the drum differently, and that it left out a Yoruba ‘dondon’ from a 1959 article because the archive does not show whether that is the same instrument.</p>
+      </aside>
+    </section>
+
+    <section class="definition-slide">
+      <h2 class="slide-title">Multiplicity, defined from AMIRA’s sources</h2>
+      <blockquote><p>Multiplicity is a way of understanding African and African diasporic life-worlds as heterogeneous, coexisting, and mutually influential rather than as one uniform object or fixed category. It attends to plurality and simultaneity: identities, experiences, influences, and forms of knowledge may vary within a community and connect across contexts. It is studied alongside relationality and reflexivity, which help analyse those connections and perspectives.</p></blockquote>
+      <table>
+        <thead>
+          <tr><th class="num">Claim</th><th>Quote found in the text the model read</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>“capture the simultaneity of heterogeneous and mutually influential African and African diasporic life worlds”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/30066" target="_blank" rel="noopener">Seesemann 2020</a></td></tr>
+          <tr><td class="num">2</td><td>“the narratives of female gyil players illustrate the multiplicity of selfhood, and the possibility of plurality”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31429" target="_blank" rel="noopener">Lawrence 2011</a></td></tr>
+          <tr><td class="num">3</td><td>“we put forward relationality and reflexivity as the analytical tools for the study and conceptualization of multiplicity”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/30066" target="_blank" rel="noopener">Seesemann 2020</a></td></tr>
+        </tbody>
+      </table>
+      <p class="tally"><strong>3 of 3 claims carry a quote found in the text the model read;</strong> one of its six quotes was not found.</p>
+      <p class="source">GPT-6 Luna, route D, run of 16 November 2026. Sources: the Cluster’s working papers and articles in <em>African Music</em> (ILAM).</p>
+      <aside class="notes">
+        <p>Multiplicity is one of the Cluster's three concepts, and the nearest Wikidata entry carries another sense of the word. This is GPT-6 Luna reading AMIRA on 16 November. The whole definition is on the slide: 62 words and three claims. Two of the quotes come from Rüdiger Seesemann's working paper of 2020. The second comes from an article in African Music on Dagara women musicians in Ghana, by Sidra Lawrence, in 2011.</p>
+        <p>All three claims carry a quote found in the text the model read. One of its six quotes was not found, and the check reports that too.</p>
+      </aside>
+    </section>
     </section>
 
     <section class="compare-slide" data-toc="Four models on highlife">
@@ -830,59 +885,34 @@
           <p>In its own words, ideally citing the records it received.</p>
         </div>
       </div>
-      <div class="callout wide">
-        <span class="callout-label">Who decides what</span>
-        We decide which tools exist and what they return. The assistant and its provider decide what reaches the answer.
-      </div>
       <aside class="notes">
         <p>Here is what happens when someone asks. A person types a question in the assistant they already use, for instance: what does AMIRA hold on highlife? The assistant reads the descriptions of our tools and picks one: a search, a count, a record. It can only use the tools the server offers. The server answers from the catalogue, and every result carries a link back to its page in AMIRA. The assistant then writes the answer in its own words, and may or may not keep those links.</p>
         <p>So control is split. We decide which tools exist and what they return. The assistant and the company behind it decide what reaches the answer, and whether the links survive.</p>
       </aside>
     </section>
 
-    <section data-toc="Highlife: tool calls" data-visibility="uncounted">
-      <h2 class="slide-title">Four models reading AMIRA on highlife</h2>
+    <section class="compare-slide" data-toc="Highlife: reading and additions" data-visibility="uncounted">
+      <h2 class="slide-title">Highlife: what each model read and added</h2>
       <table>
         <thead>
-          <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th class="num">Claims with a quote found</th><th class="num">Est. cost, list prices (USD)</th></tr>
+          <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th>What its definition adds</th></tr>
         </thead>
         <tbody>
-          <tr><td>Claude Haiku 5.5</td><td class="num">10</td><td class="num">5</td><td class="num">7 of 7</td><td class="num">0.014</td></tr>
-          <tr><td>GPT-6 Luna</td><td class="num">18</td><td class="num">6</td><td class="num">3 of 3</td><td class="num">0.014</td></tr>
-          <tr><td>Gemini 3.5 Flash-Lite</td><td class="num">6</td><td class="num">3</td><td class="num">3 of 3</td><td class="num">0.016</td></tr>
-          <tr><td>Mistral Small 4</td><td class="num">10</td><td class="num">6</td><td class="num">1 of 5</td><td class="num">0.029</td></tr>
+          <tr><td>Claude Haiku 5.5</td><td class="num">10</td><td class="num">5</td><td>Vernaculars; a national music by the 1950s</td></tr>
+          <tr><td>GPT-6 Luna</td><td class="num">18</td><td class="num">6</td><td>Variation by place and period</td></tr>
+          <tr><td>Gemini 3.5 Flash-Lite</td><td class="num">6</td><td class="num">3</td><td>“Intertribal” music; love and social commentary</td></tr>
+          <tr><td>Mistral Small 4</td><td class="num">10</td><td class="num">6</td><td>Harmony in thirds or sixths; mid-twentieth century</td></tr>
         </tbody>
       </table>
       <div class="callout wide">
         <span class="callout-label">Read with care</span>
-        One run per model: anecdotes, not measurements.<br>
-        Mistral Small 4: three quotes over the 25-word limit, one not found in the text it read.
+        One run per model: anecdotes, not measurements.
       </div>
+      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words. Origins, quotes found and costs: main slide.</p>
       <aside class="notes">
-        <p>We gave the same prompt to four hosted small models, on the same day. All four opened private full texts, and all four judged the evidence sufficient. They made between three and seven claims. Mistral Small 4 made five, but three of its quotes ran past the twenty-five-word limit by stitching separate sentences together, and one could not be found in the text it read. Each run cost under three US cents, estimated from list prices.</p>
-        <p>Each model ran once, and this table shows route D only, so it does not rank the models. It does show the check catching problems. The fifth model, Ministral 3, which runs locally, has not been run yet.</p>
-      </aside>
-    </section>
-
-    <section class="compare-slide" data-toc="Highlife: what each adds" data-visibility="uncounted">
-      <h2 class="slide-title">Four definitions of highlife, read side by side</h2>
-      <p class="lead">All four: an urban popular music of West Africa, chiefly Ghana and Nigeria, mixing African and Western forms.</p>
-      <table>
-        <thead>
-          <tr><th>Model</th><th>Origin</th><th>What it adds</th><th class="num">Quotes found</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Claude Haiku 5.5</td><td>Debated: Konkomba singing bands, several streams</td><td>Vernaculars; a national music by the 1950s</td><td class="num">7 of 7</td></tr>
-          <tr><td>GPT-6 Luna</td><td>Ghana, then across West Africa</td><td>Variation by place and period</td><td class="num">3 of 3</td></tr>
-          <tr><td>Gemini 3.5 Flash-Lite</td><td>Local forms with brass band, jazz and ballroom</td><td>“Intertribal” music; love and social commentary</td><td class="num">3 of 3</td></tr>
-          <tr><td>Mistral Small 4</td><td>Local forms with ballroom, brass band and Latin American music</td><td>Harmony in thirds or sixths; mid-twentieth century</td><td class="num">1 of 5</td></tr>
-        </tbody>
-      </table>
-      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words.</p>
-      <aside class="notes">
-        <p>Here are the four definitions side by side. They agree on the core: an urban popular music of West Africa, chiefly Ghana and Nigeria, that combines African and Western forms.</p>
-        <p>They diverge on origins. Only Haiku reports that the origin is debated, citing Konkomba singing bands and several streams of highlife; the others give a single account, either Ghana first or a blend of local forms with brass band, jazz, ballroom or Latin American music. Two date it, two do not. Each adds something of its own: Haiku the vernaculars and weekend gatherings, GPT-6 Luna the variation by place and period, Gemini themes of love and social commentary, Mistral harmony in thirds or sixths.</p>
-        <p>Two differences matter for a catalogue. Gemini calls highlife an intertribal music, a word it took from a 1962 article and used in its own voice. And only one of Mistral's five claims passed the quote check, because three ran over the twenty-five-word limit and one could not be found in the text it read.</p>
+        <p>This adds to the main table what each model did and what its definition contributes. All four opened private full texts, between three and six of them, in six to eighteen tool calls, and all four judged the evidence sufficient.</p>
+        <p>Each adds something of its own: Haiku the vernaculars and weekend gatherings, GPT-6 Luna the variation by place and period, Gemini themes of love and social commentary, Mistral harmony in thirds or sixths. Two date highlife, two do not.</p>
+        <p>Two differences matter for a catalogue. Gemini calls highlife an intertribal music, a word it took from a 1962 article and used in its own voice. And three of Mistral's quotes ran past the twenty-five-word limit by stitching separate sentences together, and one could not be found in the text it read. Each model ran once, so the table does not rank them. The fifth model, Ministral 3, which runs locally, has not been run yet.</p>
       </aside>
     </section>
 
@@ -935,6 +965,26 @@
     if (window.ResizeObserver) new ResizeObserver(fit).observe(pl);
     fit();
     sync();
+  })();
+
+  /* The definitions under slide 10 are optional. Reveal's "next" (Space, N,
+     Page Down, which is what a presenter remote sends) would walk down into
+     them; here those keys move along the main line, as the right arrow does,
+     fragments included. Arrow down still opens the extra definitions. */
+  (function () {
+    if (!window.Reveal) return;
+    function on(keyCode, key, description, run) {
+      Reveal.addKeyBinding({ keyCode: keyCode, key: key, description: description }, run);
+    }
+    function forward() { Reveal.right(); }
+    function back() { Reveal.left(); }
+    Reveal.on("ready", function () {
+      on(34, "Page Down", "Next slide on the main line", forward);
+      on(78, "N", "Next slide on the main line", forward);
+      on(33, "Page Up", "Previous slide on the main line", back);
+      on(80, "P", "Previous slide on the main line", back);
+      on(32, "Space", "Next slide on the main line", function (event) { (event && event.shiftKey ? back : forward)(); });
+    });
   })();
 </script>
 

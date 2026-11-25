@@ -33,10 +33,10 @@
     <h1>Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data</h1>
     <p class="reader-byline">Frédérick Madore · Jiayu Yang · Oliver Baumann · Neeraj Thandayan Viswajith · Durgesh Nandini · Mirco Schönfeld</p>
     <p>HKADH 2027 · Hong Kong · 21 January 2027</p>
-    <p class="reader-meta">22 slides</p>
+    <p class="reader-meta">23 slides</p>
   </header>
   <main id="content">
-    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue should define its own terms</a></li><li><a href="#slide-3">A catalogue of research data held elsewhere</a></li><li><a href="#slide-4">Why an MCP server, not just an API</a></li><li><a href="#slide-5">Two tools this pilot builds on</a></li><li><a href="#slide-6">A label and a list, but no definition</a></li><li><a href="#slide-7">Standard vocabularies identify a concept but rarely explain it</a></li><li><a href="#slide-8">The sources: ILAM’s journal African Music</a></li><li><a href="#slide-9">The pipeline</a></li><li><a href="#slide-10">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-11">Four models reading AMIRA on highlife</a></li><li><a href="#slide-12">One English name, three drums</a></li><li><a href="#slide-13">Reading AMIRA helped most where the models knew least</a></li><li><a href="#slide-14">Wikidata, extended but never contradicted</a></li><li><a href="#slide-15">Passages fit a small window; a tight budget cost quality</a></li><li><a href="#slide-16">Three limits of the pilot</a></li><li><a href="#slide-17">What comes next in the pilot</a></li><li><a href="#slide-18">Reading the archive helped most where the models knew least.</a></li><li><a href="#slide-19">Appendix</a></li><li><a href="#slide-20">What happens when someone asks</a></li><li><a href="#slide-21">Four models reading AMIRA on highlife</a></li><li><a href="#slide-22">Four definitions of highlife, read side by side</a></li></ol></nav></details>
+    <details class="reader-contents"><summary>Contents</summary><nav aria-label="Contents"><ol><li><a href="#slide-1">Knowledge gaps and mediated access</a></li><li><a href="#slide-2">A catalogue should define its own terms</a></li><li><a href="#slide-3">A catalogue of research data held elsewhere</a></li><li><a href="#slide-4">Why an MCP server, not just an API</a></li><li><a href="#slide-5">Two tools this pilot builds on</a></li><li><a href="#slide-6">A label and a list, but no definition</a></li><li><a href="#slide-7">Vocabularies identify a concept; Wikipedia explains only the well known</a></li><li><a href="#slide-8">The sources: ILAM’s journal African Music</a></li><li><a href="#slide-9">The pipeline</a></li><li><a href="#slide-10">Highlife, defined from AMIRA’s sources</a></li><li><a href="#slide-11">Dondo, defined from AMIRA’s sources</a></li><li><a href="#slide-12">Multiplicity, defined from AMIRA’s sources</a></li><li><a href="#slide-13">Four models reading AMIRA on highlife</a></li><li><a href="#slide-14">One English name, three drums</a></li><li><a href="#slide-15">Reading AMIRA helped most where the models knew least</a></li><li><a href="#slide-16">Wikidata, extended but never contradicted</a></li><li><a href="#slide-17">Passages fit a small window; a tight budget cost quality</a></li><li><a href="#slide-18">Three limits of the pilot</a></li><li><a href="#slide-19">What comes next in the pilot</a></li><li><a href="#slide-20">Reading the archive helped most where the models knew least.</a></li><li><a href="#slide-21">Appendix</a></li><li><a href="#slide-22">What happens when someone asks</a></li><li><a href="#slide-23">Highlife: what each model read and added</a></li></ol></nav></details>
     <section class="reader-slide" id="slide-1" aria-labelledby="slide-1-title">
 <p class="reader-folio"><a href="index.html#/0">Slide 1</a></p>
 <p class="eyebrow">HKADH 2027 · Education University of Hong Kong, 21 January 2027</p>
@@ -183,7 +183,7 @@
 </section>
 <section class="reader-slide" id="slide-7" aria-labelledby="slide-7-title">
 <p class="reader-folio"><a href="index.html#/6">Slide 7</a></p>
-<h2 class="slide-title" id="slide-7-title">Standard vocabularies identify a concept but rarely explain it</h2>
+<h2 class="slide-title" id="slide-7-title">Vocabularies identify a concept; Wikipedia explains only the well known</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Library of Congress</div>
@@ -199,8 +199,15 @@
             <dt>timbila, a xylophone</dt><dd>Listed with the alias “thumb pianos”</dd>
           </dl>
         </div>
+        <div class="col">
+          <div class="col-head alt">Wikipedia, in English</div>
+          <dl class="vocab">
+            <dt>Highlife</dt><dd>A full article, with editions in 24 languages</dd>
+            <dt>Dondo, an Akan drum</dt><dd><span class="none">No article.</span> “Donno” redirects to “Talking drum”</dd>
+          </dl>
+        </div>
       </div>
-      <p class="source">id.loc.gov and wikidata.org, read 16 and 17 November 2026</p>
+      <p class="source">id.loc.gov and wikidata.org, read 16 and 17 November 2026; en.wikipedia.org, 24 November 2026</p>
 </section>
 <section class="reader-slide" id="slide-8" aria-labelledby="slide-8-title">
 <p class="reader-folio"><a href="index.html#/7">Slide 8</a></p>
@@ -241,11 +248,11 @@
 <h2 id="slide-9-title" class="reader-fallback-title">The pipeline</h2>
       <div class="pl">
         
-        <a class="reader-image" href="assets/pipeline.png"><img class="viz-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three judge models; review by researchers is planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
+        <a class="reader-image" href="assets/pipeline.png"><img class="viz-fallback" alt="Pipeline in four columns. The gap: the AMIRA subject Highlife (Music) has 55 records and no definition. Four ways to fill it: A, the Library of Congress heading, with no scope note; B, Wikidata, &#x27;musical genre originating in Ghana&#x27;; C, a small model alone; D, the same model reading AMIRA through its MCP server. Only route D leads to a cited definition: Claude Haiku 5.5, 95 words, 7 claims, each with a quote found in the text the model read, from four sources. Review: by code, then by a blind panel of three larger models; review by researchers is planned." src="assets/pipeline.png" loading="lazy" decoding="async"></a>
       </div>
 </section>
 <section class="reader-slide" id="slide-10" aria-labelledby="slide-10-title">
-<p class="reader-folio"><a href="index.html#/9">Slide 10</a></p>
+<p class="reader-folio"><a href="index.html#/9/0">Slide 10</a></p>
 <h2 class="slide-title" id="slide-10-title">Highlife, defined from AMIRA’s sources</h2>
       <blockquote><p>Highlife is a popular dance music of urban West Africa, above all Ghana and Nigeria, that fuses African and Western musical styles. Writers describe it as a compromise between African traditional forms and Western music, mostly sung in many vernaculars with simple, binary-form melodies. It emerged as a national rather than ethnic music in the 1950s.</p></blockquote>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
@@ -259,11 +266,45 @@
         </tbody>
       </table></div>
       <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
-      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records.</p>
+      <p class="source">Claude Haiku 5.5, route D, run of 16 November 2026. Sources: articles in <em>African Music</em> (ILAM), linked to their AMIRA records. Two more definitions below (↓): dondo and multiplicity.</p>
 </section>
 <section class="reader-slide" id="slide-11" aria-labelledby="slide-11-title">
-<p class="reader-folio"><a href="index.html#/10">Slide 11</a></p>
-<h2 class="slide-title" id="slide-11-title">Four models reading AMIRA on highlife</h2>
+<p class="reader-folio"><a href="index.html#/9/1">Slide 11</a></p>
+<h2 class="slide-title" id="slide-11-title">Dondo, defined from AMIRA’s sources</h2>
+      <blockquote><p>Donno (also written dondo) is an hourglass-shaped drum with skins at both ends joined by woven strings, used in Ghanaian ensembles, chiefly Akan adowa and Kete. It is a support drum, often pitched lower than the lead talking drum (atumpan). In Akan practice it is used in girls’ puberty rites, and it was traditionally one of the few drums women were allowed to play.</p></blockquote>
+      <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
+        <thead>
+          <tr><th class="num">Claim</th><th>Quote found in the text the model read</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">2</td><td>“donno hourglass-shaped tension drum, dawuro iron bell, and ntorowa gourd rattle”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31973">Paulding 2017</a></td></tr>
+          <tr><td class="num">3</td><td>“the donno drums are sometimes pitched relatively lower than the principal drum”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31251">Anku 2009</a></td></tr>
+          <tr><td class="num">4</td><td>“The only drums that women were allowed to play and still do play are the donno drums”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/27784">Nketia 1954</a></td></tr>
+        </tbody>
+      </table></div>
+      <p class="tally"><strong>7 of 7 claims carry a quote found in the text the model read.</strong></p>
+      <p class="source">Claude Haiku 5.5, route D, run of 17 November 2026. Sources: articles in <em>African Music</em> (ILAM). This drum has no Wikipedia article and no Wikidata item.</p>
+</section>
+<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
+<p class="reader-folio"><a href="index.html#/9/2">Slide 12</a></p>
+<h2 class="slide-title" id="slide-12-title">Multiplicity, defined from AMIRA’s sources</h2>
+      <blockquote><p>Multiplicity is a way of understanding African and African diasporic life-worlds as heterogeneous, coexisting, and mutually influential rather than as one uniform object or fixed category. It attends to plurality and simultaneity: identities, experiences, influences, and forms of knowledge may vary within a community and connect across contexts. It is studied alongside relationality and reflexivity, which help analyse those connections and perspectives.</p></blockquote>
+      <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
+        <thead>
+          <tr><th class="num">Claim</th><th>Quote found in the text the model read</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>“capture the simultaneity of heterogeneous and mutually influential African and African diasporic life worlds”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/30066">Seesemann 2020</a></td></tr>
+          <tr><td class="num">2</td><td>“the narratives of female gyil players illustrate the multiplicity of selfhood, and the possibility of plurality”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/31429">Lawrence 2011</a></td></tr>
+          <tr><td class="num">3</td><td>“we put forward relationality and reflexivity as the analytical tools for the study and conceptualization of multiplicity”</td><td><a href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/30066">Seesemann 2020</a></td></tr>
+        </tbody>
+      </table></div>
+      <p class="tally"><strong>3 of 3 claims carry a quote found in the text the model read;</strong> one of its six quotes was not found.</p>
+      <p class="source">GPT-6 Luna, route D, run of 16 November 2026. Sources: the Cluster’s working papers and articles in <em>African Music</em> (ILAM).</p>
+</section>
+<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
+<p class="reader-folio"><a href="index.html#/10">Slide 13</a></p>
+<h2 class="slide-title" id="slide-13-title">Four models reading AMIRA on highlife</h2>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
           <tr><th>Model</th><th>Origin given</th><th class="num">Quotes found</th><th class="num">Est. cost (USD)</th></tr>
@@ -277,9 +318,9 @@
       </table></div>
       <p class="source">Route D, one run per model, 16 November 2026. Costs estimated from list prices. Tool calls and what each definition adds: annexe.</p>
 </section>
-<section class="reader-slide" id="slide-12" aria-labelledby="slide-12-title">
-<p class="reader-folio"><a href="index.html#/11">Slide 12</a></p>
-<h2 class="slide-title" id="slide-12-title">One English name, three drums</h2>
+<section class="reader-slide" id="slide-14" aria-labelledby="slide-14-title">
+<p class="reader-folio"><a href="index.html#/11">Slide 14</a></p>
+<h2 class="slide-title" id="slide-14-title">One English name, three drums</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Talking drum</div>
@@ -303,9 +344,9 @@
       </div>
       <p class="source">Articles: full-text matches in <em>African Music</em> (ILAM). Wikidata, definitions (four models, one run per cell) and open verdicts (no answer key: Claude Opus 5.5, GPT-6 Astra, Gemini 4 Argon; uncalibrated; unanimous), 17 November 2026. Claude Haiku 5.5 left out: no usable grounded talking-drum definition.</p>
 </section>
-<section class="reader-slide" id="slide-13" aria-labelledby="slide-13-title">
-<p class="reader-folio"><a href="index.html#/12">Slide 13</a></p>
-<h2 class="slide-title" id="slide-13-title">Reading AMIRA helped most where the models knew least</h2>
+<section class="reader-slide" id="slide-15" aria-labelledby="slide-15-title">
+<p class="reader-folio"><a href="index.html#/12">Slide 15</a></p>
+<h2 class="slide-title" id="slide-15-title">Reading AMIRA helped most where the models knew least</h2>
       <div class="cols ratio-3-2">
         <div class="col">
           <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
@@ -329,9 +370,9 @@
         </div>
       </div>
 </section>
-<section class="reader-slide" id="slide-14" aria-labelledby="slide-14-title">
-<p class="reader-folio"><a href="index.html#/13">Slide 14</a></p>
-<h2 class="slide-title" id="slide-14-title">Wikidata, extended but never contradicted</h2>
+<section class="reader-slide" id="slide-16" aria-labelledby="slide-16-title">
+<p class="reader-folio"><a href="index.html#/13">Slide 16</a></p>
+<h2 class="slide-title" id="slide-16-title">Wikidata, extended but never contradicted</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">Wikidata: multiplicity</div>
@@ -348,9 +389,9 @@
       </div>
       <p class="source">Wikidata Q3860307, read 17 November 2026. Route D definition, 16 November 2026. Open comparison by the three judges, 17 November 2026; one run per cell.</p>
 </section>
-<section class="reader-slide" id="slide-15" aria-labelledby="slide-15-title">
-<p class="reader-folio"><a href="index.html#/14">Slide 15</a></p>
-<h2 class="slide-title" id="slide-15-title">Passages fit a small window; a tight budget cost quality</h2>
+<section class="reader-slide" id="slide-17" aria-labelledby="slide-17-title">
+<p class="reader-folio"><a href="index.html#/14">Slide 17</a></p>
+<h2 class="slide-title" id="slide-17-title">Passages fit a small window; a tight budget cost quality</h2>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
           <tr><th>Same 16 cells: 4 models, 4 concepts</th><th class="num">Full texts</th><th class="num">Passages</th><th class="num">Passages, tight budget</th></tr>
@@ -369,9 +410,9 @@
       </div>
       <p class="source">Highlife and three drums, one run per cell, 24 November 2026; provider token counts; panel in both orders, uncalibrated.</p>
 </section>
-<section class="reader-slide" id="slide-16" aria-labelledby="slide-16-title">
-<p class="reader-folio"><a href="index.html#/15">Slide 16</a></p>
-<h2 class="slide-title" id="slide-16-title">Three limits of the pilot</h2>
+<section class="reader-slide" id="slide-18" aria-labelledby="slide-18-title">
+<p class="reader-folio"><a href="index.html#/15">Slide 18</a></p>
+<h2 class="slide-title" id="slide-18-title">Three limits of the pilot</h2>
       <div class="cols">
         <div class="col">
           <div class="col-head">The judges know what the models know</div>
@@ -389,9 +430,9 @@
       </div>
       <p class="source">“Tribal”: AMIRA MCP server, full-text map of 657 <em>African Music</em> articles, 16 November 2026. Every result in this talk: one run per cell.</p>
 </section>
-<section class="reader-slide" id="slide-17" aria-labelledby="slide-17-title">
-<p class="reader-folio"><a href="index.html#/16">Slide 17</a></p>
-<h2 class="slide-title" id="slide-17-title">What comes next in the pilot</h2>
+<section class="reader-slide" id="slide-19" aria-labelledby="slide-19-title">
+<p class="reader-folio"><a href="index.html#/16">Slide 19</a></p>
+<h2 class="slide-title" id="slide-19-title">What comes next in the pilot</h2>
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1</span>
@@ -419,22 +460,22 @@
         </div>
       </div>
 </section>
-<section class="reader-slide" id="slide-18" aria-labelledby="slide-18-title">
-<p class="reader-folio"><a href="index.html#/17">Slide 18</a></p>
+<section class="reader-slide" id="slide-20" aria-labelledby="slide-20-title">
+<p class="reader-folio"><a href="index.html#/17">Slide 20</a></p>
 <p class="kicker">Thank you</p>
-      <h2 id="slide-18-title">Reading the archive helped most where the models knew least.</h2>
+      <h2 id="slide-20-title">Reading the archive helped most where the models knew least.</h2>
       <div class="byline"><span class="name authors-list">Frédérick Madore, Jiayu Yang, Oliver Baumann, Neeraj Thandayan Viswajith, Durgesh Nandini and Mirco Schönfeld</span></div>
       <div class="contact"><a href="https://github.com/AM-Digital-Research-Environment"><span class="ico"></span><span>github.com/AM-Digital-Research-Environment</span></a> <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"><span class="ico"></span><span>Africa Multiple · Digital Solutions</span></a></div>
       <img class="org-logo" alt="University of Bayreuth" src="../../shared/logo-bayreuth.svg" loading="lazy" decoding="async">
 </section>
-<section class="reader-slide" id="slide-19" aria-labelledby="slide-19-title">
-<p class="reader-folio"><a href="index.html#/18">Slide 19</a></p>
-<h2 id="slide-19-title">Appendix</h2>
+<section class="reader-slide" id="slide-21" aria-labelledby="slide-21-title">
+<p class="reader-folio"><a href="index.html#/18">Slide 21</a></p>
+<h2 id="slide-21-title">Appendix</h2>
       <p class="sec-sub">Held back for questions.</p>
 </section>
-<section class="reader-slide" id="slide-20" aria-labelledby="slide-20-title">
-<p class="reader-folio"><a href="index.html#/19">Slide 20</a></p>
-<h2 class="slide-title" id="slide-20-title">What happens when someone asks</h2>
+<section class="reader-slide" id="slide-22" aria-labelledby="slide-22-title">
+<p class="reader-folio"><a href="index.html#/19">Slide 22</a></p>
+<h2 class="slide-title" id="slide-22-title">What happens when someone asks</h2>
       <div class="flow">
         <div class="flow-step">
           <span class="step-n">1</span>
@@ -460,47 +501,26 @@
           <p>In its own words, ideally citing the records it received.</p>
         </div>
       </div>
-      <div class="callout wide">
-        <span class="callout-label">Who decides what</span>
-        We decide which tools exist and what they return. The assistant and its provider decide what reaches the answer.
-      </div>
 </section>
-<section class="reader-slide" id="slide-21" aria-labelledby="slide-21-title">
-<p class="reader-folio"><a href="index.html#/20">Slide 21</a></p>
-<h2 class="slide-title" id="slide-21-title">Four models reading AMIRA on highlife</h2>
+<section class="reader-slide" id="slide-23" aria-labelledby="slide-23-title">
+<p class="reader-folio"><a href="index.html#/20">Slide 23</a></p>
+<h2 class="slide-title" id="slide-23-title">Highlife: what each model read and added</h2>
       <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
         <thead>
-          <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th class="num">Claims with a quote found</th><th class="num">Est. cost, list prices (USD)</th></tr>
+          <tr><th>Model</th><th class="num">Tool calls</th><th class="num">Full texts read</th><th>What its definition adds</th></tr>
         </thead>
         <tbody>
-          <tr><td>Claude Haiku 5.5</td><td class="num">10</td><td class="num">5</td><td class="num">7 of 7</td><td class="num">0.014</td></tr>
-          <tr><td>GPT-6 Luna</td><td class="num">18</td><td class="num">6</td><td class="num">3 of 3</td><td class="num">0.014</td></tr>
-          <tr><td>Gemini 3.5 Flash-Lite</td><td class="num">6</td><td class="num">3</td><td class="num">3 of 3</td><td class="num">0.016</td></tr>
-          <tr><td>Mistral Small 4</td><td class="num">10</td><td class="num">6</td><td class="num">1 of 5</td><td class="num">0.029</td></tr>
+          <tr><td>Claude Haiku 5.5</td><td class="num">10</td><td class="num">5</td><td>Vernaculars; a national music by the 1950s</td></tr>
+          <tr><td>GPT-6 Luna</td><td class="num">18</td><td class="num">6</td><td>Variation by place and period</td></tr>
+          <tr><td>Gemini 3.5 Flash-Lite</td><td class="num">6</td><td class="num">3</td><td>“Intertribal” music; love and social commentary</td></tr>
+          <tr><td>Mistral Small 4</td><td class="num">10</td><td class="num">6</td><td>Harmony in thirds or sixths; mid-twentieth century</td></tr>
         </tbody>
       </table></div>
       <div class="callout wide">
         <span class="callout-label">Read with care</span>
-        One run per model: anecdotes, not measurements.<br>
-        Mistral Small 4: three quotes over the 25-word limit, one not found in the text it read.
+        One run per model: anecdotes, not measurements.
       </div>
-</section>
-<section class="reader-slide" id="slide-22" aria-labelledby="slide-22-title">
-<p class="reader-folio"><a href="index.html#/21">Slide 22</a></p>
-<h2 class="slide-title" id="slide-22-title">Four definitions of highlife, read side by side</h2>
-      <p class="lead">All four: an urban popular music of West Africa, chiefly Ghana and Nigeria, mixing African and Western forms.</p>
-      <div class="reader-table" role="region" aria-label="Table" tabindex="0"><table>
-        <thead>
-          <tr><th>Model</th><th>Origin</th><th>What it adds</th><th class="num">Quotes found</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Claude Haiku 5.5</td><td>Debated: Konkomba singing bands, several streams</td><td>Vernaculars; a national music by the 1950s</td><td class="num">7 of 7</td></tr>
-          <tr><td>GPT-6 Luna</td><td>Ghana, then across West Africa</td><td>Variation by place and period</td><td class="num">3 of 3</td></tr>
-          <tr><td>Gemini 3.5 Flash-Lite</td><td>Local forms with brass band, jazz and ballroom</td><td>“Intertribal” music; love and social commentary</td><td class="num">3 of 3</td></tr>
-          <tr><td>Mistral Small 4</td><td>Local forms with ballroom, brass band and Latin American music</td><td>Harmony in thirds or sixths; mid-twentieth century</td><td class="num">1 of 5</td></tr>
-        </tbody>
-      </table></div>
-      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words.</p>
+      <p class="source">Route D, one run per model, 16 November 2026. Definitions of 80 to 102 words. Origins, quotes found and costs: main slide.</p>
 </section>
   </main>
   <footer class="reader-footer"><a href="#top">Back to top</a> · <a href="index.html">Slides</a> · <a href="../../index.html">All talks</a></footer>
