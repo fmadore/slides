@@ -929,6 +929,10 @@
     }
     ["ready", "pdf-ready", "slidechanged", "fragmentshown", "fragmenthidden"].forEach(function (e) { Reveal.on(e, sync); });
     ["ready", "resize", "slidechanged"].forEach(function (e) { Reveal.on(e, fit); });
+    /* The print view lays the page out after `ready`, so the column the figure
+       fills changes width with no reveal event; without this the PDF kept a
+       ×1.05 scale and cut off the fourth column (#40's bounds check). */
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(pl);
     fit();
     sync();
   })();
