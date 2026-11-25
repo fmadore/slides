@@ -64,6 +64,10 @@
     /* Zoomed out, so the half-width column shows the home page's desktop
        layout rather than its phone one (as in the Kansas deck). */
     .reveal section.amira-slide .site-frame-view > iframe { width: 160%; height: 160%; transform: scale(0.625); transform-origin: top left; }
+    /* The saved views (taken at the frames' own zoomed-out viewport) fill
+       their frame from the top left, as the live page does. */
+    .reveal :is(section.amira-slide, section.gap-slide) .frame-fallback { padding: 0; }
+    .reveal :is(section.amira-slide, section.gap-slide) .frame-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top left; margin: 0; }
 
     /* Closing: the line is a sentence, set at headline size so it clears
        the corner QR (as in the Rhodes deck's closing). */
@@ -294,7 +298,10 @@
             <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" target="_blank" rel="noopener">Open AMIRA ↗</a>
           </div>
           <div class="site-frame-view">
-            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" title="AMIRA — Africa Multiple Interactive Research Atlas (home page)" allowfullscreen allow="fullscreen"></iframe>
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/home" title="AMIRA — Africa Multiple Interactive Research Atlas (home page)" allowfullscreen allow="fullscreen" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/amira-home.png" alt="Saved view of the AMIRA home page, 25 November 2026: the title Africa Multiple Interactive Research Atlas, a search box, and 3,800 research items in the collection.">
+            </div>
           </div>
         </figure>
       </div>
@@ -375,7 +382,10 @@
             <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/item/2412" target="_blank" rel="noopener">Open record ↗</a>
           </div>
           <div class="site-frame-view">
-            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/item/2412" title="AMIRA subject record Highlife (Music): its label, Library of Congress heading and linked records, with no definition" allowfullscreen allow="fullscreen"></iframe>
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/item/2412" title="AMIRA subject record Highlife (Music): its label, Library of Congress heading and linked records, with no definition" allowfullscreen allow="fullscreen" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/amira-item-2412.png" alt="Saved view of AMIRA subject record 2412, 25 November 2026: Highlife (Music), alternative title Highlife music, type Library of Congress Subject Headings, identifier sh90004527, and no definition.">
+            </div>
           </div>
         </figure>
         <div class="col">
@@ -446,7 +456,10 @@
             <a class="site-frame-open" href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" target="_blank" rel="noopener">Open the collection ↗</a>
           </div>
           <div class="site-frame-view">
-            <iframe src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" title="ILAM, the International Library of African Music: its collection page in AMIRA" allowfullscreen allow="fullscreen"></iframe>
+            <iframe data-frame-trusted="https://slides.frederickmadore.com" data-src="https://data.africamultiple.uni-bayreuth.de/s/amira/page/international-library-of-african-music-ilam" title="ILAM, the International Library of African Music: its collection page in AMIRA" allowfullscreen allow="fullscreen" loading="lazy"></iframe>
+            <div class="frame-fallback" hidden>
+              <img src="assets/amira-ilam.png" alt="Saved view of the ILAM collection page in AMIRA, 25 November 2026: its description, published in collaboration with Rhodes University, 45 issues and 1,032 articles shown as a grid of African Music journal covers.">
+            </div>
           </div>
         </figure>
       </div>

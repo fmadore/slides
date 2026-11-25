@@ -139,6 +139,21 @@ try {
     });
     assert.deepEqual(await printGeometry(page), []);
   }));
+  // Reveal's print view keeps `hidden` on every section but the current one,
+  // inside stacks too, while displaying them all (#40).
+  await check('print validation measures pages whose section reveal leaves [hidden]', () => withPage(async page => {
+    const pageOf = (n, body, attrs = '') => `<div class="pdf-page"><section${attrs}>${body}</section><div class="pdf-imprint">${n}</div></div>`;
+    await page.setContent(`<style>.pdf-page{width:1280px;height:720px;position:relative}.pdf-imprint{position:absolute;bottom:0}section{display:block!important}</style>
+      <div class="reveal"><div class="slides">
+        ${pageOf(1, '<p>The current slide fits.</p>', ' class="present"')}
+        <section class="stack" hidden>${pageOf(2, '<p>A fitting vertical slide.</p>', ' hidden')}${pageOf(3, '<p style="position:relative;top:800px">Runs off a hidden page</p><p hidden>Hidden copy is still skipped</p>', ' hidden')}</section>
+        ${pageOf(4, '<p style="position:relative;top:800px">Also runs off</p>', ' hidden')}
+      </div></div>`);
+    assert.deepEqual(await printGeometry(page), [
+      'page 3: Runs off a hidden page outside content bounds',
+      'page 4: Also runs off outside content bounds',
+    ]);
+  }));
   // browser-check's page watcher: Chromium's console line for a local 404 names
   // no URL, so only the response listener can catch a deck's missing image.
   await check('a deck with one missing local image fails the browser check; a whole deck passes', async () => {

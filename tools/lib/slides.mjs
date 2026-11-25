@@ -22,9 +22,13 @@ export async function printGeometry(page) {
     const imprint = page.querySelector('.pdf-imprint');
     const bottom = imprint ? imprint.getBoundingClientRect().top : box.bottom;
     const failures = [];
+    // Walk up to the slide, not past it: reveal's print view leaves `hidden`
+    // on every section but the current one (and on their stacks) although all
+    // of them are displayed, so a [hidden] test that reached the section would
+    // skip every page but one (#40). [hidden] inside the slide still counts.
     const visible = el => {
-      if (el.closest('aside, [hidden], .slide-background, .media-fill, .media-scrim, .pdf-imprint')) return false;
       for (let p = el; p && p !== slide; p = p.parentElement) {
+        if (p.matches('aside, [hidden], .slide-background, .media-fill, .media-scrim, .pdf-imprint')) return false;
         const css = getComputedStyle(p);
         if (css.display === 'none' || css.visibility === 'hidden' || css.opacity === '0') return false;
       }

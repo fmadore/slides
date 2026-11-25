@@ -45,25 +45,36 @@
       return pos !== "absolute" && pos !== "fixed";
     });
     if (!kids.length) { FIT_SEEN.set(sec, geometry); return; }
-    var topMost = Infinity, botMost = -Infinity, leftMost = Infinity, rightMost = -Infinity;
+    var topMost = Infinity, topMargin = 0, botMost = -Infinity, leftMost = Infinity, rightMost = -Infinity;
     kids.forEach(function (c) {
-      topMost = Math.min(topMost, c.offsetTop);
+      if (c.offsetTop < topMost) { topMost = c.offsetTop; topMargin = Math.max(0, parseFloat(getComputedStyle(c).marginTop) || 0); }
       botMost = Math.max(botMost, c.offsetTop + c.offsetHeight);
       leftMost = Math.min(leftMost, c.offsetLeft);
       rightMost = Math.max(rightMost, c.offsetLeft + c.offsetWidth);
     });
-    var H = botMost - topMost, W = rightMost - leftMost;
+    // The space a slide needs runs from its top child's margin edge, not its
+    // border edge: that margin sits inside the safe area too (#40).
+    var H = botMost - topMost + topMargin, W = rightMost - leftMost;
     var boxTop = padT + clearance;
     var safeH = sec.clientHeight - boxTop - padB;
     var safeW = sec.clientWidth - padL - padR;
     var needFit = (H > safeH + 3) || (W > safeW + 3) || (hasRule && topMost < boxTop - 3);
     if (needFit && safeH > 40 && H > 0) {
-      var k = Math.max(0.55, Math.min(1, safeH / H, W > 0 ? safeW / W : 1));
       var centered = CENTERED.some(function (c) { return sec.classList.contains(c); });
       var fit = document.createElement("div");
       fit.className = "fit";
       while (kids.length) fit.appendChild(kids.shift());
       sec.insertBefore(fit, sec.firstChild);
+      // Scale what is actually scaled: inside the flex column the children's
+      // margins stop collapsing and the top child's margin is kept, so the
+      // wrapper is taller than the block-flow extent measured above. Measure
+      // it unscaled, at the safe width, before choosing k. The last child's
+      // bottom margin paints nothing, so the extent stops at its border edge.
+      fit.style.cssText = "position:absolute;top:" + boxTop + "px;left:" + padL + "px;width:" + safeW +
+        "px;margin:0;display:flex;flex-direction:column;";
+      [].forEach.call(fit.children, function (c) { H = Math.max(H, c.offsetTop + c.offsetHeight); });
+      W = Math.max(W, fit.scrollWidth);
+      var k = Math.max(0.55, Math.min(1, safeH / H, W > 0 ? safeW / W : 1));
       if (PRINT) {
         // Transforms apply after print fragmentation: text outside the
         // unscaled page can disappear even when its painted bounds fit.
